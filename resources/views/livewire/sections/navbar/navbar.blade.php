@@ -77,15 +77,15 @@
                     </div>
                   </a>
                 </li>
-                <li>
+                {{-- <li>
                   <div class="dropdown-divider"></div>
-                </li>
-                <li>
+                </li> --}}
+                {{-- <li>
                   <a class="dropdown-item" href="{{ Route::has('profile.show') ? route('profile.show') : 'javascript:void(0);' }}">
                     <i class="ti ti-user-check me-2 ti-sm"></i>
                     <span class="align-middle">My Profile</span>
                   </a>
-                </li>
+                </li> --}}
                 @if (Auth::check() && Laravel\Jetstream\Jetstream::hasApiFeatures())
                   <li>
                     <a class="dropdown-item" href="{{ route('api-tokens.index') }}">
@@ -94,7 +94,7 @@
                     </a>
                   </li>
                 @endif
-                <li>
+                {{-- <li>
                   <a class="dropdown-item" href="javascript:void(0);">
                     <span class="d-flex align-items-center align-middle">
                       <i class="flex-shrink-0 ti ti-credit-card me-2 ti-sm"></i>
@@ -102,7 +102,7 @@
                       <span class="flex-shrink-0 badge badge-center rounded-pill bg-label-danger w-px-20 h-px-20">2</span>
                     </span>
                   </a>
-                </li>
+                </li> --}}
                 @if (Auth::User() && Laravel\Jetstream\Jetstream::hasTeamFeatures())
                   <li>
                     <div class="dropdown-divider"></div>
