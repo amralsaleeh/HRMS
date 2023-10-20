@@ -1,0 +1,63 @@
+// * Pricing
+// *******************************************************************************
+
+@use '../_bootstrap-extended/include' as light;
+@use '../_bootstrap-extended/include-dark' as dark;
+@import '../_custom-variables/pages';
+
+.pricing-plans-comparison {
+  .table {
+    tr {
+      > th:first-child,
+      > td:first-child {
+        white-space: nowrap;
+        text-align: start;
+      }
+    }
+    // Table border bottom zero of last child
+    tbody {
+      tr:last-child {
+        td {
+          border-bottom: 0;
+        }
+      }
+    }
+  }
+}
+.price-yearly-toggle {
+  position: absolute;
+  margin: auto;
+  left: 0;
+  right: 0;
+}
+@if $enable-light-style {
+  .light-style {
+    .bg-alt-pricing {
+      background-color: light.$body-bg;
+    }
+  }
+}
+
+@if $enable-dark-style {
+  .dark-style {
+    .bg-alt-pricing {
+      background-color: dark.$body-bg;
+    }
+  }
+}
+
+// To position illustration
+@include light.media-breakpoint-up(lg) {
+  .pricing-free-trial {
+    img {
+      position: absolute;
+      bottom: 0;
+      @include app-ltr() {
+        right: 0;
+      }
+      @include app-rtl() {
+        left: 0;
+      }
+    }
+  }
+}

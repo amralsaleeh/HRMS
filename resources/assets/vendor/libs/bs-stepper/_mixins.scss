@@ -1,0 +1,50 @@
+// Stepper Mixin
+// *******************************************************************************
+@mixin bs-stepper-theme($background) {
+  $color: color-contrast($background);
+  .bs-stepper {
+    .step {
+      &.active {
+        .bs-stepper-circle {
+          background-color: $background;
+          color: $color;
+        }
+        .bs-stepper-icon svg {
+          fill: $background !important;
+        }
+        .bs-stepper-icon i,
+        .bs-stepper-label {
+          color: $background !important;
+        }
+      }
+      &.crossed {
+        .step-trigger {
+          .bs-stepper-circle {
+            background-color: rgba-to-hex(rgba($background, 0.08), $card-bg) !important;
+            color: rgba-to-hex(rgba($background, 0.6), $card-bg) !important;
+          }
+          .bs-stepper-icon svg {
+            fill: $background !important;
+          }
+          .bs-stepper-icon i {
+            color: $background !important;
+          }
+        }
+      }
+    }
+    &.wizard-icons {
+      .step.crossed {
+        .bs-stepper-label {
+          color: $background !important;
+        }
+        & + {
+          .line {
+            i {
+              color: $background;
+            }
+          }
+        }
+      }
+    }
+  }
+}

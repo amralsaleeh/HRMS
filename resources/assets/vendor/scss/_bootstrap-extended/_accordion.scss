@@ -1,0 +1,77 @@
+// Accordions
+// *******************************************************************************
+
+// accordion without icon
+.accordion {
+  &.accordion-without-arrow {
+    .accordion-button::after {
+      background-image: none !important;
+    }
+  }
+}
+
+// Accordion border radius
+.accordion-button {
+  font-weight: inherit;
+  align-items: unset;
+  @include border-top-radius($accordion-border-radius);
+  &.collapsed {
+    @include border-radius($accordion-border-radius);
+  }
+}
+
+// Default card styles of accordion
+.accordion {
+  &.accordion-bordered {
+    .card {
+      box-shadow: none;
+    }
+  }
+  &:not(.accordion-bordered) > .card:not(:last-of-type) {
+    border-radius: $accordion-border-radius !important;
+    margin-bottom: 0.5rem;
+  }
+}
+// added box shadow
+.accordion {
+  &:not(.accordion-bordered) > .card.accordion-item {
+    box-shadow: $box-shadow-sm;
+    &.active {
+      box-shadow: $box-shadow;
+    }
+  }
+}
+.accordion-header + .accordion-collapse .accordion-body {
+  padding-top: 0;
+}
+
+// accordion with border
+.accordion {
+  &.accordion-bordered {
+    .accordion-item {
+      border-color: $border-color !important;
+      &:not(:first-of-type) {
+        @include border-top-radius(0);
+      }
+      &:not(:last-of-type) {
+        @include border-bottom-radius(0);
+      }
+    }
+  }
+}
+// RTL
+// *******************************************************************************
+
+@include rtl-only {
+  .accordion-button {
+    text-align: right;
+    &::after {
+      margin-left: 0;
+      margin-right: auto;
+      transform: rotate(180deg);
+    }
+    &:not(.collapsed)::after {
+      transform: rotate(90deg);
+    }
+  }
+}

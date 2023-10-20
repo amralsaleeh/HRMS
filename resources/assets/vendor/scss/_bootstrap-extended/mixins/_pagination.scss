@@ -1,0 +1,40 @@
+// Pagination
+// *******************************************************************************
+
+// Basic Pagination
+@mixin template-pagination-variant($parent, $background, $color: null) {
+  #{$parent} .page-item.active .page-link,
+  #{$parent}.pagination li.active > a:not(.page-link) {
+    border-color: $background;
+    background-color: $background;
+    color: if($color, $color, color-contrast($background));
+  }
+
+  #{$parent} .page-item > .page-link {
+    &.active {
+      border-color: $background;
+      background-color: $background;
+      color: if($color, $color, color-contrast($background));
+    }
+  }
+
+  #{$parent} .page-item {
+    &.first,
+    &.last,
+    &.next,
+    &.prev,
+    &.previous {
+      .page-link {
+        &.active {
+          border-color: $background;
+          background-color: $background;
+          color: if($color, $color, color-contrast($background));
+        }
+      }
+    }
+  }
+}
+
+@mixin template-pagination-theme($background, $color: null) {
+  @include template-pagination-variant('', $background, $color);
+}

@@ -1,0 +1,370 @@
+// Nav
+// *******************************************************************************
+.nav .nav-item,
+.nav .nav-link,
+.tab-pane,
+.tab-pane .card-body {
+  outline: none !important;
+}
+
+//default styles for tabs and pills
+.nav-tabs {
+  border-bottom: $nav-tabs-border-width solid $border-color;
+  @include border-top-radius($border-radius);
+  background-color: $card-bg;
+}
+.nav ~ .tab-content {
+  background: $nav-tabs-link-active-bg;
+}
+//nav tabs shadow
+.nav-tabs-shadow {
+  box-shadow: $card-box-shadow;
+}
+
+// Tab and pills style
+.nav-tabs .nav-link {
+  line-height: $nav-link-line-height;
+  &,
+  &.active {
+    border-width: 0;
+  }
+}
+.nav-pills .nav-link.active {
+  box-shadow: $box-shadow-sm;
+}
+
+.nav-tabs,
+.nav-pills {
+  .nav-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    &:not(.active) {
+      &:hover,
+      &:focus {
+        color: $nav-tabs-link-active-color;
+      }
+    }
+  }
+
+  &:not(.nav-fill):not(.nav-justified) .nav-link {
+    margin-right: $nav-spacer;
+    width: 100%;
+
+    @include rtl-style {
+      margin-left: $nav-spacer;
+      margin-right: 0;
+    }
+  }
+}
+
+.tab-content {
+  padding: $card-spacer-y;
+  border-radius: $border-radius;
+}
+
+// For scrollable navs/tabs/pills
+.nav-scrollable {
+  display: -webkit-inline-box;
+  display: -moz-inline-box;
+  width: 100%;
+  overflow-y: auto;
+  flex-wrap: nowrap;
+}
+
+// Widget Tabs
+// --------------------------------------------------
+
+.nav-tabs {
+  &.widget-nav-tabs {
+    border: 0 !important;
+    overflow-x: auto;
+    .nav-link {
+      border: $border-width dashed $border-color;
+      @include media-breakpoint-up(md) {
+        height: 94px !important;
+        width: 110px !important;
+        @include border-radius($border-radius);
+      }
+      @include media-breakpoint-down(md) {
+        border: 0 !important;
+        padding: 0;
+      }
+      &.active {
+        border-color: $primary;
+        box-shadow: none !important;
+        .badge {
+          background-color: $component-hover-bg !important;
+          color: $component-active-bg !important;
+        }
+      }
+      .tab-widget-title {
+        @include media-breakpoint-down(md) {
+          display: none;
+        }
+      }
+    }
+  }
+}
+
+// Todo: remove/ update style for nav with perfect scrollbar
+// ? Not working with fixed width
+// ? if provide width/min-width with %/auto not working
+// ? Also can't use width with PX (as it's required for ps)
+// ? removed JS so need to initialize ps again
+// ? Once done add an example to docs
+
+// .nav-scrollable {
+//   display: -webkit-inline-box;
+//   display: -moz-inline-box;
+//   width: 420px;
+//   padding-bottom: 0.5rem;
+//   position: relative;
+//   // overflow-y: auto;
+//   flex-wrap: nowrap;
+// }
+
+// Sizing
+// *******************************************************************************
+
+.nav-sm {
+  @include template-nav-size($nav-link-padding-y-sm, $nav-link-padding-x-sm, $font-size-sm, $nav-link-line-height-sm);
+}
+.nav-lg {
+  @include template-nav-size($nav-link-padding-y-lg, $nav-link-padding-x-lg, $font-size-lg, $nav-link-line-height-lg);
+}
+
+// Top, Right, Bottom & Left Tabbed panels
+// *******************************************************************************
+.nav-align-top,
+.nav-align-right,
+.nav-align-bottom,
+.nav-align-left {
+  display: flex;
+
+  > .nav,
+  > div > .nav {
+    z-index: 1;
+    position: relative;
+  }
+
+  .row-bordered > [class^='col-'],
+  .row-bordered > [class*=' col-'],
+  .row-bordered > [class^='col '],
+  .row-bordered > [class*=' col '],
+  .row-bordered > [class$=' col'],
+  .row-bordered > [class='col'] {
+    &::before,
+    &::after {
+      border-color: $card-inner-border-color;
+    }
+  }
+}
+
+.nav-align-right,
+.nav-align-left {
+  align-items: stretch;
+
+  > .nav,
+  > div > .nav {
+    flex-grow: 0;
+    flex-direction: column;
+  }
+
+  > .nav .nav-link,
+  > div > .nav .nav-link {
+    margin: 0 0 $nav-spacer 0 !important;
+  }
+
+  > .tab-content {
+    flex-grow: 1;
+  }
+}
+
+// Top tabs
+.nav-align-top {
+  flex-direction: column;
+}
+
+// Right tabs
+@include ltr-only {
+  .nav-align-right {
+    .nav-tabs {
+      border: 0;
+      border-left: $nav-tabs-border-width solid $border-color;
+      @include border-bottom-end-radius($border-radius);
+    }
+  }
+}
+.nav-align-right {
+  flex-direction: row-reverse;
+
+  > .nav .nav-item,
+  > div > .nav .nav-item {
+    margin-left: -1px;
+    margin-bottom: 0;
+
+    @include rtl-style {
+      margin-left: 0;
+      margin-right: -1px;
+    }
+  }
+  .nav-pills {
+    margin-left: $spacer;
+  }
+
+  .nav-link {
+    text-align: right;
+    justify-content: end;
+  }
+  > .nav:not(.nav-pills) .nav-link,
+  > div > .nav:not(.nav-pills) .nav-link {
+    @include border-radius(0 $border-radius $border-radius 0);
+
+    @include rtl-style {
+      @include border-radius($border-radius 0 0 $border-radius);
+    }
+  }
+}
+
+// Bottom tabs
+.nav-align-bottom {
+  flex-direction: column-reverse;
+  .nav-tabs {
+    border: 0;
+    border-top: $nav-tabs-border-width solid $border-color;
+    @include border-top-radius(0);
+    @include border-bottom-radius($border-radius);
+  }
+  .nav-pills {
+    margin-top: $spacer;
+  }
+
+  > .nav:not(.nav-pills) .nav-item,
+  > div > .nav:not(.nav-pills) .nav-item {
+    margin-bottom: 0;
+    margin-top: -1px;
+  }
+
+  > .nav:not(.nav-pills) .nav-link,
+  > div > .nav:not(.nav-pills) .nav-link {
+    @include border-radius(0 0 $border-radius $border-radius);
+  }
+}
+
+// Left tabs
+@include ltr-only {
+  .nav-align-left {
+    .nav-tabs {
+      border: 0;
+      border-right: $nav-tabs-border-width solid $border-color;
+      @include border-bottom-start-radius($border-radius);
+    }
+  }
+}
+.nav-align-left {
+  &.card {
+    flex-direction: row !important;
+  }
+  > .nav .nav-item,
+  > div > .nav .nav-item {
+    margin-right: -1px;
+    margin-bottom: 0;
+    @include rtl-style {
+      margin-right: 0;
+      margin-left: -1px;
+    }
+  }
+  .nav-link {
+    text-align: left;
+    justify-content: start;
+  }
+  > .nav:not(.nav-pills) .nav-link,
+  > div > .nav:not(.nav-pills) .nav-link {
+    @include rtl-style {
+      @include border-radius(0 $border-radius $border-radius 0);
+    }
+    @include border-radius($border-radius 0 0 $border-radius);
+  }
+}
+
+// With card card-header-tabs/pills override
+.card .nav.nav-tabs {
+  margin-right: -$nav-link-padding-x-lg;
+  margin-left: -$nav-link-padding-x-lg;
+}
+.card .nav.nav-pills {
+  margin-left: 0rem;
+}
+
+// Tab content
+.nav-align-top > .tab-content,
+.nav-align-right > .tab-content,
+.nav-align-bottom > .tab-content,
+.nav-align-left > .tab-content {
+  flex-shrink: 1;
+  background-clip: padding-box;
+  background: $nav-tabs-link-active-bg;
+}
+
+.nav-align-top > .nav-pills ~ .tab-content,
+.nav-align-right > .nav-pills ~ .tab-content,
+.nav-align-bottom > .nav-pills ~ .tab-content,
+.nav-align-left > .nav-pills ~ .tab-content {
+  box-shadow: $card-box-shadow;
+}
+
+.nav-align-top :not(.nav-pills) ~ .tab-content {
+  @include border-radius(0 0 $border-radius $border-radius);
+}
+
+.nav-align-right :not(.nav-pills) ~ .tab-content {
+  @include border-radius($border-radius 0 0 $border-radius);
+  @include rtl-style {
+    @include border-radius(0 $border-radius $border-radius 0);
+  }
+}
+
+.nav-align-bottom :not(.nav-pills) ~ .tab-content {
+  @include border-radius($border-radius $border-radius 0 0);
+}
+
+.nav-align-left :not(.nav-pills) ~ .tab-content {
+  @include border-radius(0 $border-radius $border-radius 0);
+  @include rtl-style {
+    @include border-radius($border-radius 0 0 $border-radius);
+  }
+}
+
+// RTL
+@include rtl-only {
+  .nav {
+    padding-right: 0;
+  }
+  .nav-align-left {
+    .nav-tabs {
+      border: 0;
+      border-left: $nav-tabs-border-width solid $border-color;
+      @include border-bottom-end-radius($border-radius);
+    }
+    .nav-link {
+      text-align: right;
+    }
+  }
+  .nav-align-right {
+    .nav-tabs {
+      border: 0;
+      border-right: $nav-tabs-border-width solid $border-color;
+      @include border-bottom-start-radius($border-radius);
+    }
+    .nav-link {
+      text-align: left;
+    }
+    .nav-pills {
+      margin-right: $spacer;
+    }
+  }
+  .card .nav.nav-pills {
+    margin-right: 0rem;
+  }
+}

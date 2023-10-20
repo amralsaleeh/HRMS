@@ -1,0 +1,42 @@
+// * FAQ
+// *******************************************************************************
+
+@use '../_bootstrap-extended/include' as light;
+@use '../_bootstrap-extended/include-dark' as dark;
+@import '../_custom-variables/pages';
+
+$faq-header-min-height: 300px !default;
+
+.faq-header {
+  background: url('../../../img/pages/header.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+  min-height: $faq-header-min-height !important;
+
+  .input-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: calc(100% - 45%);
+  }
+
+  @include light.media-breakpoint-down(sm) {
+    .input-wrapper {
+      max-width: calc(100% - 30%);
+    }
+  }
+}
+@if $enable-light-style {
+  .light-style {
+    .bg-faq-section {
+      background-color: rgba(light.$dark, 0.04);
+    }
+  }
+}
+
+@if $enable-dark-style {
+  .dark-style {
+    .bg-faq-section {
+      background-color: rgba(dark.$base, 0.04);
+    }
+  }
+}

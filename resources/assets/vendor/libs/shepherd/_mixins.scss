@@ -1,0 +1,8 @@
+@import '../../scss/_bootstrap-extended/include';
+@mixin tour-theme($background) {
+  // ! Note: If we remove this mixin, the background-color of label button in dark mode will not work properly.
+  .shepherd-element {
+    @include template-button-variant('.shepherd-button:not(:disabled).btn-primary', $background);
+    @include template-button-label-variant('.shepherd-button:not(:disabled).btn-label-secondary', $secondary);
+  }
+}

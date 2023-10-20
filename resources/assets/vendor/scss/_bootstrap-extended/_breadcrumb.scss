@@ -1,0 +1,62 @@
+// Breadcrumbs
+// *******************************************************************************
+
+.breadcrumb-item,
+.breadcrumb-item a {
+  color: $breadcrumb-color;
+}
+
+.breadcrumb-item.active a {
+  &:hover,
+  &:focus {
+    color: $breadcrumb-color;
+  }
+  &:not(:hover, :focus) {
+    color: $breadcrumb-active-color;
+  }
+}
+
+.breadcrumb-item {
+  + .breadcrumb-item {
+    &::before {
+      width: 26px;
+      height: 10px;
+    }
+  }
+}
+.breadcrumb-style1 .breadcrumb-item + .breadcrumb-item::before {
+  content: '/';
+  color: $breadcrumb-divider-color;
+  width: 1.43rem;
+  font-weight: 500;
+  margin-left: 0.2rem;
+}
+.breadcrumb-style2 .breadcrumb-item + .breadcrumb-item::before {
+  content: $breadcrumb-icon-check-svg;
+  line-height: 1.375rem;
+  width: 26px;
+  height: 10px;
+}
+
+// RTL
+// *******************************************************************************
+
+@include rtl-only {
+  .breadcrumb-item + .breadcrumb-item {
+    padding-right: $breadcrumb-item-padding-x;
+    padding-left: 0;
+
+    &::before {
+      padding-right: 0;
+      padding-left: $breadcrumb-item-padding-x;
+      float: right;
+    }
+  }
+  // Breadcrumb divider style Icons
+  .breadcrumb-style1 .breadcrumb-item + .breadcrumb-item::before {
+    content: '\\';
+  }
+  .breadcrumb-style2 .breadcrumb-item + .breadcrumb-item::before {
+    content: $breadcrumb-icon-check-svg;
+  }
+}

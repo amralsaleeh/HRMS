@@ -1,0 +1,225 @@
+// Variables
+//
+// Variables should follow the `$component-state-property-size` formula for
+// consistent naming. Ex: $nav-link-disabled-color and $modal-content-box-shadow-xs.
+//
+// (C) Custom variables for extended components of bootstrap only
+
+// ! _variable-dark.scss file overrides _variable.scss file.
+
+// * Colors
+// *******************************************************************************
+
+// scss-docs-start gray-color-variables
+$white: #fff !default;
+$black: #000 !default;
+
+$base: #8692d0 !default;
+$gray-25: rgba($white, 0.015) !default; // (C)
+$gray-50: rgba($white, 0.03) !default; // (C)
+$gray-100: rgba($white, 0.8) !default;
+$gray-200: rgba($white, 0.6) !default;
+$gray-300: rgba($white, 0.4) !default;
+$gray-400: rgba($white, 0.3) !default;
+$gray-500: $base !default;
+$gray-600: rgba($black, 0.1) !default;
+$gray-700: rgba($black, 0.3) !default;
+$gray-800: rgba($black, 0.45) !default;
+$gray-900: rgba($black, 0.65) !default;
+// scss-docs-end gray-color-variables
+
+// scss-docs-start gray-colors-map
+$grays: (
+  '25': $gray-25,
+  '50': $gray-50
+) !default;
+// scss-docs-end gray-colors-map
+
+// scss-docs-start color-variables
+$blue: #007bff !default;
+$indigo: #6610f2 !default;
+$purple: #7367f0 !default;
+$pink: #e83e8c !default;
+$red: #ea5455 !default;
+$orange: #fd7e14 !default;
+$yellow: #ff9f43 !default;
+$green: #28c76f !default;
+$teal: #20c997 !default;
+$cyan: #00cfe8 !default;
+// scss-docs-end color-variables
+
+// scss-docs-start theme-color-variables
+$primary: $purple !default;
+$secondary: #a8aaae !default;
+$success: $green !default;
+$info: $cyan !default;
+$warning: $yellow !default;
+$danger: $red !default;
+$light: #44475b !default;
+$dark: #d7d8de !default;
+$gray: $gray-100 !default; // (C)
+// scss-docs-end theme-color-variables
+
+// scss-docs-start theme-colors-map
+$theme-colors: (
+  'primary': $primary,
+  'secondary': $secondary,
+  'success': $success,
+  'info': $info,
+  'warning': $warning,
+  'danger': $danger,
+  'light': $light,
+  'dark': $dark,
+  'gray': $gray
+) !default;
+// scss-docs-end theme-colors-map
+
+$color-scheme: 'dark' !default; // (C)
+
+// * Body
+// *******************************************************************************
+
+$body-bg: #25293c !default;
+$rgba-to-hex-bg: $base !default; // (C)
+$body-color: rgba-to-hex($gray-300, $rgba-to-hex-bg) !default;
+$rgba-to-hex-bg-inverted: rgb(160, 149, 149) !default; // (C)
+
+// * Components
+// *******************************************************************************
+
+$alert-bg-scale: -84% !default;
+$alert-border-scale: -84% !default;
+$alert-color-scale: 0% !default;
+$alert-icon-bg: #283046 !default; // (C)
+
+// $border-color: rgba-to-hex(rgba($white, 0.1), $rgba-to-hex-bg) !default;
+// $border-inner-color: rgba-to-hex(rgba($white, 0.09), $rgba-to-hex-bg) !default; // (C)
+$border-color: #434968 !default;
+$border-inner-color: rgba($white, 0.09) !default; // (C)
+
+// scss-docs-start box-shadow-variables
+$box-shadow: 0 0.25rem 1rem rgba(15, 20, 34, 0.55) !default;
+$box-shadow-sm: 0 0.125rem 0.25rem rgba(15, 20, 34, 0.4) !default;
+$box-shadow-lg: 0 0.625rem 1.25rem rgba(15, 20, 34, 0.5) !default;
+// scss-docs-end box-shadow-variables
+
+$floating-component-border-color: rgba($white, 0.05) !default; // (C)
+$floating-component-shadow: 0 0.31rem 1.25rem 0 rgba($black, 0.4) !default; // (C)
+
+// * Typography
+// *******************************************************************************
+
+$text-muted: rgba-to-hex($gray-600, $rgba-to-hex-bg) !default;
+$text-muted-hover: rgba-to-hex($white, $rgba-to-hex-bg) !default; // (C)
+
+$text-light: rgba-to-hex($gray-500, $rgba-to-hex-bg) !default; // (C)
+$text-lighter: rgba-to-hex($gray-400, $rgba-to-hex-bg) !default; // (C)
+$text-lightest: rgba-to-hex($gray-300, $rgba-to-hex-bg) !default; // (C)
+
+$headings-color: rgba-to-hex($gray-200, $rgba-to-hex-bg) !default;
+
+// * Cards
+// *******************************************************************************
+
+$card-bg: #2f3349 !default;
+$card-box-shadow: 0 0.25rem 1.25rem rgba(15, 20, 34, 0.4) !default;
+
+// * Tables
+// *******************************************************************************
+
+$table-striped-bg-factor: 0.02 !default;
+$table-striped-bg: rgba-to-hex(rgba($base, $table-striped-bg-factor), $card-bg) !default;
+
+$table-hover-bg-factor: 0.08 !default;
+$table-hover-bg: rgba($base, $table-hover-bg-factor) !default;
+
+// * Accordion
+// *******************************************************************************
+$accordion-bg: $card-bg !default;
+$accordion-border-color: $accordion-bg !default;
+
+$accordion-button-color: $headings-color !default;
+
+// * Tooltips
+// *******************************************************************************
+$tooltip-bg: rgba-to-hex($gray-800, $rgba-to-hex-bg) !default;
+
+// Buttons
+// *******************************************************************************
+
+$btn-box-shadow: 0px 2px 4px rgba(15, 20, 34, 0.4) !default;
+
+// * Forms
+// *******************************************************************************
+
+$input-bg: $card-bg !default;
+$input-disabled-bg: rgba($base, 0.08) !default;
+
+$input-placeholder-color: rgba-to-hex($gray-700, $rgba-to-hex-bg) !default;
+
+$form-check-input-border: 1px solid $gray-500;
+
+$form-check-input-disabled-bg: rgba-to-hex($gray-800, $rgba-to-hex-bg) !default; // (C)
+
+$form-switch-color: rgba-to-hex(rgba($white, 0.15), $rgba-to-hex-bg) !default;
+
+$form-range-thumb-bg: rgba-to-hex(rgba($white, 0.5), $rgba-to-hex-bg) !default;
+
+// * Navs
+// *******************************************************************************
+
+$nav-tabs-link-active-bg: $card-bg !default;
+
+// * Navbar
+// *******************************************************************************
+
+$navbar-light-hover-color: #4e5155 !default;
+$navbar-light-active-color: #4e5155 !default;
+$navbar-light-disabled-color: rgba($black, 0.2) !default;
+$navbar-dropdown-hover-bg: rgba($base, 0.06) !default; // (C)
+$navbar-dropdown-icon-bg: rgba($base, 0.08) !default; // (C)
+
+// * Dropdowns
+// *******************************************************************************
+
+$dropdown-bg: $card-bg !default;
+
+// * Pagination
+// *******************************************************************************
+
+$pagination-bg: rgba($base, 0.08) !default;
+
+$pagination-focus-bg: rgba($base, 0.16) !default;
+
+// * Popovers
+// *******************************************************************************
+$popover-body-color: rgba-to-hex($gray-50, $rgba-to-hex-bg) !default;
+
+// * Modal
+// *******************************************************************************
+$modal-content-bg: $card-bg !default;
+
+// * Progress bars
+// *******************************************************************************
+$progress-bg: rgba-to-hex(rgba($gray-500, 0.08), $card-bg) !default;
+
+// * List group
+// *******************************************************************************
+
+$list-group-hover-bg: rgba-to-hex(rgba($primary, 0.08), $card-bg) !default;
+$list-group-action-active-bg: $list-group-hover-bg !default;
+
+// * Breadcrumbs
+// *******************************************************************************
+
+$breadcrumb-divider-color: $base !default;
+
+// * Close
+// *******************************************************************************
+$btn-close-color: $white !default;
+
+$kbd-color: $dark !default;
+
+// * Config
+$rtl-support: false !default;
+$dark-style: true !default;

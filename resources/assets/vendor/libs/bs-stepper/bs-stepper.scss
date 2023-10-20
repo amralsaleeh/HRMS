@@ -1,0 +1,552 @@
+@use '../../scss/_bootstrap-extended/include' as light;
+@use '../../scss/_bootstrap-extended/include-dark' as dark;
+@import '~bs-stepper/dist/css/bs-stepper';
+@import '../../scss/_custom-variables/libs';
+
+$bs-stepper-header-padding-y: 1.5rem !default;
+$bs-stepper-header-padding-x: $bs-stepper-header-padding-y !default;
+$bs-stepper-content-padding-x: 1.5rem !default;
+$bs-stepper-content-padding-y: $bs-stepper-content-padding-x !default;
+$bs-stepper-trigger-padding: 1rem !default;
+$bs-stepper-trigger-padding-vertical: 0.5rem !default;
+$bs-stepper-label-max-width: 224px !default;
+$bs-stepper-svg-icon-height: 3.125rem !default;
+$bs-stepper-svg-icon-width: 3.125rem !default;
+$bs-stepper-icon-font-size: 1.6rem !default;
+$bs-stepper-vertical-separator-height: 1.55rem !default;
+$bs-stepper-vertical-header-min-width: 18rem !default;
+
+// Default Styles
+.bs-stepper {
+  border-radius: light.$border-radius;
+  .line {
+    flex: 0;
+    min-width: auto;
+    min-height: auto;
+    background-color: transparent;
+    margin: 0;
+  }
+
+  .bs-stepper-header {
+    padding: $bs-stepper-header-padding-y $bs-stepper-header-padding-x;
+
+    .step {
+      .step-trigger {
+        padding: 0 $bs-stepper-trigger-padding;
+        flex-wrap: nowrap;
+        gap: 1rem;
+        .bs-stepper-label {
+          margin: 0;
+          max-width: $bs-stepper-label-max-width;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          text-align: start;
+          display: inline-grid;
+          font-weight: light.$font-weight-semibold;
+          font-size: light.$font-size-base;
+          .bs-stepper-title {
+            line-height: 1;
+          }
+          .bs-stepper-subtitle {
+            font-size: light.$small-font-size;
+            font-weight: light.$font-weight-base;
+            margin-top: 0.25rem;
+          }
+        }
+        &:hover {
+          background-color: transparent;
+        }
+      }
+
+      &:first-child {
+        .step-trigger {
+          @include app-ltr {
+            padding-left: 0;
+          }
+          @include app-rtl {
+            padding-right: 0;
+          }
+        }
+      }
+      &:last-child {
+        .step-trigger {
+          @include app-ltr {
+            padding-right: 0;
+          }
+          @include app-rtl {
+            padding-left: 0;
+          }
+        }
+      }
+      .bs-stepper-circle {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: light.$border-radius;
+        width: 2.5rem;
+        height: 2.5rem;
+        font-size: light.$h5-font-size;
+        font-weight: light.$font-weight-semibold;
+      }
+    }
+  }
+
+  .bs-stepper-content {
+    padding: $bs-stepper-content-padding-y $bs-stepper-content-padding-x;
+  }
+
+  &.vertical {
+    .bs-stepper-header {
+      min-width: $bs-stepper-vertical-header-min-width;
+      .step {
+        .step-trigger {
+          padding: $bs-stepper-trigger-padding-vertical 0;
+        }
+        &:first-child {
+          .step-trigger {
+            padding-top: 0;
+          }
+        }
+        &:last-child {
+          .step-trigger {
+            padding-bottom: 0;
+          }
+        }
+      }
+      .line {
+        position: relative;
+        min-height: 1px;
+      }
+    }
+    .bs-stepper-content {
+      width: 100%;
+      .content {
+        &:not(.active) {
+          display: none;
+        }
+      }
+    }
+
+    &.wizard-icons {
+      .step {
+        text-align: center;
+        padding: 0.75rem 0;
+      }
+    }
+  }
+
+  &.wizard-icons {
+    .bs-stepper-header {
+      justify-content: space-around;
+      .step-trigger {
+        flex-direction: column;
+        gap: 0.5rem;
+        .bs-stepper-icon {
+          svg {
+            height: $bs-stepper-svg-icon-height;
+            width: $bs-stepper-svg-icon-width;
+          }
+          i {
+            font-size: $bs-stepper-icon-font-size;
+          }
+        }
+        .bs-stepper-label {
+          font-weight: light.$font-weight-base;
+        }
+      }
+    }
+  }
+
+  // Remove borders from wizard modern
+  &.wizard-modern {
+    .bs-stepper-header {
+      border-bottom: none !important;
+    }
+
+    .bs-stepper-content {
+      border-radius: light.$border-radius;
+    }
+
+    &.vertical {
+      .bs-stepper-header {
+        border-right: none !important;
+      }
+    }
+  }
+}
+
+// Styles for Modal example Create App wizard
+#wizard-create-app {
+  &.vertical {
+    .bs-stepper-header {
+      min-width: $bs-stepper-vertical-header-min-width - 3;
+    }
+  }
+}
+
+// Light style
+@if $enable-light-style {
+  .light-style {
+    .bs-stepper {
+      background-color: light.$card-bg;
+      &:not(.wizard-modern) {
+        box-shadow: light.$card-box-shadow;
+      }
+      .bs-stepper-header {
+        border-bottom: 1px solid light.$border-color;
+
+        .line {
+          i {
+            color: light.$text-muted;
+          }
+        }
+
+        .bs-stepper-title,
+        .bs-stepper-label {
+          color: light.$headings-color;
+        }
+
+        .bs-stepper-label {
+          .bs-stepper-subtitle {
+            color: light.$text-muted !important;
+          }
+        }
+
+        .step {
+          &:not(.active) {
+            .bs-stepper-circle {
+              background-color: light.rgba-to-hex(rgba(light.$black, 0.08), light.$card-bg);
+              color: light.$body-color;
+            }
+          }
+          &.active {
+            .bs-stepper-circle {
+              box-shadow: light.$box-shadow-sm;
+            }
+          }
+          &.crossed {
+            .bs-stepper-label,
+            .bs-stepper-title {
+              color: light.$text-muted;
+            }
+          }
+        }
+      }
+      .step-trigger:focus {
+        color: light.$headings-color;
+      }
+
+      &.vertical {
+        .bs-stepper-header {
+          border-bottom: none;
+          @include light.media-breakpoint-down(lg) {
+            border-right: none !important;
+            border-left: none !important;
+            border-bottom: 1px solid light.$border-color;
+          }
+        }
+      }
+
+      &.wizard-modern {
+        background-color: transparent;
+        .bs-stepper-content {
+          background-color: light.$card-bg;
+          box-shadow: light.$card-box-shadow;
+        }
+      }
+
+      &.wizard-icons {
+        .bs-stepper-header {
+          .bs-stepper-icon {
+            svg {
+              fill: light.$body-color;
+            }
+            i {
+              fill: light.$body-color;
+            }
+          }
+          .bs-stepper-label {
+            color: light.$body-color;
+          }
+        }
+      }
+    }
+  }
+
+  // ! FIX: Vertical border issue in rtl and ltr
+  @include app-rtl(false) {
+    &.light-style {
+      .bs-stepper {
+        &.vertical {
+          .bs-stepper-header {
+            border-left: 1px solid light.$border-color;
+          }
+        }
+      }
+    }
+  }
+  @include app-ltr(false) {
+    &.light-style {
+      .bs-stepper {
+        &.vertical {
+          .bs-stepper-header {
+            border-right: 1px solid light.$border-color;
+          }
+        }
+      }
+    }
+  }
+}
+
+// Dark Style
+@if $enable-dark-style {
+  .dark-style {
+    .bs-stepper {
+      background-color: dark.$card-bg;
+      .bs-stepper-header {
+        border-bottom: 1px solid dark.$border-color;
+        .line {
+          i {
+            color: dark.$text-muted;
+          }
+        }
+
+        .bs-stepper-label,
+        .bs-stepper-title {
+          color: dark.$headings-color;
+        }
+
+        .bs-stepper-label {
+          .bs-stepper-subtitle {
+            color: dark.$text-muted !important;
+          }
+        }
+
+        .step {
+          &:not(.active) {
+            .bs-stepper-circle {
+              background-color: dark.rgba-to-hex(rgba(dark.$base, 0.08), dark.$card-bg);
+              color: dark.$body-color;
+            }
+          }
+          &.active {
+            .bs-stepper-circle {
+              box-shadow: dark.$box-shadow-sm;
+            }
+          }
+          &.crossed {
+            .bs-stepper-label,
+            .bs-stepper-title {
+              color: dark.$text-muted;
+            }
+          }
+        }
+      }
+      .step-trigger:focus {
+        color: dark.$headings-color;
+      }
+
+      &.vertical {
+        .bs-stepper-header {
+          border-bottom: none;
+          @include light.media-breakpoint-down(lg) {
+            border-right: none !important;
+            border-left: none !important;
+            border-bottom: 1px solid dark.$border-color;
+          }
+        }
+      }
+
+      &.wizard-modern {
+        background-color: transparent;
+        .bs-stepper-content {
+          background-color: dark.$card-bg;
+          box-shadow: dark.$card-box-shadow;
+        }
+      }
+
+      &.wizard-icons {
+        .bs-stepper-header {
+          .bs-stepper-icon {
+            i {
+              color: dark.$body-color;
+            }
+
+            svg {
+              fill: dark.$body-color;
+            }
+          }
+          .bs-stepper-label {
+            color: dark.$body-color;
+          }
+        }
+      }
+    }
+  }
+
+  // ! FIX: Vertical border issue in rtl and ltr
+  @include app-rtl(false) {
+    &.dark-style {
+      .bs-stepper {
+        &.vertical {
+          .bs-stepper-header {
+            border-left: 1px solid dark.$border-color;
+          }
+        }
+      }
+    }
+  }
+  @include app-ltr(false) {
+    &.dark-style {
+      .bs-stepper {
+        &.vertical {
+          .bs-stepper-header {
+            border-right: 1px solid dark.$border-color;
+          }
+        }
+      }
+    }
+  }
+}
+
+// RTL
+@include app-rtl(false) {
+  .bs-stepper {
+    .bs-stepper-content {
+      .btn-next:not(.btn-submit),
+      .btn-prev {
+        i {
+          transform: rotate(180deg);
+        }
+      }
+    }
+
+    &.vertical {
+      &.wizard-icons {
+        .bs-stepper-header {
+          .line:before {
+            right: 50%;
+          }
+        }
+      }
+    }
+
+    // Remove borders from wizard modern
+    &.wizard-modern {
+      &.vertical {
+        .bs-stepper-header {
+          border-left: none !important;
+        }
+      }
+    }
+
+    @include light.media-breakpoint-up(lg) {
+      .bs-stepper-header {
+        .line {
+          i {
+            transform: rotate(180deg);
+          }
+        }
+      }
+    }
+
+    @include light.media-breakpoint-down(lg) {
+      .bs-stepper-header {
+        .step {
+          .step-trigger {
+            .bs-stepper-label {
+              margin-left: 0;
+              margin-right: 1rem;
+            }
+          }
+        }
+      }
+      &.wizard-icons {
+        .bs-stepper-header {
+          .line {
+            &:before {
+              margin-right: 0.75rem;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+// Media Queries
+@include light.media-breakpoint-down(lg) {
+  .bs-stepper {
+    .bs-stepper-header {
+      flex-direction: column;
+      align-items: flex-start;
+      .step {
+        .step-trigger {
+          padding: 0.5rem 0;
+          flex-direction: row;
+          .bs-stepper-label {
+            margin-left: 0.35rem;
+          }
+        }
+        &:first-child {
+          .step-trigger {
+            padding-top: 0;
+          }
+        }
+        &:last-child {
+          .step-trigger {
+            padding-bottom: 0;
+          }
+        }
+      }
+    }
+    &.vertical {
+      flex-direction: column;
+      .bs-stepper-header {
+        align-items: flex-start;
+      }
+
+      &.wizard-icons {
+        .bs-stepper-header {
+          .line:before {
+            left: 0.75rem;
+            margin-left: 0;
+          }
+        }
+      }
+    }
+    &:not(.vertical) {
+      .bs-stepper-header {
+        .line {
+          i {
+            display: none;
+          }
+        }
+      }
+    }
+    &.wizard-icons {
+      .bs-stepper-header {
+        .bs-stepper-icon {
+          svg {
+            margin-top: 0.5rem;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 520px) {
+  .bs-stepper-header {
+    margin: 0;
+  }
+}
+
+// Styles for Create App Modal Wizard
+#wizard-create-app {
+  &.vertical {
+    .bs-stepper-header {
+      min-width: $bs-stepper-vertical-header-min-width - 3;
+    }
+  }
+}

@@ -1,0 +1,421 @@
+@use '../../scss/_bootstrap-extended/include' as light;
+@use '../../scss/_bootstrap-extended/include-dark' as dark;
+@import '../../scss/_custom-variables/libs';
+@import 'mixins';
+
+$fullcalendar-event-padding-y: 0.216rem !default;
+$fullcalendar-event-padding-x: 0.5rem !default;
+$fullcalendar-event-font-size: light.$small-font-size !default;
+$fullcalendar-event-font-weight: light.$font-weight-semibold !default;
+$fullcalendar-toolbar-btn-padding: light.$input-btn-padding-y - 0.115 light.$input-btn-padding-x !default;
+$fullcalendar-fc-popover-z-index: 1090 !default;
+$fullcalendar-event-border-radius: 3px !default;
+
+// Calendar
+.fc {
+  .fc-toolbar {
+    flex-wrap: wrap;
+    .fc-prev-button,
+    .fc-next-button {
+      display: inline-block;
+      background-color: transparent;
+      border-color: transparent;
+
+      &:hover,
+      &:active,
+      &:focus {
+        background-color: transparent !important;
+        border-color: transparent !important;
+        box-shadow: none !important;
+      }
+    }
+    .fc-prev-button {
+      padding-left: 0 !important;
+    }
+
+    .fc-button:not(.fc-next-button):not(.fc-prev-button) {
+      padding: $fullcalendar-toolbar-btn-padding;
+      &:active,
+      &:focus {
+        box-shadow: none !important ;
+      }
+    }
+    > * > :not(:first-child) {
+      margin-left: 0 !important;
+      @include app-rtl(true) {
+        margin-right: 0 !important;
+      }
+    }
+
+    .fc-toolbar-chunk {
+      display: flex;
+      align-items: center;
+    }
+
+    .fc-button-group {
+      .fc-button {
+        text-transform: capitalize;
+      }
+
+      & + div {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+    }
+    .fc--button:empty,
+    .fc-toolbar-chunk:empty {
+      display: none;
+    }
+    .fc-sidebarToggle-button + div {
+      margin-left: 0;
+    }
+  }
+
+  .fc-view-harness {
+    min-height: 650px;
+    .fc-col-header-cell-cushion {
+      padding-bottom: 3px;
+      padding-top: 3px;
+    }
+
+    // To remove border on weekday row
+    .fc-scrollgrid-section-header > * {
+      @include app-ltr(true) {
+        border-inline-end-width: 0px;
+      }
+      @include app-rtl(true) {
+        border-inline-start-width: 0px;
+      }
+    }
+
+    .fc-timegrid-event .fc-event-time {
+      font-size: 0.6875rem;
+    }
+
+    .fc-v-event .fc-event-title {
+      font-size: $fullcalendar-event-font-size;
+      padding-top: 0.2rem;
+      font-weight: $fullcalendar-event-font-weight;
+    }
+
+    .fc-timegrid-event .fc-event-main {
+      padding: $fullcalendar-event-padding-y $fullcalendar-event-padding-x 0;
+    }
+  }
+
+  //! Fix: white color issue of event text
+  .fc-h-event .fc-event-main,
+  .fc-v-event .fc-event-main {
+    color: inherit !important;
+  }
+
+  .fc-daygrid-body-natural {
+    .fc-daygrid-day-events {
+      margin-top: $fullcalendar-event-padding-x !important;
+      margin-bottom: $fullcalendar-event-padding-x !important;
+    }
+  }
+
+  .fc-view-harness {
+    margin: 0 -1.5rem;
+    .fc-daygrid-body {
+      .fc-daygrid-day {
+        .fc-daygrid-day-top {
+          flex-direction: row;
+          .fc-daygrid-day-number {
+            float: left;
+            margin-left: 0.5rem;
+          }
+        }
+      }
+    }
+    .fc-event {
+      font-size: $fullcalendar-event-font-size;
+      font-weight: $fullcalendar-event-font-weight;
+      padding: $fullcalendar-event-padding-y $fullcalendar-event-padding-x;
+      border: 0;
+    }
+    .fc-daygrid-event-harness {
+      // ! week & day events are using this style for all day only, not for other events
+      .fc-event {
+        &.private-event {
+          background-color: transparent !important;
+          border-color: transparent !important;
+        }
+      }
+    }
+    .fc-event .fc-daygrid-event-dot {
+      display: none;
+    }
+  }
+  .fc-timegrid {
+    .fc-timegrid-divider {
+      display: none;
+    }
+  }
+
+  .fc-daygrid-event-harness + .fc-daygrid-event-harness {
+    margin-top: 0.3rem !important;
+  }
+  .fc-popover {
+    z-index: $fullcalendar-fc-popover-z-index !important;
+    .fc-popover-header {
+      padding: 0.566rem;
+    }
+  }
+  .fc-event-primary:not(.fc-list-event) {
+    border: 0;
+  }
+
+  // override background color
+  &.fc-theme-standard .fc-list-day-cushion {
+    background-color: unset;
+  }
+
+  // Event message margin
+  .fc-daygrid-body-natural .fc-daygrid-day-events {
+    margin-top: 0.5rem !important;
+    margin-bottom: 0.5rem !important;
+  }
+
+  // To remove the box shadow from event
+  .fc-timegrid-event-harness-inset .fc-timegrid-event,
+  .fc-timegrid-event.fc-event-mirror,
+  .fc-timegrid-more-link {
+    box-shadow: none;
+  }
+}
+// FC list table border style
+.fc-theme-standard .fc-list {
+  border: 0 !important;
+}
+
+// Light style
+@if $enable-light-style {
+  .light-style {
+    .fc {
+      .fc-toolbar {
+        .fc-prev-button,
+        .fc-next-button {
+          .fc-icon {
+            color: light.$body-color;
+          }
+        }
+      }
+
+      table.fc-scrollgrid {
+        border-color: light.$border-color;
+        .fc-col-header {
+          tbody {
+            border: none;
+          }
+          .fc-col-header-cell {
+            border-color: light.$border-color;
+          }
+        }
+        td {
+          border-color: light.$border-color;
+        }
+      }
+      .private-event {
+        .fc-event-time,
+        .fc-event-title {
+          color: light.$danger;
+        }
+      }
+      .fc-day-today {
+        background-color: light.rgba-to-hex(rgba(light.$black, 0.08), light.$card-bg) !important;
+        .fc-popover-body {
+          background-color: light.$card-bg !important;
+        }
+      }
+
+      .fc-popover {
+        .fc-popover-header {
+          background: light.$body-bg;
+        }
+      }
+      .fc-list {
+        .fc-list-table {
+          border-top: light.$border-width solid light.$border-color;
+          th {
+            border: 0;
+            background: light.rgba-to-hex(rgba(light.$black, 0.04), light.$card-bg);
+          }
+          .fc-list-event {
+            cursor: pointer;
+            &:hover {
+              td {
+                background-color: light.$table-hover-bg;
+              }
+            }
+            td {
+              border-color: light.$border-color;
+            }
+          }
+        }
+        .fc-list-empty {
+          background-color: light.$body-bg;
+        }
+      }
+
+      // Border color
+      table,
+      tbody,
+      thead,
+      tbody td {
+        border-color: light.$border-color;
+      }
+
+      // FC day
+      .fc-timegrid-axis-cushion.fc-scrollgrid-shrink-cushion {
+        color: light.$text-muted;
+      }
+
+      // FC table list disabled bg
+      .fc-day-disabled {
+        background-color: rgba(light.$black, 0.16);
+      }
+    }
+
+    // ? Style event here
+    @each $color, $value in light.$theme-colors {
+      // FC event
+      @include light.bg-label-variant('.fc-event-#{$color}:not(.fc-list-event)', $value);
+
+      // FC list event
+      .fc-event-#{$color}.fc-list-event {
+        .fc-list-event-dot {
+          border-color: $value !important;
+        }
+      }
+    }
+  }
+}
+
+// Dark Style
+@if $enable-dark-style {
+  .dark-style {
+    .fc {
+      .fc-toolbar {
+        .fc-prev-button,
+        .fc-next-button {
+          .fc-icon {
+            color: dark.$body-color;
+          }
+        }
+        .fc-sidebarToggle-button {
+          color: dark.$white;
+        }
+      }
+
+      table.fc-scrollgrid {
+        border-color: dark.$border-color;
+        .fc-col-header {
+          tbody {
+            border: none;
+          }
+          .fc-col-header-cell {
+            border-color: dark.$border-color;
+          }
+        }
+        td {
+          border-color: dark.$border-color;
+        }
+      }
+      .private-event {
+        .fc-event-time,
+        .fc-event-title {
+          color: dark.$danger;
+        }
+      }
+
+      .fc-day-today {
+        background-color: dark.rgba-to-hex(rgba(dark.$base, 0.08), dark.$card-bg) !important;
+        .fc-popover-body {
+          background-color: dark.$card-bg !important;
+        }
+      }
+      .fc-divider {
+        background: dark.$border-color;
+        border-color: dark.$border-color;
+      }
+      .fc-popover {
+        background-color: dark.$body-bg;
+        border: 0;
+
+        .fc-popover-header {
+          background-color: dark.$dark;
+        }
+      }
+
+      .fc-list {
+        .fc-list-table {
+          border-top: dark.$border-width solid dark.$border-color;
+          th {
+            border: 0;
+            background: dark.rgba-to-hex(rgba(dark.$base, 0.06), dark.$card-bg);
+          }
+          .fc-list-event {
+            cursor: pointer;
+            &:hover {
+              td {
+                background-color: dark.$table-hover-bg;
+              }
+            }
+            td {
+              border-color: dark.$border-color;
+            }
+          }
+        }
+        .fc-list-empty {
+          background-color: dark.$body-bg;
+        }
+      }
+      table,
+      .fc-timegrid-axis,
+      tbody,
+      thead,
+      tbody td {
+        border-color: dark.$border-color;
+      }
+
+      // FC day
+      .fc-timegrid-axis-cushion.fc-scrollgrid-shrink-cushion {
+        color: dark.$text-muted;
+      }
+
+      // FC table list disabled bg
+      .fc-day-disabled {
+        background-color: rgba(dark.$base, 0.16);
+      }
+    }
+    // ? Style event here
+    @each $color, $value in dark.$theme-colors {
+      // FC event
+      @include dark.bg-label-variant('.fc-event-#{$color}:not(.fc-list-event)', $value);
+      .fc-event-#{$color}:not(.fc-list-event) {
+        box-shadow: none;
+      }
+
+      // FC list event
+      .fc-event-#{$color}.fc-list-event {
+        .fc-list-event-dot {
+          border-color: $value !important;
+        }
+      }
+    }
+  }
+}
+
+// Media Queries
+@include light.media-breakpoint-down(sm) {
+  .fc {
+    .fc-header-toolbar {
+      .fc-toolbar-chunk + .fc-toolbar-chunk {
+        margin-top: 1rem;
+      }
+    }
+  }
+}

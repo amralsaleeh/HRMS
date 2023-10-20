@@ -1,0 +1,196 @@
+@use '../../scss/_bootstrap-extended/include' as light;
+@use '../../scss/_bootstrap-extended/include-dark' as dark;
+@import '../../scss/_custom-variables/libs';
+
+@import 'mixins';
+
+// Height clac to match form-control height
+$tag-line-height: 1.5rem !default;
+$tag-spacer: light.px-to-rem(floor(light.rem-to-px((light.$input-height-inner - $tag-line-height) * 0.5))) !default;
+
+// Override tagify vars
+$tag-remove: light.$danger !default;
+$tag-remove-btn-bg--hover: darken($tag-remove, 5) !default;
+$tag-invalid-color: $tag-remove !default;
+$tag-invalid-bg: rgba($tag-remove, 0.5) !default;
+
+$tag-avatar-size: 22px !default;
+$tag-avatar-select-size: 36px !default;
+
+//! Tagify $tag-bg custom color to match with dark and light layout
+$tag-bg: rgb(light.$text-light, 0.5) !default;
+
+@import '~@yaireo/tagify/src/tagify';
+
+@import 'tagify-users-list';
+@import 'tagify-inline-suggestion';
+@import 'tagify-email-list';
+
+.tagify {
+  &.form-control {
+    padding: 0 $tag-spacer $tag-spacer $tag-spacer + 0.125rem;
+    font-size: light.$small-font-size;
+    font-weight: light.$font-weight-semibold;
+  }
+  &__tag,
+  &__input {
+    margin: $tag-spacer $tag-spacer 0 0 !important;
+    line-height: 1;
+  }
+  &__input {
+    line-height: $tag-line-height;
+    &:empty::before {
+      top: 4px;
+    }
+  }
+  &__tag {
+    > div {
+      line-height: $tag-line-height;
+      padding: 0 0 0 $tag-spacer + 0.25rem;
+    }
+    &__removeBtn {
+      margin-right: $tag-spacer;
+      margin-left: $tag-spacer * 0.5;
+    }
+    &:hover:not([readonly]),
+    &:focus {
+      div::before {
+        top: 0px;
+        right: 0px;
+        bottom: 0px;
+        left: 0px;
+      }
+    }
+  }
+  &[readonly]:not(.tagify--mix) .tagify__tag > div {
+    padding: 0 $tag-spacer 0 $tag-spacer !important;
+  }
+  &__input {
+    padding: 0;
+  }
+}
+
+//RTL
+@include app-rtl(false) {
+  .tagify {
+    &__tag,
+    &__input {
+      margin: $tag-spacer 0 0 $tag-spacer;
+    }
+
+    &__tag {
+      > div {
+        padding: 0 $tag-spacer + 0.25rem 0 0;
+      }
+      &__removeBtn {
+        margin-left: $tag-spacer;
+        margin-right: $tag-spacer * 0.5;
+      }
+    }
+  }
+}
+
+// Light styles
+@if $enable-light-style {
+  .light-style {
+    .tagify {
+      &__tag {
+        > div::before {
+          box-shadow: 0 0 0 1.1em rgba(light.$secondary, 0.16) inset;
+        }
+        .tagify__tag-text {
+          color: light.$body-color;
+        }
+        &:hover:not([readonly]),
+        &:focus {
+          div::before {
+            box-shadow: 0 0 0 1.1em light.rgba-to-hex(light.$gray-200) inset;
+          }
+        }
+      }
+      &:hover:not([readonly]) {
+        border-color: light.$input-border-color;
+      }
+      &__input::before {
+        color: light.$input-placeholder-color !important;
+      }
+      &__dropdown {
+        box-shadow: light.$dropdown-box-shadow;
+        &[placement='top'] {
+          box-shadow: 0 -0.2rem 1.25rem rgba(light.rgba-to-hex(light.$gray-500, light.$rgba-to-hex-bg), 0.4) !important;
+        }
+        &__wrapper {
+          background: light.$dropdown-bg;
+        }
+      }
+    }
+  }
+}
+
+// Dark styles
+@if $enable-dark-style {
+  .dark-style {
+    .tagify {
+      &__tag {
+        > div {
+          &::before {
+            box-shadow: 0 0 0 1.1em rgba(dark.$secondary, 0.16) inset;
+          }
+          .tagify__tag-text {
+            color: dark.$body-color;
+          }
+          .tagify__tag-text {
+            color: dark.$input-color;
+          }
+        }
+        &:hover:not([readonly]),
+        &:focus {
+          div::before {
+            box-shadow: 0 0 0 1.1em dark.$body-bg inset;
+          }
+        }
+        &__removeBtn {
+          color: dark.$input-color;
+        }
+      }
+      &:hover:not([readonly]) {
+        border-color: dark.$input-border-color;
+      }
+      &__input::before {
+        color: dark.$input-placeholder-color !important;
+      }
+      &[readonly]:not(.tagify--mix) {
+        .tagify__tag > div::before {
+          background: linear-gradient(
+              45deg,
+              dark.$input-border-color 25%,
+              transparent 25%,
+              transparent 50%,
+              dark.$input-border-color 50%,
+              dark.$input-border-color 75%,
+              transparent 75%,
+              transparent
+            )
+            0/5px
+            5px;
+        }
+        &:not(.tagify--select) .tagify__tag > div::before {
+          animation: none;
+          box-shadow: none;
+        }
+      }
+      &__dropdown {
+        box-shadow: dark.$dropdown-box-shadow;
+        &[placement='top'] {
+          box-shadow: 0 -0.2rem 1.25rem rgba(15, 20, 34, 0.55) !important;
+        }
+        &__wrapper {
+          background: dark.$dropdown-bg;
+        }
+      }
+    }
+  }
+}
+
+//! Added in last as it was getting override
+@import 'tagify-email-list';

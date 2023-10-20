@@ -1,0 +1,28 @@
+// Dark Layout Variables
+
+// ! _variable-dark.scss file overrides _variable.scss file.
+
+// Avatar
+// *******************************************************************************
+$avatar-initial-bg: $secondary !default;
+$avatar-initial-counter-bg: rgba-to-hex($gray-800, $rgba-to-hex-bg) !default;
+
+// Custom Options
+// *******************************************************************************
+$custom-option-border-hover-color: $text-muted !default;
+
+// switch
+// *******************************************************************************
+$switch-off-color: rgba-to-hex($gray-600, $rgba-to-hex-bg) !default;
+$switch-off-bg: rgba-to-hex($gray-800, $rgba-to-hex-bg) !default;
+$switch-off-border: rgba-to-hex($gray-400, $rgba-to-hex-bg) !default;
+
+// Timeline
+// *******************************************************************************
+$timeline-item-bg-color: $card-bg !default;
+$timeline-point-indicator-color: $primary !default;
+$timeline-event-time-color: $body-color !default;
+
+// Text Divider
+// *******************************************************************************
+$divider-color: $border-color !default;

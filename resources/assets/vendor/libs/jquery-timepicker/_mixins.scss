@@ -1,0 +1,11 @@
+@import '../../scss/_bootstrap-extended/_functions';
+
+@mixin timepicker-theme($background, $color: null) {
+  $color: if($color, $color, color-contrast($background));
+
+  li.ui-timepicker-selected,
+  .ui-timepicker-list .ui-timepicker-selected:hover {
+    color: $color !important;
+    background: $background !important;
+  }
+}

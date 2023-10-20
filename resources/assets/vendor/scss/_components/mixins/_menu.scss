@@ -1,0 +1,124 @@
+// Menu
+// *******************************************************************************
+
+@mixin template-menu-style($parent, $bg, $color: null, $active-color: null, $border: null, $active-bg: null) {
+  $colors: get-navbar-prop($bg, $active-color, $color, $border);
+  $contrast-percent: map-get($colors, contrast-percent);
+
+  @if not $active-bg {
+    $active-bg: rgba-to-hex(
+      rgba(map-get($colors, bg), 1 - if($contrast-percent < 0.75, 0.025, 0.05)),
+      if($contrast-percent > 0.25, #fff, #000)
+    );
+  }
+
+  $menu-active-bg: linear-gradient(72.47deg, $active-bg 22.16%, rgba($active-bg, 0.7) 76.47%);
+  $menu-active-bg-rtl: linear-gradient(72.47deg, rgba($active-bg, 0.7) 22.16%, $active-bg 76.47%);
+  $horizontal-active-bg: rgba-to-hex(rgba($active-bg, 0.08), $bg);
+
+  #{$parent} {
+    background-color: map-get($colors, bg) !important;
+    &.menu-horizontal {
+      background-color: rgba(map-get($colors, bg), 0.95) !important;
+    }
+    color: map-get($colors, color);
+
+    .menu-link,
+    .menu-horizontal-prev,
+    .menu-horizontal-next {
+      color: map-get($colors, color);
+      &:hover,
+      &:focus {
+        color: map-get($colors, active-color);
+      }
+
+      &.active {
+        color: map-get($colors, active-color);
+      }
+    }
+
+    .menu-item.disabled .menu-link,
+    .menu-horizontal-prev.disabled,
+    .menu-horizontal-next.disabled {
+      color: map-get($colors, disabled-color) !important;
+    }
+
+    .menu-item.open:not(.menu-item-closing) > .menu-toggle,
+    .menu-item.active > .menu-link {
+      color: map-get($colors, active-color);
+    }
+
+    //vertical menu active item bg color
+    &.menu-vertical .menu-item.active > .menu-link:not(.menu-toggle) {
+      background: $menu-active-bg;
+      box-shadow: 0px 2px 6px 0px rgba($active-bg, 0.48);
+      color: color-contrast($active-bg) !important;
+      @if $rtl-support {
+        [dir='rtl'] & {
+          background: $menu-active-bg-rtl !important;
+        }
+      }
+    }
+
+    //-
+    &.menu-horizontal {
+      .menu-inner > .menu-item.active > .menu-link.menu-toggle {
+        background: $menu-active-bg;
+        color: color-contrast($active-bg) !important;
+        box-shadow: 0px 2px 6px 0px rgba($active-bg, 0.48);
+        @if $rtl-support {
+          [dir='rtl'] & {
+            background: $menu-active-bg-rtl;
+            box-shadow: 0px 2px 6px 0px rgba($active-bg, 0.48);
+            color: color-contrast($active-bg) !important;
+          }
+        }
+      }
+
+      .menu-inner .menu-item:not(.menu-item-closing) > .menu-sub,
+      .menu-inner .menu-item.open > .menu-toggle {
+        background: $bg;
+      }
+
+      .menu-item.active > .menu-link:not(.menu-toggle) {
+        background: $horizontal-active-bg;
+        color: $active-bg !important;
+      }
+    }
+    .menu-inner > .menu-item.menu-item-closing .menu-item.open .menu-sub,
+    .menu-inner > .menu-item.menu-item-closing .menu-item.open .menu-toggle {
+      background: transparent;
+      color: color-contrast($active-bg);
+    }
+
+    .menu-inner-shadow {
+      background: linear-gradient($bg 41%, rgba($bg, 0.11) 95%, rgba($bg, 0));
+    }
+
+    .menu-text {
+      color: map-get($colors, active-color);
+    }
+
+    .menu-header {
+      color: map-get($colors, muted-color);
+    }
+
+    hr,
+    .menu-divider,
+    .menu-inner > .menu-item.open > .menu-sub::before {
+      border-color: map-get($colors, border) !important;
+    }
+
+    .menu-block::before {
+      background-color: map-get($colors, muted-color);
+    }
+
+    .ps__thumb-y,
+    .ps__rail-y.ps--clicking > .ps__thumb-y {
+      background: rgba(
+        map-get($colors, active-color),
+        if($contrast-percent > 0.75, map-get($colors, opacity) - 0.4, map-get($colors, opacity) - 0.2)
+      ) !important;
+    }
+  }
+}

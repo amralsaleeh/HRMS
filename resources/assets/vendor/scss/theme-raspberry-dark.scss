@@ -1,0 +1,133 @@
+@import './_components/include-dark';
+@import './_theme/common';
+@import './_theme/libs';
+@import './_theme/pages';
+@import './_theme/_theme';
+
+$primary-color: #e30b5c;
+
+body {
+  background: $body-bg;
+}
+
+.bg-body {
+  background: $body-bg !important;
+}
+
+@include template-common-theme($primary-color);
+@include template-libs-theme($primary-color);
+@include template-pages-theme($primary-color);
+
+// Navbar
+// ---------------------------------------------------------------------------
+
+@include template-navbar-style('.bg-navbar-theme', $card-bg, $color: $body-color, $active-color: $headings-color);
+
+.layout-navbar {
+  box-shadow: 0 1px 0 $border-color;
+  backdrop-filter: saturate(200%) blur(6px);
+}
+.menu-horizontal {
+  backdrop-filter: saturate(200%) blur(6px);
+}
+.navbar-detached {
+  box-shadow: 0 0 0.375rem 0.25rem rgba($black, 0.15);
+}
+.layout-navbar-fixed .layout-page:before {
+  backdrop-filter: saturate(200%) blur(10px);
+  background: linear-gradient(180deg, rgba($body-bg, 70%) 44%, rgba($body-bg, 43%) 73%, rgba($body-bg, 0%));
+  -webkit-mask: linear-gradient($body-bg, $body-bg 18%, transparent 100%);
+  mask: linear-gradient($body-bg, $body-bg 18%, transparent 100%);
+}
+.layout-horizontal .layout-navbar {
+  box-shadow: 0 1px 0 $border-color;
+}
+
+// Menu
+// ---------------------------------------------------------------------------
+
+@include template-menu-style(
+  '.bg-menu-theme',
+  $card-bg,
+  $color: $body-color,
+  $active-color: $body-color,
+  $active-bg: $primary-color
+);
+
+.bg-menu-theme {
+  .menu-inner {
+    .menu-item {
+      &.open,
+      &.active {
+        > .menu-link.menu-toggle {
+          &,
+          .layout-menu-hover.layout-menu-collapsed & {
+            background: rgba($base, 0.06);
+          }
+        }
+      }
+      &:not(.active) .menu-link:hover {
+        html:not(.layout-menu-collapsed) &,
+        .layout-menu-hover.layout-menu-collapsed & {
+          background: rgba($base, 0.06);
+        }
+      }
+    }
+  }
+  .menu-inner .menu-sub .menu-item:not(.active) > .menu-link::before {
+    color: $text-muted !important;
+  }
+}
+
+.layout-menu {
+  box-shadow: 0 0 0 1px $border-color;
+}
+
+.layout-menu-horizontal {
+  box-shadow: 0 -1px 0 $border-color inset;
+}
+
+.timeline .timeline-item .timeline-event:after {
+  content: '';
+}
+
+// Footer
+// ---------------------------------------------------------------------------
+@include template-footer-style('.bg-footer-theme', $body-bg, $color: $body-color, $active-color: $headings-color);
+
+.layout-footer-fixed .layout-wrapper:not(.layout-horizontal) .content-footer .footer-container,
+.layout-footer-fixed .layout-wrapper.layout-horizontal .content-footer {
+  box-shadow: $box-shadow;
+}
+// Component styles
+// ---------------------------------------------------------------------------
+
+// card
+.card {
+  box-shadow: none;
+  border: $border-width solid $card-border-color;
+}
+
+// Accordion
+.accordion {
+  .accordion-item {
+    border-top: $accordion-border-width solid $accordion-border-color;
+  }
+}
+
+// default form wizard style
+
+.bs-stepper:not(.wizard-modern) {
+  border: 1px solid $border-color;
+  border-radius: $card-border-radius;
+}
+
+// modern form wizard style
+
+.bs-stepper.wizard-modern {
+  .bs-stepper-content {
+    box-shadow: none !important;
+    border: 1px solid $border-color;
+    border-radius: $card-border-radius;
+  }
+}

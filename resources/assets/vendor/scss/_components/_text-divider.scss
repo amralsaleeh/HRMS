@@ -1,0 +1,178 @@
+// Divider
+// *******************************************************************************
+
+@import '../../scss/_custom-variables/libs';
+
+.divider {
+  display: block;
+  text-align: center;
+  margin: $divider-margin-y $divider-margin-x;
+  overflow: hidden;
+  white-space: nowrap;
+
+  .divider-text {
+    position: relative;
+    display: inline-block;
+    font-size: $divider-font-size;
+    padding: $divider-text-padding-y $divider-text-padding-x;
+
+    i {
+      font-size: $divider-icon-size;
+    }
+
+    &:before,
+    &:after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      width: 100vw;
+      border-top: 1px solid $divider-color;
+    }
+
+    &:before {
+      right: 100%;
+    }
+
+    &:after {
+      left: 100%;
+    }
+  }
+  &.text-start {
+    .divider-text {
+      padding-left: 0;
+    }
+  }
+  &.text-end {
+    .divider-text {
+      padding-right: 0;
+    }
+  }
+  &.text-start-center {
+    .divider-text {
+      left: -25%;
+    }
+  }
+  &.text-end-center {
+    .divider-text {
+      right: -25%;
+    }
+  }
+  // Dotted Divider
+  &.divider-dotted .divider-text:before,
+  &.divider-dotted .divider-text:after,
+  &.divider-dotted:before,
+  &.divider-dotted:after {
+    border-style: dotted;
+    border-width: 0 1px 1px;
+    border-color: $divider-color;
+  }
+
+  // Dashed Divider
+  &.divider-dashed .divider-text:before,
+  &.divider-dashed .divider-text:after,
+  &.divider-dashed:before,
+  &.divider-dashed:after {
+    border-style: dashed;
+    border-width: 0 1px 1px;
+    border-color: $divider-color;
+  }
+
+  // For Vertical Divider
+  &.divider-vertical {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    margin: unset;
+    &:before,
+    &:after {
+      content: '';
+      position: absolute;
+      left: 50%;
+      border-left: 1px solid $divider-color;
+    }
+
+    &:before {
+      bottom: 50%;
+      top: 0;
+    }
+
+    &:after {
+      top: 50%;
+      bottom: 0;
+    }
+
+    // Dashed Vertical Divider
+    &.divider-dashed {
+      &:before,
+      &:after {
+        border-width: 1px 1px 1px 0;
+      }
+    }
+
+    // Dotted Vertical Divider
+    &.divider-dotted {
+      &:before,
+      &:after {
+        border-width: 1px 1px 1px 0;
+      }
+    }
+
+    // For Vertical Divider text
+    .divider-text {
+      background-color: $card-bg;
+      z-index: 1;
+      padding: 0.5rem;
+      &:before,
+      &:after {
+        content: unset;
+      }
+
+      // For card statistics Sales Overview divider
+      .badge-divider-bg {
+        padding: $divider-text-padding-x - 0.625rem $divider-text-padding-x - 0.71rem;
+        border-radius: 50%;
+        font-weight: $display-font-weight;
+        font-size: $divider-font-size - 0.1125rem;
+      }
+    }
+  }
+}
+
+// RTL
+@include rtl-only {
+  .divider {
+    &.text-start-center {
+      .divider-text {
+        right: -25%;
+        left: auto;
+      }
+    }
+    &.text-end-center {
+      .divider-text {
+        left: -25%;
+        right: auto;
+      }
+    }
+    &.text-start {
+      .divider-text {
+        padding-right: 0;
+        padding-left: $divider-text-padding-x;
+      }
+    }
+    &.text-end {
+      .divider-text {
+        padding-left: 0;
+        padding-right: $divider-text-padding-x;
+      }
+    }
+  }
+}
+
+// For Contextual Colors
+@each $color, $value in $theme-colors {
+  @if $color !=primary and $color !=light {
+    @include template-text-divider-variant('.divider-#{$color}', $value);
+  }
+}

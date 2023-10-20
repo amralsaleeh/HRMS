@@ -1,0 +1,114 @@
+@use '../../scss/_bootstrap-extended/include' as light;
+@use '../../scss/_bootstrap-extended/include-dark' as dark;
+@import '../../scss/_custom-variables/libs';
+@import '~jstree/dist/themes/default/style';
+@import '~jstree/dist/themes/default-dark/style';
+@import './themes/theme';
+
+// Light Style
+@if $enable-light-style {
+  .light-style {
+    // Folder Icons and text colors
+    .jstree {
+      .jstree-container-ul {
+        .jstree-icon.ti-folder,
+        .ion-ios-folder {
+          color: light.$warning;
+        }
+        .jstree-icon.ti-file {
+          color: light.$primary;
+        }
+      }
+    }
+    // Context Menu Styling
+
+    .vakata-context.jstree-contextmenu {
+      background: light.$white;
+      border: 0;
+      box-shadow: 0px 0px 50px 0px rgba(light.$black, 0.1);
+      li {
+        a {
+          padding: 0 1.5rem;
+          text-shadow: none;
+          i {
+            display: none;
+          }
+        }
+        &.vakata-context-hover {
+          a {
+            box-shadow: none;
+          }
+        }
+        &.vakata-context-separator {
+          a {
+            margin: 0;
+          }
+        }
+        ul {
+          background: light.$white;
+          border: 0;
+          box-shadow: 0px 0px 50px 0px rgba(light.$black, 0.1);
+        }
+      }
+      .vakata-contextmenu-sep {
+        display: none;
+      }
+    }
+  }
+}
+
+// Dark Style
+@if $enable-dark-style {
+  .dark-style {
+    // Folder Icons and text colors
+    .jstree {
+      .jstree-container-ul {
+        .jstree-icon.ti-folder,
+        .ion-ios-folder {
+          color: dark.$warning;
+        }
+        .jstree-icon.ti-file {
+          color: dark.$primary;
+        }
+      }
+    }
+
+    // Context Menu Styling
+
+    .vakata-context.jstree-contextmenu {
+      background: dark.$white;
+      border: 0;
+      box-shadow: 0px 0px 50px 0px rgba(dark.$black, 0.1);
+      li {
+        a {
+          padding: 0 1.5rem;
+          text-shadow: none;
+          i {
+            display: none;
+          }
+        }
+        &.vakata-context-hover {
+          a {
+            box-shadow: none;
+          }
+        }
+        &.vakata-context-separator {
+          a {
+            margin: 0;
+          }
+        }
+        ul {
+          background: dark.$white;
+          border: 0;
+          box-shadow: 0px 0px 50px 0px rgba(dark.$black, 0.1);
+        }
+      }
+      .vakata-contextmenu-sep {
+        display: none;
+      }
+    }
+  }
+}
+.jstree-default-dark .jstree-anchor {
+  text-shadow: none !important;
+}

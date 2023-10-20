@@ -1,0 +1,8 @@
+@mixin tagify-theme($color) {
+  .tagify--focus {
+    border-color: $color !important;
+  }
+  .tagify__dropdown__item--active {
+    background: $color !important;
+  }
+}

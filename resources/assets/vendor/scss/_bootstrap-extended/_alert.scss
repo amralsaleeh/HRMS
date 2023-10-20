@@ -1,0 +1,39 @@
+// Alerts
+// *******************************************************************************
+
+// Alert mixins
+@each $state, $value in $theme-colors {
+  @if $state != primary and $state != light {
+    @include template-alert-variant('.alert-#{$state}', if($state== 'dark' and $dark-style, $dark, $value));
+  }
+}
+// alert
+.alert {
+  font-weight: $display-font-weight;
+  // alert icon
+  .alert-icon {
+    background-color: $alert-icon-bg;
+    padding: 0.25rem;
+    border-radius: $alert-border-radius;
+    line-height: 1;
+  }
+
+  .alert-icon-lg {
+    padding: 0.375rem;
+  }
+}
+
+// RTL
+// *******************************************************************************
+
+@include rtl-only {
+  .alert-dismissible {
+    padding-left: $alert-dismissible-padding-r;
+    padding-right: $alert-padding-x;
+  }
+
+  .alert-dismissible .btn-close {
+    right: auto;
+    left: 0;
+  }
+}

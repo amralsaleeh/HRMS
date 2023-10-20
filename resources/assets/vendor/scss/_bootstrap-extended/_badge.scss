@@ -1,0 +1,54 @@
+// Badges
+// ? Bootstrap use bg-label-variant and bg color for solid and label style, hence we have not created mixin for that.
+// *******************************************************************************
+
+@each $color, $value in $theme-colors {
+  @if $color != primary and $color != light {
+    @include bg-glow-variant('.bg-#{$color}', $value);
+  }
+}
+
+// Badge Center Style
+
+.badge-center {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.35rem;
+  @include badge-size($badge-height, $badge-width, $badge-center-font-size);
+  i {
+    font-size: 0.875rem;
+  }
+}
+
+// Dots Style
+
+.badge.badge-dot {
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  vertical-align: middle;
+}
+
+// Notifications
+
+.badge.badge-notifications {
+  position: absolute;
+  top: auto;
+  display: inline-block;
+  margin: 0;
+  transform: translate(-50%, -30%);
+
+  @include rtl-style {
+    transform: translate(50%, -30%);
+  }
+
+  &:not(.badge-dot) {
+    padding: 0.06rem 0.14rem;
+    font-size: 0.75rem;
+    line-height: 0.875rem;
+  }
+}

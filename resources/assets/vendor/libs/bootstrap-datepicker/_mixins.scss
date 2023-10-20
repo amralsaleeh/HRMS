@@ -1,0 +1,87 @@
+@import '../../scss/_bootstrap-extended/functions';
+
+@mixin bs-datepicker-theme($background, $color: null) {
+  $color: if($color, $color, color-contrast($background));
+  $range-bg: rgba-to-hex(rgba($background, 0.16), #fff);
+  $range-color: $background;
+
+  .datepicker {
+    table {
+      tr td {
+        &.active,
+        &.active.highlighted,
+        .focused,
+        span.active,
+        span.active.disabled,
+        &.range-start,
+        &.range-end {
+          background: $background !important;
+          color: $color !important;
+        }
+
+        &.range,
+        &.range.highlighted,
+        &.range.today {
+          color: $range-color !important;
+          background: $range-bg !important;
+
+          &.focused {
+            background: rgba-to-hex(rgba($background, 0.24), #fff) !important;
+          }
+
+          &.disabled {
+            background: transparentize($range-bg, 0.5) !important;
+            color: transparentize($range-color, 0.5) !important;
+          }
+        }
+
+        &.today:not(.active) {
+          box-shadow: 0 0 0 1px $background;
+        }
+      }
+    }
+  }
+}
+
+@mixin bs-datepicker-dark-theme($background, $color: null) {
+  $color: if($color, $color, color-contrast($background));
+  $range-bg: rgba-to-hex(rgba($background, 0.24), #2f3349);
+  $range-color: $background;
+
+  .datepicker {
+    table {
+      tr td {
+        &.active,
+        &.active.highlighted,
+        .focused,
+        span.active,
+        span.active.disabled,
+        &.range-start,
+        &.range-end {
+          color: $color !important;
+          background: $background !important;
+        }
+
+        &.range,
+        &.range.highlighted,
+        &.range.today {
+          color: $range-color !important;
+          background: $range-bg !important;
+
+          &.disabled {
+            color: transparentize($range-color, 0.5) !important;
+            background: transparentize($range-bg, 0.5) !important;
+          }
+
+          &.focused {
+            background: rgba-to-hex(rgba($background, 0.24), #2f3349) !important;
+          }
+        }
+
+        &.today:not(.active) {
+          box-shadow: 0 0 0 1px $background;
+        }
+      }
+    }
+  }
+}

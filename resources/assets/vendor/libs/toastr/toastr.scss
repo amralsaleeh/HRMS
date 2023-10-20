@@ -1,0 +1,199 @@
+@use '../../scss/_bootstrap-extended/include' as light;
+@use '../../scss/_bootstrap-extended/include-dark' as dark;
+@import '../../scss/_custom-variables/libs';
+@import '~toastr/toastr.scss';
+
+.toast-message {
+  margin-left: 0.75rem !important;
+  margin-right: 0.75rem !important;
+  a {
+    color: light.$primary;
+    &:hover {
+      color: rgba(light.$primary, 0.6);
+    }
+  }
+}
+// Toast title
+.toast-title {
+  margin-left: 0.75rem;
+  color: light.$headings-color;
+  margin-bottom: 0.25rem;
+  @include app-rtl {
+    margin-right: 0.75rem;
+  }
+}
+
+#toast-container {
+  > div {
+    padding: 20px 30px 20px 50px !important;
+    opacity: 1;
+
+    @include app-rtl {
+      direction: rtl;
+      background-position: top 0.9rem right 1.25rem;
+      padding: 20px 50px 20px 30px !important;
+    }
+  }
+  &.toast-top-left {
+    @include app-rtl {
+      right: 12px;
+      left: auto;
+    }
+  }
+  &.toast-top-right {
+    @include app-rtl {
+      left: 12px;
+      right: auto;
+    }
+  }
+  &.toast-bottom-left {
+    @include app-rtl {
+      right: 12px;
+      left: auto;
+    }
+  }
+  &.toast-bottom-right {
+    @include app-rtl {
+      left: 12px;
+      right: auto;
+    }
+  }
+  &.toast-top-full-width,
+  &.toast-bottom-full-width {
+    &#toast-container > div {
+      @include app-rtl {
+        left: 0;
+        right: 0;
+      }
+    }
+  }
+  > .toast {
+    max-width: 100%;
+    background-size: 28px;
+    background-repeat: no-repeat;
+  }
+  &.toast-bottom-full-width > div,
+  &.toast-top-full-width > div {
+    width: 100%;
+    margin-bottom: 0;
+    border-radius: 0 !important;
+  }
+
+  > .toast-info {
+    background-image: url("data:image/svg+xml,%3Csvg width='26' height='26' viewBox='0 0 26 26' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='26' height='26' rx='6' fill='%2300CFE8' fill-opacity='0.08'/%3E%3Ccircle cx='13' cy='13' r='6.75' stroke='%2300CFE8' stroke-width='1.75' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M13.0002 10H13.0077' stroke='%2300CFE8' stroke-width='1.75' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M12.25 13H13V16H13.75' stroke='%2300CFE8' stroke-width='1.75' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E%0A") !important;
+    background-position: 1.25rem 1.25rem;
+  }
+  > .toast-error {
+    background-image: url("data:image/svg+xml,%3Csvg width='26' height='26' viewBox='0 0 26 26' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='26' height='26' rx='6' fill='%23EA5455' fill-opacity='0.08'/%3E%3Cpath d='M17.5 8.5L8.5 17.5' stroke='%23EA5455' stroke-width='1.75' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M8.5 8.5L17.5 17.5' stroke='%23EA5455' stroke-width='1.75' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E%0A") !important;
+
+    background-position: 1.25rem 1.25rem;
+  }
+  > .toast-success {
+    background-image: url("data:image/svg+xml,%3Csvg width='26' height='26' viewBox='0 0 26 26' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='26' height='26' rx='6' fill='%2328C76F' fill-opacity='0.08'/%3E%3Cpath d='M7.75 13L11.5 16.75L19 9.25' stroke='%2328C76F' stroke-width='1.75' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E%0A") !important;
+    background-position: 1.25rem 1.25rem;
+  }
+  > .toast-warning {
+    background-image: url("data:image/svg+xml,%3Csvg width='26' height='26' viewBox='0 0 26 26' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='26' height='26' rx='6' fill='%23FF9F43' fill-opacity='0.08'/%3E%3Cpath d='M13 10V12.8362' stroke='%23FF9F43' stroke-width='1.75' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M13 15.6543L13 15.6899' stroke='%23FF9F43' stroke-width='1.75' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M7.74941 18.2504H18.2494C18.7463 18.2469 19.2092 17.9976 19.4856 17.5846C19.7619 17.1716 19.8158 16.6485 19.6294 16.1879L14.3044 7.00038C14.0402 6.5229 13.5376 6.22656 12.9919 6.22656C12.4462 6.22656 11.9436 6.5229 11.6794 7.00038L6.35441 16.1879C6.17171 16.6377 6.218 17.1481 6.47865 17.5577C6.7393 17.9673 7.18207 18.2254 7.66691 18.2504' stroke='%23FF9F43' stroke-width='1.75' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") !important;
+    background-position: 1.25rem 1.25rem;
+  }
+}
+// for full width toasts
+#toast-container:not(.toast-bottom-full-width, .toast-top-full-width) > div {
+  width: 22em !important;
+}
+
+.toast-progress {
+  position: absolute;
+  bottom: auto;
+  top: 0;
+  opacity: 0.15;
+  height: 0.1875rem;
+  -ms-filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=15);
+  filter: alpha(opacity=15);
+
+  @include app-rtl {
+    left: auto;
+    right: 0;
+  }
+}
+
+.toast-close-button {
+  position: absolute;
+  right: 1.25rem !important;
+  top: 0.5rem;
+  text-shadow: none;
+  color: light.$text-muted !important;
+  padding: auto;
+  font-size: 1.625rem;
+
+  @include app-rtl {
+    left: 1.25rem !important;
+    right: auto !important;
+  }
+}
+
+// Light style
+@if $enable-light-style {
+  .light-style {
+    #toast-container {
+      z-index: light.$zindex-notification;
+
+      .toast-close-button {
+        font-weight: light.$close-font-weight;
+      }
+
+      > div {
+        box-shadow: light.$box-shadow;
+        border-radius: light.$border-radius;
+      }
+
+      > .toast-success,
+      .toast-error,
+      .toast-info,
+      .toast-warning {
+        color: light.$headings-color;
+        background-color: light.$card-bg;
+      }
+    }
+  }
+}
+
+// Dark style
+@if $enable-dark-style {
+  .dark-style {
+    #toast-container {
+      z-index: dark.$zindex-notification;
+
+      .toast-close-button {
+        font-weight: dark.$close-font-weight;
+        color: dark.$text-muted !important;
+      }
+      .toast-title {
+        color: dark.$headings-color;
+      }
+
+      > div {
+        box-shadow: dark.$box-shadow;
+        border-radius: dark.$border-radius;
+      }
+      .toast-progress {
+        background-color: dark.$white;
+      }
+
+      > .toast-success,
+      .toast-error,
+      .toast-info,
+      .toast-warning {
+        color: dark.$headings-color;
+        background-color: dark.$card-bg;
+      }
+    }
+  }
+}
+
+// toast close button style
+@media (min-width: 241px) and (max-width: 480px) {
+  #toast-container .toast-close-button {
+    top: 0.3em;
+  }
+}

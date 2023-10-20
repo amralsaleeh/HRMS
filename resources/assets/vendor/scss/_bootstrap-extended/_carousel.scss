@@ -1,0 +1,50 @@
+// Carousel
+// *******************************************************************************
+
+//
+.carousel {
+  .carousel-item.active,
+  .carousel-item.carousel-item-start {
+    h1,
+    .h1,
+    h2,
+    .h2,
+    h3,
+    .h3,
+    h4,
+    .h4,
+    h5,
+    .h5,
+    h6,
+    .h6 {
+      color: $carousel-caption-color;
+    }
+  }
+}
+.carousel.carousel-dark {
+  .carousel-item,
+  .carousel-item.active,
+  .carousel-item.carousel-item-start {
+    h1,
+    .h1,
+    h2,
+    .h2,
+    h3,
+    .h3,
+    h4,
+    .h4,
+    h5,
+    .h5,
+    h6,
+    .h6 {
+      color: $carousel-dark-caption-color;
+    }
+  }
+}
+
+.carousel-indicators {
+  margin-bottom: 1.06rem;
+  [data-bs-target] {
+    border-radius: $border-radius;
+  }
+}

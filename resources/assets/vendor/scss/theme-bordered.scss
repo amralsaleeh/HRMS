@@ -1,0 +1,213 @@
+@import './_components/include';
+@import './_theme/common';
+@import './_theme/libs';
+@import './_theme/pages';
+@import './_theme/_theme';
+
+$primary-color: #7367f0;
+$body-bg: #f8f7fa;
+
+body {
+  background: $card-bg;
+}
+
+.bg-body {
+  background: $body-bg !important;
+}
+
+@include template-common-theme($primary-color);
+@include template-libs-theme($primary-color);
+@include template-pages-theme($primary-color);
+
+// Navbar
+// ---------------------------------------------------------------------------
+
+@include template-navbar-style('.bg-navbar-theme', $card-bg, $color: $body-color, $active-color: $headings-color);
+.layout-navbar,
+.menu-horizontal {
+  backdrop-filter: saturate(200%) blur(6px);
+}
+.navbar-detached {
+  border: 1px solid $border-color;
+}
+.layout-navbar-fixed .layout-page:before {
+  backdrop-filter: saturate(200%) blur(10px);
+  background: linear-gradient(180deg, rgba($card-bg, 70%) 44%, rgba($card-bg, 43%) 73%, rgba($card-bg, 0%));
+  -webkit-mask: linear-gradient($card-bg, $card-bg 18%, transparent 100%);
+  mask: linear-gradient($card-bg, $card-bg 18%, transparent 100%);
+}
+.layout-horizontal .layout-navbar {
+  box-shadow: 0 1px 0 $border-color;
+}
+
+// Menu
+// ---------------------------------------------------------------------------
+
+@include template-menu-style(
+  '.bg-menu-theme',
+  $card-bg,
+  $color: $body-color,
+  $active-color: $headings-color,
+  $active-bg: $primary-color
+);
+
+.bg-menu-theme {
+  .menu-inner {
+    .menu-item {
+      &.open,
+      &.active {
+        > .menu-link.menu-toggle {
+          &,
+          .layout-menu-hover.layout-menu-collapsed & {
+            background: rgba-to-hex(rgba($black, 0.04), $rgba-to-hex-bg);
+          }
+        }
+      }
+      &:not(.active) .menu-link:hover {
+        html:not(.layout-menu-collapsed) &,
+        .layout-menu-hover.layout-menu-collapsed & {
+          background: rgba-to-hex(rgba($black, 0.04), $rgba-to-hex-bg);
+        }
+      }
+    }
+  }
+  .menu-inner .menu-sub .menu-item:not(.active) > .menu-link::before {
+    color: $text-muted !important;
+  }
+}
+
+@include media-breakpoint-up(xl) {
+  .layout-menu {
+    box-shadow: 0 0 0 1px $border-color;
+  }
+}
+
+.layout-menu-horizontal {
+  box-shadow: 0 -1px 0 $border-color inset;
+}
+
+.timeline .timeline-item .timeline-event:after {
+  content: '';
+}
+
+// Footer
+// ---------------------------------------------------------------------------
+@include template-footer-style('.bg-footer-theme', $card-bg, $color: $body-color, $active-color: $headings-color);
+
+.content-footer .footer-container {
+  .layout-footer-fixed .layout-wrapper:not(.layout-horizontal) & {
+    border: 1px solid $border-color;
+    border-bottom: 0;
+  }
+}
+.layout-horizontal .bg-footer-theme {
+  border-top: 1px solid $border-color;
+}
+
+// Component styles
+// ---------------------------------------------------------------------------
+
+// card
+.card {
+  box-shadow: none;
+  border: $border-width solid $card-border-color;
+}
+
+// Accordion
+.accordion {
+  .accordion-item {
+    border-top: 1px solid $card-border-color;
+    box-shadow: none !important;
+  }
+}
+
+// Tabs
+.nav-tabs-shadow {
+  box-shadow: none !important;
+  border: 1px solid $border-color !important;
+  border-radius: $border-radius;
+}
+.nav-pills:not(.card-header-pills) {
+  ~ .tab-content {
+    border: 1px solid $border-color !important;
+    @include border-radius($border-radius);
+    box-shadow: none;
+  }
+}
+.nav-align-top .nav-tabs {
+  @include border-top-radius($border-radius);
+  ~ .tab-content {
+    border-top-width: 0 !important;
+    @include border-bottom-radius($border-radius);
+  }
+}
+.nav-align-bottom .nav-tabs {
+  @include border-bottom-radius($border-radius);
+  ~ .tab-content {
+    border-bottom-width: 0 !important;
+    @include border-top-radius($border-radius);
+  }
+}
+.nav-align-left .nav-tabs {
+  @include ltr-style {
+    @include border-start-radius($border-radius);
+  }
+  @include rtl-style {
+    @include border-end-radius($border-radius);
+  }
+  ~ .tab-content {
+    @include ltr-style {
+      border-left-width: 0 !important;
+      @include border-end-radius($border-radius);
+    }
+    @include rtl-style {
+      border-right-width: 0 !important;
+      @include border-start-radius($border-radius);
+    }
+  }
+}
+.nav-align-right .nav-tabs {
+  @include ltr-style {
+    @include border-end-radius($border-radius);
+  }
+  @include rtl-style {
+    @include border-start-radius($border-radius);
+  }
+  ~ .tab-content {
+    @include ltr-style {
+      border-right-width: 0 !important;
+      @include border-start-radius($border-radius);
+    }
+    @include rtl-style {
+      border-left-width: 0 !important;
+      @include border-end-radius($border-radius);
+    }
+  }
+}
+
+//Kanban-item
+.kanban-item {
+  box-shadow: none !important;
+  border: $border-width solid $card-border-color;
+}
+// default form wizard style
+.bs-stepper:not(.wizard-modern) {
+  box-shadow: none !important;
+  border: 1px solid $border-color;
+  border-radius: $card-border-radius;
+}
+
+// modern form wizard style
+
+.bs-stepper.wizard-modern {
+  .bs-stepper-content {
+    box-shadow: none !important;
+    border: 1px solid $border-color;
+    border-radius: $card-border-radius;
+  }
+}
+// file upload (dropzone)
+.light-style .dz-preview {
+  box-shadow: none;
+  border: 1px solid $border-color;
+}

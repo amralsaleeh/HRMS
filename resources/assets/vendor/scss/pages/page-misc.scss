@@ -1,0 +1,37 @@
+// * Miscellaneous
+// *******************************************************************************
+
+@import '../_bootstrap-extended/include';
+
+.misc-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  text-align: center;
+}
+// Misc Image Wrapper
+.misc-bg-wrapper {
+  position: relative;
+  img {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    z-index: -1;
+  }
+}
+
+// media query for width
+@media (max-width: 1499.98px) {
+  // All Misc Pages
+  .misc-bg-wrapper img {
+    height: 250px;
+  }
+  // Under Maintenance
+  .misc-under-maintenance-bg-wrapper img {
+    height: 270px !important;
+  }
+}

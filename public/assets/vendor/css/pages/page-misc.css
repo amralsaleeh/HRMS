@@ -1,0 +1,33 @@
+.misc-wrapper {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-direction: column;
+      flex-direction: column;
+  -ms-flex-pack: center;
+      justify-content: center;
+  -ms-flex-align: center;
+      align-items: center;
+  min-height: 100vh;
+  text-align: center;
+}
+
+.misc-bg-wrapper {
+  position: relative;
+}
+.misc-bg-wrapper img {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  z-index: -1;
+}
+
+@media (max-width: 1499.98px) {
+  .misc-bg-wrapper img {
+    height: 250px;
+  }
+  .misc-under-maintenance-bg-wrapper img {
+    height: 270px !important;
+  }
+}

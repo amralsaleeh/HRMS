@@ -1,0 +1,103 @@
+// ? Theme related styles common styles
+
+@import '../_components/include';
+
+// Space above detached navbar (vertical layout only)
+.layout-navbar-fixed .layout-wrapper:not(.layout-horizontal) .layout-page:before {
+  content: '';
+  width: 100%;
+  height: calc($spacer + $navbar-height);
+  position: fixed;
+  top: 0px;
+  z-index: 10;
+}
+
+.bg-menu-theme {
+  // Sub menu item link bullet
+  .menu-sub > .menu-item > .menu-link:before {
+    content: '\ea6b';
+    font-family: 'tabler-icons';
+    position: absolute;
+    font-size: 0.65rem;
+    font-weight: bold;
+  }
+  &.menu-vertical {
+    .menu-sub > .menu-item > .menu-link:before {
+      left: 1.35rem;
+      @include rtl-style {
+        right: 1.35rem;
+        left: inherit;
+      }
+    }
+    .menu-sub > .menu-item .menu-link .menu-icon {
+      display: none;
+    }
+  }
+  &.menu-horizontal {
+    .menu-inner > .menu-item > .menu-sub > .menu-item > .menu-link {
+      @include ltr-style {
+        padding-left: $menu-horizontal-link-padding-x;
+      }
+      @include rtl-style {
+        padding-right: $menu-horizontal-link-padding-x;
+      }
+      &:before {
+        content: '';
+      }
+    }
+  }
+  // Sub menu item link bullet
+  .menu-sub > .menu-item > .menu-link:before {
+    // For horizontal layout
+    .layout-horizontal & {
+      left: 1.1rem;
+      @include rtl-style {
+        right: 1.1rem;
+        left: inherit;
+      }
+    }
+  }
+
+  .menu-inner .menu-item .menu-link {
+    .layout-wrapper:not(.layout-horizontal) & {
+      border-radius: $border-radius;
+    }
+  }
+  .menu-inner > .menu-item > .menu-link {
+    .layout-horizontal & {
+      border-radius: $border-radius;
+    }
+  }
+
+  .menu-inner > {
+    // Spacing and Box-shadow only for horizontal menu above lg screen
+    @include media-breakpoint-up(xl) {
+      .menu-item {
+        .layout-horizontal & {
+          margin: $menu-vertical-header-margin-y 0;
+          &:not(:first-child) {
+            margin-left: $menu-item-spacer;
+          }
+          &:not(:last-child) {
+            margin-right: $menu-item-spacer;
+          }
+        }
+      }
+    }
+    .menu-item.active:before {
+      .layout-wrapper:not(.layout-horizontal) & {
+        content: '';
+        position: absolute;
+        right: 0;
+        width: 0.25rem;
+        height: 2.6845rem;
+        border-radius: $border-radius 0 0 $border-radius;
+        @include rtl-style {
+          left: 0;
+          right: inherit;
+          border-radius: 0 $border-radius $border-radius 0;
+        }
+      }
+    }
+  }
+}

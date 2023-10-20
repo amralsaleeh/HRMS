@@ -1,0 +1,24 @@
+.faq-header {
+  background: url("../../../img/pages/header.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  min-height: 300px !important;
+}
+.faq-header .input-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 55%;
+}
+@media (max-width: 575.98px) {
+  .faq-header .input-wrapper {
+    max-width: 70%;
+  }
+}
+
+.light-style .bg-faq-section {
+  background-color: rgba(75, 75, 75, 0.04);
+}
+
+.dark-style .bg-faq-section {
+  background-color: rgba(134, 146, 208, 0.04);
+}

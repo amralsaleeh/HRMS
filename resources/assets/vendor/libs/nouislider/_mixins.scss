@@ -1,0 +1,22 @@
+@use '../../scss/_bootstrap-extended/include' as light;
+@mixin nouislider-variant($background) {
+  .noUi-connect {
+    background: $background !important;
+  }
+  .noUi-handle {
+    background: light.rgba-to-hex(rgba(0, 0, 0, 0.2), $background) !important;
+  }
+}
+
+@mixin nouislider-theme($background) {
+  .noUi-primary .noUi-base {
+    .noUi-connect {
+      background: $background !important;
+    }
+    .noUi-origin {
+      .noUi-handle {
+        background: light.rgba-to-hex(rgba(0, 0, 0, 0.2), $background) !important;
+      }
+    }
+  }
+}

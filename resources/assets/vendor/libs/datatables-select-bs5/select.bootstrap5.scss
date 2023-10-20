@@ -1,0 +1,34 @@
+@use '../../scss/_bootstrap-extended/include' as light;
+@use '../../scss/_bootstrap-extended/include-dark' as dark;
+@use '../../scss/_components/include' as comp;
+
+@import '../../scss/_custom-variables/libs';
+@import '~datatables.net-select-bs5/css/select.bootstrap5';
+
+// Background color for select row
+table.dataTable tbody > tr.selected td,
+table.dataTable tbody > tr > .selected td {
+  background-color: rgba(light.$primary, 0.08);
+  box-shadow: none;
+}
+// Light style
+@if $enable-light-style {
+  .light-style {
+    table.dataTable tbody tr.selected td,
+    table.dataTable tbody th.selected td,
+    table.dataTable tbody td.selected td {
+      color: light.$body-color !important;
+    }
+  }
+}
+
+// Dark Style
+@if $enable-dark-style {
+  .dark-style {
+    table.dataTable tbody tr.selected td,
+    table.dataTable tbody th.selected td,
+    table.dataTable tbody td.selected td {
+      color: inherit;
+    }
+  }
+}

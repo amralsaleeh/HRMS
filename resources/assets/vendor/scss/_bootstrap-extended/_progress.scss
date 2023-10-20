@@ -1,0 +1,42 @@
+// Progress
+// *******************************************************************************
+
+.progress-bar {
+  font-weight: $display-font-weight;
+}
+
+@include ltr-only {
+  .progress-bar-striped {
+    @include gradient-striped(rgba($white, 0.1), 45deg);
+  }
+  .progress {
+    .progress-bar:last-child {
+      border-top-right-radius: $progress-border-radius;
+      border-bottom-right-radius: $progress-border-radius;
+    }
+    .progress-bar:first-child {
+      border-top-left-radius: $progress-border-radius;
+      border-bottom-left-radius: $progress-border-radius;
+    }
+  }
+}
+
+// RTL
+// *******************************************************************************
+
+@include rtl-only {
+  .progress-bar-animated {
+    animation-direction: reverse;
+  }
+  .progress {
+    //  border radius for first and last child
+    .progress-bar:last-child {
+      border-top-left-radius: $progress-border-radius;
+      border-bottom-left-radius: $progress-border-radius;
+    }
+    .progress-bar:first-child {
+      border-top-right-radius: $progress-border-radius;
+      border-bottom-right-radius: $progress-border-radius;
+    }
+  }
+}

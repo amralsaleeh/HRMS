@@ -1,0 +1,47 @@
+/*
+* Pages Mixins
+*/
+@import '../../scss/_bootstrap-extended/functions';
+
+@mixin icon-theme($color) {
+  .icon-card.active {
+    outline: 1px solid $color;
+    i,
+    svg {
+      color: $color;
+    }
+  }
+}
+
+// App Chat
+@mixin app-chat-theme($color) {
+  $chat-item-active-bg: linear-gradient(72.47deg, $color 22.16%, rgba($color, 0.7) 76.47%);
+  $chat-item-active-bg-rtl: linear-gradient(72.47deg, rgba($color, 0.7) 22.16%, $color 76.47%);
+  .app-chat {
+    .sidebar-body {
+      .chat-contact-list {
+        li {
+          &.active {
+            background: $chat-item-active-bg;
+            @if $rtl-support {
+              [dir='rtl'] & {
+                background: $chat-item-active-bg-rtl !important;
+              }
+            }
+          }
+        }
+      }
+    }
+    .app-chat-history {
+      .chat-history {
+        .chat-message {
+          &.chat-message-right {
+            .chat-message-text {
+              background-color: $color !important;
+            }
+          }
+        }
+      }
+    }
+  }
+}
