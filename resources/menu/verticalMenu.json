@@ -5,7 +5,117 @@
       "name": "Dashboard",
       "icon": "menu-icon tf-icons ti ti-dashboard",
       "slug": "dashboard",
-      "role": "admin"
+      "role": ""
+    },
+    {
+      "menuHeader": "Human resource",
+      "role": ""
+    },
+    {
+      "name": "Attendance",
+      "icon": "menu-icon tf-icons ti ti-door-exit",
+      "slug": "attendance",
+      "role": "",
+      "submenu": [
+        {
+          "url": "attendance/fingerprints",
+          "name": "Fingerprints",
+          "slug": "attendance-fingerprints"
+        },
+        {
+          "url": "attendance/leaves",
+          "name": "Leaves",
+          "slug": "attendance-leaves"
+        }
+      ]
+    },
+    {
+      "name": "Structure",
+      "icon": "menu-icon tf-icons ti ti-hierarchy",
+      "slug": "structure",
+      "role": "",
+      "submenu": [
+        {
+          "url": "structure/centers",
+          "name": "Centers",
+          "slug": "structure-centers"
+        },
+        {
+          "url": "structure/departments",
+          "name": "Departments",
+          "slug": "structure-departments"
+        },
+        {
+          "url": "structure/positions",
+          "name": "Positions",
+          "slug": "structure-positions"
+        },
+        {
+          "url": "structure/members",
+          "name": "Members",
+          "slug": "structure-members"
+        }
+      ]
+    },
+    {
+      "url": "/discounts",
+      "name": "Discounts",
+      "icon": "menu-icon tf-icons ti ti-discount-2",
+      "slug": "discounts",
+      "role": ""
+    },
+    {
+      "url": "/holidays",
+      "name": "Holidays",
+      "icon": "menu-icon tf-icons ti ti-christmas-tree",
+      "slug": "holidays",
+      "role": ""
+    },
+    {
+      "url": "/statistics",
+      "name": "Statistics",
+      "icon": "menu-icon tf-icons ti ti-device-desktop-analytics",
+      "slug": "statistics",
+      "role": ""
+    },
+    {
+      "url": "/roles",
+      "name": "Roles",
+      "icon": "menu-icon tf-icons ti ti-adjustments-alt",
+      "slug": "roles",
+      "role": ""
+    },
+    {
+      "menuHeader": "Assets",
+      "role": ""
+    },
+    {
+      "url": "/products",
+      "name": "Products",
+      "icon": "menu-icon tf-icons ti ti-barcode",
+      "slug": "products",
+      "role": ""
+    },
+    {
+      "url": "/categories",
+      "name": "Categories",
+      "icon": "menu-icon tf-icons ti ti-category",
+      "slug": "categories",
+      "role": ""
+    },
+    {
+      "url": "/transfers",
+      "name": "Transfers",
+      "icon": "menu-icon tf-icons ti ti-arrow-guide",
+      "slug": "transfers",
+      "role": ""
+    },
+    {
+      "url": "/reports",
+      "name": "Reports",
+      "icon": "menu-icon tf-icons ti ti-file-analytics",
+      "slug": "reports",
+      "role": ""
     }
   ]
 }

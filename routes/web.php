@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\HomePage;
 use App\Livewire\Dashboard;
 use Illuminate\Support\Facades\Route;
 
@@ -14,9 +15,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-$controller_path = 'App\Http\Controllers';
-
-Route::get('/', $controller_path.'\pages\HomePage@index')->name('pages-home');
+Route::get('/', [HomePage::class, 'index'])->name('home');
 
 Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified'])->group(function () {
     Route::get('/dashboard', Dashboard::class)->name('dashboard');
