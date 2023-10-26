@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\HomePage;
 use App\Livewire\Dashboard;
+use App\Livewire\HumanResource\Structure\Centers;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,4 +20,7 @@ Route::get('/', [HomePage::class, 'index'])->name('home');
 
 Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified'])->group(function () {
     Route::get('/dashboard', Dashboard::class)->name('dashboard');
+    Route::prefix('structure')->group(function () {
+        Route::get('/centers', Centers::class)->name('structure-centers');
+    });
 });
