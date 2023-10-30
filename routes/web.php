@@ -3,6 +3,10 @@
 use App\Http\Controllers\HomePage;
 use App\Livewire\Dashboard;
 use App\Livewire\HumanResource\Structure\Centers;
+use App\Livewire\HumanResource\Structure\Departments;
+use App\Livewire\HumanResource\Structure\Members;
+use App\Livewire\HumanResource\Structure\Positions;
+use App\Livewire\Misc\ComingSoon;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,7 +24,26 @@ Route::get('/', [HomePage::class, 'index'])->name('home');
 
 Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified'])->group(function () {
     Route::get('/dashboard', Dashboard::class)->name('dashboard');
+
+    Route::prefix('attendance')->group(function () {
+        Route::get('/fingerprints', ComingSoon::class)->name('attendance-fingerprints');
+        Route::get('/leaves', ComingSoon::class)->name('attendance-leaves');
+    });
+
     Route::prefix('structure')->group(function () {
         Route::get('/centers', Centers::class)->name('structure-centers');
+        Route::get('/departments', Departments::class)->name('structure-departments');
+        Route::get('/positions', Positions::class)->name('structure-positions');
+        Route::get('/members', Members::class)->name('structure-members');
     });
+
+    Route::get('/discounts', ComingSoon::class)->name('discounts');
+    Route::get('/holidays', ComingSoon::class)->name('holidays');
+    Route::get('/statistics', ComingSoon::class)->name('statistics');
+    Route::get('/roles', ComingSoon::class)->name('roles');
+
+    Route::get('/products', ComingSoon::class)->name('products');
+    Route::get('/categories', ComingSoon::class)->name('categories');
+    Route::get('/transfers', ComingSoon::class)->name('transfers');
+    Route::get('/reports', ComingSoon::class)->name('reports');
 });

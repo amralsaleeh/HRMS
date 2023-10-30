@@ -6,29 +6,27 @@
 
 <div class="demo-inline-spacing">
   <button type="button" class="btn btn-primary">
-    <span class="ti-xs ti ti-plus me-1"></span>Add New Center
+    <span class="ti-xs ti ti-plus me-1"></span>Add New Member
   </button>
 </div>
 <br>
 <div class="card">
-  <h5 class="card-header">Centers</h5>
+  <h5 class="card-header">Members</h5>
   <div class="table-responsive text-nowrap">
     <table class="table">
       <thead>
         <tr>
           <th>ID</th>
           <th>Name</th>
-          <th>Supervisor</th>
-          <th>Members count</th>
+          <th>Mobile</th>
           <th>Status</th>
           <th>Actions</th>
         </tr>
       </thead>
       <tbody class="table-border-bottom-0">
-        @forelse($centers as $center)
+        @forelse($members as $member)
         <tr>
           <td></td>
-          <td><i class="ti ti-building-community ti-lg text-info me-3"></i> <strong>Name 1</strong></td>
           <td>
             <ul class="list-unstyled users-list m-0 avatar-group d-flex align-items-center">
               <li class="avatar avatar-xs pull-up">
@@ -39,9 +37,7 @@
               </li>
             </ul>
           </td>
-          <td>
-            Count
-          </td>
+          <td></td>
           <td>
             <span class="badge bg-label-primary me-1">Active</span>
           </td>
@@ -57,7 +53,7 @@
         </tr>
         @empty
         <tr>
-          <td colspan="6">
+          <td colspan="5">
             <div class="mt-2 mb-2" style="text-align: center">
                 <h3 class="mb-1 mx-2">Oopsie-doodle!</h3>
                 <p class="mb-4 mx-2">
