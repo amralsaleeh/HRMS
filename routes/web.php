@@ -4,7 +4,7 @@ use App\Http\Controllers\HomePage;
 use App\Livewire\Dashboard;
 use App\Livewire\HumanResource\Structure\Centers;
 use App\Livewire\HumanResource\Structure\Departments;
-use App\Livewire\HumanResource\Structure\Members;
+use App\Livewire\HumanResource\Structure\Employees;
 use App\Livewire\HumanResource\Structure\Positions;
 use App\Livewire\Misc\ComingSoon;
 use Illuminate\Support\Facades\Route;
@@ -34,7 +34,7 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
         Route::get('/centers', Centers::class)->name('structure-centers');
         Route::get('/departments', Departments::class)->name('structure-departments');
         Route::get('/positions', Positions::class)->name('structure-positions');
-        Route::get('/members', Members::class)->name('structure-members');
+        Route::get('/employees', Employees::class)->name('structure-employees');
     });
 
     Route::get('/discounts', ComingSoon::class)->name('discounts');

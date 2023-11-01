@@ -5,7 +5,8 @@
 @endphp
 
 <div class="demo-inline-spacing">
-  <button type="button" class="btn btn-primary">
+  <button type="button" class="btn btn-primary"
+    data-bs-toggle="modal" data-bs-target="#addNewCenterModal">
     <span class="ti-xs ti ti-plus me-1"></span>Add New Center
   </button>
 </div>
@@ -28,7 +29,7 @@
         @forelse($centers as $center)
         <tr>
           <td></td>
-          <td><i class="ti ti-building-community ti-lg text-info me-3"></i> <strong>Name 1</strong></td>
+          <td><i class="ti ti-building-community ti-lg text-info me-3"></i> <strong>Name 1</strong> </td>
           <td>
             <ul class="list-unstyled users-list m-0 avatar-group d-flex align-items-center">
               <li class="avatar avatar-xs pull-up">
@@ -75,4 +76,7 @@
     </table>
   </div>
 </div>
+
+{{-- Modal --}}
+@include('_partials/_modals/modal-add-new-center')
 </div>

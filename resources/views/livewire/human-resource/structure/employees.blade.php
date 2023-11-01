@@ -6,12 +6,12 @@
 
 <div class="demo-inline-spacing">
   <button type="button" class="btn btn-primary">
-    <span class="ti-xs ti ti-plus me-1"></span>Add New Member
+    <span class="ti-xs ti ti-plus me-1"></span>Add New Employee
   </button>
 </div>
 <br>
 <div class="card">
-  <h5 class="card-header">Members</h5>
+  <h5 class="card-header">Employees</h5>
   <div class="table-responsive text-nowrap">
     <table class="table">
       <thead>
@@ -24,7 +24,7 @@
         </tr>
       </thead>
       <tbody class="table-border-bottom-0">
-        @forelse($members as $member)
+        @forelse($employees as $employee)
         <tr>
           <td></td>
           <td>

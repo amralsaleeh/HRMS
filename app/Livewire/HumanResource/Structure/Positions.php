@@ -6,7 +6,9 @@ use Livewire\Component;
 
 class Positions extends Component
 {
+    // Variables - Start //
     public $positions = [];
+    // Variables - Start //
 
     public function render()
     {

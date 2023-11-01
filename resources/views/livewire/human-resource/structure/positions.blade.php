@@ -17,6 +17,7 @@
       <thead>
         <tr>
           <th>Name</th>
+          <th>Vacancies count</th>
           <th>Members count</th>
           <th>Status</th>
           <th>Actions</th>
@@ -26,6 +27,9 @@
         @forelse($positions as $position)
         <tr>
           <td><i class="ti ti-building-community ti-lg text-info me-3"></i> <strong>Name 1</strong></td>
+          <td>
+            Count
+          </td>
           <td>
             Count
           </td>
@@ -44,7 +48,7 @@
         </tr>
         @empty
         <tr>
-          <td colspan="4">
+          <td colspan="5">
             <div class="mt-2 mb-2" style="text-align: center">
                 <h3 class="mb-1 mx-2">Oopsie-doodle!</h3>
                 <p class="mb-4 mx-2">

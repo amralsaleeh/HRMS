@@ -51,9 +51,9 @@
           "slug": "structure-positions"
         },
         {
-          "url": "structure/members",
-          "name": "Members",
-          "slug": "structure-members"
+          "url": "structure/employees",
+          "name": "Employees",
+          "slug": "structure-employees"
         }
       ]
     },

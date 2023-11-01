@@ -1,4 +1,7 @@
 <div>
+
+  @section('title', 'Coming soon!')
+
   <div style="text-align: center">
     <div class="container-xxl container-p-y">
       <div class="misc-wrapper">
