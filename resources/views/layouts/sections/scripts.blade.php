@@ -7,12 +7,39 @@
 <script src="{{ asset(mix('assets/vendor/libs/hammer/hammer.js')) }}"></script>
 <script src="{{ asset(mix('assets/vendor/libs/typeahead-js/typeahead.js')) }}"></script>
 <script src="{{ asset(mix('assets/vendor/js/menu.js')) }}"></script>
+<script src="{{asset('assets/vendor/libs/toastr/toastr.js')}}"></script>
 
 @yield('vendor-script')
 <!-- END: Page Vendor JS-->
 
 <!-- BEGIN: Theme JS-->
 <script src="{{ asset(mix('assets/js/main.js')) }}"></script>
+
+<script>
+  toastr.options = {
+        "closeButton": false,
+        "debug": false,
+        "newestOnTop": false,
+        "progressBar": true,
+        "positionClass": "toast-top-right",
+        "preventDuplicates": false,
+        "onclick": null,
+        "showDuration": "300",
+        "hideDuration": "1000",
+        "timeOut": "5000",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut",
+        "rtl": false
+      }
+
+  window.addEventListener('toastr', event => {
+  toastr[event.detail.type](event.detail.message,
+    event.detail.title ?? '')
+  });
+</script>
 <!-- END: Theme JS-->
 
 <!-- Pricing Modal JS-->

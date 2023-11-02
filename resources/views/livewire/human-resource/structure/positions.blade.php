@@ -4,6 +4,8 @@
   $configData = Helper::appClasses();
 @endphp
 
+@section('title', 'Positions')
+
 <div class="demo-inline-spacing">
   <button type="button" class="btn btn-primary">
     <span class="ti-xs ti ti-plus me-1"></span>Add New Position

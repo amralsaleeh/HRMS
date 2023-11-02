@@ -4,6 +4,8 @@
   $configData = Helper::appClasses();
 @endphp
 
+@section('title', 'Centers')
+
 <div class="demo-inline-spacing">
   <button type="button" class="btn btn-primary"
     data-bs-toggle="modal" data-bs-target="#addNewCenterModal">

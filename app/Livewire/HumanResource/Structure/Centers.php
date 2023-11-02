@@ -21,6 +21,8 @@ class Centers extends Component
 
     public function addNewCenter()
     {
-        dd($this->name, $this->supervisor);
+        $this->dispatch('toastr', type: 'success'/* , title: 'Done!' */ , message: 'Going Well!');
+        // dd($this->name, $this->supervisor);
+
     }
 }
