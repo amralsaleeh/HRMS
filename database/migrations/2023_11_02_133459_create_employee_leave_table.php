@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('employee__leaves', function (Blueprint $table) {
+        Schema::create('employee_leave', function (Blueprint $table) {
             $table->id();
             $table->foreignId('employee_id')->constrained();
             $table->foreignId('leave_id')->constrained();
@@ -23,7 +23,6 @@ return new class extends Migration
             $table->boolean('is_checked');
             $table->string('created_by');
             $table->string('updated_by');
-
             $table->timestamps();
         });
     }
@@ -33,6 +32,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('employee__leaves');
+        Schema::dropIfExists('employee_leave');
     }
 };
