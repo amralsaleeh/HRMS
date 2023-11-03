@@ -17,8 +17,8 @@ return new class extends Migration
             $table->date('from_date');
             $table->date('to_date');
             $table->longText('note')->nullable();
-
-
+            $table->string('created_by');
+            $table->string('updated_by');
             $table->timestamps();
         });
     }

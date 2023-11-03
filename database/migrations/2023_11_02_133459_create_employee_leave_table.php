@@ -19,7 +19,7 @@ return new class extends Migration
             $table->date('to_date');
             $table->time('start_at');
             $table->time('end_at');
-            $table->boolean('is_auther');
+            $table->boolean('is_authorized');
             $table->boolean('is_checked');
             $table->string('created_by');
             $table->string('updated_by');

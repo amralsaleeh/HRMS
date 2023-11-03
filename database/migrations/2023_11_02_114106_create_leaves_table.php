@@ -16,6 +16,8 @@ return new class extends Migration
             $table->string('name');
             $table->integer('discount_rate')->length(3);
             $table->longText('notes')->nullable();
+            $table->string('created_by');
+            $table->string('updated_by');
             $table->timestamps();
         });
     }

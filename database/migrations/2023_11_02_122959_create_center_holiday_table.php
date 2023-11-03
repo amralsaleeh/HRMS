@@ -15,6 +15,8 @@ return new class extends Migration
             $table->foreignId('center_id')->constrained();
             $table->foreignId('holiday_id')->constrained();
             $table->primary(['center_id', 'holiday_id']);
+            $table->string('created_by');
+            $table->string('updated_by');
             $table->timestamps();
         });
     }

@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->integer('vacancies_count')->length(3);
+            $table->string('created_by');
+            $table->string('updated_by');
             $table->timestamps();
         });
     }

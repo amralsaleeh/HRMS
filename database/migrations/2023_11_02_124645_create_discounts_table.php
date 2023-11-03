@@ -16,6 +16,8 @@ return new class extends Migration
             $table->foreignId('employee_id')->constrained();
             $table->string('reason');
             $table->boolean('is_sent');
+            $table->string('created_by');
+            $table->string('updated_by');
             $table->timestamps();
         });
     }

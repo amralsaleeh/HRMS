@@ -17,6 +17,8 @@ return new class extends Migration
             $table->time('start_hour_point');
             $table->time('end_hour_point');
             $table->string('weekends');
+            $table->string('created_by');
+            $table->string('updated_by');
             $table->timestamps();
         });
     }

@@ -14,12 +14,14 @@ return new class extends Migration
         Schema::create('timelines', function (Blueprint $table) {
             $table->id();
             $table->foreignId('center_id')->constrained();
-            $table->foreignId('departement_id')->constrained();
+            $table->foreignId('department_id')->constrained();
             $table->foreignId('position_id')->constrained();
             $table->foreignId('employee_id')->constrained();
             $table->date('start_date');
             $table->date('end_date');
             $table->longText('notes')->nullable();
+            $table->string('created_by');
+            $table->string('updated_by');
             $table->timestamps();
         });
     }

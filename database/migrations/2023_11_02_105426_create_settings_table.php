@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('sms_api_username');
             $table->string('sms_api_password');
+            $table->string('created_by');
+            $table->string('updated_by');
             $table->timestamps();
         });
     }

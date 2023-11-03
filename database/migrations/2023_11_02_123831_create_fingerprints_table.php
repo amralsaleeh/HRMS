@@ -19,6 +19,8 @@ return new class extends Migration
             $table->time('check_in')->nullable();
             $table->time('check_out')->nullable();
             $table->boolean('is_checked');
+            $table->string('created_by');
+            $table->string('updated_by');
             $table->timestamps();
         });
     }
