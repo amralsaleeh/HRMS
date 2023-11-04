@@ -18,7 +18,7 @@ return new class extends Migration
             $table->foreignId('position_id')->constrained();
             $table->foreignId('employee_id')->constrained();
             $table->date('start_date');
-            $table->date('end_date');
+            $table->date('end_date')->nullable();
             $table->longText('notes')->nullable();
             $table->string('created_by');
             $table->string('updated_by');

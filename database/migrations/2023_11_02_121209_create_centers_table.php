@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('centers', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->time('start_hour_point');
-            $table->time('end_hour_point');
+            $table->time('start_work_hour');
+            $table->time('end_work_hour');
             $table->string('weekends');
             $table->string('created_by');
             $table->string('updated_by');
