@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class Center extends Model
 {
     use HasFactory;
+
+    protected $fillable = ['name','start_work_hour','end_work_hour','weekends','created_by','updated_by'];
 }

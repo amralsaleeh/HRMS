@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class Fingerprint extends Model
 {
     use HasFactory;
+
+    protected $fillable = ['employee_id','date','log','check_in','check_out','is_checked', 'created_by','updated_by'];
 }

@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class Discount extends Model
 {
     use HasFactory;
+
+    protected $fillable = ['employee_id','reason','is_sent','created_by','updated_by'];
 }
