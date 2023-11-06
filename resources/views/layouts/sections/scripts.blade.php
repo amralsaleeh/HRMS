@@ -40,6 +40,12 @@
     event.detail.title ?? '')
   });
 </script>
+
+<script>
+  window.addEventListener('closeModal', event => {
+     $(event.detail.elementId).modal('hide');
+  })
+</script>
 <!-- END: Theme JS-->
 
 <!-- Pricing Modal JS-->
