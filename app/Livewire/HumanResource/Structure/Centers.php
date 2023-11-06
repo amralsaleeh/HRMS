@@ -10,6 +10,10 @@ use Livewire\Component;
 
 class Centers extends Component
 {
+    // TODO: Show supervisor name beside each center in the table.
+    // FIXME: Weekends input (select2) doesn't turn red on validation error.
+    // FIXME: Weekends input (select2) doesn't display previously entered values visually when click on edit center.
+
     // Variables - Start //
     public $centers = [];
 
