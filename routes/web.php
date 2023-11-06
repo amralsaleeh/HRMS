@@ -43,6 +43,7 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
     Route::get('/holidays', ComingSoon::class)->name('holidays');
     Route::get('/statistics', ComingSoon::class)->name('statistics');
     Route::get('/roles', ComingSoon::class)->name('roles');
+    Route::get('/sms', ComingSoon::class)->name('sms');
 
     Route::get('/products', ComingSoon::class)->name('products');
     Route::get('/categories', ComingSoon::class)->name('categories');

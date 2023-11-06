@@ -86,6 +86,13 @@
       "role": ""
     },
     {
+      "url": "/sms",
+      "name": "SMS",
+      "icon": "menu-icon tf-icons ti ti-message-dots",
+      "slug": "sms",
+      "role": ""
+    },
+    {
       "menuHeader": "Assets",
       "role": ""
     },
