@@ -25,6 +25,9 @@ class User extends Authenticatable
      */
     protected $fillable = ['name','employee_id','mobile','mobile_verified_at','email','email_verified_at', 'password','profile_photo_path'];
 
+    public function employee(){
+      return $this->belongsTo(Employee::class);
+    }
     /**
      * The attributes that should be hidden for serialization.
      *

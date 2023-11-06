@@ -10,4 +10,8 @@ class Discount extends Model
     use HasFactory;
 
     protected $fillable = ['employee_id','reason','is_sent','created_by','updated_by'];
+
+    public function employee(){
+      return $this->belongsTo(Employee::class);
+    }
 }

@@ -9,6 +9,10 @@ class Department extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['name', 'created_by', 'updated_by'];
 
-    protected $fillable = ['name','created_by','updated_by'];
+    public function timeline()
+    {
+        return $this->hasMany(Timeline::class);
+    }
 }

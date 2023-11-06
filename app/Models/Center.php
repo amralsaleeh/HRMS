@@ -22,6 +22,16 @@ class Center extends Model
         'updated_by',
     ];
 
+    public function timeline()
+    {
+        return $this->hasMany(Timeline::class);
+    }
+
+    public function holiday()
+    {
+        return $this->belongsToMany(Holiday::class);
+    }
+
     protected function name(): Attribute
     {
         return Attribute::make(

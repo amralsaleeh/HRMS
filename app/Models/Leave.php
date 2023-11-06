@@ -9,5 +9,10 @@ class Leave extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name','discount_rate','notes','created_by','updated_by'];
+    protected $fillable = ['name', 'discount_rate', 'notes', 'created_by', 'updated_by'];
+
+    public function employee()
+    {
+        return $this->belongsToMany(Employee::class);
+    }
 }
