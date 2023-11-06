@@ -1,0 +1,22 @@
+1. Make sure you have the most current version of Visual Studio Code. If you install via a company portal, you might not have the most current version.
+
+2. On machine A
+
+  Windows (PowerShell, e. g. using Visual Studio Code's integrated Terminal):
+  code --list-extensions | % { "code --install-extension $_" }
+
+3. Copy and paste the echo output to machine B
+
+----------------------------------------------------------------------------------------------------
+
+Windows (PowerShell, e. g. using Visual Studio Code's integrated Terminal):
+1. code --list-extensions > list
+2. sed -i 's/.*/\"&\",/' list
+3. Copy contents of file list and add to file .vscode/extensions.json in the "recommendations" section.
+4. If extensions.json doesn't exist then create a file with the following contents.
+{
+    "recommendations": [
+        // Add content of file list here
+    ]
+}
+5. Share the extensions.json file and ask another user to add to the .vscode folder. Visual Studio Code will prompt for installation of extensions.
