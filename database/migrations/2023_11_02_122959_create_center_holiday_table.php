@@ -17,7 +17,9 @@ return new class extends Migration
             $table->primary(['center_id', 'holiday_id']);
             $table->string('created_by');
             $table->string('updated_by');
+            $table->string('deleted_by');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

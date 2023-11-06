@@ -19,7 +19,9 @@ return new class extends Migration
             $table->longText('note')->nullable();
             $table->string('created_by');
             $table->string('updated_by');
+            $table->string('deleted_by');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
