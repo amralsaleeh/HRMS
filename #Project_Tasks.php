@@ -7,3 +7,4 @@
 
 // Deployment (before publishing to the hosting server)
 // TODO: Make sure that log-viewer is enabled for admins only.
+// TODO: Turn APP_DEBUG to false in .env file.
