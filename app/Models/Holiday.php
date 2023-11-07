@@ -8,4 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class Holiday extends Model
 {
     use HasFactory;
+
+
+    protected $fillable = ['name','from_date','to_date','note','created_by','updated_by'];
+
+
+    public function center(){
+      return $this->belongsToMany(center::class);
+    }
 }
