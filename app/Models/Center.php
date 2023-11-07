@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Traits\CreatedUpdatedBy;
+use App\Traits\CreatedUpdatedDeletedBy;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Center extends Model
 {
-    use CreatedUpdatedBy, HasFactory, SoftDeletes;
+    use CreatedUpdatedDeletedBy, HasFactory, SoftDeletes;
 
     protected $fillable = [
         'name',
@@ -22,6 +22,7 @@ class Center extends Model
         'weekends',
         'created_by',
         'updated_by',
+        'deleted_by',
     ];
 
     public function timelines(): HasMany
