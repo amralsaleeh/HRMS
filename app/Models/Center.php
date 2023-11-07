@@ -7,11 +7,13 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Center extends Model
 {
-    use CreatedUpdatedBy, HasFactory ,SoftDeletes;
+    use CreatedUpdatedBy, HasFactory, SoftDeletes;
 
     protected $fillable = [
         'name',
@@ -22,12 +24,12 @@ class Center extends Model
         'updated_by',
     ];
 
-    public function timeline()
+    public function timelines(): HasMany
     {
         return $this->hasMany(Timeline::class);
     }
 
-    public function holiday()
+    public function holidays(): BelongsToMany
     {
         return $this->belongsToMany(Holiday::class);
     }

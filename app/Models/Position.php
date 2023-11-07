@@ -4,14 +4,20 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Position extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'vacancies_count', 'created_by', 'updated_by'];
+    protected $fillable = [
+        'name',
+        'vacancies_count',
+        'created_by',
+        'updated_by',
+    ];
 
-    public function timeline()
+    public function timelines(): HasMany
     {
         return $this->hasMany(Timeline::class);
     }
