@@ -58,6 +58,13 @@
       ]
     },
     {
+      "url": "/messages",
+      "name": "Messages",
+      "icon": "menu-icon tf-icons ti ti-message-dots",
+      "slug": "messages",
+      "role": ""
+    },
+    {
       "url": "/discounts",
       "name": "Discounts",
       "icon": "menu-icon tf-icons ti ti-discount-2",
@@ -83,13 +90,6 @@
       "name": "Roles",
       "icon": "menu-icon tf-icons ti ti-adjustments-alt",
       "slug": "roles",
-      "role": ""
-    },
-    {
-      "url": "/sms",
-      "name": "SMS",
-      "icon": "menu-icon tf-icons ti ti-message-dots",
-      "slug": "sms",
       "role": ""
     },
     {

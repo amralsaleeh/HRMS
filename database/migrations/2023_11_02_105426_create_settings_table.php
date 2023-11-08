@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('settings', function (Blueprint $table) {
             $table->id();
+            $table->string('sms_api_sender');
             $table->string('sms_api_username');
             $table->string('sms_api_password');
             $table->string('created_by');

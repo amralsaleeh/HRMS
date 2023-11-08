@@ -7,6 +7,7 @@ use App\Livewire\HumanResource\Structure\Centers;
 use App\Livewire\HumanResource\Structure\Departments;
 use App\Livewire\HumanResource\Structure\Employees;
 use App\Livewire\HumanResource\Structure\Positions;
+use App\Livewire\Messages;
 use App\Livewire\Misc\ComingSoon;
 use Illuminate\Support\Facades\Route;
 
@@ -39,11 +40,11 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
         Route::get('/employees', Employees::class)->name('structure-employees');
     });
 
+    Route::get('/messages', Messages::class)->name('messages');
     Route::get('/discounts', ComingSoon::class)->name('discounts');
     Route::get('/holidays', ComingSoon::class)->name('holidays');
     Route::get('/statistics', ComingSoon::class)->name('statistics');
     Route::get('/roles', ComingSoon::class)->name('roles');
-    Route::get('/sms', ComingSoon::class)->name('sms');
 
     Route::get('/products', ComingSoon::class)->name('products');
     Route::get('/categories', ComingSoon::class)->name('categories');

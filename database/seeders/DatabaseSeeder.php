@@ -15,5 +15,11 @@ class DatabaseSeeder extends Seeder
         $this->call([
             AdminUserSeeder::class,
         ]);
+
+        if (file_exists('database/seeders/SettingsSeeder.php')) {
+            $this->call([
+                SettingsSeeder::class,
+            ]);
+        }
     }
 }
