@@ -12,6 +12,7 @@ class Setting extends Model
     use CreatedUpdatedDeletedBy, HasFactory, SoftDeletes;
 
     protected $fillable = [
+        'sms_api_sender',
         'sms_api_username',
         'sms_api_password',
         'created_by',
