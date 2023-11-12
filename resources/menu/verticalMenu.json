@@ -58,11 +58,22 @@
       ]
     },
     {
-      "url": "/messages",
       "name": "Messages",
       "icon": "menu-icon tf-icons ti ti-message-dots",
       "slug": "messages",
-      "role": ""
+      "role": "",
+      "submenu": [
+        {
+          "url": "messages/bulk",
+          "name": "Bulk",
+          "slug": "messages-bulk"
+        },
+        {
+          "url": "messages/personal",
+          "name": "Personal",
+          "slug": "messages-personal"
+        }
+      ]
     },
     {
       "url": "/discounts",
@@ -86,11 +97,27 @@
       "role": ""
     },
     {
-      "url": "/roles",
-      "name": "Roles",
+      "name": "Settings",
       "icon": "menu-icon tf-icons ti ti-adjustments-alt",
-      "slug": "roles",
-      "role": ""
+      "slug": "settings",
+      "role": "",
+      "submenu": [
+        {
+          "url": "settings/rules",
+          "name": "Rules",
+          "slug": "settings-rules"
+        },
+        {
+          "url": "settings/roles&permissions",
+          "name": "Roles & Permissions",
+          "slug": "settings-roles&permissions"
+        },
+        {
+          "url": "settings/users",
+          "name": "Users",
+          "slug": "settings-users"
+        }
+      ]
     },
     {
       "menuHeader": "Assets",

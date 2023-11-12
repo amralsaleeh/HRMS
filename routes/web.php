@@ -3,11 +3,11 @@
 use App\Http\Controllers\HomePage;
 use App\Http\Controllers\language\LanguageController;
 use App\Livewire\Dashboard;
+use App\Livewire\HumanResource\Messages\Personal;
 use App\Livewire\HumanResource\Structure\Centers;
 use App\Livewire\HumanResource\Structure\Departments;
 use App\Livewire\HumanResource\Structure\Employees;
 use App\Livewire\HumanResource\Structure\Positions;
-use App\Livewire\Messages;
 use App\Livewire\Misc\ComingSoon;
 use Illuminate\Support\Facades\Route;
 
@@ -40,10 +40,21 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
         Route::get('/employees', Employees::class)->name('structure-employees');
     });
 
-    Route::get('/messages', Messages::class)->name('messages');
+    Route::prefix('messages')->group(function () {
+        Route::get('/bulk', ComingSoon::class)->name('messages-bulk');
+        Route::get('/personal', Personal::class)->name('messages-personal');
+    });
+
     Route::get('/discounts', ComingSoon::class)->name('discounts');
     Route::get('/holidays', ComingSoon::class)->name('holidays');
     Route::get('/statistics', ComingSoon::class)->name('statistics');
+
+    Route::prefix('settings')->group(function () {
+        Route::get('/rules', ComingSoon::class)->name('settings-rules');
+        Route::get('/roles&permissions', ComingSoon::class)->name('settings-roles&permissions');
+        Route::get('/users', ComingSoon::class)->name('settings-users');
+    });
+
     Route::get('/roles', ComingSoon::class)->name('roles');
 
     Route::get('/products', ComingSoon::class)->name('products');
