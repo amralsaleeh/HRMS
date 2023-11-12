@@ -88,7 +88,7 @@
               </div>
             </div>
             <div class="d-flex align-items-center">
-              <i class="ti ti-phone-call cursor-pointer d-sm-block d-none me-3" data-bs-toggle="tooltip" data-bs-placement="left" data-bs-original-title="{{ $selectedEmployee->mobile_number }}"></i>
+              <i class="ti ti-phone-call cursor-pointer d-sm-block d-none me-3" data-bs-toggle="tooltip" data-bs-placement="left" data-bs-original-title="{{ '+'.$selectedEmployee->mobile_number }}"></i>
               <div class="dropdown d-flex align-self-center">
                 <button class="btn p-0" type="button" id="chat-header-actions" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   <i class="ti ti-dots-vertical"></i>
@@ -109,7 +109,7 @@
                 <div class="d-flex overflow-hidden">
                   <div class="chat-message-wrapper flex-grow-1">
                     <div class="chat-message-text">
-                      <p class="mb-0">{{ $message->text }}</p>
+                      <p {{-- style="white-space: pre-wrap;" --}} class="mb-0">{{ $message->text }}</p>
                     </div>
                     <div class="text-end text-muted mt-1">
                       <i class='ti {{ $message->is_sent ? 'text-success ti-checks' : 'ti-check' }} ti-xs me-1'></i>
