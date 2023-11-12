@@ -20,8 +20,6 @@ class Timeline extends Model
         'start_date',
         'end_date',
         'notes',
-        'created_by',
-        'updated_by',
     ];
 
     public function center(): BelongsTo

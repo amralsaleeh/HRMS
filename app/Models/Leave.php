@@ -16,8 +16,6 @@ class Leave extends Model
         'name',
         'discount_rate',
         'notes',
-        'created_by',
-        'updated_by',
     ];
 
     public function employees(): BelongsToMany

@@ -16,8 +16,6 @@ class Contract extends Model
         'name',
         'work_rate',
         'notes',
-        'created_by',
-        'updated_by',
     ];
 
     public function employees(): HasMany
