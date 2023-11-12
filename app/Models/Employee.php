@@ -32,8 +32,6 @@ class Employee extends Model
         'delay_counter',
         'hourly_counter',
         'is_active',
-        'created_by',
-        'updated_by',
     ];
 
     public function user(): HasOne
@@ -60,4 +58,28 @@ class Employee extends Model
     {
         return $this->belongsToMany(Leave::class);
     }
+
+    public function messages(): HasMany
+    {
+        return $this->hasMany(Message::class);
+    }
+
+    // Computed Attribute - Start
+    public function getFullNameAttribute()
+    {
+        return $this->first_name.' '.$this->last_name;
+    }
+    // Computed Attribute - End
+
+    // Functions - Start
+    public function getCurrentPositionAttribute()
+    {
+        $data = Timeline::with('position')->where('employee_id', $this->id)->whereNull('end_date')->first();
+        if ($data) {
+            return $data->position->name;
+        } else {
+            return 'Out of work';
+        }
+    }
+    // Functions - End
 }
