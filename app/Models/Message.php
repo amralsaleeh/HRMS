@@ -5,21 +5,22 @@ namespace App\Models;
 use App\Traits\CreatedUpdatedDeletedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Leave extends Model
+class Message extends Model
 {
     use CreatedUpdatedDeletedBy, HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'name',
-        'discount_rate',
-        'notes',
+        'employee_id',
+        'text',
+        'recipient',
+        'is_sent',
     ];
 
-    public function employees(): BelongsToMany
+    public function employee(): BelongsTo
     {
-        return $this->belongsToMany(Employee::class);
+        return $this->belongsTo(Employee::class);
     }
 }

@@ -15,7 +15,5 @@ class Setting extends Model
         'sms_api_sender',
         'sms_api_username',
         'sms_api_password',
-        'created_by',
-        'updated_by',
     ];
 }

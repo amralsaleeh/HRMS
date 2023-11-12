@@ -17,8 +17,6 @@ class Holiday extends Model
         'from_date',
         'to_date',
         'note',
-        'created_by',
-        'updated_by',
     ];
 
     public function centers(): BelongsToMany

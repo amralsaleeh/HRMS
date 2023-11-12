@@ -16,8 +16,6 @@ class Discount extends Model
         'employee_id',
         'reason',
         'is_sent',
-        'created_by',
-        'updated_by',
     ];
 
     public function employee(): BelongsTo

@@ -15,8 +15,6 @@ class Position extends Model
     protected $fillable = [
         'name',
         'vacancies_count',
-        'created_by',
-        'updated_by',
     ];
 
     public function timelines(): HasMany

@@ -20,9 +20,6 @@ class Center extends Model
         'start_work_hour',
         'end_work_hour',
         'weekends',
-        'created_by',
-        'updated_by',
-        'deleted_by',
     ];
 
     public function timelines(): HasMany
