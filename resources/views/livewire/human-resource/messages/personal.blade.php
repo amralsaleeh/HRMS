@@ -7,7 +7,7 @@
 @section('title', 'Messages')
 
 @section('vendor-style')
-  <link rel="stylesheet" href="{{asset('assets/vendor/libs/bootstrap-maxlength/bootstrap-maxlength.css')}}" />
+
 @endsection
 
 @section('page-style')
@@ -15,11 +15,11 @@
 @endsection
 
 @section('vendor-script')
-  <script src="{{asset('assets/vendor/libs/bootstrap-maxlength/bootstrap-maxlength.js')}}"></script>
+
 @endsection
 
 @section('page-script')
-  {{-- <script src="{{asset('assets/js/app-chat.js')}}"></script> --}}
+
 @endsection
 
 @push('custom-css')
@@ -141,6 +141,7 @@
               <button class="btn btn-primary d-flex send-msg-btn">
                 <i class="ti ti-send me-md-1 me-0"></i>
                 <span class="align-middle d-md-inline-block d-none">Send</span>
+                <div wire:loading >ing</div>
               </button>
             </div>
           </form>
