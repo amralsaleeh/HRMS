@@ -38,8 +38,8 @@
   --bs-black-rgb: 0, 0, 0;
   --bs-body-color-rgb: 182, 190, 227;
   --bs-body-bg-rgb: 37, 41, 60;
-  --bs-font-sans-serif: "Public Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
-  --bs-font-monospace: "SFMono-Regular", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  --bs-font-sans-serif: "Noto Kufi Arabic", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --bs-font-monospace: monospace;
   --bs-gradient: linear-gradient(180deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0));
   --bs-root-font-size: 16px;
   --bs-body-font-family: var(--bs-font-sans-serif);
