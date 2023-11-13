@@ -22,7 +22,7 @@
           <th>ID</th>
           <th>Name</th>
           {{-- <th>Coordinator</th> --}}
-          <th>Members count</th>
+          <th>Members Count</th>
           <th>Actions</th>
         </tr>
       </thead>

@@ -14,7 +14,7 @@
   </div>
   <br>
   <div class="card">
-    <h5 class="card-header"><i class="nav-icon fa-solid fa-map-pin ti-lg text-info me-3"></i>Positions</h5>
+    <h5 class="card-header"><i class="ti ti-map-pin ti-lg text-info me-3"></i>Positions</h5>
     <div class="table-responsive text-nowrap">
       <table class="table">
         <thead>
@@ -22,7 +22,7 @@
             <th>ID</th>
             <th>Name</th>
             {{-- <th>Coordinator</th> --}}
-            <th>vacancies_count</th>
+            <th>vacancies Count</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -31,7 +31,7 @@
           <tr>
             <td>{{ $position->id }}</td>
             <td><strong>{{ $position->name }}</strong></td>
-            <td><strong>{{ $position->vacancies_count }}</strong></td>
+            <td>{{ $position->vacancies_count }}</strong></td>
 
             <td>
               <div style="display: flex">

@@ -22,8 +22,8 @@
           <th>ID</th>
           <th>Name</th>
           {{-- <th>Supervisor</th> --}}
-          <th>Members count</th>
-          <th>Working hours</th>
+          <th>Members Count</th>
+          <th>Working Hours</th>
           <th>Weekends</th>
           <th>Actions</th>
         </tr>

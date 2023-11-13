@@ -109,7 +109,7 @@
                 <div class="d-flex overflow-hidden">
                   <div class="chat-message-wrapper flex-grow-1">
                     <div class="chat-message-text">
-                      <p {{-- style="white-space: pre-wrap;" --}} class="mb-0">{{ $message->text }}</p>
+                      <p style="white-space: pre-wrap;" class="mb-0">{{ $message->text }}</p>
                     </div>
                     <div class="text-end text-muted mt-1">
                       <i class='ti {{ $message->is_sent ? 'text-success ti-checks' : 'ti-check' }} ti-xs me-1'></i>
@@ -177,6 +177,7 @@
           // Chat history scrollbar
           if (chatHistoryBody) {
             new PerfectScrollbar(chatHistoryBody, {
+              wheelSpeed: 0.5,
               wheelPropagation: false,
               suppressScrollX: true
             });
