@@ -3,7 +3,8 @@
     $containerNav = $containerNav ?? 'container-fluid';
     $navbarDetached = ($navbarDetached ?? 'navbar-detached');
     // $navbarDetached = ($navbarDetached ?? '');
-    $navbarHideToggle = ($navbarDetached ?? true)
+    $navbarHideToggle = ($navbarDetached ?? true);
+    use Illuminate\Support\Facades\App;
   @endphp
 
   <!-- Navbar -->
@@ -55,13 +56,14 @@
               </a>
               <ul class="dropdown-menu dropdown-menu-end">
                 <li>
-                  <a class="dropdown-item" href="{{ url('lang/ar') }}" data-language="ar">
+                  <a class="dropdown-item {{ App::getLocale() == 'ar' ? 'selected' : '' }}" href="{{ url('lang/ar') }}" data-language="ar" data-text-direction="rtl">
                     <i class="fi fi-sy fis rounded-circle me-1 fs-3"></i>
                     <span class="align-middle">Arabic</span>
                   </a>
                 </li>
                 <li>
-                  <a class="dropdown-item selected" href="{{ url('lang/en') }}" data-language="en">
+                  {{-- {{ dd(App::getLocale()) }} --}}
+                  <a class="dropdown-item {{ App::getLocale() == 'en' ? 'selected' : '' }}" href="{{ url('lang/en') }}" data-language="en" data-text-direction="ltr">
                     <i class="fi fi-us fis rounded-circle me-1 fs-3"></i>
                     <span class="align-middle">English</span>
                   </a>
