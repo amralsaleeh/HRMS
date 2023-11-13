@@ -137,15 +137,32 @@ if (document.getElementById('layout-menu')) {
 
   // change the flag and name of language when you change the language through laravel locale (Language Dropdown).
   // -------------------------------------------------------------------------------------------------------------
-  let language = document.documentElement.getAttribute('lang');
-  let langDropdown = document.getElementsByClassName('dropdown-language');
-  if (language !== null && langDropdown.length) {
-    // getting selected flag's name and icon class
-    let selectedDropdownItem = document.querySelector('a[data-language=' + language + ']');
-    let selectedFlag = selectedDropdownItem.childNodes[1].className;
+  let languageDropdown = document.getElementsByClassName('dropdown-language');
 
-    // add 'selected' class to current language's dropdown options
-    selectedDropdownItem.classList.add('selected');
+  if (languageDropdown.length) {
+    let dropdownItems = languageDropdown[0].querySelectorAll('.dropdown-item');
+    const dropdownActiveItem = languageDropdown[0].querySelector('.dropdown-item.selected');
+
+    directionChange(dropdownActiveItem.dataset.textDirection);
+
+    for (let i = 0; i < dropdownItems.length; i++) {
+      dropdownItems[i].addEventListener('click', function () {
+        let textDirection = this.getAttribute('data-text-direction');
+        window.templateCustomizer.setLang(this.getAttribute('data-language'));
+        directionChange(textDirection);
+      });
+    }
+    let selectedFlag = dropdownActiveItem.childNodes[1].className;
+
+    function directionChange(textDirection) {
+      if (textDirection === 'rtl') {
+        if (localStorage.getItem('templateCustomizer-' + templateName + '--Rtl') !== 'true')
+          window.templateCustomizer.setRtl(true);
+      } else {
+        if (localStorage.getItem('templateCustomizer-' + templateName + '--Rtl') === 'true')
+          window.templateCustomizer.setRtl(false);
+      }
+    }
 
     // set selected language's flag
     let setLangFlag = (document.querySelector('.dropdown-language .dropdown-toggle').childNodes[1].className =
