@@ -35,25 +35,25 @@ trait CreatedUpdatedDeletedBy
             // Updating created_by and updated_by when model is created
             static::creating(function ($model) {
                 if (! $model->isDirty('created_by')) {
-                    $model->created_by = 'IT Department';
+                    $model->created_by = 'Administrator';
                 }
                 if (! $model->isDirty('updated_by')) {
-                    $model->updated_by = 'IT Department';
+                    $model->updated_by = 'Administrator';
                 }
             });
 
             // Updating updated_by when model is updated
             static::updating(function ($model) {
                 if (! $model->isDirty('updated_by')) {
-                    $model->updated_by = 'IT Department';
+                    $model->updated_by = 'Administrator';
                 }
             });
 
             // Updating deleted_by when is deleting
             static::deleting(function ($model) {
                 if (! $model->isDirty('deleted_by')) {
-                    $model->deleted_by = 'IT Department';
-                    $model->update(['deleted_by' => 'IT Department']);
+                    $model->deleted_by = 'Administrator';
+                    $model->update(['deleted_by' => 'Administrator']);
                 }
             });
         }
