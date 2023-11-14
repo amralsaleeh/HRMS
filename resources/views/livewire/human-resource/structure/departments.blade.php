@@ -4,7 +4,7 @@
   $configData = Helper::appClasses();
 @endphp
 
-@section('title', 'Departments')
+@section('title', 'Departments - Structure')
 
 <div class="demo-inline-spacing">
   <button wire:click.prevent='showNewDepartmentModal' type="button" class="btn btn-primary"

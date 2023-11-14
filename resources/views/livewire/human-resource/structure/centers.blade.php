@@ -4,7 +4,7 @@
   $configData = Helper::appClasses();
 @endphp
 
-@section('title', 'Centers')
+@section('title', 'Centers - Structure')
 
 <div class="demo-inline-spacing">
   <button wire:click.prevent='showNewCenterModal' type="button" class="btn btn-primary"

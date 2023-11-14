@@ -4,7 +4,7 @@
   $configData = Helper::appClasses();
 @endphp
 
-@section('title', 'Messages')
+@section('title', 'Personal - Messages')
 
 @section('vendor-style')
 
@@ -157,10 +157,6 @@
 
 @push('custom-scripts')
     <script>
-
-    </script>
-
-    <script>
       window.addEventListener('initialize', event => {
         $(function () {
           const chatContactsBody = document.querySelector('.app-chat-contacts .sidebar-body'),
@@ -177,7 +173,7 @@
           // Chat history scrollbar
           if (chatHistoryBody) {
             new PerfectScrollbar(chatHistoryBody, {
-              wheelSpeed: 0.5,
+              wheelSpeed: 0.3,
               wheelPropagation: false,
               suppressScrollX: true
             });

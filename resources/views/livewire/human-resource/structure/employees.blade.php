@@ -4,7 +4,7 @@
   $configData = Helper::appClasses();
 @endphp
 
-@section('title', 'Employees')
+@section('title', 'Employees - Structure')
 
 <div class="demo-inline-spacing">
   <button type="button" class="btn btn-primary">
