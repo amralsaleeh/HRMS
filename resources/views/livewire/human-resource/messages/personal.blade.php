@@ -54,7 +54,7 @@
               <li class="chat-contact-list-item {{ $employee->id == $selectedEmployee->id ? 'active' : '' }}">
                 <a class="d-flex align-items-center">
                   <div class="flex-shrink-0 avatar avatar-online">
-                    <img src="{{asset('assets/img/avatars/4.png')}}" alt="Avatar" class="rounded-circle">
+                    <img src="{{ asset($employee->getEmployeePhoto()) }}" alt="Avatar" class="rounded-circle">
                   </div>
                   <div class="chat-contact-info flex-grow-1 ms-2">
                     <h6 class="chat-contact-name text-truncate m-0">{{ $employee->full_name }}</h6>
@@ -80,7 +80,7 @@
             <div class="d-flex overflow-hidden align-items-center">
               <i class="ti ti-menu-2 ti-sm cursor-pointer d-lg-none d-block me-2" data-bs-toggle="sidebar" data-overlay data-target="#app-chat-contacts"></i>
               <div class="flex-shrink-0 avatar">
-                <img src="{{ asset('assets/img/avatars/2.png') }}" alt="Avatar" class="rounded-circle" data-bs-toggle="sidebar" data-overlay data-target="#app-chat-sidebar-right">
+                <img src="{{ asset($selectedEmployee->getEmployeePhoto()) }}" alt="Avatar" class="rounded-circle" data-bs-toggle="sidebar" data-overlay data-target="#app-chat-sidebar-right">
               </div>
               <div class="chat-contact-info flex-grow-1 ms-2">
                 <h6 class="m-0">{{ $selectedEmployee->full_name }}</h6>
@@ -165,6 +165,7 @@
           // Chat contacts scrollbar
           if (chatContactsBody) {
             new PerfectScrollbar(chatContactsBody, {
+              wheelSpeed: 0.2,
               wheelPropagation: false,
               suppressScrollX: true
             });
@@ -173,7 +174,7 @@
           // Chat history scrollbar
           if (chatHistoryBody) {
             new PerfectScrollbar(chatHistoryBody, {
-              wheelSpeed: 0.3,
+              wheelSpeed: 0.2,
               wheelPropagation: false,
               suppressScrollX: true
             });
