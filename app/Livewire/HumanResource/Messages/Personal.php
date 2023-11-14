@@ -56,8 +56,12 @@ class Personal extends Component
             'is_sent' => false,
         ]);
 
-        if ($this->sendSms($this->messageBody, $this->selectedEmployee->mobile_number)) {
-            $sms->update(['is_sent' => true]);
+        $response = $this->sendSms($this->messageBody, $this->selectedEmployee->mobile_number);
+
+        if ($response === true) {
+            $sms->update(['is_sent' => true, 'error' => null]);
+        } else {
+            $sms->update(['is_sent' => false, 'error' => $response]);
         }
 
         $this->reset('messageBody');

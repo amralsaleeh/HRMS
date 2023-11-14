@@ -17,6 +17,7 @@ return new class extends Migration
             $table->longText('text');
             $table->string('recipient');
             $table->boolean('is_sent');
+            $table->string('error')->nullable();
             $table->string('created_by');
             $table->string('updated_by');
             $table->string('deleted_by')->nullable();

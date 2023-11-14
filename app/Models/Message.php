@@ -17,10 +17,23 @@ class Message extends Model
         'text',
         'recipient',
         'is_sent',
+        'error',
     ];
 
     public function employee(): BelongsTo
     {
         return $this->belongsTo(Employee::class);
+    }
+
+    public function getMessageSenderPhoto()
+    {
+        // return User::where('name', $this->updated_by)->first()->profile_photo_path ?? 'storage/profile-photos/.administrator.jpg';
+
+        $sender = User::where('name', $this->updated_by)->first();
+        if ($sender) {
+            return 'storage/'.$sender->profile_photo_path;
+        }
+
+        return 'storage/profile-photos/.administrator.jpg';
     }
 }

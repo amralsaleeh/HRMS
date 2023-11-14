@@ -113,12 +113,12 @@
                     </div>
                     <div class="text-end text-muted mt-1">
                       <i class='ti {{ $message->is_sent ? 'text-success ti-checks' : 'ti-check' }} ti-xs me-1'></i>
-                      <small>{{ $message->updated_at }}</small>
+                      <small>{{ $message->updated_at }}</small> - <small class="text-danger">{{ $message->error }}</small>
                     </div>
                   </div>
                   <div class="user-avatar flex-shrink-0 ms-3">
-                    <div class="avatar avatar-sm">
-                      <img src="{{asset('assets/img/avatars/1.png')}}" alt="Avatar" class="rounded-circle">
+                    <div class="avatar avatar-sm" data-bs-toggle="tooltip" data-bs-placement="left" data-bs-original-title="{{ $message->updated_by }}">
+                      <img src="{{ asset($message->getMessageSenderPhoto()) }}" alt="Avatar" class="rounded-circle">
                     </div>
                   </div>
                 </div>

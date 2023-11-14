@@ -20,9 +20,9 @@ trait MessageProvider
         );
 
         if ($response->getStatusCode() == 200 && preg_match('/^[0-9]+$/', (string) $response)) {
-            return 1;
+            return true;
         } else {
-            return 0;
+            return (string) $response;
         }
         // return ['status' => $response->getStatusCode(), 'message' => (string) $response];
     }
