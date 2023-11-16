@@ -60,8 +60,10 @@ class Personal extends Component
 
         if ($response === true) {
             $sms->update(['is_sent' => true, 'error' => null]);
+            $this->dispatch('playMessageSound');
         } else {
             $sms->update(['is_sent' => false, 'error' => $response]);
+            $this->dispatch('playErrorSound');
         }
 
         $this->reset('messageBody');

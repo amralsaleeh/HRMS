@@ -46,6 +46,19 @@
      $(event.detail.elementId).modal('hide');
   })
 </script>
+
+<script>
+  window.addEventListener('playMessageSound', event => {
+     new Audio('{{ asset('assets/sound/message.mp3') }}').play();
+  })
+  window.addEventListener('playNotificationSound', event => {
+     new Audio('{{ asset('assets/sound/notification.mp3') }}').play();
+  })
+  window.addEventListener('playErrorSound', event => {
+     new Audio('{{ asset('assets/sound/error.mp3') }}').play();
+  })
+</script>
+
 <!-- END: Theme JS-->
 
 <!-- Pricing Modal JS-->
