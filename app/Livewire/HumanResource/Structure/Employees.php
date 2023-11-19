@@ -16,7 +16,7 @@ class Employees extends Component
 
     public function render()
     {
-        $employees = Employee::paginate(5);
+        $employees = Employee::paginate(20);
 
         return view('livewire.human-resource.structure.employees', [
             'employees' => $employees, ]

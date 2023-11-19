@@ -18,11 +18,11 @@
     <table class="table">
       <thead>
         <tr>
-          <th>ID</th>
-          <th>Name</th>
-          <th>Mobile</th>
-          <th>Status</th>
-          <th>Actions</th>
+          <th class="col-1">ID</th>
+          <th class="col-5">Name</th>
+          <th class="col-2">Mobile</th>
+          <th class="col-2">Status</th>
+          <th class="col-2">Actions</th>
         </tr>
       </thead>
       <tbody class="table-border-bottom-0">
