@@ -28,20 +28,24 @@
       <tbody class="table-border-bottom-0">
         @forelse($employees as $employee)
         <tr>
-          <td></td>
+          <td>{{ $employee->id }}</td>
           <td>
             <ul class="list-unstyled users-list m-0 avatar-group d-flex align-items-center">
               <li class="avatar avatar-xs pull-up">
                 <a href="#">
-                  <img src="{{asset('assets/img/avatars/5.png')}}" alt="Avatar" class="rounded-circle">
-                  Name 2
+                  <img src="{{ asset($employee->getEmployeePhoto()) }}" alt="Avatar" class="rounded-circle">
+                  {{ $employee->full_name }}
                 </a>
               </li>
             </ul>
           </td>
-          <td></td>
+          <td>{{ $employee->mobile_number }}</td>
           <td>
-            <span class="badge bg-label-primary me-1">Active</span>
+            @if ($employee->is_active)
+              <span class="badge bg-label-success me-1">Active</span>
+            @else
+              <span class="badge bg-label-danger me-1">Out of work</span>
+            @endif
           </td>
           <td>
             <div class="dropdown">
@@ -72,5 +76,10 @@
       </tbody>
     </table>
   </div>
+
+  <div class="row mx-1 mt-4">
+    {{ $employees->links() }}
+  </div>
+
 </div>
 </div>

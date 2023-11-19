@@ -2,16 +2,24 @@
 
 namespace App\Livewire\HumanResource\Structure;
 
+use App\Models\Employee;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class Employees extends Component
 {
+    use WithPagination;
+
     // Variables - Start //
-    public $employees = [];
+
     // Variables - Start //
 
     public function render()
     {
-        return view('livewire.human-resource.structure.employees');
+        $employees = Employee::paginate(5);
+
+        return view('livewire.human-resource.structure.employees', [
+            'employees' => $employees, ]
+        );
     }
 }
