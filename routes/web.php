@@ -3,6 +3,7 @@
 use App\Http\Controllers\HomePage;
 use App\Http\Controllers\language\LanguageController;
 use App\Livewire\Dashboard;
+use App\Livewire\HumanResource\Holidays;
 use App\Livewire\HumanResource\Messages\Personal;
 use App\Livewire\HumanResource\Structure\Centers;
 use App\Livewire\HumanResource\Structure\Departments;
@@ -46,7 +47,7 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
     });
 
     Route::get('/discounts', ComingSoon::class)->name('discounts');
-    Route::get('/holidays', ComingSoon::class)->name('holidays');
+    Route::get('/holidays', Holidays::class)->name('holidays');
     Route::get('/statistics', ComingSoon::class)->name('statistics');
 
     Route::prefix('settings')->group(function () {
