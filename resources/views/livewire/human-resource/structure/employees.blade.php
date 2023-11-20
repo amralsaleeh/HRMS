@@ -77,7 +77,7 @@
     </table>
   </div>
 
-  <div class="row mx-1 mt-4">
+  <div class="row mt-4">
     {{ $employees->links() }}
   </div>
 
