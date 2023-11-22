@@ -1,4 +1,5 @@
 {
+  "_comment": "Pint's currently supported presets are: laravel, per, psr12, and symfony.",
   "preset": "laravel",
   "rules": {}
 }
