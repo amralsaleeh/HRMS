@@ -3,6 +3,9 @@
 namespace App\Models;
 
 use App\Traits\CreatedUpdatedDeletedBy;
+use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -25,4 +28,32 @@ class Fingerprint extends Model
     {
         return $this->belongsTo(Employee::class);
     }
+
+    protected function checkIn(): Attribute
+    {
+        return Attribute::make(
+            get: fn (?string $value) => $value !== null ? Carbon::parse($value)->format('H:i') : '-',
+        );
+    }
+
+    protected function checkOut(): Attribute
+    {
+        return Attribute::make(
+            get: fn (?string $value) => $value !== null ? Carbon::parse($value)->format('H:i') : '-',
+        );
+    }
+
+    // Scope - Start
+    public function scopeFilteredFingerprints(Builder $query, $selectedEmployeeId, $fromDate, $toDate, $is_absence, $is_oneFingerprint): void
+    {
+        $query->where('employee_id', $selectedEmployeeId)
+            ->whereBetween('date', [$fromDate, $toDate])
+            ->when($is_absence, function ($query) {
+                return $query->whereNull('log');
+            })
+            ->when($is_oneFingerprint, function ($query) {
+                return $query->whereNotNull('check_in')->whereNull('check_out');
+            });
+    }
+    // Scope - End
 }
