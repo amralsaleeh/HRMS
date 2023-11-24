@@ -12,12 +12,12 @@ class Departments extends Component
     // Variables - Start //
     public $departments = [];
 
-    public $department;
-
     #[Rule('required')]
     public $name;
 
-    public $is_edit = false;
+    public $department;
+
+    public $isEdit = false;
 
     public $confirmedId;
     // Variables - End //
@@ -31,7 +31,7 @@ class Departments extends Component
 
     public function submitDepartment()
     {
-        $this->is_edit ? $this->editDepartment() : $this->addDepartment();
+        $this->isEdit ? $this->editDepartment() : $this->addDepartment();
     }
 
     public function addDepartment()
@@ -79,7 +79,7 @@ class Departments extends Component
     public function showEditDepartmentModal(Department $department)
     {
         $this->reset();
-        $this->is_edit = true;
+        $this->isEdit = true;
 
         $this->department = $department;
 
