@@ -9,7 +9,7 @@
       <div class="modal-body">
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         <div class="text-center mb-4">
-          <h3 class="mb-2">{{ $is_edit ? 'Update Center' : 'New Center' }}</h3>
+          <h3 class="mb-2">{{ $isEdit ? 'Update Center' : 'New Center' }}</h3>
           <p class="text-muted">Please fill out the following information</p>
         </div>
         <form wire:submit="submitCenter" class="row g-3">
@@ -32,11 +32,11 @@
           </div>
           <div class="col-md-6 col-12 mb-4">
             <label class="form-label">Work start at</label>
-            <input wire:model='start_work_hour' type="text" class="form-control @error('start_work_hour') is-invalid @enderror" placeholder="HH:MM" id="start_work_hour" autocomplete="off" />
+            <input wire:model='startWorkHour' type="text" class="form-control @error('startWorkHour') is-invalid @enderror" placeholder="HH:MM" id="startWorkHour" autocomplete="off" />
           </div>
           <div class="col-md-6 col-12 mb-4">
             <label class="form-label">Work end at</label>
-            <input wire:model='end_work_hour' type="text" class="form-control @error('end_work_hour') is-invalid @enderror" placeholder="HH:MM" id="end_work_hour" autocomplete="off" />
+            <input wire:model='endWorkHour' type="text" class="form-control @error('endWorkHour') is-invalid @enderror" placeholder="HH:MM" id="endWorkHour" autocomplete="off" />
           </div>
 
           <div class="col-12 text-center">
@@ -82,9 +82,9 @@
 
   <script>
     $(document).ready(function () {
-      const start_work_hour = document.querySelector('#start_work_hour');
-      if (start_work_hour) {
-        start_work_hour.flatpickr({
+      const startWorkHour = document.querySelector('#startWorkHour');
+      if (startWorkHour) {
+        startWorkHour.flatpickr({
           enableTime: true,
           noCalendar: true,
           time_24hr: true,
@@ -92,9 +92,9 @@
         });
       }
 
-      const end_work_hour = document.querySelector('#end_work_hour');
-      if (end_work_hour) {
-        end_work_hour.flatpickr({
+      const endWorkHour = document.querySelector('#endWorkHour');
+      if (endWorkHour) {
+        endWorkHour.flatpickr({
           enableTime: true,
           noCalendar: true,
           time_24hr: true,

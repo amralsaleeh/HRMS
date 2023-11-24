@@ -17,21 +17,21 @@ class Centers extends Component
     // Variables - Start //
     public $centers = [];
 
-    public $center;
-
     #[Rule('required')]
     public $name;
 
     #[Rule('required')]
-    public $start_work_hour;
+    public $startWorkHour;
 
     #[Rule('required')]
-    public $end_work_hour;
+    public $endWorkHour;
 
     #[Rule('required')]
     public $weekends;
 
-    public $is_edit = false;
+    public $center;
+
+    public $isEdit = false;
 
     public $confirmedId;
     // Variables - End //
@@ -45,7 +45,7 @@ class Centers extends Component
 
     public function submitCenter()
     {
-        $this->is_edit ? $this->editCenter() : $this->addCenter();
+        $this->isEdit ? $this->editCenter() : $this->addCenter();
     }
 
     public function addCenter()
@@ -54,8 +54,8 @@ class Centers extends Component
 
         Center::create([
             'name' => $this->name,
-            'start_work_hour' => $this->start_work_hour,
-            'end_work_hour' => $this->end_work_hour,
+            'start_work_hour' => $this->startWorkHour,
+            'end_work_hour' => $this->endWorkHour,
             'weekends' => $this->weekends,
         ]);
 
@@ -69,8 +69,8 @@ class Centers extends Component
 
         $this->center->update([
             'name' => $this->name,
-            'start_work_hour' => $this->start_work_hour,
-            'end_work_hour' => $this->end_work_hour,
+            'start_work_hour' => $this->startWorkHour,
+            'end_work_hour' => $this->endWorkHour,
             'weekends' => $this->weekends,
         ]);
 
@@ -99,13 +99,13 @@ class Centers extends Component
     public function showEditCenterModal(Center $center)
     {
         $this->reset();
-        $this->is_edit = true;
+        $this->isEdit = true;
 
         $this->center = $center;
 
         $this->name = $center->name;
-        $this->start_work_hour = $center->start_work_hour;
-        $this->end_work_hour = $center->end_work_hour;
+        $this->startWorkHour = $center->start_work_hour;
+        $this->endWorkHour = $center->end_work_hour;
         $this->weekends = $center->weekends;
     }
 
