@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use App\Traits\CreatedUpdatedDeletedBy;
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -30,20 +29,6 @@ class Holiday extends Model
     {
         return Attribute::make(
             set: fn (string $value) => ucfirst($value),
-        );
-    }
-
-    protected function fromDate(): Attribute
-    {
-        return Attribute::make(
-            get: fn (string $value) => Carbon::parse($value)->format('y:m:d'),
-        );
-    }
-
-    protected function toDate(): Attribute
-    {
-        return Attribute::make(
-            get: fn (string $value) => Carbon::parse($value)->format('y:m:d'),
         );
     }
 }

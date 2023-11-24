@@ -5,40 +5,42 @@ namespace App\Livewire\HumanResource;
 use App\Models\Holiday;
 use Livewire\Attributes\Rule;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class Holidays extends Component
 {
-    public $holidays = [];
-
-    public $holiday;
+    use WithPagination;
 
     #[Rule('required')]
     public $name;
 
     #[Rule('required')]
-    public $from_date;
+    public $fromDate;
 
     #[Rule('required')]
-    public $to_date;
+    public $toDate;
 
     #[Rule('required')]
     public $note;
 
-    public $is_edit = false;
+    public $holiday;
+
+    public $isEdit = false;
 
     public $confirmedId;
 
     public function render()
     {
+        $holidays = Holiday::paginate(10);
 
-        $this->holidays = Holiday::all();
-
-        return view('livewire.human-resource.holidays');
+        return view('livewire.human-resource.holidays', [
+            'holidays' => $holidays,
+        ]);
     }
 
     public function submitHoliday()
     {
-        $this->is_edit ? $this->editHoliday() : $this->addHoliday();
+        $this->isEdit ? $this->editHoliday() : $this->addHoliday();
     }
 
     public function addHoliday()
@@ -47,8 +49,8 @@ class Holidays extends Component
 
         Holiday::create([
             'name' => $this->name,
-            'from_date' => $this->from_date,
-            'to_date' => $this->to_date,
+            'from_date' => $this->fromDate,
+            'to_date' => $this->toDate,
             'note' => $this->note,
         ]);
 
@@ -62,8 +64,8 @@ class Holidays extends Component
 
         $this->holiday->update([
             'name' => $this->name,
-            'from_date' => $this->from_date,
-            'to_date' => $this->to_date,
+            'from_date' => $this->fromDate,
+            'to_date' => $this->toDate,
             'note' => $this->note,
         ]);
 
@@ -92,13 +94,13 @@ class Holidays extends Component
     public function showEditHolidayModal(Holiday $holiday)
     {
         $this->reset();
-        $this->is_edit = true;
+        $this->isEdit = true;
 
         $this->holiday = $holiday;
 
         $this->name = $holiday->name;
-        $this->from_date = $holiday->from_date;
-        $this->to_date = $holiday->to_date;
+        $this->fromDate = $holiday->from_date;
+        $this->toDate = $holiday->to_date;
         $this->note = $holiday->note;
     }
 }

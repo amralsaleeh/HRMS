@@ -6,28 +6,10 @@
 
   @section('title', 'Holidays')
 
-  <div class="col-lg">
-    <div class="card">
-      <div class="card-body d-flex justify-content-between align-items-center">
-        <div class="card-title mb-0">
-          {{-- @foreach ( $holidays as $holiday )
-          <h5 class="mb-0 me-2"> {{ $holiday->count()}}</h5> @endforeach --}}
-          <h5 class="mb-0 me-2"> {{  $this->holidays->count()}}</h5>
-          <small>All Holidays</small>
-        </div>
-        <div class="card-icon">
-          <span class="badge bg-label-success rounded-pill p-2">
-            <i class="ti ti-server ti-sm"></i>
-          </span>
-        </div>
-      </div>
-    </div>
-  </div>
-
   <div class="demo-inline-spacing">
     <button wire:click.prevent='showNewHolidayModal' type="button" class="btn btn-primary"
       data-bs-toggle="modal" data-bs-target="#holidayModal">
-      <span class="ti-xs ti ti-plus me-1"></span>Add Holidays
+      <span class="ti-xs ti ti-plus me-1"></span>Add New Holiday
     </button>
   </div>
   <br>
@@ -37,9 +19,8 @@
       <table class="table">
         <thead>
           <tr>
-            <th>ID</th>
             <th>Name</th>
-            <th>From-To</th>
+            <th>Date Range</th>
             <th>Note</th>
             <th>Actions</th>
           </tr>
@@ -47,12 +28,9 @@
         <tbody class="table-border-bottom-0">
           @forelse($holidays as $holiday)
           <tr>
-            <td>{{ $holiday->id }}</td>
             <td><strong>{{ $holiday->name }}</strong></td>
-            <td><span class="badge bg-label-success me-1">{{ $holiday->from_date . ' / ' . $holiday->to_date }}</span></td>
-
+            <td><span class="badge bg-label-success me-1">{{ $holiday->from_date . ' --> ' . $holiday->to_date }}</span></td>
             <td><strong>{{ $holiday->note }}</strong></td>
-
             <td>
               <div style="display: flex">
                 <div class="dropdown">
@@ -70,15 +48,17 @@
           </tr>
           @empty
           <tr>
-            <td colspan="5">
+            <td colspan="4">
               <div class="mt-2 mb-2" style="text-align: center">
                   <h3 class="mb-1 mx-2">Oopsie-doodle!</h3>
                   <p class="mb-4 mx-2">
                     No data found, please sprinkle some data in my virtual bowl, and let the fun begin!
                   </p>
-                  {{-- <a href="{{url('/')}}" class="btn btn-primary mb-4">Back to home</a> --}}
+                  <button class="btn btn-label-primary mb-4" data-bs-toggle="modal" data-bs-target="#holidayModal">
+                    Add New Holiday
+                  </button>
                   <div>
-                    <img src="{{ asset('assets/img/illustrations/page-misc-under-maintenance.png') }}" alt="page-misc-under-maintenance" width="200" class="img-fluid">
+                    <img src="{{ asset('assets/img/illustrations/page-misc-under-maintenance.png') }}" width="200" class="img-fluid">
                   </div>
               </div>
             </td>
@@ -86,6 +66,10 @@
           @endforelse
         </tbody>
       </table>
+    </div>
+
+    <div class="row mt-4">
+      {{ $holidays->links() }}
     </div>
   </div>
 

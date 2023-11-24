@@ -9,7 +9,7 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         <div class="text-center mb-4">
           <h3 class="mb-2"></h3>
-          <h3 class="mb-2">{{ $is_edit ? 'Update Holiday' : 'New Holiday' }}</h3>
+          <h3 class="mb-2">{{ $isEdit ? 'Update Holiday' : 'New Holiday' }}</h3>
           <p class="text-muted">Please fill out the following information</p>
         </div>
         <form wire:submit="submitHoliday" class="row g-3">
@@ -19,19 +19,17 @@
           </div>
             <div class="col-md-6 col-12 mb-4">
               <label class="form-label">From Date</label>
-              <input wire:model='from_date' type="date" class="form-control @error('from_date') is-invalid @enderror" placeholder="YYYY:MM:DD" id="from_date" autocomplete="off" />
+              <input wire:model='fromDate' type="date" class="form-control @error('fromDate') is-invalid @enderror" placeholder="YYYY/MM/DD" id="fromDate" autocomplete="off" />
             </div>
             <div class="col-md-6 col-12 mb-4">
               <label class="form-label">To Date</label>
-              <input wire:model='to_date' type="date" class="form-control @error('to_date') is-invalid @enderror" placeholder="YYYY:MM:DD" id="to_date" autocomplete="off" />
+              <input wire:model='toDate' type="date" class="form-control @error('toDate') is-invalid @enderror" placeholder="YYYY/MM/DD" id="toDate" autocomplete="off" />
             </div>
 
             <div class="col-12 mb-4">
               <label class="form-label w-100">Note</label>
               <input wire:model='note' class="form-control @error('note') is-invalid @enderror" type="text" />
             </div>
-
-            {{-- @error('name') <div class="invalid-feedback">{{ $message }}</div> @enderror --}}
 
           <div class="col-12 text-center">
             <button type="submit" class="btn btn-primary me-sm-3 me-1">Submit</button>
