@@ -11,6 +11,7 @@ class Holidays extends Component
 {
     use WithPagination;
 
+    // Variables - Start //
     #[Rule('required')]
     public $name;
 
@@ -28,6 +29,7 @@ class Holidays extends Component
     public $isEdit = false;
 
     public $confirmedId;
+    // Variables - End //
 
     public function render()
     {
