@@ -18,8 +18,7 @@
             <input wire:model='name' class="form-control @error('name') is-invalid @enderror" type="text" />
 
             <label class="form-label w-100">Vacancies Count</label>
-            <input wire:model='vacancies_count' class="form-control @error('vacancies_count') is-invalid @enderror" type="number" min="0" />
-            {{-- @error('name') <div class="invalid-feedback">{{ $message }}</div> @enderror --}}
+            <input wire:model='vacanciesCount' class="form-control @error('vacanciesCount') is-invalid @enderror" type="number" min="1" />
           </div>
           <div class="col-12 text-center">
             <button type="submit" class="btn btn-primary me-sm-3 me-1">Submit</button>

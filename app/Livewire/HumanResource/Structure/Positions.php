@@ -11,13 +11,13 @@ class Positions extends Component
     // Variables - Start //
     public $positions = [];
 
-    public $position;
-
     #[Rule('required')]
     public $name;
 
     #[Rule('required|numeric')]
-    public $vacancies_count;
+    public $vacanciesCount;
+
+    public $position;
 
     public $is_edit = false;
 
@@ -42,7 +42,7 @@ class Positions extends Component
 
         Position::create([
             'name' => $this->name,
-            'vacancies_count' => $this->vacancies_count,
+            'vacancies_count' => $this->vacanciesCount,
 
         ]);
 
@@ -56,7 +56,7 @@ class Positions extends Component
 
         $this->position->update([
             'name' => $this->name,
-            'vacancies_count' => $this->vacancies_count,
+            'vacancies_count' => $this->vacanciesCount,
 
         ]);
 
@@ -90,7 +90,7 @@ class Positions extends Component
         $this->position = $position;
 
         $this->name = $position->name;
-        $this->vacancies_count = $position->vacancies_count;
+        $this->vacanciesCount = $position->vacancies_count;
 
     }
 }

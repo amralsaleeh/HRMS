@@ -56,9 +56,11 @@
                   <p class="mb-4 mx-2">
                     No data found, please sprinkle some data in my virtual bowl, and let the fun begin!
                   </p>
-                  {{-- <a href="{{url('/')}}" class="btn btn-primary mb-4">Back to home</a> --}}
+                  <button class="btn btn-label-primary mb-4" data-bs-toggle="modal" data-bs-target="#positionModal">
+                    Add New Position
+                  </button>
                   <div>
-                    <img src="{{ asset('assets/img/illustrations/page-misc-under-maintenance.png') }}" alt="page-misc-under-maintenance" width="200" class="img-fluid">
+                    <img src="{{ asset('assets/img/illustrations/page-misc-under-maintenance.png') }}" width="200" class="img-fluid">
                   </div>
               </div>
             </td>
