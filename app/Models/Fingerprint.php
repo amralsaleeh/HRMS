@@ -44,14 +44,14 @@ class Fingerprint extends Model
     }
 
     // Scope - Start
-    public function scopeFilteredFingerprints(Builder $query, $selectedEmployeeId, $fromDate, $toDate, $is_absence, $is_oneFingerprint): void
+    public function scopeFilteredFingerprints(Builder $query, $selectedEmployeeId, $fromDate, $toDate, $isAbsence, $isOneFingerprint): void
     {
         $query->where('employee_id', $selectedEmployeeId)
             ->whereBetween('date', [$fromDate, $toDate])
-            ->when($is_absence, function ($query) {
+            ->when($isAbsence, function ($query) {
                 return $query->whereNull('log');
             })
-            ->when($is_oneFingerprint, function ($query) {
+            ->when($isOneFingerprint, function ($query) {
                 return $query->whereNotNull('check_in')->whereNull('check_out');
             });
     }

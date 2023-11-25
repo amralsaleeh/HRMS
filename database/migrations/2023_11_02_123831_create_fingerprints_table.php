@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('log')->nullable();
             $table->time('check_in')->nullable();
             $table->time('check_out')->nullable();
-            $table->boolean('is_checked');
+            $table->boolean('is_checked')->default(0);
             $table->string('created_by');
             $table->string('updated_by');
             $table->string('deleted_by')->nullable();

@@ -7,14 +7,14 @@ use Maatwebsite\Excel\Concerns\WithHeadings;
 
 class ExportFingerprints implements FromCollection, WithHeadings
 {
-    protected $data;
-
     protected $headings;
+
+    protected $data;
 
     public function __construct($fingerprints)
     {
-        $this->data = $fingerprints;
         $this->headings = $this->generateHeadings();
+        $this->data = $fingerprints;
     }
 
     public function headings(): array

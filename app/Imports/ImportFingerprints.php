@@ -22,29 +22,30 @@ class ImportFingerprints implements ToModel, WithStartRow
         $check_in = null;
         $check_out = null;
 
-        // Check if the record exists to avoid duplicate
-        if (Fingerprint::where('date', $date)->first() != null) {
+        // Check if the record does not exist to avoid duplicate
+        if (! Fingerprint::where('date', $date)->exists()) {
+            if (empty($log)) {
+                $log = null;
+            } elseif (strlen($log) == 5) {
+                $check_in = substr($log, 0, 5);
+            } else {
+                $check_in = substr($log, 0, 5);
+                $check_out = substr($log, -5);
+            }
+
+            Fingerprint::create([
+                'employee_id' => $employee_id,
+                'date' => $date,
+                'log' => $log,
+                'check_in' => $check_in,
+                'check_out' => $check_out,
+                'is_checked' => false,
+            ]);
+
+            return null;
+        } else {
+            // Skip this row
             return null;
         }
-
-        if (empty($log)) {
-            $log = null;
-        } elseif (strlen($log) == 5) {
-            $check_in = substr($log, 0, 5);
-        } else {
-            $check_in = substr($log, 0, 5);
-            $check_out = substr($log, -5);
-        }
-
-        Fingerprint::create([
-            'employee_id' => $employee_id,
-            'date' => $date,
-            'log' => $log,
-            'check_in' => $check_in,
-            'check_out' => $check_out,
-            'is_checked' => false,
-        ]);
-
-        return null;
     }
 }

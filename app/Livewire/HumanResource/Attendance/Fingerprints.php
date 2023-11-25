@@ -30,9 +30,9 @@ class Fingerprints extends Component
 
     public $toDate;
 
-    public $is_absence = false;
+    public $isAbsence = false;
 
-    public $is_oneFingerprint = false;
+    public $isOneFingerprint = false;
 
     public $confirmedId;
 
@@ -73,8 +73,8 @@ class Fingerprints extends Component
             $this->selectedEmployee->id,
             $this->fromDate,
             $this->toDate,
-            $this->is_absence,
-            $this->is_oneFingerprint)->paginate(7);
+            $this->isAbsence,
+            $this->isOneFingerprint)->paginate(7);
     }
 
     public function importFromExcel()
@@ -97,8 +97,8 @@ class Fingerprints extends Component
             $this->selectedEmployee->id,
             $this->fromDate,
             $this->toDate,
-            $this->is_absence,
-            $this->is_oneFingerprint)->get();
+            $this->isAbsence,
+            $this->isOneFingerprint)->get();
 
         $fileName = 'Fingerprints - '.Carbon::now();
 
