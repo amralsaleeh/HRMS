@@ -19,7 +19,7 @@ class Positions extends Component
 
     public $position;
 
-    public $is_edit = false;
+    public $isEdit = false;
 
     public $confirmedId;
 
@@ -33,7 +33,7 @@ class Positions extends Component
 
     public function submitPosition()
     {
-        $this->is_edit ? $this->editPosition() : $this->addPosition();
+        $this->isEdit ? $this->editPosition() : $this->addPosition();
     }
 
     public function addPosition()
@@ -85,7 +85,7 @@ class Positions extends Component
     public function showEditPositionModal(Position $position)
     {
         $this->reset();
-        $this->is_edit = true;
+        $this->isEdit = true;
 
         $this->position = $position;
 
