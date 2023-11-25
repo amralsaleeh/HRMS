@@ -56,12 +56,12 @@
           </div>
           <div class="ms-3">
             <div class="form-check form-check-danger mb-2">
-              <input wire:model='is_absence' class="form-check-input input-filter" type="checkbox">
-              <label class="form-check-label">Absence</label>
+              <input wire:model='isAbsence' class="form-check-input input-filter" type="checkbox" id="isAbsence">
+              <label class="form-check-label" for="isAbsence">Absence</label>
             </div>
             <div class="form-check form-check-warning mb-2">
-              <input wire:model='is_oneFingerprint' class="form-check-input input-filter" type="checkbox">
-              <label class="form-check-label">One Fingerprint</label>
+              <input wire:model='isOneFingerprint' class="form-check-input input-filter" type="checkbox" id="isOneFingerprint">
+              <label class="form-check-label" for="isOneFingerprint">One Fingerprint</label>
             </div>
           </div>
         </div>
