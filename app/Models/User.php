@@ -45,4 +45,13 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Employee::class);
     }
+
+    public function getEmployeeFullNameAttribute()
+    {
+        if ($this->employee) {
+            return $this->employee->first_name.' '.$this->employee->last_name;
+        }
+
+        return '';
+    }
 }

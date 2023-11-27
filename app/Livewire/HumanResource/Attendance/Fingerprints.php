@@ -4,9 +4,13 @@ namespace App\Livewire\HumanResource\Attendance;
 
 use App\Exports\ExportFingerprints;
 use App\Imports\ImportFingerprints;
+use App\Livewire\Sections\Navbar\Navbar;
 use App\Models\Employee;
 use App\Models\Fingerprint;
+use App\Notifications\DefaultNotification;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Notification;
 use Livewire\Attributes\Rule;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -83,6 +87,12 @@ class Fingerprints extends Component
 
         try {
             Excel::import(new ImportFingerprints(), $this->file);
+
+            Notification::send(Auth::user(), new DefaultNotification(
+                'Successfully imported the fingerprint file'
+            ));
+            $this->dispatch('refreshNotifications')->to(Navbar::class);
+
             session()->flash('success', 'Well done! The file has been imported successfully.');
         } catch (\Exception $e) {
             session()->flash('error', 'Failure is not the end, reason: '.$e->getMessage());
