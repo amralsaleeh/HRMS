@@ -93,7 +93,7 @@
                 </div>
 
                 <div class="col-4 btn-group d-flex justify-content-end">
-                  <button type="button" class="btn btn-primary waves-effect waves-light" data-bs-toggle="offcanvas"
+                  <button wire:click.prevent='showNewFingerprintModal' type="button" class="btn btn-primary waves-effect waves-light" data-bs-toggle="offcanvas"
                           data-bs-target="#addRecordSidebar" aria-controls="addRecordSidebar"><i
                           class="ti ti-plus me-1"></i> Add New Record
                   </button>
@@ -138,7 +138,7 @@
                       <td>{{ $fingerprint->check_out }}</td>
                       <td>
                         <div>
-                          <a wire:click.prevent="showEditFingerprintModal({{ $fingerprint }})" href=""><i
+                          <a wire:click.prevent="showEditFingerprintModal({{ $fingerprint }})" data-bs-toggle="offcanvas" data-bs-target="#addRecordSidebar" href=""><i
                               class="ti ti-edit text-info"></i></a>
                           <a wire:click.prevent="confirmDeleteFingerprint({{ $fingerprint->id }})" href=""><i
                               class="ti ti-trash text-danger"></i></a>

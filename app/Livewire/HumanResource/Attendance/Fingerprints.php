@@ -40,6 +40,19 @@ class Fingerprints extends Component
 
     public $confirmedId;
 
+    public $isEdit = false;
+
+    public $fingerprint;
+
+    #[Rule('required')]
+    public $date;
+
+    #[Rule('required')]
+    public $check_in;
+
+    #[Rule('required')]
+    public $check_out;
+
     #[Rule('required', message: 'Please select a file to upload')]
     #[Rule('mimes:xlsx', message: 'Excel files is accepted only')]
     public $file;
@@ -54,6 +67,7 @@ class Fingerprints extends Component
 
     public function render()
     {
+
         $fingerprints = $this->applyFilter();
 
         return view('livewire.human-resource.attendance.fingerprints', [
@@ -83,7 +97,7 @@ class Fingerprints extends Component
 
     public function importFromExcel()
     {
-        $this->validate();
+        // $this->validate();
 
         try {
             Excel::import(new ImportFingerprints(), $this->file);
@@ -114,4 +128,74 @@ class Fingerprints extends Component
 
         return Excel::download(new ExportFingerprints($fingerprints), $fileName.'.xlsx');
     }
+
+    //  start functions modal
+
+    public function submitFingerprint()
+    {
+        $this->isEdit ? $this->editFingerprint() : $this->addFingerprint();
+    }
+
+    public function addFingerprint()
+    {
+        // $this->validate();
+
+        Fingerprint::create([
+            'employee_id' => '103',
+            'is_checked' => '0',
+            'date' => $this->date,
+            'check_in' => $this->check_in,
+            'check_out' => $this->check_out,
+        ]);
+
+        $this->dispatch('closeModal', elementId: '#addRecordSidebar');
+        $this->dispatch('toastr', type: 'success'/* , title: 'Done!' */ , message: 'Going Well!');
+    }
+
+    public function editFingerprint()
+    {
+        // $this->validate();
+
+        $this->fingerprint->update([
+            'date' => $this->date,
+            'check_in' => $this->check_in,
+            'check_out' => $this->check_out,
+        ]);
+
+        $this->dispatch('closeModal', elementId: '#addRecordSidebar');
+        $this->dispatch('toastr', type: 'success'/* , title: 'Done!' */ , message: 'Going Well!');
+
+        $this->reset();
+    }
+
+    public function confirmDeleteFingerprint($id)
+    {
+        $this->confirmedId = $id;
+    }
+
+    public function deleteFingerprint(Fingerprint $fingerprint)
+    {
+        $fingerprint->delete();
+        $this->dispatch('toastr', type: 'success'/* , title: 'Done!' */ , message: 'Going Well!');
+    }
+
+    public function showNewFingerprintModal()
+    {
+        $this->reset();
+    }
+
+    public function showEditFingerprintModal(Fingerprint $fingerprint)
+    {
+        // $this->reset();
+        $this->isEdit = true;
+
+        $this->fingerprint = $fingerprint;
+
+        $this->date = $fingerprint->date;
+        $this->check_in = $fingerprint->check_in;
+        $this->check_out = $fingerprint->check_out;
+
+    }
+
+    // end functions modal
 }
