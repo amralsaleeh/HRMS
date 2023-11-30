@@ -3,8 +3,9 @@
 use App\Http\Controllers\HomePage;
 use App\Http\Controllers\language\LanguageController;
 use App\Livewire\Dashboard;
-use App\Livewire\HumanResource\Holidays;
 use App\Livewire\HumanResource\Attendance\Fingerprints;
+use App\Livewire\HumanResource\Attendance\Leaves;
+use App\Livewire\HumanResource\Holidays;
 use App\Livewire\HumanResource\Messages\Personal;
 use App\Livewire\HumanResource\Structure\Centers;
 use App\Livewire\HumanResource\Structure\Departments;
@@ -32,7 +33,7 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
 
     Route::prefix('attendance')->group(function () {
         Route::get('/fingerprints', Fingerprints::class)->name('attendance-fingerprints');
-        Route::get('/leaves', ComingSoon::class)->name('attendance-leaves');
+        Route::get('/leaves', Leaves::class)->name('attendance-leaves');
     });
 
     Route::prefix('structure')->group(function () {
