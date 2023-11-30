@@ -7,7 +7,7 @@ use Carbon\Carbon;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithStartRow;
 
-class ImportFingerprints implements ToModel, WithStartRow
+class ImportFingerprintsOldTemplate implements ToModel, WithStartRow
 {
     public function startRow(): int
     {
@@ -17,8 +17,8 @@ class ImportFingerprints implements ToModel, WithStartRow
     public function model(array $row)
     {
         $employee_id = $row[0];
-        $date = Carbon::parse($row[3])->format('Y-m-d');
-        $log = $row[4];
+        $date = Carbon::parse($row[1])->format('Y-m-d');
+        $log = $row[2];
         $check_in = null;
         $check_out = null;
 

@@ -93,8 +93,8 @@
                 </div>
 
                 <div class="col-4 btn-group d-flex justify-content-end">
-                  <button wire:click.prevent='showNewFingerprintModal' type="button" class="btn btn-primary waves-effect waves-light" data-bs-toggle="offcanvas"
-                          data-bs-target="#addRecordSidebar" aria-controls="addRecordSidebar"><i
+                  <button wire:click.prevent='showNewFingerprintModal' type="button" class="btn btn-primary waves-effect waves-light"
+                          data-bs-toggle="offcanvas" data-bs-target="#addRecordSidebar" aria-controls="addRecordSidebar"><i
                           class="ti ti-plus me-1"></i> Add New Record
                   </button>
                   <button type="button"
@@ -192,12 +192,22 @@
     <script src="{{ asset('assets/vendor/libs/flatpickr/flatpickr.js') }}"></script>
 
     <script>
+      $(document).ready(function () {
+        const flatpickrRange = document.querySelector('#flatpickr-range');
+        if (typeof flatpickrRange != undefined) {
+          flatpickrRange.flatpickr({
+            mode: 'range'
+          });
+        }
+      });
+    </script>
+
+    <script>
       'use strict';
 
       $(function () {
         const selectPicker = select2 = $('.select2');
 
-        // Default
         if (select2.length) {
           select2.each(function () {
             var $this = $(this);
@@ -212,17 +222,6 @@
           var data = $('#select2selectedEmployeeId').select2("val");
           @this.set('selectedEmployeeId', data);
         });
-      });
-    </script>
-
-    <script>
-      $(document).ready(function () {
-        const flatpickrRange = document.querySelector('#flatpickr-range');
-        if (typeof flatpickrRange != undefined) {
-          flatpickrRange.flatpickr({
-            mode: 'range'
-          });
-        }
       });
     </script>
   @endpush
