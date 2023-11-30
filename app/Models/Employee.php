@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Traits\CreatedUpdatedDeletedBy;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -56,7 +57,9 @@ class Employee extends Model
 
     public function leaves(): BelongsToMany
     {
-        return $this->belongsToMany(Leave::class);
+        return $this->belongsToMany(Leave::class)
+            ->withPivot('from_date', 'to_date', 'start_at', 'end_at', 'is_authorized', 'is_checked',
+                'created_by', 'updated_by', 'deleted_by', 'created_at', 'updated_at', 'deleted_at');
     }
 
     public function messages(): HasMany
@@ -94,4 +97,17 @@ class Employee extends Model
         return 'storage/'.$defaultPhotoName;
     }
     // Functions - End
+
+    // Scope - Start
+    public function scopeCheckLeave(Builder $query, $leave_id, $from_date, $to_date, $start_at, $end_at): void
+    {
+        $query->whereHas('leaves', function ($query) use ($leave_id, $from_date, $to_date, $start_at, $end_at) {
+            $query->where('leave_id', $leave_id)
+                ->where('from_date', $from_date)
+                ->where('to_date', $to_date)
+                ->where('start_at', $start_at)
+                ->where('end_at', $end_at);
+        });
+    }
+    // Scope - End
 }

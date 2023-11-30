@@ -17,10 +17,10 @@ return new class extends Migration
             $table->foreignId('leave_id')->constrained();
             $table->date('from_date');
             $table->date('to_date');
-            $table->time('start_at');
-            $table->time('end_at');
-            $table->boolean('is_authorized');
-            $table->boolean('is_checked');
+            $table->time('start_at')->nullable();
+            $table->time('end_at')->nullable();
+            $table->boolean('is_authorized')->default(0);
+            $table->boolean('is_checked')->default(0);
             $table->string('created_by');
             $table->string('updated_by');
             $table->string('deleted_by')->nullable();
