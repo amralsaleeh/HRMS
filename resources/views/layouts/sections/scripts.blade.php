@@ -45,6 +45,9 @@
   window.addEventListener('closeModal', event => {
      $(event.detail.elementId).modal('hide');
   })
+  window.addEventListener('closeCanvas', event => {
+     $(event.detail.elementId).offcanvas('hide');
+  })
 </script>
 
 <script>

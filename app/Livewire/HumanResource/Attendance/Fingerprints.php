@@ -4,6 +4,7 @@ namespace App\Livewire\HumanResource\Attendance;
 
 use App\Exports\ExportFingerprints;
 use App\Imports\ImportFingerprints;
+use App\Imports\ImportFingerprintsOldTemplate;
 use App\Livewire\Sections\Navbar\Navbar;
 use App\Models\Employee;
 use App\Models\Fingerprint;
@@ -11,7 +12,7 @@ use App\Notifications\DefaultNotification;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Notification;
-use Livewire\Attributes\Rule;
+use Livewire\Attributes\Renderless;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Livewire\WithPagination;
@@ -40,8 +41,16 @@ class Fingerprints extends Component
 
     public $confirmedId;
 
-    #[Rule('required', message: 'Please select a file to upload')]
-    #[Rule('mimes:xlsx', message: 'Excel files is accepted only')]
+    public $isEdit = false;
+
+    public $fingerprint;
+
+    public $date;
+
+    public $checkIn;
+
+    public $checkOut;
+
     public $file;
     // Variables - End //
 
@@ -81,9 +90,87 @@ class Fingerprints extends Component
             $this->isOneFingerprint)->paginate(7);
     }
 
+    public function submitFingerprint()
+    {
+        $this->isEdit ? $this->editFingerprint() : $this->addFingerprint();
+    }
+
+    #[Renderless]
+    public function showNewFingerprintModal()
+    {
+        $this->reset('isEdit', 'date', 'checkIn', 'checkOut');
+    }
+
+    #[Renderless]
+    public function showEditFingerprintModal(Fingerprint $fingerprint)
+    {
+        $this->isEdit = true;
+
+        $this->fingerprint = $fingerprint;
+
+        $this->date = $fingerprint->date;
+        $this->checkIn = $fingerprint->check_in;
+        $this->checkOut = $fingerprint->check_out;
+    }
+
+    public function addFingerprint()
+    {
+        $this->validate([
+            'date' => 'required',
+            'checkIn' => 'required',
+            'checkOut' => 'required',
+        ]);
+
+        Fingerprint::create([
+            'employee_id' => $this->selectedEmployeeId,
+            'date' => $this->date,
+            'check_in' => $this->checkIn,
+            'check_out' => $this->checkOut,
+        ]);
+
+        $this->dispatch('closeCanvas', elementId: '#addRecordSidebar');
+        $this->dispatch('toastr', type: 'success'/* , title: 'Done!' */ , message: 'Going Well!');
+    }
+
+    public function editFingerprint()
+    {
+        $this->validate([
+            'date' => 'required',
+            'checkIn' => 'required',
+            'checkOut' => 'required',
+        ]);
+
+        $this->fingerprint->update([
+            'date' => $this->date,
+            'check_in' => $this->checkIn,
+            'check_out' => $this->checkOut,
+        ]);
+
+        $this->dispatch('closeCanvas', elementId: '#addRecordSidebar');
+        $this->dispatch('toastr', type: 'success'/* , title: 'Done!' */ , message: 'Going Well!');
+
+        $this->reset('isEdit', 'date', 'checkIn', 'checkOut');
+    }
+
+    public function confirmDeleteFingerprint($id)
+    {
+        $this->confirmedId = $id;
+    }
+
+    public function deleteFingerprint(Fingerprint $fingerprint)
+    {
+        $fingerprint->delete();
+        $this->dispatch('toastr', type: 'success'/* , title: 'Done!' */ , message: 'Going Well!');
+    }
+
     public function importFromExcel()
     {
-        $this->validate();
+        $this->validate([
+            'file' => 'required|mimes:xlsx',
+        ], [
+            'file.required' => 'Please select a file to upload',
+            'file.mimes' => 'Excel files is accepted only',
+        ]);
 
         try {
             Excel::import(new ImportFingerprints(), $this->file);
@@ -95,7 +182,32 @@ class Fingerprints extends Component
 
             session()->flash('success', 'Well done! The file has been imported successfully.');
         } catch (\Exception $e) {
-            session()->flash('error', 'Failure is not the end, reason: '.$e->getMessage());
+            session()->flash('error', 'Error occurred: '.$e->getMessage());
+        }
+
+        $this->dispatch('closeModal', elementId: '#importModal');
+    }
+
+    public function importFromExcelOldTemplate()
+    {
+        $this->validate([
+            'file' => 'required|mimes:xlsx',
+        ], [
+            'file.required' => 'Please select a file to upload',
+            'file.mimes' => 'Excel files is accepted only',
+        ]);
+
+        try {
+            Excel::import(new ImportFingerprintsOldTemplate(), $this->file);
+
+            Notification::send(Auth::user(), new DefaultNotification(
+                'Successfully imported the fingerprint file'
+            ));
+            $this->dispatch('refreshNotifications')->to(Navbar::class);
+
+            session()->flash('success', 'Well done! The file has been imported successfully.');
+        } catch (\Exception $e) {
+            session()->flash('error', 'Error occurred: '.$e->getMessage());
         }
 
         $this->dispatch('closeModal', elementId: '#importModal');

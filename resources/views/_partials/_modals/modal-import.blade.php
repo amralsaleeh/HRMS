@@ -19,6 +19,7 @@
             @error('file') <div class="invalid-feedback">{{ $message }}</div> @enderror
           </div>
           <div class="col-12 text-center">
+            <button wire:click='importFromExcelOldTemplate()' type="button" class="btn btn-primary btn-add-event me-sm-3 me-1">Submit Old-T</button>
             <button type="submit" class="btn btn-primary me-sm-3 me-1">Submit</button>
             <button type="reset" class="btn btn-label-secondary btn-reset" data-bs-dismiss="modal" aria-label="Close">Cancel</button>
           </div>
