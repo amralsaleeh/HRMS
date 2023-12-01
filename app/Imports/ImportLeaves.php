@@ -26,7 +26,7 @@ class ImportLeaves implements ToModel, WithStartRow
         $end_at = $row[5];
 
         // Check if row is not exists to avoid duplicate
-        if (! Employee::CheckLeave($leave_id, $from_date, $to_date, $start_at, $end_at)->exists()) {
+        if (! Employee::CheckLeave($employee_id, $leave_id, $from_date, $to_date, $start_at, $end_at)->exists()) {
 
             $employee = Employee::find($employee_id);
 

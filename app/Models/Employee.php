@@ -99,10 +99,11 @@ class Employee extends Model
     // Functions - End
 
     // Scope - Start
-    public function scopeCheckLeave(Builder $query, $leave_id, $from_date, $to_date, $start_at, $end_at): void
+    public function scopeCheckLeave(Builder $query, $employee_id, $leave_id, $from_date, $to_date, $start_at, $end_at): void
     {
-        $query->whereHas('leaves', function ($query) use ($leave_id, $from_date, $to_date, $start_at, $end_at) {
-            $query->where('leave_id', $leave_id)
+        $query->whereHas('leaves', function ($query) use ($employee_id, $leave_id, $from_date, $to_date, $start_at, $end_at) {
+            $query->where('employee_id', $employee_id)
+                ->where('leave_id', $leave_id)
                 ->where('from_date', $from_date)
                 ->where('to_date', $to_date)
                 ->where('start_at', $start_at)
