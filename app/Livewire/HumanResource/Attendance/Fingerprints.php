@@ -4,14 +4,16 @@ namespace App\Livewire\HumanResource\Attendance;
 
 use App\Exports\ExportFingerprints;
 use App\Imports\ImportFingerprints;
-use App\Imports\ImportFingerprintsOldTemplate;
 use App\Livewire\Sections\Navbar\Navbar;
 use App\Models\Employee;
 use App\Models\Fingerprint;
+use App\Models\Import;
 use App\Notifications\DefaultNotification;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\Renderless;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -29,7 +31,7 @@ class Fingerprints extends Component
 
     public $selectedEmployeeId = 1;
 
-    public $dateRange = '2023-10-01 to 2023-10-31';
+    public $dateRange = '2023-10-01 to 2023-12-01';
 
     public $fromDate;
 
@@ -173,40 +175,29 @@ class Fingerprints extends Component
         ]);
 
         try {
-            Excel::import(new ImportFingerprints(), $this->file);
+            $fileRecord = Import::create([
+                'file_name' => $this->file->getClientOriginalName(),
+                'file_size' => $this->file->getSize(),
+                'file_ext' => $this->file->getClientOriginalExtension(),
+                'file_type' => $this->file->getClientMimeType(),
+                'status' => 'waiting',
+            ]);
 
-            Notification::send(Auth::user(), new DefaultNotification(
-                'Successfully imported the fingerprint file'
-            ));
-            $this->dispatch('refreshNotifications')->to(Navbar::class);
+            $destinationPath = 'imports';
+            $path = Storage::putFileAs($destinationPath, $this->file, $this->file->getClientOriginalName());
 
-            session()->flash('success', 'Well done! The file has been imported successfully.');
-        } catch (\Exception $e) {
-            session()->flash('error', 'Error occurred: '.$e->getMessage());
-        }
+            $this->dispatch('activeProgressBar')->to(Navbar::class);
 
-        $this->dispatch('closeModal', elementId: '#importModal');
-    }
+            $import_date = new ImportFingerprints(Auth::user()->id, $fileRecord->id);
+            Excel::import($import_date, $path);
 
-    public function importFromExcelOldTemplate()
-    {
-        $this->validate([
-            'file' => 'required|mimes:xlsx',
-        ], [
-            'file.required' => 'Please select a file to upload',
-            'file.mimes' => 'Excel files is accepted only',
-        ]);
+            // Notification::send(Auth::user(), new DefaultNotification(
+            //     'Successfully imported the fingerprint file'
+            // ));
+            // $this->dispatch('refreshNotifications')->to(Navbar::class);
 
-        try {
-            Excel::import(new ImportFingerprintsOldTemplate(), $this->file);
-
-            Notification::send(Auth::user(), new DefaultNotification(
-                'Successfully imported the fingerprint file'
-            ));
-            $this->dispatch('refreshNotifications')->to(Navbar::class);
-
-            session()->flash('success', 'Well done! The file has been imported successfully.');
-        } catch (\Exception $e) {
+            session()->flash('info', 'Stay tuned! The file is doing a little dance as we speak.');
+        } catch (Exception $e) {
             session()->flash('error', 'Error occurred: '.$e->getMessage());
         }
 

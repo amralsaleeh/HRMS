@@ -1,7 +1,3 @@
-@push('custom-css')
-
-@endpush
-
 <div wire:ignore.self class="modal fade" id="importModal" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-simple">
     <div class="modal-content p-3 p-md-5">
@@ -14,12 +10,10 @@
         </div>
         <form wire:submit="importFromExcel" class="row g-3">
           <div class="col-12 mb-4">
-            {{-- <label class="form-label w-100">File</label> --}}
             <input wire:model='file' class="form-control @error('file') is-invalid @enderror" type="file" accept=".xlsx" />
             @error('file') <div class="invalid-feedback">{{ $message }}</div> @enderror
           </div>
           <div class="col-12 text-center">
-            <button wire:click='importFromExcelOldTemplate()' type="button" class="btn btn-primary btn-add-event me-sm-3 me-1">Submit Old-T</button>
             <button type="submit" class="btn btn-primary me-sm-3 me-1">Submit</button>
             <button type="reset" class="btn btn-label-secondary btn-reset" data-bs-dismiss="modal" aria-label="Close">Cancel</button>
           </div>
@@ -28,7 +22,3 @@
     </div>
   </div>
 </div>
-
-@push('custom-scripts')
-
-@endpush

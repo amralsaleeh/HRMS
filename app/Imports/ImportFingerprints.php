@@ -3,22 +3,81 @@
 namespace App\Imports;
 
 use App\Models\Fingerprint;
+use App\Models\Import;
+use App\Models\User;
+use App\Notifications\DefaultNotification;
 use Carbon\Carbon;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Concerns\ToModel;
-use Maatwebsite\Excel\Concerns\WithStartRow;
+use Maatwebsite\Excel\Concerns\WithChunkReading;
+use Maatwebsite\Excel\Concerns\WithEvents;
+use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use Maatwebsite\Excel\Events\AfterImport;
+use Maatwebsite\Excel\Events\BeforeImport;
+use Maatwebsite\Excel\Events\ImportFailed;
 
-class ImportFingerprints implements ToModel, WithStartRow
+class ImportFingerprints implements ShouldQueue, ToModel, WithChunkReading, WithEvents, WithHeadingRow
 {
-    public function startRow(): int
+    private $user_id;
+
+    private $file_id;
+
+    private $import;
+
+    public function __construct($user_id, int $file_id)
     {
-        return 2;
+        $this->user_id = $user_id;
+        $this->file_id = $file_id;
+        $this->import = Import::find($this->file_id);
+    }
+
+    public function registerEvents(): array
+    {
+        return [
+            BeforeImport::class => function (BeforeImport $event) {
+                $total_rows = collect($event->reader->getTotalRows())->flatten()->values();
+                $tmp_total_rows = isset($total_rows[0]) ? $total_rows[0] - 1 : 0;
+                $this->import->update([
+                    'status' => 'processing',
+                    'total' => $tmp_total_rows,
+                ]);
+            },
+
+            AfterImport::class => function (AfterImport $event) {
+                $this->import->update([
+                    'status' => 'finished',
+                ]);
+
+                User::find($this->user_id)
+                    ->notify(new DefaultNotification($this->user_id, 'Successfully imported the fingerprint file'));
+
+                session()->flash('success', 'Imported Successfully!');
+            },
+
+            ImportFailed::class => function (ImportFailed $event) {
+                $this->import->update([
+                    'status' => 'error',
+                    'details' => $event->e->getMessage(),
+                ]);
+
+                Log::alert('Excel Import Failed (Fingerprints): '.$event->e->getMessage());
+                session()->flash('error', 'Error Occurred, Check Log File!');
+            },
+
+        ];
+    }
+
+    public function chunkSize(): int
+    {
+        return 500;
     }
 
     public function model(array $row)
     {
-        $employee_id = $row[0];
-        $date = Carbon::parse($row[3])->format('Y-m-d');
-        $log = $row[4];
+        $employee_id = $row['ac_no'];
+        $date = Carbon::parse($row['date'])->format('Y-m-d');
+        $log = $row['time'];
         $check_in = null;
         $check_out = null;
 
@@ -31,21 +90,17 @@ class ImportFingerprints implements ToModel, WithStartRow
             $check_out = substr($log, -5);
         }
 
-        // Check if the record does not exist to avoid duplicate
-        if (! Fingerprint::checkFingerprint($employee_id, $date, $log, $check_in, $check_out)->exists()) {
+        Fingerprint::firstOrCreate([
+            'employee_id' => $employee_id,
+            'date' => $date,
+            'log' => $log,
+            'check_in' => $check_in,
+            'check_out' => $check_out,
+        ]);
 
-            Fingerprint::create([
-                'employee_id' => $employee_id,
-                'date' => $date,
-                'log' => $log,
-                'check_in' => $check_in,
-                'check_out' => $check_out,
-            ]);
-
-            return null;
-        } else {
-            // Skip this row
-            return null;
-        }
+        $importRow = Import::find($this->file_id);
+        $importRow->update([
+            'current' => $importRow->current > 0 ? $importRow->current + 1 : 1,
+        ]);
     }
 }

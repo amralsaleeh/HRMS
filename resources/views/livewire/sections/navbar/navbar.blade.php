@@ -85,6 +85,28 @@
           </div>
 
           <ul class="navbar-nav flex-row align-items-center ms-auto">
+
+            <!-- Progress Bar -->
+            @if ($activeProgressBar)
+              <li wire:poll.1s="updateProgressBar" class="nav-item mx-3" style="width: 250px;">
+                <div class="progress" style="height: 20px;">
+                  <div class="progress-bar progress-bar-striped progress-bar-animated bg-info" role="progressbar" style="width: {{ $percentage }}%;" aria-valuenow="{{ $percentage }}" aria-valuemin="0" aria-valuemax="100">{{ $percentage }}%</div>
+                </div>
+              </li>
+            @else
+              @if (session()->has('success'))
+                <div class="nav-item mx-3 text-success">
+                     {{ session('success') }}
+                </div>
+              @endif
+              @if (session()->has('error'))
+                <div class="nav-item mx-3 text-danger">
+                     {{ session('error') }}
+                </div>
+              @endif
+            @endif
+            <!-- Progress Bar -->
+
             <!-- Language -->
             <li class="nav-item dropdown-language dropdown me-2 me-xl-1">
               <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
@@ -98,7 +120,6 @@
                   </a>
                 </li>
                 <li>
-                  {{-- {{ dd(App::getLocale()) }} --}}
                   <a class="dropdown-item {{ App::getLocale() == 'en' ? 'selected' : '' }}" href="{{ url('lang/en') }}" data-language="en" data-text-direction="ltr">
                     <i class="fi fi-us fis rounded-circle me-1 fs-3"></i>
                     <span class="align-middle">English</span>

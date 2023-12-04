@@ -56,14 +56,5 @@ class Fingerprint extends Model
             })
             ->orderBy('date');
     }
-
-    public function scopeCheckFingerprint(Builder $query, $employee_id, $date, $log, $check_in, $check_out): void
-    {
-        $query->where('employee_id', $employee_id)
-            ->where('date', $date)
-            ->where('log', $log)
-            ->where('check_in', $check_in)
-            ->where('check_out', $check_out);
-    }
     // Scope - End
 }

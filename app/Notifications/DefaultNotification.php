@@ -2,16 +2,18 @@
 
 namespace App\Notifications;
 
+use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
-use Illuminate\Support\Facades\Auth;
 
 class DefaultNotification extends Notification
 {
     use Queueable;
 
     // Variables - Start //
-    public $message;
+    private $user_id;
+
+    private $message;
     // Variables - End //
 
     public function via(object $notifiable): array
@@ -19,16 +21,19 @@ class DefaultNotification extends Notification
         return ['database'];
     }
 
-    public function __construct($message)
+    public function __construct($user_id, $message)
     {
+        $this->user_id = $user_id;
         $this->message = $message;
     }
 
     public function toArray(object $notifiable): array
     {
+        $user = User::find($this->user_id);
+
         return [
-            'user' => Auth::user()->EmployeeFullName,
-            'image' => Auth::user()->profile_photo_url,
+            'user' => $user->EmployeeFullName,
+            'image' => $user->profile_photo_url,
             'message' => $this->message,
         ];
     }
