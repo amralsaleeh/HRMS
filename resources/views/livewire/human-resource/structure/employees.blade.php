@@ -32,7 +32,7 @@
           <td>
             <ul class="list-unstyled users-list m-0 avatar-group d-flex align-items-center">
               <li class="avatar avatar-xs pull-up">
-                <a href="#">
+                <a href="{{ route('structure-employees-info', $employee->id) }}">
                   <img src="{{ asset($employee->getEmployeePhoto()) }}" alt="Avatar" class="rounded-circle">
                   {{ $employee->full_name }}
                 </a>

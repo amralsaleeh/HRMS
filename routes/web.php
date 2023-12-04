@@ -9,6 +9,7 @@ use App\Livewire\HumanResource\Holidays;
 use App\Livewire\HumanResource\Messages\Personal;
 use App\Livewire\HumanResource\Structure\Centers;
 use App\Livewire\HumanResource\Structure\Departments;
+use App\Livewire\HumanResource\Structure\EmployeeInfo;
 use App\Livewire\HumanResource\Structure\Employees;
 use App\Livewire\HumanResource\Structure\Positions;
 use App\Livewire\Misc\ComingSoon;
@@ -41,6 +42,7 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
         Route::get('/departments', Departments::class)->name('structure-departments');
         Route::get('/positions', Positions::class)->name('structure-positions');
         Route::get('/employees', Employees::class)->name('structure-employees');
+        Route::get('/employee/{id?}', EmployeeInfo::class)->name('structure-employees-info');
     });
 
     Route::prefix('messages')->group(function () {
