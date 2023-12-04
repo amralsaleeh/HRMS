@@ -134,8 +134,12 @@
                   @forelse($fingerprints as $fingerprint)
                     <tr>
                       <td>{{ $fingerprint->date }}</td>
-                      <td>{{ $fingerprint->check_in }}</td>
-                      <td>{{ $fingerprint->check_out }}</td>
+                      <td >
+                        <div class="badge rounded-pill bg-label-secondary">{{ $fingerprint->check_in }}</div>
+                      </td>
+                      <td>
+                        <div class="badge rounded-pill bg-label-secondary">{{ $fingerprint->check_out }}</div>
+                      </td>
                       <td>
                         <div>
                           <a wire:click.prevent="showEditFingerprintModal({{ $fingerprint }})" data-bs-toggle="offcanvas" data-bs-target="#addRecordSidebar" href=""><i

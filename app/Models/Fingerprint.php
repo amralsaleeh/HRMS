@@ -32,14 +32,14 @@ class Fingerprint extends Model
     protected function checkIn(): Attribute
     {
         return Attribute::make(
-            get: fn (?string $value) => $value !== null ? Carbon::parse($value)->format('H:i') : '-',
+            get: fn (?string $value) => $value !== null ? Carbon::parse($value)->format('H:i') : '',
         );
     }
 
     protected function checkOut(): Attribute
     {
         return Attribute::make(
-            get: fn (?string $value) => $value !== null ? Carbon::parse($value)->format('H:i') : '-',
+            get: fn (?string $value) => $value !== null ? Carbon::parse($value)->format('H:i') : '',
         );
     }
 
