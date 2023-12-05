@@ -46,8 +46,8 @@
           <td>
             {{ $this->getMembersCount($center->id) }}
           </td>
-          <td><span class="badge bg-label-success me-1">{{ $center->start_work_hour . ' - ' . $center->end_work_hour }}</span></td>
-          <td>{{ $this->getDaysName($center->weekends) }}</td>
+          <td><span class="badge bg-label-success">{{ $center->start_work_hour . ' - ' . $center->end_work_hour }}</span></td>
+          <td><span class="badge bg-label-secondary">{{ $this->getDaysName($center->weekends) }}</span></td>
           <td>
             <div style="display: flex">
               <div class="dropdown">
