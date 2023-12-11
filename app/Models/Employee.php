@@ -55,6 +55,11 @@ class Employee extends Model
         return $this->hasMany(Discount::class);
     }
 
+    public function timelines(): HasMany
+    {
+        return $this->hasMany(Timeline::class);
+    }
+
     public function leaves(): BelongsToMany
     {
         return $this->belongsToMany(Leave::class)
