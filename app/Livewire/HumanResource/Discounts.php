@@ -5,6 +5,7 @@ namespace App\Livewire\HumanResource;
 use App\Models\Center;
 use App\Models\Discount;
 use App\Models\Employee;
+use Barryvdh\Debugbar\Facades\Debugbar;
 use Carbon\Carbon;
 use Carbon\CarbonInterface;
 use Carbon\CarbonPeriod;
@@ -163,10 +164,10 @@ class Discounts extends Component
                         $isEarly = $this->checkIfEarly($center, $employee, $employeeLeaves, $fingerprint);
 
                         if (! $isDelay && ! $isEarly) {
-                            // الموظف مو متاخر ولا طالع بكير بس ممكن يكون جاي بعد ال 9:30
-                            $this->checkIfLate($center, $employee, $employeeLeaves, $fingerprint);
+                            $isLate = $this->checkIfLate($center, $employee, $employeeLeaves, $fingerprint);
                         }
                     }
+                    // Debugbar::info($fingerprint->date.' - hourly_counter: '.Carbon::parse($employee->hourly_counter)->format('H:i').' - delay_counter: '.Carbon::parse($employee->delay_counter)->format('H:i'));
 
                     $fingerprint->is_checked = 1;
                     $fingerprint->save();
@@ -332,7 +333,41 @@ class Discounts extends Component
 
     public function checkIfLate($center, $employee, $employeeLeaves, $fingerprint)
     {
+        $startOfLateThreshold = carbon::parse($center->start_work_hour)->addMinutes(30)->format('H:i'); // TODO: Make 30 inserted variable on settings table
 
+        if ($fingerprint->check_in >= $startOfLateThreshold) {
+
+            $timeCovered = $this->isThereHourlyExcuse($fingerprint, $employeeLeaves);
+            $fingerprint->check_in = Carbon::parse($fingerprint->check_in)->subHours($timeCovered->hour)->subMinutes($timeCovered->minute);
+
+            if ($fingerprint->check_in < $startOfLateThreshold) {
+                return false;
+            } else {
+                $duration = Carbon::parse($center->start_work_hour)->diff(Carbon::parse($fingerprint->check_in));
+                $employee->update([
+                    'hourly_counter' => Carbon::parse($employee->hourly_counter)->addHours($duration->h)->addMinutes($duration->i),
+                ]);
+
+                $hourlyCounter = Carbon::parse($employee->hourly_counter);
+                $hourlyCounterLimit = Carbon::parse('07:00:00'); // TODO: Make 07:00:00 inserted variable on settings table
+
+                if ($hourlyCounter->gt($hourlyCounterLimit)) {
+                    if ($employee->max_leave_allowed > 0) {
+                        $this->decrementMaxLeaveAllowed($employee, $fingerprint->date);
+                    } else {
+                        $this->createDiscountFromFingerprint($employee, $fingerprint, 'Administrative leave - Rounded', 1);
+                    }
+                    $employee->update([
+                        'hourly_counter' => Carbon::parse($employee->hourly_counter)->subHours(7), // TODO: Make 7 inserted variable on settings table
+                    ]);
+                }
+
+                return true;
+            }
+
+        } else {
+            return false;
+        }
     }
 
     public function isThereDailyExcuse($fingerprint, $employeeLeaves)
