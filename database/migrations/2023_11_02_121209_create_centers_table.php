@@ -17,6 +17,7 @@ return new class extends Migration
             $table->time('start_work_hour');
             $table->time('end_work_hour');
             $table->string('weekends');
+            $table->boolean('is_active')->default(1);
             $table->string('created_by');
             $table->string('updated_by');
             $table->string('deleted_by')->nullable();
