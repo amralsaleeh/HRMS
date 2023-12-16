@@ -9,7 +9,7 @@
 	font-family: Noto Kufi Arabic;
 	font-weight: normal;
     src:
-        url(assets/fonts/NotoKufiArabic-VariableFont_wght.ttf) format('truetype');
+        url(../assets/fonts/NotoKufiArabic-VariableFont_wght.ttf) format('truetype');
     }
 </style>
 
