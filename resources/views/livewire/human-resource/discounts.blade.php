@@ -236,16 +236,7 @@
             </div>
           </div>
           <div class="card-title-elements">
-              @php
-                $nonZeroCount = 0;
-              @endphp
-
-              @foreach ($employeeDiscounts as $employee)
-                  @php
-                      $nonZeroCount += $employee->discounts->where('rate', '!=', 0)->count();
-                  @endphp
-              @endforeach
-              <span class="badge bg-danger">{{ count($employee->discounts) .' / '. $nonZeroCount }}</span>
+              <span class="badge bg-danger">{{ count($employee->discounts) .' / '. $employee->cash_discounts_count }}</span>
               <a href="javascript:void(0);" class="card-collapsible text-danger"><i class="tf-icons ti ti-chevron-right scaleX-n1-rtl ti-sm"></i></a>
           </div>
 
