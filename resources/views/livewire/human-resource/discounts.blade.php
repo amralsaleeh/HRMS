@@ -2,6 +2,7 @@
 
   @php
     $configData = Helper::appClasses();
+    use Carbon\Carbon;
   @endphp
 
   @section('title', 'Discounts')
@@ -39,6 +40,20 @@
       }
     </style>
   @endsection
+
+  {{-- <h4 class="fw-bold py-3 mb-4">
+    <span class="text-muted fw-light">UI elements /</span> Pagination and breadcrumbs
+  </h4> --}}
+
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <a href="{{ route('dashboard') }}">Dashboard</a>
+      </li>
+      <li class="breadcrumb-item active">Human Resource</li>
+      <li class="breadcrumb-item active">Discounts</li>
+    </ol>
+  </nav>
 
   <div class="col-12 mb-4">
     <div class="bs-stepper wizard-icons wizard-modern wizard-modern-icons-example mt-2">
@@ -226,16 +241,45 @@
       <div class="card card-action mb-4">
         <div class="card-header">
           <div class="card-action-title d-flex overflow-hidden align-items-center">
-            <i class="ti ti-menu-2 ti-sm cursor-pointer d-lg-none d-block me-2" data-bs-toggle="sidebar" data-overlay="" data-target="#app-chat-contacts"></i>
+            {{-- <i class="ti ti-menu-2 ti-sm cursor-pointer d-lg-none d-block me-2" data-bs-toggle="sidebar" data-overlay="" data-target="#app-chat-contacts"></i>
             <div class="flex-shrink-0 avatar">
               <img src="{{ asset($employee->getEmployeePhoto()) }}" alt="Avatar" class="rounded-circle">
             </div>
             <div class="chat-contact-info flex-grow-1 ms-2">
               <h6 class="m-0">{{ $employee->full_name }}</h6>
               <small class="user-status text-muted">{{ $employee->current_position }}</small>
+            </div> --}}
+            <div class="avatar avatar-lg me-2">
+              <a href="{{ route('structure-employees-info', $employee->id) }}">
+                <img src="{{ asset($employee->getEmployeePhoto()) }}" alt="Avatar" class="rounded">
+              </a>
+            </div>
+            <div class="user-profile-info mx-3">
+              <a href="{{ route('structure-employees-info', $employee->id) }}">
+                <h5 style="margin-bottom: 0.5rem;">{{ $employee->full_name }}</h5>
+              </a>
+              <ul class="list-inline mb-0 d-flex align-items-center flex-wrap justify-content-sm-start justify-content-center gap-2">
+                <li class="list-inline-item">
+                  <i class="ti ti-id"></i> {{ $employee->id }}
+                </li>
+                <li class="list-inline-item">
+                  <i class="ti ti-map-pin"></i> {{ $employee->current_position }}
+                </li>
+                <li class="list-inline-item">
+                  <i class="ti ti-building"></i> {{ $employee->current_department }}
+                </li>
+                <li class="list-inline-item">
+                  <i class="ti ti-building-community"></i> {{ $employee->current_center }}
+                </li>
+                <li class="list-inline-item">
+                  <i class="ti ti-calendar"></i> {{ $employee->join_at }}
+                  {{-- <i class="ti ti-calendar"></i> {{ 'Joined ' . $employee->join_at }} --}}
+                </li>
+              </ul>
             </div>
           </div>
           <div class="card-title-elements">
+              <i class="ti ti-phone-call d-sm-block me-3" data-bs-toggle="tooltip" data-bs-placement="left" data-bs-original-title="{{'+'. implode(' ', str_split($employee->mobile_number, 3)) }}"></i>
               <span class="badge bg-danger">{{ count($employee->discounts) .' / '. $employee->cash_discounts_count }}</span>
               <a href="javascript:void(0);" class="card-collapsible text-danger"><i class="tf-icons ti ti-chevron-right scaleX-n1-rtl ti-sm"></i></a>
           </div>

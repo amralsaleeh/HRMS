@@ -8,6 +8,7 @@ use App\Models\Employee;
 use Barryvdh\Debugbar\Facades\Debugbar;
 use Carbon\Carbon;
 use Carbon\CarbonInterface;
+use Carbon\CarbonInterval;
 use Carbon\CarbonPeriod;
 use Livewire\Component;
 
@@ -110,6 +111,45 @@ class Discounts extends Component
                         $leave->pivot->is_checked = 1;
                         $leave->pivot->save();
                     }
+
+                    // اجازة - ساعية - اداري
+                    if ($leave->id == 1201) {
+                        $fingerprint = $employeeFingerprints->where('date', $leave->pivot->from_date)->first();
+                        if ($fingerprint) {
+                            $startOfWork = carbon::parse($center->start_work_hour)->addMinutes(5)->format('H:i'); // TODO: Make 5 inserted variable on settings table
+                            $endOfWork = carbon::parse($center->end_work_hour)->subMinutes(5)->format('H:i'); // TODO: Make 5 inserted variable on settings table
+                            if ($fingerprint->check_in <= $startOfWork && $fingerprint->check_out >= $endOfWork) {
+                                $duration = Carbon::parse($leave->pivot->start_at)->diff(Carbon::parse($leave->pivot->end_at));
+                                $maxDurationInOneDay = Carbon::createFromTimeString('03:00:00');
+
+                                if ($duration >= $maxDurationInOneDay) { // TODO: Make 03:00:00 inserted variable on settings table
+                                    if ($employee->max_leave_allowed > 0) {
+                                        $this->decrementMaxLeaveAllowed($employee, $leave->pivot->from_date);
+                                    } else {
+                                        $this->createDiscountFromLeave($employee, $employeeFingerprints, $leave, 'Administrative leave - Exceeded the 3 hours limit', 1);
+                                    }
+                                    $this->setFingerprintIsChecked($employeeFingerprints, Carbon::parse($leave->pivot->from_date));
+                                } else {
+                                    $employee->update([
+                                        'hourly_counter' => Carbon::parse($employee->hourly_counter)->addHours($duration->h)->addMinutes($duration->i),
+                                    ]);
+                                    if ($employee->hourly_counter >= '07:00:00') { // TODO: Make 07:00:00 inserted variable on settings table
+                                        if ($employee->max_leave_allowed > 0) {
+                                            $this->decrementMaxLeaveAllowed($employee, $leave->pivot->from_date);
+                                        } else {
+                                            $this->createDiscountFromLeave($employee, $employeeFingerprints, $leave, 'Administrative leave - Rounded', 1);
+                                        }
+                                        $employee->update([
+                                            'hourly_counter' => Carbon::parse($employee->hourly_counter)->subHours(7), // TODO: Make 7 inserted variable on settings table
+                                        ]);
+                                        $this->setFingerprintIsChecked($employeeFingerprints, Carbon::parse($leave->pivot->from_date));
+                                    }
+                                }
+                                $leave->pivot->is_checked = 1;
+                                $leave->pivot->save();
+                            }
+                        }
+                    }
                 }
 
                 $employeeFingerprints = $this->getEmployeeFingerprints($workDays, $employee);
@@ -137,52 +177,15 @@ class Discounts extends Component
                         // Two fingerprint
                         $isDelay = $this->checkIfDelay($center, $employee, $fingerprint);
                         $isEarly = $this->checkIfEarly($center, $employee, $employeeLeaves, $fingerprint);
-
-                        if (! $isDelay && ! $isEarly) {
-                            $isLate = $this->checkIfLate($center, $employee, $employeeLeaves, $fingerprint);
-                        }
+                        $isLate = $this->checkIfLate($center, $employee, $employeeLeaves, $fingerprint);
+                        // if (! $isDelay && ! $isEarly) {
+                        // }
                     }
-                    // Debugbar::info($fingerprint->date.' - hourly_counter: '.Carbon::parse($employee->hourly_counter)->format('H:i').' - delay_counter: '.Carbon::parse($employee->delay_counter)->format('H:i'));
+                    // Debugbar::info('1 --- '.$fingerprint->date.' - - - hourly_counter: '.Carbon::parse($employee->hourly_counter)->format('H:i').' - - - delay_counter: '.Carbon::parse($employee->delay_counter)->format('H:i'));
 
                     $fingerprint->refresh();
                     $fingerprint->is_checked = 1;
                     $fingerprint->save();
-                }
-
-                $employeeLeaves = $employee->leaves()->where('to_date', '>=', $fromDate)->where('is_checked', 0)->get();
-                foreach ($employeeLeaves as $leave) {
-                    // اجازة - ساعية - اداري
-                    if ($leave->id == 1201) {
-                        $duration = Carbon::parse($leave->pivot->start_at)->diff(Carbon::parse($leave->pivot->end_at));
-                        $maxDurationInOneDay = Carbon::createFromTimeString('03:00:00');
-
-                        if ($duration >= $maxDurationInOneDay) { // TODO: Make 03:00:00 inserted variable on settings table
-                            Debugbar::info($duration);
-                            if ($employee->max_leave_allowed > 0) {
-                                $this->decrementMaxLeaveAllowed($employee, $leave->pivot->from_date);
-                            } else {
-                                $this->createDiscountFromLeave($employee, $employeeFingerprints, $leave, 'Administrative leave - Exceeded the 3 hours limit', 1);
-                            }
-                            $this->setFingerprintIsChecked($employeeFingerprints, Carbon::parse($leave->pivot->from_date));
-                        } else {
-                            $employee->update([
-                                'hourly_counter' => Carbon::parse($employee->hourly_counter)->addHours($duration->h)->addMinutes($duration->i),
-                            ]);
-                            if ($employee->hourly_counter >= '07:00:00') { // TODO: Make 07:00:00 inserted variable on settings table
-                                if ($employee->max_leave_allowed > 0) {
-                                    $this->decrementMaxLeaveAllowed($employee, $leave->pivot->from_date);
-                                } else {
-                                    $this->createDiscountFromLeave($employee, $employeeFingerprints, $leave, 'Administrative leave - Rounded', 1);
-                                }
-                                $employee->update([
-                                    'hourly_counter' => Carbon::parse($employee->hourly_counter)->subHours(7), // TODO: Make 7 inserted variable on settings table
-                                ]);
-                                $this->setFingerprintIsChecked($employeeFingerprints, Carbon::parse($leave->pivot->from_date));
-                            }
-                        }
-                        $leave->pivot->is_checked = 1;
-                        $leave->pivot->save();
-                    }
                 }
             }
         }
@@ -301,10 +304,10 @@ class Discounts extends Component
             }
 
             return true;
-
         } else {
             return false;
         }
+
     }
 
     public function checkIfEarly($center, $employee, $employeeLeaves, $fingerprint)
@@ -318,29 +321,42 @@ class Discounts extends Component
             if ($fingerprint->check_out >= $endOfWork) {
                 return false;
             } else {
-                $duration = Carbon::parse($center->end_work_hour)->diff(Carbon::parse($fingerprint->check_out));
-                $employee->update([
-                    'hourly_counter' => Carbon::parse($employee->hourly_counter)->addHours($duration->h)->addMinutes($duration->i),
-                ]);
+                $duration = Carbon::parse($fingerprint->check_out)->diff(Carbon::parse($center->end_work_hour));
+                $durationInSeconds = Carbon::parse($fingerprint->check_out)->diffInSeconds(Carbon::parse($center->end_work_hour));
+                $maxDurationInOneDay = CarbonInterval::hours(3)->totalSeconds;
 
-                $hourlyCounter = Carbon::parse($employee->hourly_counter);
-                $hourlyCounterLimit = Carbon::parse('07:00:00'); // TODO: Make 07:00:00 inserted variable on settings table
-
-                if ($hourlyCounter->gt($hourlyCounterLimit)) {
+                if ($durationInSeconds >= $maxDurationInOneDay) {
                     if ($employee->max_leave_allowed > 0) {
                         $this->decrementMaxLeaveAllowed($employee, $fingerprint->date);
                     } else {
-                        $this->createDiscountFromFingerprint($employee, $fingerprint, 'Administrative leave - Rounded', 1);
+                        $this->createDiscountFromFingerprint($employee, $fingerprint, 'Administrative leave - Exceeded the 3 hours limit', 1);
                     }
+
+                    return true;
+                } else {
                     $employee->update([
-                        'hourly_counter' => Carbon::parse($employee->hourly_counter)->subHours(7), // TODO: Make 7 inserted variable on settings table
+                        'hourly_counter' => Carbon::parse($employee->hourly_counter)->addHours($duration->h)->addMinutes($duration->i),
                     ]);
+
+                    $hourlyCounter = Carbon::parse($employee->hourly_counter);
+                    $hourlyCounterLimit = Carbon::parse('07:00:00'); // TODO: Make 07:00:00 inserted variable on settings table
+
+                    if ($hourlyCounter->gt($hourlyCounterLimit)) {
+                        if ($employee->max_leave_allowed > 0) {
+                            $this->decrementMaxLeaveAllowed($employee, $fingerprint->date);
+                        } else {
+                            $this->createDiscountFromFingerprint($employee, $fingerprint, 'Administrative leave - Rounded', 1);
+                        }
+                        $employee->update([
+                            'hourly_counter' => Carbon::parse($employee->hourly_counter)->subHours(7), // TODO: Make 7 inserted variable on settings table
+                        ]);
+                    }
+
+                    return true;
                 }
-
-                return true;
             }
-
         } else {
+
             return false;
         }
     }
@@ -350,7 +366,6 @@ class Discounts extends Component
         $startOfLateThreshold = carbon::parse($center->start_work_hour)->addMinutes(30)->format('H:i'); // TODO: Make 30 inserted variable on settings table
 
         if ($fingerprint->check_in >= $startOfLateThreshold) {
-
             $timeCovered = $this->isThereHourlyLateExcuse($fingerprint, $employeeLeaves);
             $fingerprint->check_in = Carbon::parse($fingerprint->check_in)->subHours($timeCovered->hour)->subMinutes($timeCovered->minute);
 
@@ -378,7 +393,6 @@ class Discounts extends Component
 
                 return true;
             }
-
         } else {
             return false;
         }
