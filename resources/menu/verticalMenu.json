@@ -67,7 +67,7 @@
     {
       "url": "/discounts",
       "name": "Discounts",
-      "icon": "menu-icon tf-icons ti ti-discount-2",
+      "icon": "menu-icon tf-icons ti ti-coin",
       "slug": "discounts",
       "role": ""
     },
