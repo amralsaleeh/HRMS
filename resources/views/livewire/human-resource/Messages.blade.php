@@ -88,7 +88,7 @@
               </div>
             </div>
             <div class="d-flex align-items-center">
-              <i class="ti ti-phone-call cursor-pointer d-sm-block d-none me-3" data-bs-toggle="tooltip" data-bs-placement="left" data-bs-original-title="{{ '+'.$selectedEmployee->mobile_number }}"></i>
+              <i class="ti ti-phone-call cursor-pointer d-sm-block d-none me-3" data-bs-toggle="tooltip" data-bs-placement="left" data-bs-original-title="{{'+'. implode(' ', str_split($selectedEmployee->mobile_number, 3)) }}"></i>
               <div class="dropdown d-flex align-self-center">
                 <button class="btn p-0" type="button" id="chat-header-actions" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   <i class="ti ti-dots-vertical"></i>

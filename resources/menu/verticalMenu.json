@@ -58,22 +58,11 @@
       ]
     },
     {
+      "url": "/messages",
       "name": "Messages",
       "icon": "menu-icon tf-icons ti ti-message-dots",
       "slug": "messages",
-      "role": "",
-      "submenu": [
-        {
-          "url": "messages/bulk",
-          "name": "Bulk",
-          "slug": "messages-bulk"
-        },
-        {
-          "url": "messages/personal",
-          "name": "Personal",
-          "slug": "messages-personal"
-        }
-      ]
+      "role": ""
     },
     {
       "url": "/discounts",

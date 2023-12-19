@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Livewire\HumanResource\Messages;
+namespace App\Livewire\HumanResource;
 
 use App\Models\Employee;
 use App\Models\Message;
 use App\Traits\MessageProvider;
 use Livewire\Component;
 
-class Personal extends Component
+class Messages extends Component
 {
     use MessageProvider;
 
@@ -38,7 +38,7 @@ class Personal extends Component
 
         $this->dispatch('initialize');
 
-        return view('livewire.human-resource.messages.personal');
+        return view('livewire.human-resource.messages');
     }
 
     public function selectEmployee(Employee $employee)
