@@ -203,11 +203,13 @@ class Discounts extends Component
         }
 
         $weekends = $center->weekends;
-      return array_filter($workDaysWithoutHolidays, function (CarbonInterface $carbon) use ($weekends) {
-          $dayOfWeek = $carbon->dayOfWeek;
+        $workDaysWithoutHolidaysAndWeekends = array_filter($workDaysWithoutHolidays, function (CarbonInterface $carbon) use ($weekends) {
+            $dayOfWeek = $carbon->dayOfWeek;
 
-          return ! in_array($dayOfWeek, $weekends);
-      });
+            return ! in_array($dayOfWeek, $weekends);
+        });
+
+        return $workDaysWithoutHolidaysAndWeekends;
     }
 
     public function getCenterEmployees($centerId)
