@@ -20,28 +20,23 @@ class Discounts extends Component
     public $batch = '2023-10-18 to 2023-11-16'; // TESTING
 
     public $allCenters;
+
+    private $absenceThreshold;
     // Variables - End //
 
     public function mount()
     {
-        $this->allCenters = Center::where('is_active', true)->get(['id', 'start_work_hour', 'end_work_hour', 'weekends']);
         // $this->disableDateLimit = substr(Discount::latest()->first()->batch, -10);
+
+        $this->allCenters = Center::where('is_active', true)->get(['id', 'start_work_hour', 'end_work_hour', 'weekends']);
+        $this->absenceThreshold = CarbonInterval::hours(3)->totalSeconds; // TODO: Make 3 inserted variable on settings table
     }
 
     public function render()
     {
         $this->calculateDiscounts(); // TESTING
 
-        $employeeDiscounts = Employee::whereHas('discounts', function ($query) {
-            $query->whereBetween('date', explode(' to ', $this->batch));
-        })->with(['discounts' => function ($query) {
-            $query->whereBetween('date', explode(' to ', $this->batch));
-        }])->get()->each(function ($employee) {
-            $employee->discounts = $employee->discounts->sortBy('date');
-            $employee->cash_discounts_count = $employee->discounts->filter(function ($discount) {
-                return $discount->rate > 0;
-            })->count();
-        });
+        $employeeDiscounts = $this->getEmployeeDiscounts();
 
         return view('livewire.human-resource.discounts', ['employeeDiscounts' => $employeeDiscounts]);
     }
@@ -59,6 +54,10 @@ class Discounts extends Component
         $toDate = Carbon::create($dates[1]);
 
         foreach ($this->allCenters as $center) {
+            $startOfWork = carbon::parse($center->start_work_hour)->addMinutes(5)->format('H:i'); // TODO: Make 5 inserted variable on settings table
+            $delayThreshold = carbon::parse($center->start_work_hour)->addMinutes(30)->format('H:i'); // TODO: Make 30 inserted variable on settings table
+            $endOfWork = carbon::parse($center->end_work_hour)->subMinutes(5)->format('H:i'); // TODO: Make 5 inserted variable on settings table
+
             $workDays = $this->calculateWorkDays($center, $fromDate, $toDate);
             $workDaysInMinutes = count($workDays) * Carbon::parse($center->start_work_hour)->diffInMinutes(Carbon::parse($center->end_work_hour));
 
@@ -77,8 +76,8 @@ class Discounts extends Component
                 foreach ($employeeLeaves as $leave) {
                     // اجازة - يومية - اداري
                     if ($leave->id == 1101) {
-                        $start_date = Carbon::create($leave->pivot->from_date);
-                        $dates = $start_date->range($leave->pivot->to_date);
+                        $startDate = Carbon::create($leave->pivot->from_date);
+                        $dates = $startDate->range($leave->pivot->to_date);
 
                         foreach ($dates as $date) {
                             if ($employee->max_leave_allowed > 0) {
@@ -116,14 +115,12 @@ class Discounts extends Component
                     if ($leave->id == 1201) {
                         $fingerprint = $employeeFingerprints->where('date', $leave->pivot->from_date)->first();
                         if ($fingerprint) {
-                            $startOfWork = carbon::parse($center->start_work_hour)->addMinutes(5)->format('H:i'); // TODO: Make 5 inserted variable on settings table
-                            $endOfWork = carbon::parse($center->end_work_hour)->subMinutes(5)->format('H:i'); // TODO: Make 5 inserted variable on settings table
+
                             if ($fingerprint->check_in <= $startOfWork && $fingerprint->check_out >= $endOfWork) {
                                 $duration = Carbon::parse($leave->pivot->start_at)->diff(Carbon::parse($leave->pivot->end_at));
+                                $durationInSeconds = Carbon::parse($leave->pivot->start_at)->diffInSeconds(Carbon::parse($leave->pivot->end_at));
 
-                                $maxDurationInOneDay = Carbon::createFromTimeString('03:00:00');
-
-                                if ($duration >= $maxDurationInOneDay) { // TODO: Make 03:00:00 inserted variable on settings table
+                                if ($durationInSeconds >= $this->absenceThreshold) {
                                     if ($employee->max_leave_allowed > 0) {
                                         $this->decrementMaxLeaveAllowed($employee, $leave->pivot->from_date);
                                     } else {
@@ -165,7 +162,6 @@ class Discounts extends Component
                             }
                         }
                     } elseif ($fingerprint->check_out == null) {
-                        // TODO: Refactor code to enhance this critical situation
                         // One fingerprint
                         if (! $this->isThereDailyExcuse($fingerprint, $employeeLeaves)) {
                             if ($employee->max_leave_allowed > 0) {
@@ -176,9 +172,9 @@ class Discounts extends Component
                         }
                     } else {
                         // Two fingerprint
-                        $isDelay = $this->checkIfDelay($center, $employee, $fingerprint);
-                        $isEarly = $this->checkIfEarly($center, $employee, $employeeLeaves, $fingerprint);
-                        $isLate = $this->checkIfLate($center, $employee, $employeeLeaves, $fingerprint);
+                        $isDelay = $this->checkIfDelay($center, $employee, $fingerprint, $startOfWork, $delayThreshold);
+                        $isEarly = $this->checkIfEarly($center, $employee, $employeeLeaves, $fingerprint, $endOfWork);
+                        $isLate = $this->checkIfLate($center, $employee, $employeeLeaves, $fingerprint, $delayThreshold);
                         // if (! $isDelay && ! $isEarly) {
                         // }
                     }
@@ -192,6 +188,20 @@ class Discounts extends Component
         }
     }
 
+    public function getEmployeeDiscounts()
+    {
+        return Employee::whereHas('discounts', function ($query) {
+            $query->whereBetween('date', explode(' to ', $this->batch));
+        })->with(['discounts' => function ($query) {
+            $query->whereBetween('date', explode(' to ', $this->batch));
+        }])->get()->each(function ($employee) {
+            $employee->discounts = $employee->discounts->sortBy('date');
+            $employee->cash_discounts_count = $employee->discounts->filter(function ($discount) {
+                return $discount->rate > 0;
+            })->count();
+        })->sortBy('first_name');
+    }
+
     public function calculateWorkDays($center, $fromDate, $toDate)
     {
         $centerHolidays = $center->holidays()->where('to_date', '>=', $fromDate)->get();
@@ -203,13 +213,12 @@ class Discounts extends Component
         }
 
         $weekends = $center->weekends;
-        $workDaysWithoutHolidaysAndWeekends = array_filter($workDaysWithoutHolidays, function (CarbonInterface $carbon) use ($weekends) {
+
+        return array_filter($workDaysWithoutHolidays, function (CarbonInterface $carbon) use ($weekends) {
             $dayOfWeek = $carbon->dayOfWeek;
 
             return ! in_array($dayOfWeek, $weekends);
         });
-
-        return $workDaysWithoutHolidaysAndWeekends;
     }
 
     public function getCenterEmployees($centerId)
@@ -243,8 +252,8 @@ class Discounts extends Component
 
     public function createDiscountFromLeave($employee, $employeeFingerprints, $leave, $reason, $isAuto = 0)
     {
-        $start_date = Carbon::create($leave->pivot->from_date);
-        $dates = $start_date->range($leave->pivot->to_date);
+        $startDate = Carbon::create($leave->pivot->from_date);
+        $dates = $startDate->range($leave->pivot->to_date);
 
         foreach ($dates as $date) {
             $employee->discounts()->firstOrCreate([
@@ -278,12 +287,9 @@ class Discounts extends Component
         }
     }
 
-    public function checkIfDelay($center, $employee, $fingerprint)
+    public function checkIfDelay($center, $employee, $fingerprint, $startOfWork, $delayThreshold)
     {
-        $startOfWork = carbon::parse($center->start_work_hour)->addMinutes(5)->format('H:i'); // TODO: Make 5 inserted variable on settings table
-        $delayLimit = carbon::parse($center->start_work_hour)->addMinutes(30)->format('H:i'); // TODO: Make 30 inserted variable on settings table
-
-        if ($fingerprint->check_in > $startOfWork && $fingerprint->check_in < $delayLimit) {
+        if ($fingerprint->check_in > $startOfWork && $fingerprint->check_in < $delayThreshold) {
 
             $duration = Carbon::parse($center->start_work_hour)->diff(Carbon::parse($fingerprint->check_in));
             $employee->update([
@@ -306,15 +312,14 @@ class Discounts extends Component
 
             return true;
         } else {
+
             return false;
         }
 
     }
 
-    public function checkIfEarly($center, $employee, $employeeLeaves, $fingerprint)
+    public function checkIfEarly($center, $employee, $employeeLeaves, $fingerprint, $endOfWork)
     {
-        $endOfWork = carbon::parse($center->end_work_hour)->subMinutes(5)->format('H:i'); // TODO: Make 5 inserted variable on settings table
-
         if ($fingerprint->check_out < $endOfWork) {
             $timeCovered = $this->isThereHourlyEarlyExcuse($fingerprint, $employeeLeaves);
             $fingerprint->check_out = Carbon::parse($fingerprint->check_out)->addHours($timeCovered->hour)->addMinutes($timeCovered->minute);
@@ -324,9 +329,8 @@ class Discounts extends Component
             } else {
                 $duration = Carbon::parse($fingerprint->check_out)->diff(Carbon::parse($center->end_work_hour));
                 $durationInSeconds = Carbon::parse($fingerprint->check_out)->diffInSeconds(Carbon::parse($center->end_work_hour));
-                $maxDurationInOneDay = CarbonInterval::hours(3)->totalSeconds; // TODO: Make 03:00:00 inserted variable on settings table
 
-                if ($durationInSeconds >= $maxDurationInOneDay) {
+                if ($durationInSeconds >= $this->absenceThreshold) {
                     if ($employee->max_leave_allowed > 0) {
                         $this->decrementMaxLeaveAllowed($employee, $fingerprint->date);
                     } else {
@@ -362,22 +366,19 @@ class Discounts extends Component
         }
     }
 
-    public function checkIfLate($center, $employee, $employeeLeaves, $fingerprint)
+    public function checkIfLate($center, $employee, $employeeLeaves, $fingerprint, $delayThreshold)
     {
-        $startOfLateThreshold = carbon::parse($center->start_work_hour)->addMinutes(30)->format('H:i'); // TODO: Make 30 inserted variable on settings table
-
-        if ($fingerprint->check_in >= $startOfLateThreshold) {
+        if ($fingerprint->check_in >= $delayThreshold) {
             $timeCovered = $this->isThereHourlyLateExcuse($fingerprint, $employeeLeaves);
             $fingerprint->check_in = Carbon::parse($fingerprint->check_in)->subHours($timeCovered->hour)->subMinutes($timeCovered->minute);
 
-            if ($fingerprint->check_in < $startOfLateThreshold) {
+            if ($fingerprint->check_in < $delayThreshold) {
                 return false;
             } else {
                 $duration = Carbon::parse($center->start_work_hour)->diff(Carbon::parse($fingerprint->check_in));
                 $durationInSeconds = Carbon::parse($center->start_work_hour)->diffInSeconds(Carbon::parse($fingerprint->check_in));
-                $maxDurationInOneDay = CarbonInterval::hours(3)->totalSeconds; // TODO: Make 03:00:00 inserted variable on settings table
 
-                if ($durationInSeconds >= $maxDurationInOneDay) {
+                if ($durationInSeconds >= $this->absenceThreshold) {
                     if ($employee->max_leave_allowed > 0) {
                         $this->decrementMaxLeaveAllowed($employee, $fingerprint->date);
                     } else {
