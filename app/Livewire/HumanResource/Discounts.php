@@ -120,6 +120,7 @@ class Discounts extends Component
                             $endOfWork = carbon::parse($center->end_work_hour)->subMinutes(5)->format('H:i'); // TODO: Make 5 inserted variable on settings table
                             if ($fingerprint->check_in <= $startOfWork && $fingerprint->check_out >= $endOfWork) {
                                 $duration = Carbon::parse($leave->pivot->start_at)->diff(Carbon::parse($leave->pivot->end_at));
+
                                 $maxDurationInOneDay = Carbon::createFromTimeString('03:00:00');
 
                                 if ($duration >= $maxDurationInOneDay) { // TODO: Make 03:00:00 inserted variable on settings table
@@ -202,13 +203,11 @@ class Discounts extends Component
         }
 
         $weekends = $center->weekends;
-        $workDaysWithoutHolidaysAndWeekends = array_filter($workDaysWithoutHolidays, function (CarbonInterface $carbon) use ($weekends) {
-            $dayOfWeek = $carbon->dayOfWeek;
+      return array_filter($workDaysWithoutHolidays, function (CarbonInterface $carbon) use ($weekends) {
+          $dayOfWeek = $carbon->dayOfWeek;
 
-            return ! in_array($dayOfWeek, $weekends);
-        });
-
-        return $workDaysWithoutHolidaysAndWeekends;
+          return ! in_array($dayOfWeek, $weekends);
+      });
     }
 
     public function getCenterEmployees($centerId)
@@ -323,7 +322,7 @@ class Discounts extends Component
             } else {
                 $duration = Carbon::parse($fingerprint->check_out)->diff(Carbon::parse($center->end_work_hour));
                 $durationInSeconds = Carbon::parse($fingerprint->check_out)->diffInSeconds(Carbon::parse($center->end_work_hour));
-                $maxDurationInOneDay = CarbonInterval::hours(3)->totalSeconds;
+                $maxDurationInOneDay = CarbonInterval::hours(3)->totalSeconds; // TODO: Make 03:00:00 inserted variable on settings table
 
                 if ($durationInSeconds >= $maxDurationInOneDay) {
                     if ($employee->max_leave_allowed > 0) {
@@ -373,25 +372,38 @@ class Discounts extends Component
                 return false;
             } else {
                 $duration = Carbon::parse($center->start_work_hour)->diff(Carbon::parse($fingerprint->check_in));
-                $employee->update([
-                    'hourly_counter' => Carbon::parse($employee->hourly_counter)->addHours($duration->h)->addMinutes($duration->i),
-                ]);
+                $durationInSeconds = Carbon::parse($center->start_work_hour)->diffInSeconds(Carbon::parse($fingerprint->check_in));
+                $maxDurationInOneDay = CarbonInterval::hours(3)->totalSeconds; // TODO: Make 03:00:00 inserted variable on settings table
 
-                $hourlyCounter = Carbon::parse($employee->hourly_counter);
-                $hourlyCounterLimit = Carbon::parse('07:00:00'); // TODO: Make 07:00:00 inserted variable on settings table
-
-                if ($hourlyCounter->gt($hourlyCounterLimit)) {
+                if ($durationInSeconds >= $maxDurationInOneDay) {
                     if ($employee->max_leave_allowed > 0) {
                         $this->decrementMaxLeaveAllowed($employee, $fingerprint->date);
                     } else {
-                        $this->createDiscountFromFingerprint($employee, $fingerprint, 'Administrative leave - Rounded', 1);
+                        $this->createDiscountFromFingerprint($employee, $fingerprint, 'Administrative leave - Exceeded the 3 hours limit', 1);
                     }
-                    $employee->update([
-                        'hourly_counter' => Carbon::parse($employee->hourly_counter)->subHours(7), // TODO: Make 7 inserted variable on settings table
-                    ]);
-                }
 
-                return true;
+                    return true;
+                } else {
+                    $employee->update([
+                        'hourly_counter' => Carbon::parse($employee->hourly_counter)->addHours($duration->h)->addMinutes($duration->i),
+                    ]);
+
+                    $hourlyCounter = Carbon::parse($employee->hourly_counter);
+                    $hourlyCounterLimit = Carbon::parse('07:00:00'); // TODO: Make 07:00:00 inserted variable on settings table
+
+                    if ($hourlyCounter->gt($hourlyCounterLimit)) {
+                        if ($employee->max_leave_allowed > 0) {
+                            $this->decrementMaxLeaveAllowed($employee, $fingerprint->date);
+                        } else {
+                            $this->createDiscountFromFingerprint($employee, $fingerprint, 'Administrative leave - Rounded', 1);
+                        }
+                        $employee->update([
+                            'hourly_counter' => Carbon::parse($employee->hourly_counter)->subHours(7), // TODO: Make 7 inserted variable on settings table
+                        ]);
+                    }
+
+                    return true;
+                }
             }
         } else {
             return false;
@@ -417,8 +429,10 @@ class Discounts extends Component
         $timeCovered = Carbon::create(null);
 
         foreach ($employeeLeaves as $leave) {
+
             if ($fingerprint->date == $leave->pivot->from_date && $leave->pivot->start_at < $fingerprint->check_in && $leave->pivot->is_checked == 0 && substr($leave->id, 1, 1) == 2) {
                 $duration = Carbon::parse($leave->pivot->start_at)->diff(Carbon::parse($leave->pivot->end_at));
+
                 $timeCovered = $timeCovered->add($duration);
 
                 $leave->pivot->is_checked = 1;
@@ -436,6 +450,7 @@ class Discounts extends Component
         foreach ($employeeLeaves as $leave) {
             if ($fingerprint->date == $leave->pivot->from_date && $leave->pivot->end_at > $fingerprint->check_out && $leave->pivot->is_checked == 0 && substr($leave->id, 1, 1) == 2) {
                 $duration = Carbon::parse($leave->pivot->start_at)->diff(Carbon::parse($leave->pivot->end_at));
+
                 $timeCovered = $timeCovered->add($duration);
 
                 $leave->pivot->is_checked = 1;
