@@ -24,14 +24,14 @@
           transform: translateX(0);
         }
         25% {
-          transform: translateX(-6px);
+          transform: translateX(-2px);
         }
         50% {
-          transform: translateX(3px);
+          transform: translateX(2px);
           transform: translateY(-1px);
         }
         75% {
-          transform: translateX(-4px);
+          transform: translateX(-2px);
         }
         100% {
           transform: translateX(0);
@@ -120,7 +120,7 @@
           </button>
         </div>
       </div>
-      <div class="bs-stepper-content">
+      <div class="bs-stepper-content" id="bsContent">
         <form onsubmit="return false">
           <!-- Holidays Details -->
           <div id="holidays" class="content">
@@ -202,7 +202,8 @@
               <small>4 / 4</small>
             </div>
             <div class="row g-3">
-              <div class="mt-2 mb-2" style="text-align: center">
+              @if (! $isProcessing)
+              <div wire:transition class="mt-2 mb-2" style="text-align: center">
                   <h3 class="text-primary mb-1 mx-2">Ready, set, launch!</h3>
                   <p class="mb-4 mx-2">
                     Choose the dates and take a sip of coffee while the rocket makes its touchdown.
@@ -214,15 +215,42 @@
                       @error('batch') <div class="invalid-feedback">{{ $message }}</div> @enderror
                       </div>
                   </div>
-                  <div wire:loading.delay.class='animation-rocket'>
-                    <img src="{{ asset('assets/img/illustrations/page-pricing-enterprise.png') }}" width="200" class="img-fluid">
+              </div>
+              @endif
+              <div class="row justify-content-center">
+                <!-- Progress Bar -->
+                @if ($isProcessing)
+                  <div>
+                    <div style="transform: scale(0.4); margin: -107px;">
+                      @include('_partials/rocket')
+                    </div>
+                    <div class="row justify-content-center">
+                      <div class="progress col-6 p-0" style="height: 20px;">
+                        <div wire:poll.1s="updateProgressBar" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: {{ $percentage }}%;" aria-valuenow="{{ $percentage }}" aria-valuemin="0" aria-valuemax="100">{{ $percentage }}%</div>
+                      </div>
+                    </div>
                   </div>
+                  @else
+                  <div class="row justify-content-center" style="text-align: center;">
+                    @if (session()->has('success'))
+                      <div class="nav-item mx-3 text-success">
+                          {{ session('success') }}
+                      </div>
+                    @endif
+                    @if (session()->has('error'))
+                      <div class="nav-item mx-3 text-danger">
+                          {{ session('error') }}
+                      </div>
+                    @endif
+                  </div>
+                @endif
+                <!-- Progress Bar -->
               </div>
               <div class="col-12 d-flex justify-content-between">
                 <button class="btn btn-label-secondary btn-prev waves-effect"> <i class="ti ti-arrow-left me-sm-1"></i>
                   <span class="align-middle d-sm-inline-block d-none">Previous</span>
                 </button>
-                <button wire:click.prevent='calculateDiscounts()' class="btn btn-success waves-effect waves-light">Submit</button>
+                <button id="calculateDiscounts" wire:click.prevent='calculateDiscounts()' class="btn btn-success waves-effect waves-light">Submit</button>
               </div>
             </div>
           </div>
@@ -232,94 +260,97 @@
   </div>
 
   {{-- Employee discounts --}}
-  <div class="card">
-    <div class="card-header">
-      Discounts
-    </div>
-    <div class="card-body">
-      @foreach ($employeeDiscounts as $employee)
-      <div class="card card-action mb-4">
-        <div class="card-header">
-          <div class="card-action-title d-flex overflow-hidden align-items-center">
-            {{-- <i class="ti ti-menu-2 ti-sm cursor-pointer d-lg-none d-block me-2" data-bs-toggle="sidebar" data-overlay="" data-target="#app-chat-contacts"></i>
-            <div class="flex-shrink-0 avatar">
-              <img src="{{ asset($employee->getEmployeePhoto()) }}" alt="Avatar" class="rounded-circle">
-            </div>
-            <div class="chat-contact-info flex-grow-1 ms-2">
-              <h6 class="m-0">{{ $employee->full_name }}</h6>
-              <small class="user-status text-muted">{{ $employee->current_position }}</small>
-            </div> --}}
-            <div class="avatar avatar-lg me-2">
-              <a href="{{ route('structure-employees-info', $employee->id) }}">
-                <img src="{{ asset($employee->getEmployeePhoto()) }}" alt="Avatar" class="rounded">
-              </a>
-            </div>
-            <div class="user-profile-info mx-3">
-              <a href="{{ route('structure-employees-info', $employee->id) }}">
-                <h5 style="margin-bottom: 0.5rem;">{{ $employee->full_name }}</h5>
-              </a>
-              <ul class="list-inline mb-0 d-flex align-items-center flex-wrap justify-content-sm-start justify-content-center gap-2">
-                <li class="list-inline-item">
-                  <i class="ti ti-id"></i> {{ $employee->id }}
-                </li>
-                <li class="list-inline-item">
-                  <i class="ti ti-map-pin"></i> {{ $employee->current_position }}
-                </li>
-                <li class="list-inline-item">
-                  <i class="ti ti-building"></i> {{ $employee->current_department }}
-                </li>
-                <li class="list-inline-item">
-                  <i class="ti ti-building-community"></i> {{ $employee->current_center }}
-                </li>
-                <li class="list-inline-item">
-                  <i class="ti ti-calendar"></i> {{ $employee->join_at }}
-                  {{-- <i class="ti ti-calendar"></i> {{ 'Joined ' . $employee->join_at }} --}}
-                </li>
-              </ul>
-            </div>
-          </div>
-          <div class="card-title-elements">
-              <i class="ti ti-phone-call d-sm-block me-3" data-bs-toggle="tooltip" data-bs-placement="left" data-bs-original-title="{{'+'. implode(' ', str_split($employee->mobile_number, 3)) }}"></i>
-              <span class="badge bg-danger">{{ count($employee->discounts) .' / '. $employee->cash_discounts_count }}</span>
-              <a href="javascript:void(0);" class="card-collapsible text-danger"><i class="tf-icons ti ti-chevron-right scaleX-n1-rtl ti-sm"></i></a>
-          </div>
-
-        </div>
-        <div class="collapse">
-          <table class="table table-hover">
-            <thead>
-              <tr style="font-weight:bold">
-                <th>#</th>
-                <th>Date</th>
-                <th class="text-center">Rate</th>
-                <th>Reason</th>
-              </tr>
-            </thead>
-            <tbody class="table-border-bottom-0">
-              @foreach ($employee->discounts as $discount)
-                <tr>
-                  <td>{{ $loop->iteration }}</td>
-                  <td>{{ $discount->date }}</td>
-                  <td class="text-center">
-                    <div class="badge bg-label-danger me-1">
-                      {{ $discount->rate }}
-                    </div>
-                  </td>
-                  <td>
-                    {{ $discount->reason }}
-                    @if ($discount->is_auto)
-                      <span class="badge badge-center rounded-pill bg-label-secondary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="tooltip-primary" data-bs-original-title="Automatic"><i class="ti ti-settings"></i></span>
-                    @endif
-                  </td>
-                </tr>
-              @endforeach
-            </tbody>
-          </table>
-        </div>
+  @if ($showDiscounts)
+    <div wire:transition class="card">
+      <div class="card-header">
+        Discounts info
       </div>
-      @endforeach
+      <div class="card-body">
+        @foreach ($employeeDiscounts as $employee)
+        <div class="card card-action mb-4">
+          <div class="card-header">
+            <div class="card-action-title d-flex overflow-hidden align-items-center">
+              {{-- <i class="ti ti-menu-2 ti-sm cursor-pointer d-lg-none d-block me-2" data-bs-toggle="sidebar" data-overlay="" data-target="#app-chat-contacts"></i>
+              <div class="flex-shrink-0 avatar">
+                <img src="{{ asset($employee->getEmployeePhoto()) }}" alt="Avatar" class="rounded-circle">
+              </div>
+              <div class="chat-contact-info flex-grow-1 ms-2">
+                <h6 class="m-0">{{ $employee->full_name }}</h6>
+                <small class="user-status text-muted">{{ $employee->current_position }}</small>
+              </div> --}}
+              <div class="avatar avatar-lg me-2">
+                <a href="{{ route('structure-employees-info', $employee->id) }}">
+                  <img src="{{ asset($employee->getEmployeePhoto()) }}" alt="Avatar" class="rounded">
+                </a>
+              </div>
+              <div class="user-profile-info mx-3">
+                <a href="{{ route('structure-employees-info', $employee->id) }}">
+                  <h6 style="margin-bottom: 0.5rem;">{{ $employee->full_name }}</h6>
+                </a>
+                <ul class="list-inline mb-0 d-flex align-items-center flex-wrap justify-content-sm-start justify-content-center gap-2">
+                  <li class="list-inline-item">
+                    <i class="ti ti-id"></i> {{ $employee->id }}
+                  </li>
+                  <li class="list-inline-item">
+                    <i class="ti ti-map-pin"></i> {{ $employee->current_position }}
+                  </li>
+                  <li class="list-inline-item">
+                    <i class="ti ti-building"></i> {{ $employee->current_department }}
+                  </li>
+                  <li class="list-inline-item">
+                    <i class="ti ti-building-community"></i> {{ $employee->current_center }}
+                  </li>
+                  <li class="list-inline-item">
+                    <i class="ti ti-calendar"></i> {{ $employee->join_at }}
+                    {{-- <i class="ti ti-calendar"></i> {{ 'Joined ' . $employee->join_at }} --}}
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="card-title-elements">
+                <i class="ti ti-phone-call d-sm-block me-3" data-bs-toggle="tooltip" data-bs-placement="left" data-bs-original-title="{{'+'. implode(' ', str_split($employee->mobile_number, 3)) }}"></i>
+                <span class="badge bg-danger">{{ count($employee->discounts) .' / '. $employee->cash_discounts_count }}</span>
+                <a href="javascript:void(0);" class="card-collapsible text-danger"><i class="tf-icons ti ti-chevron-right scaleX-n1-rtl ti-sm"></i></a>
+            </div>
+
+          </div>
+          <div class="collapse">
+            <table class="table table-hover">
+              <thead>
+                <tr style="font-weight:bold">
+                  <th>#</th>
+                  <th>Date</th>
+                  <th class="text-center">Rate</th>
+                  <th>Reason</th>
+                </tr>
+              </thead>
+              <tbody class="table-border-bottom-0">
+                @foreach ($employee->discounts as $discount)
+                  <tr>
+                    <td>{{ $loop->iteration }}</td>
+                    <td>{{ $discount->date }}</td>
+                    <td class="text-center">
+                      <div class="badge bg-label-danger me-1">
+                        {{ $discount->rate }}
+                      </div>
+                    </td>
+                    <td>
+                      {{ $discount->reason }}
+                      @if ($discount->is_auto)
+                        <span class="badge badge-center rounded-pill bg-label-secondary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="tooltip-primary" data-bs-original-title="Automatic"><i class="ti ti-settings"></i></span>
+                      @endif
+                    </td>
+                  </tr>
+                @endforeach
+              </tbody>
+            </table>
+          </div>
+        </div>
+        @endforeach
+      </div>
     </div>
-  </div>
+  @endif
+
 
   @section('vendor-script')
     <script src="{{asset('assets/vendor/libs/bs-stepper/bs-stepper.js')}}"></script>
@@ -346,6 +377,12 @@
             ]
           });
         }
+      });
+    </script>
+
+    <script>
+      document.getElementById("calculateDiscounts").addEventListener("click", function() {
+        document.getElementById("bsContent").scrollIntoView();
       });
     </script>
   @endpush
