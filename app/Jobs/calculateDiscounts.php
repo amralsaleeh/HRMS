@@ -445,7 +445,7 @@ class calculateDiscounts implements ShouldQueue
 
         foreach ($employeeLeaves as $leave) {
 
-            if ($fingerprint->date == $leave->pivot->from_date && $leave->pivot->start_at < $fingerprint->check_in && $leave->pivot->is_checked == 0 && substr($leave->id, 1, 1) == 2) {
+            if ($fingerprint->date >= $leave->pivot->from_date && $fingerprint->date <= $leave->pivot->to_date && $leave->pivot->start_at < $fingerprint->check_in && $leave->pivot->is_checked == 0 && substr($leave->id, 1, 1) == 2) {
                 $duration = Carbon::parse($leave->pivot->start_at)->diff(Carbon::parse($leave->pivot->end_at));
 
                 $timeCovered = $timeCovered->add($duration);
@@ -463,7 +463,7 @@ class calculateDiscounts implements ShouldQueue
         $timeCovered = Carbon::create(null);
 
         foreach ($employeeLeaves as $leave) {
-            if ($fingerprint->date == $leave->pivot->from_date && $leave->pivot->end_at > $fingerprint->check_out && $leave->pivot->is_checked == 0 && substr($leave->id, 1, 1) == 2) {
+            if ($fingerprint->date >= $leave->pivot->from_date && $fingerprint->date <= $leave->pivot->to_date && $leave->pivot->end_at > $fingerprint->check_out && $leave->pivot->is_checked == 0 && substr($leave->id, 1, 1) == 2) {
                 $duration = Carbon::parse($leave->pivot->start_at)->diff(Carbon::parse($leave->pivot->end_at));
 
                 $timeCovered = $timeCovered->add($duration);
