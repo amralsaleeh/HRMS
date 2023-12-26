@@ -14,14 +14,6 @@
   <link rel="stylesheet" href="{{asset('assets/vendor/css/pages/app-chat.css')}}" />
 @endsection
 
-@section('vendor-script')
-
-@endsection
-
-@section('page-script')
-
-@endsection
-
 @push('custom-css')
     <link rel="stylesheet" href="{{asset('assets/vendor/libs/select2/select2.css')}}" />
     <style>
@@ -41,7 +33,10 @@
   </ol>
 </nav>
 
-<div wire:ignore class="row">
+{{-- Alerts --}}
+@include('_partials/_alerts/alert-general')
+
+<div class="row">
   <div class="col-4">
     <div class="card bg-primary text-white mb-3">
       {{-- <div class="card-header">Header</div> --}}
@@ -56,7 +51,7 @@
                 <div class="text-center">
                   <p class="text-muted">Please pick the batch to generate SMS for:</p>
                 </div>
-                <div class="mb-3">
+                <div wire:ignore class="mb-3">
                   {{-- <label class="form-label">batch</label> --}}
                   <select wire:model='selectedBatch' id="select2Batches" class="select2 form-select @error('selectedBatch') is-invalid @enderror">
                     <option value=""></option>
@@ -65,7 +60,13 @@
                     @endforeach
                   </select>
                 </div>
-                <button wire:click.prvent='generateMessages()' type="button" class="btn btn-primary waves-effect waves-light">Generate</button>
+                <button wire:click.prvent='generateMessages' wire:loading.attr="disabled" class="btn btn-primary waves-effect waves-light" type="button">
+                  <span wire:loading.remove>Generate</span>
+                  <div wire:loading wire:target="generateMessages">
+                    <span class="spinner-border me-1" role="status" aria-hidden="true"></span>
+                    <span>Generating...</span>
+                  </div>
+                </button>
               </form>
             </div>
         </div>
@@ -114,7 +115,7 @@
             </div>
             <div class="col-md-3 col-6">
               <div class="d-flex align-items-center">
-                <div class="badge rounded-pill bg-label-danger me-3 p-2"><i class="ti ti-send ti-sm"></i></div>
+                <div wire:click='sendPendingMessages' class="badge rounded-pill bg-label-danger me-3 p-2" style="cursor: pointer"><i class="ti ti-send ti-sm"></i></div>
                 <div class="card-info">
                   <h5 class="mb-0">{{ $messagesStatus['unsent'] }}</h5>
                   <small>Pending</small>
@@ -235,10 +236,19 @@
             {{-- <input class="form-control message-input border-0 me-3 shadow-none" placeholder="Type your message here"> --}}
             <textarea wire:model='messageBody' class="form-control message-input border-0 me-3 shadow-none" style="resize: none" rows="3" spellcheck="true" placeholder="Type your message here" required></textarea>
             <div class="message-actions d-flex align-items-center">
-              <button class="btn btn-primary d-flex send-msg-btn">
-                <i class="ti ti-send me-md-1 me-0"></i>
-                <span class="align-middle d-md-inline-block d-none">Send</span>
-                <div wire:loading >ing</div>
+              <button wire:loading.attr="disabled" type="submit" class="btn btn-primary d-flex send-msg-btn">
+                <div wire:loading.remove wire:target="sendMessage">
+                  <div wire:loading.remove class="d-flex">
+                    <i class="ti ti-send me-md-1 me-0"></i>
+                    <span class="align-middle d-md-inline-block d-none">Send</span>
+                  </div>
+                </div>
+                <div wire:loading wire:target="sendMessage">
+                  <div class="d-flex">
+                    <span class="spinner-border me-1" role="status" aria-hidden="true"></span>
+                    <span>Sending...</span>
+                  </div>
+                </div>
               </button>
             </div>
           </form>

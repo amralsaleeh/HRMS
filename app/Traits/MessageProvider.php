@@ -25,7 +25,6 @@ trait MessageProvider
         } else {
             return (string) $response;
         }
-        // return ['status' => $response->getStatusCode(), 'message' => (string) $response];
     }
 
     public function CheckAccountBalance()

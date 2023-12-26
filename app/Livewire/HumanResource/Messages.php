@@ -2,12 +2,15 @@
 
 namespace App\Livewire\HumanResource;
 
+use App\Jobs\sendPendingMessages;
 use App\Models\Discount;
 use App\Models\Employee;
 use App\Models\Message;
 use App\Traits\MessageProvider;
+use Carbon\Carbon;
 use Illuminate\Support\Number;
 use Livewire\Component;
+use Throwable;
 
 class Messages extends Component
 {
@@ -16,7 +19,7 @@ class Messages extends Component
     // Variables - Start //
     public $accountBalance = ['status' => 400, 'balance' => 'N/A', 'is_active' => 'N/A'];
 
-    public $messagesStatus = [];
+    public $messagesStatus = ['sent' => 0, 'unsent' => 0];
 
     public $batches;
 
@@ -36,17 +39,17 @@ class Messages extends Component
     public function mount()
     {
         $this->selectedEmployee = Employee::first();
-        $this->batches = Discount::distinct()->pluck('batch')->toArray();
+        $this->batches = Discount::where('is_sent', 0)->distinct()->pluck('batch')->toArray();
     }
 
     public function render()
     {
         try {
-            // $this->accountBalance = $this->CheckAccountBalance();
+            $this->accountBalance = $this->CheckAccountBalance();
             $this->messagesStatus = Message::selectRaw('SUM(CASE WHEN is_sent = 1 THEN 1 ELSE 0 END) AS sent, SUM(CASE WHEN is_sent = 0 THEN 1 ELSE 0 END) AS unsent')
                 ->first();
-            $this->messagesStatus = ['sent' => Number::format($this->messagesStatus['sent']), 'unsent' => Number::format($this->messagesStatus['unsent'])];
-        } catch (\Throwable $th) {
+            $this->messagesStatus = ['sent' => Number::format($this->messagesStatus['sent'] != null ? $this->messagesStatus['sent'] : 0), 'unsent' => Number::format($this->messagesStatus['unsent'] != null ? $this->messagesStatus['unsent'] : 0)];
+        } catch (Throwable $th) {
             //
         }
 
@@ -72,7 +75,6 @@ class Messages extends Component
             'recipient' => $this->selectedEmployee->mobile_number,
             'is_sent' => false,
         ]);
-
         $response = $this->sendSms($this->messageBody, $this->selectedEmployee->mobile_number);
 
         if ($response === true) {
@@ -88,23 +90,49 @@ class Messages extends Component
 
     public function generateMessages()
     {
-        $discounts = Discount::where('batch', $this->selectedBatch)->get();
-        $groupedDiscounts = $discounts->groupBy('employee_id');
+        $employeesDiscounts = Employee::with(['discounts' => function ($query) {
+            // $query->whereBetween('date', explode(' to ', $this->batch));
+            $query->where('is_sent', 0)->where('batch', $this->selectedBatch);
+        }])->get();
 
-        foreach ($groupedDiscounts as $employee) {
-            foreach ($employee as $discount) {
-                dd($discount);
+        foreach ($employeesDiscounts as $employee) {
+            $cashDiscountCount = 0;
+
+            if ($employee->discounts) {
+                foreach ($employee->discounts as $discount) {
+                    $discount->rate > 0 ? ++$cashDiscountCount : '';
+
+                    $discount->is_sent = 1;
+                    $discount->save();
+                }
+
+                $messageBody = 'السيد/ة '.$employee->full_name.'، يرجى الاطلاع على التفاصيل التالية:
+
+- الحسم المالي: '.$cashDiscountCount.'
+
+- رصيد الإجازات: '.$employee->max_leave_allowed.'
+- عداد الساعات: '.Carbon::parse($employee->hourly_counter)->format('H:i').'
+- عداد التأخير: '.Carbon::parse($employee->delay_counter)->format('H:i').'
+
+بكل الشكر على تعاونك،
+قسم الموارد البشرية.';
+
+                Message::create([
+                    'employee_id' => $employee->id,
+                    'text' => $messageBody,
+                    'recipient' => $employee->mobile_number,
+                    'is_sent' => false,
+                ]);
             }
-
-            // $sms = Message::create([
-            //     'employee_id' => $this->employee->id,
-            //     'text' => $this->messageBody,
-            //     'recipient' => $this->employee->mobile_number,
-            //     'is_sent' => false,
-            // ]);
-            // $response = $this->sendSms($this->messageBody, $this->employee->mobile_number);
         }
 
-        // DONE
+        session()->flash('success', 'Generation complete! Your messages ready to fly!');
+        $this->batches = Discount::where('is_sent', 0)->distinct()->pluck('batch')->toArray();
+    }
+
+    public function sendPendingMessages()
+    {
+        sendPendingMessages::dispatch();
+        session()->flash('info', "Let's go! Messages on their way!");
     }
 }
