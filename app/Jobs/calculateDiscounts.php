@@ -93,7 +93,7 @@ class calculateDiscounts implements ShouldQueue
 
                         foreach ($dates as $date) {
                             if ($employee->max_leave_allowed > 0) {
-                                $this->decrementMaxLeaveAllowed($employee, $date);
+                                $this->decrementMaxLeaveAllowed($employee, $date, 'Administrative leave');
                             } else {
                                 $employee->discounts()->firstOrCreate([
                                     'rate' => $leave->discount_rate,
@@ -134,7 +134,7 @@ class calculateDiscounts implements ShouldQueue
 
                                 if ($durationInSeconds >= $this->absenceThreshold) {
                                     if ($employee->max_leave_allowed > 0) {
-                                        $this->decrementMaxLeaveAllowed($employee, $leave->pivot->from_date);
+                                        $this->decrementMaxLeaveAllowed($employee, $leave->pivot->from_date, 'Administrative leave - Exceeded the 3 hours limit');
                                     } else {
                                         $this->createDiscountFromLeave($employee, $employeeFingerprints, $leave, 'Administrative leave - Exceeded the 3 hours limit', 1);
                                     }
@@ -145,7 +145,7 @@ class calculateDiscounts implements ShouldQueue
                                     ]);
                                     if ($employee->hourly_counter >= '07:00:00') { // TODO: Make 07:00:00 inserted variable on settings table
                                         if ($employee->max_leave_allowed > 0) {
-                                            $this->decrementMaxLeaveAllowed($employee, $leave->pivot->from_date);
+                                            $this->decrementMaxLeaveAllowed($employee, $leave->pivot->from_date, 'Administrative leave - Rounded');
                                         } else {
                                             $this->createDiscountFromLeave($employee, $employeeFingerprints, $leave, 'Administrative leave - Rounded', 1);
                                         }
@@ -168,7 +168,7 @@ class calculateDiscounts implements ShouldQueue
                         // No fingerprint
                         if (! $this->isThereDailyExcuse($fingerprint, $employeeLeaves)) {
                             if ($employee->max_leave_allowed > 0) {
-                                $this->decrementMaxLeaveAllowed($employee, $fingerprint->date);
+                                $this->decrementMaxLeaveAllowed($employee, $fingerprint->date, 'Absent without excuse');
                             } else {
                                 $this->createDiscountFromFingerprint($employee, $fingerprint, 'Absent without excuse', 1);
                             }
@@ -177,7 +177,7 @@ class calculateDiscounts implements ShouldQueue
                         // One fingerprint
                         if (! $this->isThereDailyExcuse($fingerprint, $employeeLeaves)) {
                             if ($employee->max_leave_allowed > 0) {
-                                $this->decrementMaxLeaveAllowed($employee, $fingerprint->date);
+                                $this->decrementMaxLeaveAllowed($employee, $fingerprint->date, 'Partial attendance');
                             } else {
                                 $this->createDiscountFromFingerprint($employee, $fingerprint, 'Partial attendance', 1);
                             }
@@ -250,13 +250,13 @@ class calculateDiscounts implements ShouldQueue
         return $employee->fingerprints()->whereIn('date', $workDates)->where('is_checked', 0)->get();
     }
 
-    public function decrementMaxLeaveAllowed($employee, $date)
+    public function decrementMaxLeaveAllowed($employee, $date, $reason)
     {
         $employee->decrement('max_leave_allowed');
         $employee->discounts()->firstOrCreate([
             'rate' => 0,
             'date' => $date,
-            'reason' => 'Administrative leave - Taken off the balance',
+            'reason' => $reason.' - Taken off the balance',
             'is_auto' => 1,
             'batch' => $this->batch,
         ]);
@@ -313,7 +313,7 @@ class calculateDiscounts implements ShouldQueue
 
             if ($delayCounter->gt($delayCounterLimit)) {
                 if ($employee->max_leave_allowed > 0) {
-                    $this->decrementMaxLeaveAllowed($employee, $fingerprint->date);
+                    $this->decrementMaxLeaveAllowed($employee, $fingerprint->date, 'Delay leave - Rounded');
                 } else {
                     $this->createDiscountFromFingerprint($employee, $fingerprint, 'Delay leave - Rounded', 1);
                 }
@@ -344,7 +344,7 @@ class calculateDiscounts implements ShouldQueue
 
                 if ($durationInSeconds >= $this->absenceThreshold) {
                     if ($employee->max_leave_allowed > 0) {
-                        $this->decrementMaxLeaveAllowed($employee, $fingerprint->date);
+                        $this->decrementMaxLeaveAllowed($employee, $fingerprint->date, 'Administrative leave - Exceeded the 3 hours limit');
                     } else {
                         $this->createDiscountFromFingerprint($employee, $fingerprint, 'Administrative leave - Exceeded the 3 hours limit', 1);
                     }
@@ -360,7 +360,7 @@ class calculateDiscounts implements ShouldQueue
 
                     if ($hourlyCounter->gt($hourlyCounterLimit)) {
                         if ($employee->max_leave_allowed > 0) {
-                            $this->decrementMaxLeaveAllowed($employee, $fingerprint->date);
+                            $this->decrementMaxLeaveAllowed($employee, $fingerprint->date, 'Administrative leave - Rounded');
                         } else {
                             $this->createDiscountFromFingerprint($employee, $fingerprint, 'Administrative leave - Rounded', 1);
                         }
@@ -392,7 +392,7 @@ class calculateDiscounts implements ShouldQueue
 
                 if ($durationInSeconds >= $this->absenceThreshold) {
                     if ($employee->max_leave_allowed > 0) {
-                        $this->decrementMaxLeaveAllowed($employee, $fingerprint->date);
+                        $this->decrementMaxLeaveAllowed($employee, $fingerprint->date, 'Administrative leave - Exceeded the 3 hours limit');
                     } else {
                         $this->createDiscountFromFingerprint($employee, $fingerprint, 'Administrative leave - Exceeded the 3 hours limit', 1);
                     }
@@ -408,7 +408,7 @@ class calculateDiscounts implements ShouldQueue
 
                     if ($hourlyCounter->gt($hourlyCounterLimit)) {
                         if ($employee->max_leave_allowed > 0) {
-                            $this->decrementMaxLeaveAllowed($employee, $fingerprint->date);
+                            $this->decrementMaxLeaveAllowed($employee, $fingerprint->date, 'Administrative leave - Rounded');
                         } else {
                             $this->createDiscountFromFingerprint($employee, $fingerprint, 'Administrative leave - Rounded', 1);
                         }

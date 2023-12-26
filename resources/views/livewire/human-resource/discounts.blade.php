@@ -41,10 +41,6 @@
     </style>
   @endsection
 
-  {{-- <h4 class="fw-bold py-3 mb-4">
-    <span class="text-muted fw-light">UI elements /</span> Pagination and breadcrumbs
-  </h4> --}}
-
   <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
       <li class="breadcrumb-item">
@@ -260,7 +256,7 @@
   </div>
 
   {{-- Employee discounts --}}
-  @if ($showDiscounts)
+  {{-- @if ($showDiscounts) --}}
     <div wire:transition class="card">
       <div class="card-header">
         Discounts info
@@ -349,8 +345,7 @@
         @endforeach
       </div>
     </div>
-  @endif
-
+  {{-- @endif --}}
 
   @section('vendor-script')
     <script src="{{asset('assets/vendor/libs/bs-stepper/bs-stepper.js')}}"></script>

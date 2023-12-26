@@ -15,7 +15,7 @@ class Discounts extends Component
     // Variables - Start //
     public $disableDateLimit;
 
-    public $batch = '2023-10-18 to 2023-11-16'; // TESTING
+    public $batch = '2023-11-19 to 2023-12-18'; // TESTING
 
     public $isProcessing = false;
 
