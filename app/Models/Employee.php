@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Traits\CreatedUpdatedDeletedBy;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -55,10 +56,15 @@ class Employee extends Model
         return $this->hasMany(Discount::class);
     }
 
+    public function timelines(): HasMany
+    {
+        return $this->hasMany(Timeline::class);
+    }
+
     public function leaves(): BelongsToMany
     {
         return $this->belongsToMany(Leave::class)
-            ->withPivot('from_date', 'to_date', 'start_at', 'end_at', 'is_authorized', 'is_checked',
+            ->withPivot('id', 'from_date', 'to_date', 'start_at', 'end_at', 'is_authorized', 'is_checked',
                 'created_by', 'updated_by', 'deleted_by', 'created_at', 'updated_at', 'deleted_at');
     }
 
@@ -81,7 +87,37 @@ class Employee extends Model
         if ($data) {
             return $data->position->name;
         } else {
-            return 'Out of work';
+            return 'N/A';
+        }
+    }
+
+    public function getCurrentDepartmentAttribute()
+    {
+        $data = Timeline::with('department')->where('employee_id', $this->id)->whereNull('end_date')->first();
+        if ($data) {
+            return $data->department->name;
+        } else {
+            return 'N/A';
+        }
+    }
+
+    public function getCurrentCenterAttribute()
+    {
+        $data = Timeline::with('center')->where('employee_id', $this->id)->whereNull('end_date')->first();
+        if ($data) {
+            return $data->center->name;
+        } else {
+            return 'N/A';
+        }
+    }
+
+    public function getJoinAtAttribute()
+    {
+        $data = Timeline::where('employee_id', $this->id)->first();
+        if ($data) {
+            return 'Joined '.Carbon::parse($data->start_date)->format('j F Y');
+        } else {
+            return 'N/A';
         }
     }
 

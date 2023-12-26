@@ -5,8 +5,9 @@ use App\Http\Controllers\language\LanguageController;
 use App\Livewire\Dashboard;
 use App\Livewire\HumanResource\Attendance\Fingerprints;
 use App\Livewire\HumanResource\Attendance\Leaves;
+use App\Livewire\HumanResource\Discounts;
 use App\Livewire\HumanResource\Holidays;
-use App\Livewire\HumanResource\Messages\Personal;
+use App\Livewire\HumanResource\Messages;
 use App\Livewire\HumanResource\Structure\Centers;
 use App\Livewire\HumanResource\Structure\Departments;
 use App\Livewire\HumanResource\Structure\EmployeeInfo;
@@ -45,12 +46,8 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
         Route::get('/employee/{id?}', EmployeeInfo::class)->name('structure-employees-info');
     });
 
-    Route::prefix('messages')->group(function () {
-        Route::get('/bulk', ComingSoon::class)->name('messages-bulk');
-        Route::get('/personal', Personal::class)->name('messages-personal');
-    });
-
-    Route::get('/discounts', ComingSoon::class)->name('discounts');
+    Route::get('/messages', Messages::class)->name('messages');
+    Route::get('/discounts', Discounts::class)->name('discounts');
     Route::get('/holidays', Holidays::class)->name('holidays');
     Route::get('/statistics', ComingSoon::class)->name('statistics');
 

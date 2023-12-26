@@ -4,6 +4,7 @@ namespace App\Traits;
 
 use App\Models\Setting;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Number;
 
 trait MessageProvider
 {
@@ -24,7 +25,6 @@ trait MessageProvider
         } else {
             return (string) $response;
         }
-        // return ['status' => $response->getStatusCode(), 'message' => (string) $response];
     }
 
     public function CheckAccountBalance()
@@ -44,6 +44,6 @@ trait MessageProvider
             $data[$key] = $value;
         }
 
-        return ['status' => $response->getStatusCode(), 'balance' => $data['SMSBalance'], 'is_active' => $data['Active']];
+        return ['status' => $response->getStatusCode(), 'balance' => Number::format($data['SMSBalance']), 'is_active' => $data['Active'] == true ? 'Active' : 'Inactive'];
     }
 }

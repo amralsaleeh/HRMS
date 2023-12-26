@@ -14,21 +14,119 @@
   <link rel="stylesheet" href="{{asset('assets/vendor/css/pages/app-chat.css')}}" />
 @endsection
 
-@section('vendor-script')
-
-@endsection
-
-@section('page-script')
-
-@endsection
-
 @push('custom-css')
+    <link rel="stylesheet" href="{{asset('assets/vendor/libs/select2/select2.css')}}" />
     <style>
       .app-chat .app-chat-history .chat-history-body {
           height: calc(100vh - 22rem);
       }
     </style>
 @endpush
+
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item">
+      <a href="{{ route('dashboard') }}">Dashboard</a>
+    </li>
+    <li class="breadcrumb-item active">Human Resource</li>
+    <li class="breadcrumb-item active">Messages</li>
+  </ol>
+</nav>
+
+{{-- Alerts --}}
+@include('_partials/_alerts/alert-general')
+
+<div class="row">
+  <div class="col-4">
+    <div class="card bg-primary text-white mb-3">
+      {{-- <div class="card-header">Header</div> --}}
+      <div class="card-body d-flex justify-content-between align-items-center">
+        <h5 class="card-title text-white">Generate Discounts SMS</h5>
+        <div class="card-icon cursor-pointer">
+            <button type="button" class="btn btn-label-secondary waves-effect waves-light" data-bs-toggle="dropdown" data-bs-auto-close="false" aria-haspopup="true" aria-expanded="false">
+              <span class="ti ti-player-track-next"></span>
+            </button>
+            <div class="text-center border border-primary dropdown-menu dropdown-menu-end w-px-300">
+              <form class="p-4">
+                <div class="text-center">
+                  <p class="text-muted">Please pick the batch to generate SMS for:</p>
+                </div>
+                <div wire:ignore class="mb-3">
+                  {{-- <label class="form-label">batch</label> --}}
+                  <select wire:model='selectedBatch' id="select2Batches" class="select2 form-select @error('selectedBatch') is-invalid @enderror">
+                    <option value=""></option>
+                    @foreach ($batches as $batche)
+                        <option value="{{ $batche }}">{{ $batche }}</option>
+                    @endforeach
+                  </select>
+                </div>
+                <button wire:click.prvent='generateMessages' wire:loading.attr="disabled" class="btn btn-primary waves-effect waves-light" type="button">
+                  <span wire:loading.remove>Generate</span>
+                  <div wire:loading wire:target="generateMessages">
+                    <span class="spinner-border me-1" role="status" aria-hidden="true"></span>
+                    <span>Generating...</span>
+                  </div>
+                </button>
+              </form>
+            </div>
+        </div>
+      </div>
+      <div class="card-body pt-0">
+        <p class="card-text">
+          Create messages summarizing discount details and balances for each employee.
+        </p>
+      </div>
+    </div>
+  </div>
+  <div class="col-8 mb-4">
+      <div class="card">
+        <div class="card-header d-flex justify-content-between">
+          <h5 class="card-title mb-0">Statistics</h5>
+          <small class="text-muted">{{ $accountBalance['status'] == 200 ? 'Updated recently' : 'Error, Update unavailable' }}</small>
+        </div>
+        <div class="card-body pt-2">
+          <div class="row gy-3">
+            <div class="col-md-3 col-6">
+              <div class="d-flex align-items-center">
+                <div class="badge rounded-pill bg-label-primary me-3 p-2"><i class="ti ti-activity ti-sm"></i></div>
+                <div class="card-info">
+                  <h5 class="mb-0">{{ $accountBalance['is_active'] }}</h5>
+                  <small>Status</small>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3 col-6">
+              <div class="d-flex align-items-center">
+                <div class="badge rounded-pill bg-label-info me-3 p-2"><i class="ti ti-calculator ti-sm"></i></div>
+                <div class="card-info">
+                  <h5 class="mb-0">{{ $accountBalance['balance'] }}</h5>
+                  <small>Balance</small>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3 col-6">
+              <div class="d-flex align-items-center">
+                <div class="badge rounded-pill bg-label-success me-3 p-2"><i class="ti ti-speakerphone ti-sm"></i></div>
+                <div class="card-info">
+                  <h5 class="mb-0">{{ $messagesStatus['sent'] }}</h5>
+                  <small>Successful</small>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3 col-6">
+              <div class="d-flex align-items-center">
+                <div wire:click='sendPendingMessages' class="badge rounded-pill bg-label-danger me-3 p-2" style="cursor: pointer"><i class="ti ti-send ti-sm"></i></div>
+                <div class="card-info">
+                  <h5 class="mb-0">{{ $messagesStatus['unsent'] }}</h5>
+                  <small>Pending</small>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
 
 <div class="app-chat card overflow-hidden">
   <div class="row g-0">
@@ -88,7 +186,7 @@
               </div>
             </div>
             <div class="d-flex align-items-center">
-              <i class="ti ti-phone-call cursor-pointer d-sm-block d-none me-3" data-bs-toggle="tooltip" data-bs-placement="left" data-bs-original-title="{{ '+'.$selectedEmployee->mobile_number }}"></i>
+              <i class="ti ti-phone-call d-sm-block d-none me-3" data-bs-toggle="tooltip" data-bs-placement="left" data-bs-original-title="{{'+'. implode(' ', str_split($selectedEmployee->mobile_number, 3)) }}"></i>
               <div class="dropdown d-flex align-self-center">
                 <button class="btn p-0" type="button" id="chat-header-actions" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   <i class="ti ti-dots-vertical"></i>
@@ -126,7 +224,7 @@
             @empty
               <div style="text-align: center">
                 <h6 class="text-muted mb-4">No Messages Yet!</h6>
-                <img src="{{ asset('assets/img/illustrations/girl-doing-yoga-dark.png') }}" width="20%">
+                <img src="{{ asset('assets/img/illustrations/girl-doing-yoga-dark.png') }}" width="14%">
               </div>
             @endforelse
           </ul>
@@ -138,10 +236,19 @@
             {{-- <input class="form-control message-input border-0 me-3 shadow-none" placeholder="Type your message here"> --}}
             <textarea wire:model='messageBody' class="form-control message-input border-0 me-3 shadow-none" style="resize: none" rows="3" spellcheck="true" placeholder="Type your message here" required></textarea>
             <div class="message-actions d-flex align-items-center">
-              <button class="btn btn-primary d-flex send-msg-btn">
-                <i class="ti ti-send me-md-1 me-0"></i>
-                <span class="align-middle d-md-inline-block d-none">Send</span>
-                <div wire:loading >ing</div>
+              <button wire:loading.attr="disabled" type="submit" class="btn btn-primary d-flex send-msg-btn">
+                <div wire:loading.remove wire:target="sendMessage">
+                  <div wire:loading.remove class="d-flex">
+                    <i class="ti ti-send me-md-1 me-0"></i>
+                    <span class="align-middle d-md-inline-block d-none">Send</span>
+                  </div>
+                </div>
+                <div wire:loading wire:target="sendMessage">
+                  <div class="d-flex">
+                    <span class="spinner-border me-1" role="status" aria-hidden="true"></span>
+                    <span>Sending...</span>
+                  </div>
+                </div>
               </button>
             </div>
           </form>
@@ -156,6 +263,8 @@
 </div>
 
 @push('custom-scripts')
+    <script src="{{asset('assets/vendor/libs/select2/select2.js')}}"></script>
+
     <script>
       window.addEventListener('initialize', event => {
         $(function () {
@@ -187,6 +296,30 @@
           scrollToBottom();
         });
       })
+    </script>
+
+    <script>
+      'use strict';
+
+      $(function () {
+        const selectPicker = $('.selectpicker'),
+          select2 = $('.select2');
+
+        // Default
+        if (select2.length) {
+          select2.each(function () {
+            var $this = $(this);
+            $this.wrap('<div class="position-relative"></div>').select2({
+              dropdownParent: $this.parent()
+            });
+          });
+        }
+
+        $('#select2Batches').on('change', function (e) {
+            var data = $('#select2Batches').select2("val");
+        @this.set('selectedBatch', data);
+        });
+      });
     </script>
 @endpush
 </div>

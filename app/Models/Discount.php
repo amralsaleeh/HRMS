@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use App\Traits\CreatedUpdatedDeletedBy;
+use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -14,12 +16,23 @@ class Discount extends Model
 
     protected $fillable = [
         'employee_id',
+        'rate',
+        'date',
         'reason',
+        'is_auto',
         'is_sent',
+        'batch',
     ];
 
     public function employee(): BelongsTo
     {
         return $this->belongsTo(Employee::class);
+    }
+
+    protected function date(): Attribute
+    {
+        return Attribute::make(
+            get: fn (string $value) => Carbon::parse($value)->format('Y-m-d'),
+        );
     }
 }

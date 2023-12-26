@@ -22,6 +22,7 @@ class Fingerprint extends Model
         'check_in',
         'check_out',
         'is_checked',
+        'excuse',
     ];
 
     public function employee(): BelongsTo

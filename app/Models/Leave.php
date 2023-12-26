@@ -21,7 +21,7 @@ class Leave extends Model
     public function employees(): BelongsToMany
     {
         return $this->belongsToMany(Employee::class)
-            ->withPivot('from_date', 'to_date', 'start_at', 'end_at', 'is_authorized', 'is_checked',
+            ->withPivot('id', 'from_date', 'to_date', 'start_at', 'end_at', 'is_authorized', 'is_checked',
                 'created_by', 'updated_by', 'deleted_by', 'created_at', 'updated_at', 'deleted_at');
     }
 }

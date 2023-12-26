@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('leaves', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->boolean('is_instantly');
+            $table->boolean('is_accumulative');
             $table->integer('discount_rate')->length(3);
             $table->integer('days_limit')->length(3);
             $table->integer('minutes_limit')->length(3);
