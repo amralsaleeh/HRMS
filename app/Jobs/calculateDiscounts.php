@@ -186,7 +186,7 @@ class calculateDiscounts implements ShouldQueue
                         // Two fingerprint
                         $isDelay = $this->checkIfDelay($center, $employee, $fingerprint, $startOfWork, $delayThreshold);
                         $isEarly = $this->checkIfEarly($center, $employee, $employeeLeaves, $fingerprint, $endOfWork);
-                        $isLate = $this->checkIfLate($center, $employee, $employeeLeaves, $fingerprint, $delayThreshold);
+                        $isLate = $this->checkIfLate($center, $employee, $employeeLeaves, $fingerprint, $startOfWork, $delayThreshold);
                         // if (! $isDelay && ! $isEarly) {
                         // }
                     }
@@ -378,13 +378,15 @@ class calculateDiscounts implements ShouldQueue
         }
     }
 
-    public function checkIfLate($center, $employee, $employeeLeaves, $fingerprint, $delayThreshold)
+    public function checkIfLate($center, $employee, $employeeLeaves, $fingerprint, $startOfWork, $delayThreshold)
     {
         if ($fingerprint->check_in >= $delayThreshold) {
             $timeCovered = $this->isThereHourlyLateExcuse($fingerprint, $employeeLeaves);
             $fingerprint->check_in = Carbon::parse($fingerprint->check_in)->subHours($timeCovered->hour)->subMinutes($timeCovered->minute);
 
             if ($fingerprint->check_in < $delayThreshold) {
+                $this->checkIfDelay($center, $employee, $fingerprint, $startOfWork, $delayThreshold);
+
                 return false;
             } else {
                 $duration = Carbon::parse($center->start_work_hour)->diff(Carbon::parse($fingerprint->check_in));
