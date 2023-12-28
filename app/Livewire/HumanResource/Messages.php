@@ -93,7 +93,7 @@ class Messages extends Component
         $employeesDiscounts = Employee::with(['discounts' => function ($query) {
             // $query->whereBetween('date', explode(' to ', $this->batch));
             $query->where('is_sent', 0)->where('batch', $this->selectedBatch);
-        }])->get();
+        }])->where('is_active', 1)->get();
 
         foreach ($employeesDiscounts as $employee) {
             $cashDiscountCount = 0;
