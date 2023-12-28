@@ -133,15 +133,15 @@
             <li class="nav-item dropdown-notifications navbar-dropdown dropdown me-3 me-xl-2">
               <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
                 <i class="ti ti-bell ti-md"></i>
-                @if ($unreadNotifications->count())
-                  <span class="badge bg-danger rounded-pill badge-notifications">{{ $unreadNotifications->count() }}</span>
+                @if (count($unreadNotifications))
+                  <span class="badge bg-danger rounded-pill badge-notifications">{{ count($unreadNotifications) }}</span>
                 @endif
               </a>
               <ul wire:ignore.self class="dropdown-menu dropdown-menu-end py-0">
                 <li class="dropdown-menu-header border-bottom">
                   <div class="dropdown-header d-flex align-items-center py-3">
                     <h5 class="text-body mb-0 me-auto">Notifications</h5>
-                    @if ($unreadNotifications->count())
+                    @if (count($unreadNotifications))
                       <a wire:click.prevent='markAllNotificationsAsRead()' href="" class="dropdown-notifications-all text-body mx-2"><i class="ti ti-mail-opened fs-4"></i></a>
                     @endif
                     <div wire:loading.class='animation-rotate'>

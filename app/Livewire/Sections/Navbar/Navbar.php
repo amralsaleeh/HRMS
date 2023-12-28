@@ -25,7 +25,7 @@ class Navbar extends Component
     public function render()
     {
         DB::table('failed_jobs')->truncate();
-        $this->unreadNotifications = auth()->user()->unreadNotifications;
+        auth()->user() ? $this->unreadNotifications = auth()->user()->unreadNotifications : $this->unreadNotifications = [];
 
         return view('livewire.sections.navbar.navbar');
     }
