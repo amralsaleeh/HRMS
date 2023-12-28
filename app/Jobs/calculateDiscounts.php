@@ -102,7 +102,7 @@ class calculateDiscounts implements ShouldQueue
                                     'batch' => $this->batch,
                                 ]);
                             }
-                            $this->setFingerprintIsChecked($employeeFingerprints, $date);
+                            $this->setFingerprintIsChecked($employeeFingerprints, $date, 'Administrative leave');
                         }
 
                         $leave->pivot->is_checked = 1;
@@ -138,7 +138,7 @@ class calculateDiscounts implements ShouldQueue
                                     } else {
                                         $this->createDiscountFromLeave($employee, $employeeFingerprints, $leave, 'Administrative leave - Exceeded the 3 hours limit', 1);
                                     }
-                                    $this->setFingerprintIsChecked($employeeFingerprints, Carbon::parse($leave->pivot->from_date));
+                                    $this->setFingerprintIsChecked($employeeFingerprints, Carbon::parse($leave->pivot->from_date), 'Administrative leave - Exceeded the 3 hours limit');
                                 } else {
                                     $employee->update([
                                         'hourly_counter' => Carbon::parse($employee->hourly_counter)->addHours($duration->h)->addMinutes($duration->i),
@@ -152,13 +152,26 @@ class calculateDiscounts implements ShouldQueue
                                         $employee->update([
                                             'hourly_counter' => Carbon::parse($employee->hourly_counter)->subHours(7), // TODO: Make 7 inserted variable on settings table
                                         ]);
-                                        $this->setFingerprintIsChecked($employeeFingerprints, Carbon::parse($leave->pivot->from_date));
+                                        $this->setFingerprintIsChecked($employeeFingerprints, Carbon::parse($leave->pivot->from_date), 'Administrative leave - Rounded');
                                     }
                                 }
                                 $leave->pivot->is_checked = 1;
                                 $leave->pivot->save();
                             }
                         }
+                    }
+
+                    // مهمة - يومية
+                    if (substr($leave->id, 0, 2) == '21') {
+                        $startDate = Carbon::create($leave->pivot->from_date);
+                        $dates = $startDate->range($leave->pivot->to_date);
+
+                        foreach ($dates as $date) {
+                            $this->setFingerprintIsChecked($employeeFingerprints, $date, 'Daily Task');
+                        }
+
+                        $leave->pivot->is_checked = 1;
+                        $leave->pivot->save();
                     }
                 }
 
@@ -275,7 +288,7 @@ class calculateDiscounts implements ShouldQueue
                 'is_auto' => $isAuto,
                 'batch' => $this->batch,
             ]);
-            $this->setFingerprintIsChecked($employeeFingerprints, $date);
+            $this->setFingerprintIsChecked($employeeFingerprints, $date, $reason);
         }
     }
 
@@ -290,10 +303,11 @@ class calculateDiscounts implements ShouldQueue
         ]);
     }
 
-    public function setFingerprintIsChecked($employeeFingerprints, $date)
+    public function setFingerprintIsChecked($employeeFingerprints, $date, $excuse)
     {
         $fingerprint = $employeeFingerprints->where('date', $date->format('Y-m-d'))->first();
         if ($fingerprint) {
+            $fingerprint->excuse = $excuse;
             $fingerprint->is_checked = 1;
             $fingerprint->save();
         }
