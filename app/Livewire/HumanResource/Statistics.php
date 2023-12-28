@@ -36,6 +36,6 @@ class Statistics extends Component
             $employee->cash_discounts_count = $employee->discounts->filter(function ($discount) {
                 return $discount->rate > 0;
             })->count();
-        })->sortBy('first_name');
+        })->sortBy('first_name')->sortByDesc('cash_discounts_count');
     }
 }

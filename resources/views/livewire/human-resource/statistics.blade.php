@@ -103,7 +103,12 @@
                     </div>
                   </div>
                   <div class="card-title-elements">
-                      <i class="ti ti-phone-call d-sm-block me-3" data-bs-toggle="tooltip" data-bs-placement="left" data-bs-original-title="{{'+'. implode(' ', str_split($employee->mobile_number, 3)) }}"></i>
+                      <div class="d-flex text-muted">
+                        <i class="ti ti-letter-b d-sm-block" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="{{ $employee->max_leave_allowed }}"></i>
+                        <i class="ti ti-letter-h d-sm-block" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="{{ $employee->hourly_counter }}"></i>
+                        <i class="ti ti-letter-d d-sm-block me-3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="{{ $employee->delay_counter }}"></i>
+                      </div>
+                      <i class="ti ti-phone-call d-sm-block me-3 text-muted" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="{{'+'. implode(' ', str_split($employee->mobile_number, 3)) }}"></i>
                       <span class="badge bg-danger">{{ count($employee->discounts) .' / '. $employee->cash_discounts_count }}</span>
                       <a href="javascript:void(0);" class="card-collapsible text-danger"><i class="tf-icons ti ti-chevron-right scaleX-n1-rtl ti-sm"></i></a>
                   </div>
