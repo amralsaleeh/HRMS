@@ -231,6 +231,8 @@
                     @if (session()->has('success'))
                       <div class="nav-item mx-3 text-success">
                           {{ session('success') }}
+                          <br>
+                          Get into the <a href="{{ route('statistics') }}">statistics</a> for a deep dive into the juicy details!
                       </div>
                     @endif
                     @if (session()->has('error'))
@@ -256,7 +258,7 @@
   </div>
 
   {{-- Employee discounts --}}
-  {{-- @if ($showDiscounts) --}}
+  {{-- @if ($showDiscounts)
     <div wire:transition class="card">
       <div class="card-header">
         Discounts info
@@ -266,14 +268,6 @@
         <div class="card card-action mb-4">
           <div class="card-header">
             <div class="card-action-title d-flex overflow-hidden align-items-center">
-              {{-- <i class="ti ti-menu-2 ti-sm cursor-pointer d-lg-none d-block me-2" data-bs-toggle="sidebar" data-overlay="" data-target="#app-chat-contacts"></i>
-              <div class="flex-shrink-0 avatar">
-                <img src="{{ asset($employee->getEmployeePhoto()) }}" alt="Avatar" class="rounded-circle">
-              </div>
-              <div class="chat-contact-info flex-grow-1 ms-2">
-                <h6 class="m-0">{{ $employee->full_name }}</h6>
-                <small class="user-status text-muted">{{ $employee->current_position }}</small>
-              </div> --}}
               <div class="avatar avatar-lg me-2">
                 <a href="{{ route('structure-employees-info', $employee->id) }}">
                   <img src="{{ asset($employee->getEmployeePhoto()) }}" alt="Avatar" class="rounded">
@@ -298,7 +292,6 @@
                   </li>
                   <li class="list-inline-item">
                     <i class="ti ti-calendar"></i> {{ $employee->join_at }}
-                    {{-- <i class="ti ti-calendar"></i> {{ 'Joined ' . $employee->join_at }} --}}
                   </li>
                 </ul>
               </div>
@@ -308,8 +301,8 @@
                 <span class="badge bg-danger">{{ count($employee->discounts) .' / '. $employee->cash_discounts_count }}</span>
                 <a href="javascript:void(0);" class="card-collapsible text-danger"><i class="tf-icons ti ti-chevron-right scaleX-n1-rtl ti-sm"></i></a>
             </div>
-
           </div>
+
           <div class="collapse">
             <table class="table table-hover">
               <thead>
@@ -345,7 +338,7 @@
         @endforeach
       </div>
     </div>
-  {{-- @endif --}}
+  @endif --}}
 
   @section('vendor-script')
     <script src="{{asset('assets/vendor/libs/bs-stepper/bs-stepper.js')}}"></script>

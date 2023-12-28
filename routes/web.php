@@ -8,6 +8,7 @@ use App\Livewire\HumanResource\Attendance\Leaves;
 use App\Livewire\HumanResource\Discounts;
 use App\Livewire\HumanResource\Holidays;
 use App\Livewire\HumanResource\Messages;
+use App\Livewire\HumanResource\Statistics;
 use App\Livewire\HumanResource\Structure\Centers;
 use App\Livewire\HumanResource\Structure\Departments;
 use App\Livewire\HumanResource\Structure\EmployeeInfo;
@@ -49,7 +50,7 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
     Route::get('/messages', Messages::class)->name('messages');
     Route::get('/discounts', Discounts::class)->name('discounts');
     Route::get('/holidays', Holidays::class)->name('holidays');
-    Route::get('/statistics', ComingSoon::class)->name('statistics');
+    Route::get('/statistics', Statistics::class)->name('statistics');
 
     Route::prefix('settings')->group(function () {
         Route::get('/rules', ComingSoon::class)->name('settings-rules');
