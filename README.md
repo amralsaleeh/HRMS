@@ -12,6 +12,8 @@ This concise solution promotes effective workforce management and informed decis
 
 - **Employee Information Management:** Maintain centralized and detailed records of employee information.
 
+- **Process Automation:** Reduces administrative burdens on the department by handling routine tasks.
+
 - **Attendance and Leave Tracking:** Track attendance, manage leave requests, and monitor employee availability.
 
 - **Salary and Deduction Management:** Streamline salary and deduction processes, ensuring accuracy and compliance.
