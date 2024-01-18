@@ -4,6 +4,7 @@ namespace App\Livewire\HumanResource;
 
 use App\Models\Center;
 use App\Models\Holiday;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Rule;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -67,7 +68,10 @@ class Holidays extends Component
             'note' => $this->note,
         ]);
 
-        $holiday->centers()->attach($this->centers);
+        $holiday->centers()->attach($this->centers, [
+            'created_by' => Auth::user()->name,
+            'updated_by' => Auth::user()->name,
+        ]);
 
         $this->dispatch('closeModal', elementId: '#holidayModal');
         $this->dispatch('toastr', type: 'success'/* , title: 'Done!' */ , message: 'Going Well!');
