@@ -50,11 +50,20 @@ This concise solution promotes effective workforce management and informed decis
 
 - Set the database connection details, including `DB_CONNECTION`, `DB_HOST`, `DB_PORT`, `DB_DATABASE`, `DB_USERNAME`, `DB_PASSWORD`.
 
-5. Run the development server:
+5. Run the migration command with the seed flag to add some fake data:
+    ```bash
+    php artisan migrate --seed
+
+6. Run the development server:
     ```bash
     php artisan serve
 
-6. Open your browser and go to http://localhost:8000 to see the application.
+7. Open your browser and go to http://localhost:8000 to see the application.
+
+8. login:
+    ```bash
+    email: test@namaa.sy
+    password: 12345678
 
 ## Contribution
 We welcome contributions from developers and users. If you have ideas for improving the system or discover issues, feel free to create an Issue or submit a Pull Request.
