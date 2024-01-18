@@ -14,6 +14,8 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             AdminUserSeeder::class,
+            ContractsSeeder::class,
+            EmployeesSeeder::class,
         ]);
 
         if (file_exists('database/seeders/SettingsSeeder.php')) {
