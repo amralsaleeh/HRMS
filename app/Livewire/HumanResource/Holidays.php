@@ -2,6 +2,7 @@
 
 namespace App\Livewire\HumanResource;
 
+use App\Models\Center;
 use App\Models\Holiday;
 use Livewire\Attributes\Rule;
 use Livewire\Component;
@@ -14,6 +15,9 @@ class Holidays extends Component
     // Variables - Start //
     #[Rule('required')]
     public $name;
+
+    #[Rule('required')]
+    public $centers = [];
 
     #[Rule('required')]
     public $fromDate;
@@ -33,11 +37,18 @@ class Holidays extends Component
 
     public function render()
     {
-        $holidays = Holiday::paginate(10);
+        $holidays = Holiday::with('centers')->paginate(10);
+        // $centers = Center::pluck('name', 'id')->all();
 
         return view('livewire.human-resource.holidays', [
             'holidays' => $holidays,
+            // 'centers' => $centers,
         ]);
+    }
+
+    public function mount()
+    {
+        $this->centers = Center::pluck('name', 'id');
     }
 
     public function submitHoliday()
@@ -49,12 +60,14 @@ class Holidays extends Component
     {
         $this->validate();
 
-        Holiday::create([
+        $holiday = Holiday::create([
             'name' => $this->name,
             'from_date' => $this->fromDate,
             'to_date' => $this->toDate,
             'note' => $this->note,
         ]);
+
+        $holiday->centers()->attach($this->centers);
 
         $this->dispatch('closeModal', elementId: '#holidayModal');
         $this->dispatch('toastr', type: 'success'/* , title: 'Done!' */ , message: 'Going Well!');
@@ -71,10 +84,12 @@ class Holidays extends Component
             'note' => $this->note,
         ]);
 
+        $this->holiday->centers()->sync($this->centers);
+
         $this->dispatch('closeModal', elementId: '#holidayModal');
         $this->dispatch('toastr', type: 'success'/* , title: 'Done!' */ , message: 'Going Well!');
 
-        $this->reset();
+        $this->reset('isEdit', 'name', 'centers', 'fromDate', 'toDate', 'note');
     }
 
     public function confirmDeleteHoliday($id)
@@ -90,19 +105,21 @@ class Holidays extends Component
 
     public function showNewHolidayModal()
     {
-        $this->reset();
+        $this->reset('isEdit', 'name', 'centers', 'fromDate', 'toDate', 'note');
     }
 
     public function showEditHolidayModal(Holiday $holiday)
     {
-        $this->reset();
+        $this->reset('isEdit', 'name', 'centers', 'fromDate', 'toDate', 'note');
         $this->isEdit = true;
-
         $this->holiday = $holiday;
-
         $this->name = $holiday->name;
+        // $this->center_id = $holiday->centers->pluck('id')->first();
+        $this->centers = $holiday->centers->pluck('id')->toArray();
         $this->fromDate = $holiday->from_date;
         $this->toDate = $holiday->to_date;
         $this->note = $holiday->note;
+        // $this->dispatchBrowserEvent('openEditHolidayModal');
+
     }
 }

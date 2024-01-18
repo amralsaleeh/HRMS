@@ -92,12 +92,11 @@
                     <small class="user-status text-muted">{{ $selectedEmployee->current_position }}</small>
                   </div>
                 </div>
-
                 <div class="col-4 btn-group d-flex justify-content-end">
-                  <button type="button" class="btn btn-primary waves-effect waves-light" data-bs-toggle="offcanvas"
-                          data-bs-target="#addRecordSidebar" aria-controls="addRecordSidebar"><i
-                          class="ti ti-plus me-1"></i> Add New Record
-                  </button>
+                  <button wire:click.prevent='showNewLeaveModal' type="button" class="btn btn-primary"
+      data-bs-toggle="modal" data-bs-target="#leaveModal">
+      <span class="ti-xs ti ti-plus me-1"></span>Add New Record
+    </button>
                   <button type="button"
                           class="btn btn-primary dropdown-toggle dropdown-toggle-split waves-effect waves-light"
                           data-bs-toggle="dropdown" aria-expanded="false">
@@ -143,11 +142,11 @@
                       <td>{{ $leave->pivot->end_at ? Carbon::parse($leave->pivot->end_at)->format('H:i') : '-' }}</td>
                       <td>
                         <div>
-                          <a wire:click.prevent="showEditLeaveModal({{ $leave }})" href=""><i
+                          <a wire:click.prevent="showEditLeaveModal({{ $leave->pivot->id }})"  data-bs-toggle="modal" data-bs-target="#leaveModal" href=""><i
                               class="ti ti-edit text-info"></i></a>
-                          <a wire:click.prevent="confirmDeleteLeave({{ $leave->id }})" href=""><i
+                          <a wire:click.prevent="confirmDeleteLeave({{ $leave->pivot->id }})" href=""><i
                               class="ti ti-trash text-danger"></i></a>
-                          @if ($confirmedId === $leave->id)
+                          @if ($confirmedId === $leave->pivot->id)
                             <button wire:click.prevent='deleteLeave({{ $leave }})' type="button"
                                     class="btn btn-xs btn-danger waves-effect waves-light">Sure?
                             </button>

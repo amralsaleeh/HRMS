@@ -38,6 +38,20 @@ class Leaves extends Component
 
     public $toDate;
 
+    public $name;
+
+    public $startAt;
+
+    public $endAt;
+
+    // public $leave;
+
+    public $isEdit = false;
+
+    public $newLeaveInfo = [];
+
+    public $employee_leave_id;
+
     public $leaveTypes;
 
     public $selectedLeave;
@@ -114,5 +128,86 @@ class Leaves extends Component
         }
 
         $this->dispatch('closeModal', elementId: '#importModal');
+    }
+
+    //function to delete and update and insert
+
+    public function submitLeave()
+    {
+        $this->isEdit ? $this->editLeave() : $this->addLeave();
+    }
+
+    public function addLeave()
+    {
+        $employee = Employee::find($this->selectedEmployeeId);
+
+        $employee->leaves()->attach($this->newLeaveInfo['LeaveId'], [
+            'from_date' => $this->newLeaveInfo['fromDate'],
+            'to_date' => $this->newLeaveInfo['toDate'],
+            'start_at' => $this->startAt,
+            'end_at' => $this->endAt,
+            'created_by' => Auth::user()->name,
+            'updated_by' => Auth::user()->name,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        $this->dispatch('closeModal', elementId: '#leaveModal');
+        $this->dispatch('toastr', type: 'success'/* , title: 'Done!' */ , message: 'Going Well!');
+    }
+
+    public function editLeave()
+    {
+        // $this->validate();
+        // $this->leave->update([
+        //     'name' => $this->name,
+        // ]);
+        // $employee = Employee::find($this->selectedEmployeeId);
+
+        $leave = $this->selectedEmployee->leaves()->wherePivot('id', $this->employee_leave_id)->first();
+        // dd($leave);
+        // $leave->name = $this->updatedName;
+        $leave->pivot->from_date = $this->newLeaveInfo['fromDate'];
+        $leave->pivot->to_date = $this->newLeaveInfo['toDate'];
+        $leave->pivot->start_at = $this->startAt;
+        $leave->pivot->end_at = $this->endAt;
+        $leave->pivot->save();
+
+        $this->dispatch('closeModal', elementId: '#leaveModal');
+        $this->dispatch('toastr', type: 'success'/* , title: 'Done!' */ , message: 'Going Well!');
+
+        $this->reset('isEdit', 'newLeaveInfo', 'startAt', 'endAt');
+    }
+
+    public function confirmDeleteLeave($id)
+    {
+        $this->confirmedId = $id;
+    }
+
+    public function deleteLeave()
+    {
+        $this->selectedEmployee->leaves()->wherePivot('id', $this->confirmedId)->detach();
+        $this->dispatch('toastr', type: 'success'/* , title: 'Done!' */ , message: 'Going Well!');
+    }
+
+    public function showNewLeaveModal()
+    {
+        $this->reset('isEdit', 'newLeaveInfo', 'startAt', 'endAt');
+    }
+
+    public function showEditLeaveModal($leave_pivot_id)
+    {
+        $this->reset('newLeaveInfo', 'startAt', 'endAt');
+        $this->isEdit = true;
+        $this->employee_leave_id = $leave_pivot_id;
+        $leave = $this->selectedEmployee->leaves()->wherePivot('id', $this->employee_leave_id)->first();
+        // dd($leave);
+        // $this->updatedName = $leave->name;
+        // $this->newLeaveInfo['LeaveId'] = $leave->id;
+        $this->newLeaveInfo['fromDate'] = $leave->pivot->from_date;
+        $this->newLeaveInfo['toDate'] = $leave->pivot->to_date;
+        $this->startAt = $leave->pivot->start_at;
+        $this->endAt = $leave->pivot->end_at;
+
     }
 }
