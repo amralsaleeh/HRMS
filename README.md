@@ -69,6 +69,6 @@ This concise solution promotes effective workforce management and informed decis
 We welcome contributions from developers and users. If you have ideas for improving the system or discover issues, feel free to create an Issue or submit a Pull Request.
 
 ## License
-This project uses the MIT License.
+This project uses the MIT License. Please see [LICENSE](LICENSE) File for more information.
 
 [![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](https://choosealicense.com/licenses/mit/)
