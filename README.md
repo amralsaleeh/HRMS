@@ -65,26 +65,29 @@ This concise solution promotes effective workforce management and informed decis
    git clone https://github.com/amralsaleeh/HRMS.git
 
 2. Navigate to the project folder:
+   
     ```bash
     cd HRMS
 
-3. Install dependencies using Composer:
+4. Install dependencies using Composer:
+   
     ```bash
     composer install
-4. Set up the database and necessary configurations:
+6. Set up the database and necessary configurations:
+   
 - Open the `.env` file in the root of your project.
 
 - Set the database connection details, including `DB_CONNECTION`, `DB_HOST`, `DB_PORT`, `DB_DATABASE`, `DB_USERNAME`, `DB_PASSWORD`.
 
 5. Run the migration command with the seed flag to add some fake data:
+   
     ```bash
     php artisan migrate --seed
-
-6. Run the development server:
+7. Run the development server:
+   
     ```bash
     php artisan serve
-
-7. Open your browser and go to http://localhost:8000 to see the application.
+9. Open your browser and go to http://localhost:8000 to see the application.
 
     
 ### Usage
