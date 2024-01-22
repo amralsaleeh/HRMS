@@ -1,10 +1,37 @@
-# Human Resource Management System (HRMS)
+<p align="center">
 
+  [![Contributors][contributors-shield]][contributors-url]
+  [![Forks][forks-shield]][forks-url]
+  [![Stargazers][stars-shield]][stars-url]
+  [![Issues][issues-shield]][issues-url]
+  [![MIT License][license-shield]][license-url]
+  [![LinkedIn][linkedin-shield]][linkedin-url]
+  
+  <a href="https://github.com/amralsaleeh/HRMS">
+    <img src="public/assets/img/logo/logo_128.png" alt="Logo" width="80" height="80">
+  </a>
+
+  <h2 align="center">HRMS</h2>
+
+  <p align="center">
+    Human Resource Management System
+    <br />
+    <br />
+    <a href="https://github.com/amralsaleeh/HRMS/issues">Report Bug</a>
+    ·
+    <a href="https://github.com/amralsaleeh/HRMS/issues">Request Feature</a>
+  </p>
+</p>
+<br />
 **HRMS** is an open-source web application tailored to streamline employee management and HR processes within organizations.
 
 It optimizes organizational efficiency through clear hierarchy establishment, centralized employee records, streamlined attendance and leave management, precise salary processing, timely alerts, comprehensive HR reports, and efficient asset/device tracking.
 
 This concise solution promotes effective workforce management and informed decision-making.
+
+### Built With
+* [Laravel](https://laravel.com)
+* [Livewire](https://livewire.laravel.com)
 
 ## Features
 
@@ -60,7 +87,10 @@ This concise solution promotes effective workforce management and informed decis
 
 7. Open your browser and go to http://localhost:8000 to see the application.
 
-8. login:
+    
+### Usage
+8. Login:
+    
     ```bash
     email: test@namaa.sy
     password: 12345678
@@ -68,7 +98,26 @@ This concise solution promotes effective workforce management and informed decis
 ## Contribution
 We welcome contributions from developers and users. If you have ideas for improving the system or discover issues, feel free to create an Issue or submit a Pull Request.
 
+## Contact
+
+Amr Alsaleh - [@amralsaleeh](https://linkedin.com/in/amralsaleeh) - amralsaleeh@outlook.com
+
+Project Link: [https://github.com/amralsaleeh/HRMS](https://github.com/amralsaleeh/HRMS)
+
 ## License
 This project uses the MIT License. Please see [LICENSE](LICENSE.md) File for more information.
 
-[![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](https://choosealicense.com/licenses/mit/)
+<!-- MARKDOWN LINKS & IMAGES -->
+<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
+[contributors-shield]: https://img.shields.io/github/contributors/amralsaleeh/HRMS.svg?style=flat-square
+[contributors-url]: https://github.com/amralsaleeh/HRMS/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/amralsaleeh/HRMS.svg?style=flat-square
+[forks-url]: https://github.com/amralsaleeh/HRMS/network/members
+[stars-shield]: https://img.shields.io/github/stars/amralsaleeh/HRMS.svg?style=flat-square
+[stars-url]: https://github.com/amralsaleeh/HRMS/stargazers
+[issues-shield]: https://img.shields.io/github/issues/amralsaleeh/HRMS.svg?style=flat-square
+[issues-url]: https://github.com/amralsaleeh/HRMS/issues
+[license-shield]: https://img.shields.io/github/license/amralsaleeh/HRMS.svg?style=flat-square
+[license-url]: https://github.com/amralsaleeh/HRMS/blob/master/LICENSE.txt
+[linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=flat-square&logo=linkedin&colorB=555
+[linkedin-url]: https://linkedin.com/in/amralsaleeh
