@@ -74,10 +74,12 @@ This concise solution promotes effective workforce management and informed decis
     ```bash
     composer install
 6. Set up the database and necessary configurations:
-   
-- Open the `.env` file in the root of your project.
 
-- Set the database connection details, including `DB_CONNECTION`, `DB_HOST`, `DB_PORT`, `DB_DATABASE`, `DB_USERNAME`, `DB_PASSWORD`.
+    - Copy the `.env.example` to `.env` file in the root of your project.
+      
+    - Open the `.env` file in the root of your project.
+
+    - Set the database connection details, including `DB_CONNECTION`, `DB_HOST`, `DB_PORT`, `DB_DATABASE`, `DB_USERNAME`, `DB_PASSWORD`.
 
 5. Run the migration command with the seed flag to add some fake data:
    
