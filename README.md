@@ -22,6 +22,7 @@
   </p>
 </p>
 <br />
+
 **HRMS** is an open-source web application tailored to streamline employee management and HR processes within organizations.
 
 It optimizes organizational efficiency through clear hierarchy establishment, centralized employee records, streamlined attendance and leave management, precise salary processing, timely alerts, comprehensive HR reports, and efficient asset/device tracking.
