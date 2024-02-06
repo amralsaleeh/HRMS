@@ -20,7 +20,7 @@
         <thead>
           <tr>
             <th>Name</th>
-            <th>Cenetr</th>
+            <th>Center</th>
             <th>Date Range</th>
             <th>Note</th>
             <th>Actions</th>

@@ -94,9 +94,9 @@
                 </div>
                 <div class="col-4 btn-group d-flex justify-content-end">
                   <button wire:click.prevent='showNewLeaveModal' type="button" class="btn btn-primary"
-      data-bs-toggle="modal" data-bs-target="#leaveModal">
-      <span class="ti-xs ti ti-plus me-1"></span>Add New Record
-    </button>
+                          data-bs-toggle="modal" data-bs-target="#leaveModal">
+                    <span class="ti-xs ti ti-plus me-1"></span>Add New Record
+                  </button>
                   <button type="button"
                           class="btn btn-primary dropdown-toggle dropdown-toggle-split waves-effect waves-light"
                           data-bs-toggle="dropdown" aria-expanded="false">

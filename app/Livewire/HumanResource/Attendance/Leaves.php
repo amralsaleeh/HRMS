@@ -118,7 +118,7 @@ class Leaves extends Component
             Excel::import(new ImportLeaves(), $this->file);
 
             Notification::send(Auth::user(), new DefaultNotification(
-                'Successfully imported the leaves file'
+                $this->user_id, 'Successfully imported the leaves file'
             ));
             $this->dispatch('refreshNotifications')->to(Navbar::class);
 
@@ -165,8 +165,7 @@ class Leaves extends Component
         // $employee = Employee::find($this->selectedEmployeeId);
 
         $leave = $this->selectedEmployee->leaves()->wherePivot('id', $this->employee_leave_id)->first();
-        // dd($leave);
-        // $leave->name = $this->updatedName;
+
         $leave->pivot->from_date = $this->newLeaveInfo['fromDate'];
         $leave->pivot->to_date = $this->newLeaveInfo['toDate'];
         $leave->pivot->start_at = $this->startAt;
@@ -201,9 +200,7 @@ class Leaves extends Component
         $this->isEdit = true;
         $this->employee_leave_id = $leave_pivot_id;
         $leave = $this->selectedEmployee->leaves()->wherePivot('id', $this->employee_leave_id)->first();
-        // dd($leave);
-        // $this->updatedName = $leave->name;
-        // $this->newLeaveInfo['LeaveId'] = $leave->id;
+
         $this->newLeaveInfo['fromDate'] = $leave->pivot->from_date;
         $this->newLeaveInfo['toDate'] = $leave->pivot->to_date;
         $this->startAt = $leave->pivot->start_at;
