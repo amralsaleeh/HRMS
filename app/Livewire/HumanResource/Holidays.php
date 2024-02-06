@@ -26,7 +26,6 @@ class Holidays extends Component
     #[Rule('required')]
     public $toDate;
 
-    #[Rule('required')]
     public $note;
 
     public $holiday;
