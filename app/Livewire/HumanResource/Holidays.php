@@ -88,7 +88,10 @@ class Holidays extends Component
             'note' => $this->note,
         ]);
 
-        $this->holiday->centers()->sync($this->centers);
+        $this->holiday->centers()->syncWithPivotValues($this->centers, [
+            'created_by' => Auth::user()->name,
+            'updated_by' => Auth::user()->name,
+        ]);
 
         $this->dispatch('closeModal', elementId: '#holidayModal');
         $this->dispatch('toastr', type: 'success'/* , title: 'Done!' */ , message: 'Going Well!');
