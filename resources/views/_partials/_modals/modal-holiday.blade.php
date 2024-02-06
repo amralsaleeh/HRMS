@@ -1,5 +1,6 @@
 @push('custom-css')
-
+  <link rel="stylesheet" href="{{asset('assets/vendor/libs/select2/select2.css')}}" />
+  <link rel="stylesheet" href="{{asset('assets/vendor/libs/flatpickr/flatpickr.css')}}" />
 @endpush
 
 <div wire:ignore.self class="modal fade" id="holidayModal" tabindex="-1" aria-hidden="true">
@@ -17,19 +18,27 @@
             <label class="form-label w-100">Name</label>
             <input wire:model='name' class="form-control @error('name') is-invalid @enderror" type="text" />
           </div>
-            <div class="col-md-6 col-12 mb-4">
-              <label class="form-label">From Date</label>
-              <input wire:model='fromDate' type="date" class="form-control @error('fromDate') is-invalid @enderror" placeholder="YYYY/MM/DD" id="fromDate" autocomplete="off" />
-            </div>
-            <div class="col-md-6 col-12 mb-4">
-              <label class="form-label">To Date</label>
-              <input wire:model='toDate' type="date" class="form-control @error('toDate') is-invalid @enderror" placeholder="YYYY/MM/DD" id="toDate" autocomplete="off" />
-            </div>
+          <div wire:ignore class="col-md-12">
+            <label class="form-label">Centers</label>
+            <select wire:model="centers" id="selectCenters" class="select2 form-select form-select-lg @error('centers') is-invalid @enderror" data-allow-clear="true" multiple>
+                @foreach($centers as $centerId => $centerName)
+                    <option value="{{ $centerId }}">{{ $centerName }}</option>
+                @endforeach
+            </select>
+          </div>
+          <div class="col-md-6 col-12 mb-4">
+            <label class="form-label">From Date</label>
+            <input wire:model='fromDate' type="date" class="form-control @error('fromDate') is-invalid @enderror" placeholder="YYYY/MM/DD" id="fromDate" autocomplete="off" />
+          </div>
+          <div class="col-md-6 col-12 mb-4">
+            <label class="form-label">To Date</label>
+            <input wire:model='toDate' type="date" class="form-control @error('toDate') is-invalid @enderror" placeholder="YYYY/MM/DD" id="toDate" autocomplete="off" />
+          </div>
 
-            <div class="col-12 mb-4">
-              <label class="form-label w-100">Note</label>
-              <input wire:model='note' class="form-control @error('note') is-invalid @enderror" type="text" />
-            </div>
+          <div class="col-12 mb-4">
+            <label class="form-label w-100">Note</label>
+            <input wire:model='note' class="form-control @error('note') is-invalid @enderror" type="text" />
+          </div>
 
           <div class="col-12 text-center">
             <button type="submit" class="btn btn-primary me-sm-3 me-1">Submit</button>
@@ -42,5 +51,34 @@
 </div>
 
 @push('custom-scripts')
+<script src="{{asset('assets/vendor/libs/select2/select2.js')}}"></script>
+<script src="{{asset('assets/vendor/libs/flatpickr/flatpickr.js')}}"></script>
+
+<script>
+  'use strict';
+
+  $(function () {
+    const selectPicker = $('.selectpicker'),
+      select2 = $('.select2'),
+      select2Icons = $('.select2-icons');
+
+    // Default
+    if (select2.length) {
+      select2.each(function () {
+        var $this = $(this);
+        $this.wrap('<div class="position-relative"></div>').select2({
+          placeholder: 'Select value',
+          dropdownParent: $this.parent()
+        });
+      });
+    }
+
+    // $('#selectCenters').select2();
+    $('#selectCenters').on('change', function (e) {
+        var data = $('#selectCenters').select2("val");
+    @this.set('centers', data);
+    });
+  });
+</script>
 
 @endpush

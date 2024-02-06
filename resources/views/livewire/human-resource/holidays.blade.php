@@ -20,6 +20,7 @@
         <thead>
           <tr>
             <th>Name</th>
+            <th>Center</th>
             <th>Date Range</th>
             <th>Note</th>
             <th>Actions</th>
@@ -29,6 +30,11 @@
           @forelse($holidays as $holiday)
           <tr>
             <td><strong>{{ $holiday->name }}</strong></td>
+            <td>
+                @foreach($holiday->centers as $center)
+                    <span class="badge bg-label-info">{{ $center->name }}</span>
+                @endforeach
+            </td>
             <td><span class="badge bg-label-success me-1">{{ $holiday->from_date . ' --> ' . $holiday->to_date }}</span></td>
             <td><strong>{{ $holiday->note }}</strong></td>
             <td>
@@ -48,7 +54,7 @@
           </tr>
           @empty
           <tr>
-            <td colspan="4">
+            <td colspan="5">
               <div class="mt-2 mb-2" style="text-align: center">
                   <h3 class="mb-1 mx-2">Oopsie-doodle!</h3>
                   <p class="mb-4 mx-2">

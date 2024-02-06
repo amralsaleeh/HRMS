@@ -22,7 +22,8 @@ class Holiday extends Model
 
     public function centers(): BelongsToMany
     {
-        return $this->belongsToMany(Center::class);
+        return $this->belongsToMany(Center::class)
+            ->withPivot('created_by', 'updated_by', 'deleted_by', 'created_at', 'updated_at', 'deleted_at');
     }
 
     protected function name(): Attribute
