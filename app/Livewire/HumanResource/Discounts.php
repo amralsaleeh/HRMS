@@ -2,7 +2,7 @@
 
 namespace App\Livewire\HumanResource;
 
-use App\Jobs\calculateDiscounts;
+use App\Jobs\calculateDiscountsAsDays;
 use App\Livewire\Sections\Navbar\Navbar;
 use App\Models\Discount;
 use App\Models\Employee;
@@ -44,7 +44,7 @@ class Discounts extends Component
             'batch.required' => 'Please select the period you want to apply the discount on',
         ]);
 
-        calculateDiscounts::dispatch(Auth::user(), $this->batch);
+        calculateDiscountsAsDays::dispatch(Auth::user(), $this->batch);
 
         $this->isProcessing = true;
     }
