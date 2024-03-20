@@ -19,6 +19,7 @@ class Timeline extends Model
         'employee_id',
         'start_date',
         'end_date',
+        'is_sequent',
         'notes',
     ];
 
