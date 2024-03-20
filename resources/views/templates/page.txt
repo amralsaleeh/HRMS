@@ -1,0 +1,32 @@
+<div>
+
+  @php
+    $configData = Helper::appClasses();
+  @endphp
+
+  @section('title', 'HERE')
+
+  @section('vendor-style')
+
+  @endsection
+
+  @section('page-style')
+
+  @endsection
+
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <a href="{{ route('dashboard') }}">Dashboard</a>
+      </li>
+      <li class="breadcrumb-item active">Human Resource</li>
+      <li class="breadcrumb-item active">HERE</li>
+    </ol>
+  </nav>
+
+  {{-- HERE --}}
+
+  @push('custom-scripts')
+
+  @endpush
+</div>
