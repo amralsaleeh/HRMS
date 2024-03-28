@@ -118,7 +118,7 @@ class Leaves extends Component
             Excel::import(new ImportLeaves(), $this->file);
 
             Notification::send(Auth::user(), new DefaultNotification(
-                $this->user_id, 'Successfully imported the leaves file'
+                Auth::user()->id, 'Successfully imported the leaves file'
             ));
             $this->dispatch('refreshNotifications')->to(Navbar::class);
 
