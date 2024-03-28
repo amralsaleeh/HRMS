@@ -31,7 +31,7 @@ class Fingerprints extends Component
 
     public $selectedEmployeeId = 1;
 
-    public $dateRange = '2023-10-01 to 2023-12-01';
+    public $dateRange;
 
     public $fromDate;
 
@@ -78,10 +78,12 @@ class Fingerprints extends Component
         $this->selectedEmployee = Employee::find($this->selectedEmployeeId);
 
         // Date range
-        $dates = explode(' to ', $this->dateRange);
+        if ($this->dateRange) {
+            $dates = explode(' to ', $this->dateRange);
 
-        $this->fromDate = $dates[0];
-        $this->toDate = $dates[1];
+            $this->fromDate = $dates[0];
+            $this->toDate = $dates[1];
+        }
 
         // Return filtered fingerprints
         return Fingerprint::filteredFingerprints(
