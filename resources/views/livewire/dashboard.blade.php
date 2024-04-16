@@ -156,9 +156,9 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> --}}
 
-    <div class="col-12 col-xl-8 mb-4 col-lg-7">
+    {{-- <div class="col-12 col-xl-8 mb-4 col-lg-7">
       <div class="card">
         <div class="card-header pb-3 ">
           <h5 class="m-0 me-2 card-title">Revenue Report</h5>
@@ -212,21 +212,23 @@
         </div>
       </div>
     </div> --}}
+  </div>
 
+  <div class="row">
     <div class="col">
-    <div class="card">
-      <h5 class="card-header">Changelogs</h5>
-      <div class="card-body">
-        @foreach ($changelogs as $changelog)
-          <small all class="text-light fw-semibold">{{ $changelog->version }}</small>
-          <dl class="row mt-2">
-            <dt class="col-sm-3">{{ $changelog->title }}</dt>
-            <dd class="col-sm-9">{{ $changelog->description }}</dd>
-          </dl>
-        @endforeach
+      <div class="card">
+        <h5 class="card-header">Changelogs</h5>
+        <div class="card-body">
+          @foreach ($changelogs as $changelog)
+            <small all class="text-light fw-semibold">{{ $changelog->version }}</small>
+            <dl class="row mt-2">
+              <dt class="col-sm-3">{{ $changelog->title }}</dt>
+              <dd class="col-sm-9">{{ $changelog->description }}</dd>
+            </dl>
+          @endforeach
+        </div>
       </div>
     </div>
-  </div>
   </div>
 
   @push('custom-scripts')
