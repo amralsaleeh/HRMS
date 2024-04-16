@@ -12,10 +12,11 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    use CreatedUpdatedDeletedBy, HasApiTokens, HasFactory, HasProfilePhoto, Notifiable, SoftDeletes, TwoFactorAuthenticatable;
+    use CreatedUpdatedDeletedBy, HasApiTokens, HasFactory, HasProfilePhoto, HasRoles, Notifiable, SoftDeletes, TwoFactorAuthenticatable;
 
     protected $fillable = [
         'name',
