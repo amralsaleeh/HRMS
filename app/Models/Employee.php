@@ -19,6 +19,7 @@ class Employee extends Model
     use CreatedUpdatedDeletedBy, HasFactory, SoftDeletes;
 
     protected $fillable = [
+        'id',
         'contract_id',
         'first_name',
         'father_name',
@@ -91,11 +92,23 @@ class Employee extends Model
     // Computed Attribute - Start
     public function getFullNameAttribute()
     {
+        return $this->first_name.' '.$this->father_name.' '.$this->last_name;
+    }
+
+    public function getShortNameAttribute()
+    {
         return $this->first_name.' '.$this->last_name;
     }
     // Computed Attribute - End
 
     // Functions - Start
+    public function getWorkedYearsAttribute()
+    {
+        $data = Timeline::where('employee_id', $this->id)->where('is_sequent', 1)->latest()->value('start_date');
+
+        return Carbon::now()->diffInYears(Carbon::parse($data)) + 1; // The reason for " + 1 " is to calculate the started year too.
+    }
+
     public function getCurrentPositionAttribute()
     {
         $data = Timeline::with('position')->where('employee_id', $this->id)->whereNull('end_date')->first();

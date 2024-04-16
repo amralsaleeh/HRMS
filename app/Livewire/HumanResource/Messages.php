@@ -132,7 +132,11 @@ class Messages extends Component
 
     public function sendPendingMessages()
     {
-        sendPendingMessages::dispatch();
-        session()->flash('info', "Let's go! Messages on their way!");
+        if ($this->messagesStatus['unsent'] != 0) {
+            sendPendingMessages::dispatch();
+            session()->flash('info', "Let's go! Messages on their way!");
+        } else {
+            $this->dispatch('toastr', type: 'info'/* , title: 'Done!' */ , message: 'Everything has sent already!');
+        }
     }
 }

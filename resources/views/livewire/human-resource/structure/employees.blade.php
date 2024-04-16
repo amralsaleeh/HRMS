@@ -39,7 +39,7 @@
               </li>
             </ul>
           </td>
-          <td>{{ $employee->mobile_number }}</td>
+          <td>{{ '0' . number_format($employee->mobile_number, 0, '', ' ') }}</td>
           <td>
             @if ($employee->is_active)
               <span class="badge bg-label-success me-1">Active</span>

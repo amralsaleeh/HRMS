@@ -30,7 +30,7 @@
           @forelse($holidays as $holiday)
           <tr>
             <td><strong>{{ $holiday->name }}</strong></td>
-            <td>
+            <td style="text-wrap: balance;">
                 @foreach($holiday->centers as $center)
                     <span class="badge bg-label-info">{{ $center->name }}</span>
                 @endforeach

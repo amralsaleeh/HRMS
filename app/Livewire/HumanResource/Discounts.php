@@ -15,7 +15,7 @@ class Discounts extends Component
     // Variables - Start //
     public $disableDateLimit;
 
-    public $batch = '2023-11-19 to 2023-12-18'; // TESTING
+    public $batch;
 
     public $isProcessing = false;
 
@@ -26,12 +26,13 @@ class Discounts extends Component
 
     public function mount()
     {
-        // $this->disableDateLimit = substr(Discount::latest()->first()->batch, -10);
+        $this->disableDateLimit = substr(Discount::latest()->first()->batch, -10);
     }
 
     public function render()
     {
-        $employeeDiscounts = $this->getEmployeeDiscounts();
+        // $employeeDiscounts = $this->getEmployeeDiscounts();
+        $employeeDiscounts = null;
 
         return view('livewire.human-resource.discounts', ['employeeDiscounts' => $employeeDiscounts]);
     }
