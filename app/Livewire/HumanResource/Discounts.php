@@ -26,7 +26,7 @@ class Discounts extends Component
 
     public function mount()
     {
-        // $this->disableDateLimit = substr(Discount::latest()->first()->batch, -10);
+        $this->disableDateLimit = substr(Discount::latest()->first()->batch, -10);
     }
 
     public function render()

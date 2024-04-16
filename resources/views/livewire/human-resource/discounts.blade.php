@@ -231,7 +231,9 @@
                     @if (session()->has('success'))
                       <div class="nav-item mx-3 text-success">
                           {{ session('success') }}
-                          <br>
+                          <br><br>
+                          ⚠️ Make sure that all Employees Leaves are Checked Successfully ⚠️
+                          <br><br>
                           Get into the <a href="{{ route('statistics') }}">statistics</a> for a deep dive into the juicy details!
                       </div>
                     @endif
