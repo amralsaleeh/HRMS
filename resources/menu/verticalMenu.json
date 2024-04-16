@@ -5,17 +5,17 @@
       "name": "Dashboard",
       "icon": "menu-icon tf-icons ti ti-dashboard",
       "slug": "dashboard",
-      "role": ""
+      "role": ["Assets", "HR"]
     },
     {
       "menuHeader": "Human resource",
-      "role": ""
+      "role": ["Assets", "HR"]
     },
     {
       "name": "Attendance",
       "icon": "menu-icon tf-icons ti ti-door-exit",
       "slug": "attendance",
-      "role": "",
+      "role": ["HR"],
       "submenu": [
         {
           "url": "attendance/fingerprints",
@@ -33,7 +33,7 @@
       "name": "Structure",
       "icon": "menu-icon tf-icons ti ti-hierarchy",
       "slug": "structure",
-      "role": "",
+      "role": ["Assets", "HR"],
       "submenu": [
         {
           "url": "structure/centers",
@@ -62,34 +62,34 @@
       "name": "Messages",
       "icon": "menu-icon tf-icons ti ti-message-dots",
       "slug": "messages",
-      "role": ""
+      "role": ["HR"]
     },
     {
       "url": "/discounts",
       "name": "Discounts",
       "icon": "menu-icon tf-icons ti ti-coin",
       "slug": "discounts",
-      "role": ""
+      "role": ["HR"]
     },
     {
       "url": "/holidays",
       "name": "Holidays",
       "icon": "menu-icon tf-icons ti ti-christmas-tree",
       "slug": "holidays",
-      "role": ""
+      "role": ["HR"]
     },
     {
       "url": "/statistics",
       "name": "Statistics",
       "icon": "menu-icon tf-icons ti ti-device-desktop-analytics",
       "slug": "statistics",
-      "role": ""
+      "role": ["Assets", "HR"]
     },
     {
       "name": "Settings",
       "icon": "menu-icon tf-icons ti ti-adjustments-alt",
       "slug": "settings",
-      "role": "",
+      "role": ["Admin"],
       "submenu": [
         {
           "url": "settings/rules",
@@ -110,35 +110,35 @@
     },
     {
       "menuHeader": "Assets",
-      "role": ""
+      "role": ["Assets", "HR"]
     },
     {
       "url": "/products",
       "name": "Products",
       "icon": "menu-icon tf-icons ti ti-barcode",
       "slug": "products",
-      "role": ""
+      "role": ["Assets"]
     },
     {
       "url": "/categories",
       "name": "Categories",
       "icon": "menu-icon tf-icons ti ti-category",
       "slug": "categories",
-      "role": ""
+      "role": ["Assets"]
     },
     {
       "url": "/transfers",
       "name": "Transfers",
       "icon": "menu-icon tf-icons ti ti-arrow-guide",
       "slug": "transfers",
-      "role": ""
+      "role": ["Assets"]
     },
     {
       "url": "/reports",
       "name": "Reports",
       "icon": "menu-icon tf-icons ti ti-file-analytics",
       "slug": "reports",
-      "role": ""
+      "role": ["Assets", "HR"]
     }
   ]
 }
