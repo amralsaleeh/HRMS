@@ -32,36 +32,54 @@ Route::get('/', [HomePage::class, 'index']);
 Route::get('lang/{locale}', [LanguageController::class, 'swap']);
 
 Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified'])->group(function () {
-    Route::get('/dashboard', Dashboard::class)->name('dashboard');
-
-    Route::prefix('attendance')->group(function () {
-        Route::get('/fingerprints', Fingerprints::class)->name('attendance-fingerprints');
-        Route::get('/leaves', Leaves::class)->name('attendance-leaves');
+    // 👉 Dashboard
+    Route::group(['middleware' => ['role:Admin|Assets|HR']], function () {
+        Route::get('/dashboard', Dashboard::class)->name('dashboard');
     });
 
-    Route::prefix('structure')->group(function () {
-        Route::get('/centers', Centers::class)->name('structure-centers');
-        Route::get('/departments', Departments::class)->name('structure-departments');
-        Route::get('/positions', Positions::class)->name('structure-positions');
-        Route::get('/employees', Employees::class)->name('structure-employees');
-        Route::get('/employee/{id?}', EmployeeInfo::class)->name('structure-employees-info');
+    // 👉 Human Resource
+    Route::group(['middleware' => ['role:Admin|HR']], function () {
+        Route::prefix('attendance')->group(function () {
+            Route::get('/fingerprints', Fingerprints::class)->name('attendance-fingerprints');
+            Route::get('/leaves', Leaves::class)->name('attendance-leaves');
+        });
     });
 
-    Route::get('/messages', Messages::class)->name('messages');
-    Route::get('/discounts', Discounts::class)->name('discounts');
-    Route::get('/holidays', Holidays::class)->name('holidays');
-    Route::get('/statistics', Statistics::class)->name('statistics');
-
-    Route::prefix('settings')->group(function () {
-        Route::get('/rules', ComingSoon::class)->name('settings-rules');
-        Route::get('/roles&permissions', ComingSoon::class)->name('settings-roles&permissions');
-        Route::get('/users', ComingSoon::class)->name('settings-users');
+    Route::group(['middleware' => ['role:Admin|Assets|HR']], function () {
+        Route::prefix('structure')->group(function () {
+            Route::get('/centers', Centers::class)->name('structure-centers');
+            Route::get('/departments', Departments::class)->name('structure-departments');
+            Route::get('/positions', Positions::class)->name('structure-positions');
+            Route::get('/employees', Employees::class)->name('structure-employees');
+            Route::get('/employee/{id?}', EmployeeInfo::class)->name('structure-employees-info');
+        });
     });
 
-    Route::get('/roles', ComingSoon::class)->name('roles');
+    Route::group(['middleware' => ['role:Admin|HR']], function () {
+        Route::get('/messages', Messages::class)->name('messages');
+        Route::get('/discounts', Discounts::class)->name('discounts');
+        Route::get('/holidays', Holidays::class)->name('holidays');
+    });
 
-    Route::get('/products', ComingSoon::class)->name('products');
-    Route::get('/categories', ComingSoon::class)->name('categories');
-    Route::get('/transfers', ComingSoon::class)->name('transfers');
-    Route::get('/reports', ComingSoon::class)->name('reports');
+    Route::group(['middleware' => ['role:Admin|Assets|HR']], function () {
+        Route::get('/statistics', Statistics::class)->name('statistics');
+    });
+
+    Route::group(['middleware' => ['role:Admin']], function () {
+        Route::prefix('settings')->group(function () {
+            Route::get('/rules', ComingSoon::class)->name('settings-rules');
+            Route::get('/roles&permissions', ComingSoon::class)->name('settings-roles&permissions');
+            Route::get('/users', ComingSoon::class)->name('settings-users');
+        });
+    });
+
+    // 👉 Assets
+    Route::group(['middleware' => ['role:Admin|Assets']], function () {
+        Route::get('/products', ComingSoon::class)->name('products');
+        Route::get('/categories', ComingSoon::class)->name('categories');
+        Route::get('/transfers', ComingSoon::class)->name('transfers');
+    });
+    Route::group(['middleware' => ['role:Admin|Assets|HR']], function () {
+        Route::get('/reports', ComingSoon::class)->name('reports');
+    });
 });
