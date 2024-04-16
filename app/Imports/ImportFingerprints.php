@@ -2,6 +2,7 @@
 
 namespace App\Imports;
 
+use App\Models\Employee;
 use App\Models\Fingerprint;
 use App\Models\Import;
 use App\Models\User;
@@ -90,13 +91,17 @@ class ImportFingerprints implements ShouldQueue, ToModel, WithChunkReading, With
             $check_out = substr($log, -5);
         }
 
-        Fingerprint::firstOrCreate([
-            'employee_id' => $employee_id,
-            'date' => $date,
-            'log' => $log,
-            'check_in' => $check_in,
-            'check_out' => $check_out,
-        ]);
+        if (Employee::find($employee_id)->where('is_active', 1)) {
+            Fingerprint::firstOrCreate([
+                'employee_id' => $employee_id,
+                'date' => $date,
+                'log' => $log,
+                'check_in' => $check_in,
+                'check_out' => $check_out,
+            ]);
+        } else {
+            Log::alert('Employee not find in the records: '.$employee_id);
+        }
 
         $importRow = Import::find($this->file_id);
         $importRow->update([

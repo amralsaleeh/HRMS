@@ -32,7 +32,7 @@ class Leaves extends Component
 
     public $selectedEmployeeId = 1;
 
-    public $dateRange = '2023-10-01 to 2023-12-01';
+    public $dateRange;
 
     public $fromDate;
 
@@ -89,10 +89,12 @@ class Leaves extends Component
         $this->selectedLeave = Leave::find($this->selectedLeaveId);
 
         // Date range
-        $dates = explode(' to ', $this->dateRange);
+        if ($this->dateRange) {
+            $dates = explode(' to ', $this->dateRange);
 
-        $this->fromDate = $dates[0];
-        $this->toDate = $dates[1];
+            $this->fromDate = $dates[0];
+            $this->toDate = $dates[1];
+        }
 
         // Return filtered leaves
         return Employee::find($this->selectedEmployeeId)
@@ -118,7 +120,7 @@ class Leaves extends Component
             Excel::import(new ImportLeaves(), $this->file);
 
             Notification::send(Auth::user(), new DefaultNotification(
-                $this->user_id, 'Successfully imported the leaves file'
+                Auth::user()->id, 'Successfully imported the leaves file'
             ));
             $this->dispatch('refreshNotifications')->to(Navbar::class);
 

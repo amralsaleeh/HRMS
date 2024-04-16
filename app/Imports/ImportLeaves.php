@@ -29,15 +29,16 @@ class ImportLeaves implements ToModel, WithStartRow
         if (! Employee::CheckLeave($employee_id, $leave_id, $from_date, $to_date, $start_at, $end_at)->exists()) {
 
             $employee = Employee::find($employee_id);
-
-            $employee->leaves()->attach($leave_id, [
-                'from_date' => $from_date,
-                'to_date' => $to_date,
-                'start_at' => $start_at,
-                'end_at' => $end_at,
-                'created_by' => Auth::user()->name,
-                'updated_by' => Auth::user()->name,
-            ]);
+            if ($employee) {
+                $employee->leaves()->attach($leave_id, [
+                    'from_date' => $from_date,
+                    'to_date' => $to_date,
+                    'start_at' => $start_at,
+                    'end_at' => $end_at,
+                    'created_by' => Auth::user()->name,
+                    'updated_by' => Auth::user()->name,
+                ]);
+            }
 
             return null;
         } else {

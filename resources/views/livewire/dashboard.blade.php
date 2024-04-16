@@ -29,7 +29,7 @@
             <div class="card-body text-nowrap">
               <h5 class="card-title mb-0">Welcome, {{ Auth::user()->name }}! 👋</h5>
               <p class="mb-2">Start your day with a smile</p>
-              <h5 class="text-primary mb-1">{{ now()->format('Y/m/d - H:i') }}</h5>
+              <h5 class="text-primary mt-2 mb-2">{{ now()->format('Y/m/d - H:i') }}</h5>
               <div class="btn-group dropend">
                 <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="ti ti-menu-2 ti-xs me-1"></i> Add New</button>
                 <ul class="dropdown-menu">
@@ -56,45 +56,45 @@
       <div class="card h-100">
         <div class="card-header">
           <div class="d-flex justify-content-between mb-3">
-            <h5 class="card-title mb-0">Statistics</h5>
-            <small class="text-muted">Updated 1 month ago</small>
+            <h5 class="card-title mb-0">SMS Statistics</h5>
+            <small class="text-muted">{{ $accountBalance['status'] == 200 ? 'Updated recently' : 'Error, Update unavailable' }}</small>
           </div>
         </div>
         <div class="card-body">
           <div class="row gy-3">
             <div class="col-md-3 col-6">
               <div class="d-flex align-items-center">
-                <div class="badge rounded-pill bg-label-primary me-3 p-2"><i class="ti ti-users ti-sm"></i></div>
+                <div class="badge rounded-pill bg-label-primary me-3 p-2"><i class="ti ti-activity ti-sm"></i></div>
                 <div class="card-info">
-                  <h5 class="mb-0">230k</h5>
-                  <small>Employees</small>
+                  <h5 class="mb-0">{{ $accountBalance['is_active'] }}</h5>
+                  <small>Status</small>
                 </div>
               </div>
             </div>
             <div class="col-md-3 col-6">
               <div class="d-flex align-items-center">
-                <div class="badge rounded-pill bg-label-info me-3 p-2"><i class="ti ti-users ti-sm"></i></div>
+                <div class="badge rounded-pill bg-label-info me-3 p-2"><i class="ti ti-calculator ti-sm"></i></div>
                 <div class="card-info">
-                  <h5 class="mb-0">8.549k</h5>
-                  <small>Customers</small>
+                  <h5 class="mb-0">{{ $accountBalance['balance'] }}</h5>
+                  <small>Balance</small>
                 </div>
               </div>
             </div>
             <div class="col-md-3 col-6">
               <div class="d-flex align-items-center">
-                <div class="badge rounded-pill bg-label-danger me-3 p-2"><i class="ti ti-shopping-cart ti-sm"></i></div>
+                <div class="badge rounded-pill bg-label-success me-3 p-2"><i class="ti ti-speakerphone ti-sm"></i></div>
                 <div class="card-info">
-                  <h5 class="mb-0">1.423k</h5>
-                  <small>Products</small>
+                  <h5 class="mb-0">{{ $messagesStatus['sent'] }}</h5>
+                  <small>Successful</small>
                 </div>
               </div>
             </div>
             <div class="col-md-3 col-6">
               <div class="d-flex align-items-center">
-                <div class="badge rounded-pill bg-label-success me-3 p-2"><i class="ti ti-currency-dollar ti-sm"></i></div>
+                <div wire:click='sendPendingMessages' class="badge rounded-pill bg-label-danger me-3 p-2" style="cursor: pointer"><i class="ti ti-send ti-sm"></i></div>
                 <div class="card-info">
-                  <h5 class="mb-0">$9745</h5>
-                  <small>Revenue</small>
+                  <h5 class="mb-0">{{ $messagesStatus['unsent'] }}</h5>
+                  <small>Pending</small>
                 </div>
               </div>
             </div>
@@ -103,7 +103,7 @@
       </div>
     </div>
 
-    <div class="col-xl-4 col-12">
+    {{-- <div class="col-xl-4 col-12">
       <div class="row">
         <div class="col-xl-6 mb-4 col-md-3 col-6">
           <div class="card">
@@ -211,7 +211,22 @@
           </div>
         </div>
       </div>
+    </div> --}}
+
+    <div class="col">
+    <div class="card">
+      <h5 class="card-header">Changelogs</h5>
+      <div class="card-body">
+        @foreach ($changelogs as $changelog)
+          <small all class="text-light fw-semibold">{{ $changelog->version }}</small>
+          <dl class="row mt-2">
+            <dt class="col-sm-3">{{ $changelog->title }}</dt>
+            <dd class="col-sm-9">{{ $changelog->description }}</dd>
+          </dl>
+        @endforeach
+      </div>
     </div>
+  </div>
   </div>
 
   @push('custom-scripts')

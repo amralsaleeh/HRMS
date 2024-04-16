@@ -77,7 +77,7 @@ class calculateDiscountsAsDays implements ShouldQueue
 
             foreach ($centerEmployees as $employee) {
                 $employeeContract = $employee->contract()->first();
-                $employeeLeaves = $employee->leaves()->where('to_date', '>=', $fromDate)->where('is_checked', 0)->get();
+                $employeeLeaves = $employee->leaves()->where('to_date', '>=', $fromDate)->where('is_checked', 0)->orderBy('from_date', 'asc')->get();
                 $employeeFingerprints = $this->getEmployeeFingerprints($workDays, $employee);
 
                 $employeeTotalWorkDaysInMinutes = intval($workDaysInMinutes * ($employeeContract->work_rate / 100));
@@ -155,10 +155,10 @@ class calculateDiscountsAsDays implements ShouldQueue
                                         $this->setFingerprintIsChecked($employeeFingerprints, Carbon::parse($leave->pivot->from_date), 'Administrative leave - Rounded');
                                     }
                                 }
-                                $leave->pivot->is_checked = 1;
-                                $leave->pivot->save();
                             }
                         }
+                        $leave->pivot->is_checked = 1;
+                        $leave->pivot->save();
                     }
 
                     // مهمة - يومية
@@ -260,7 +260,7 @@ class calculateDiscountsAsDays implements ShouldQueue
             return $carbonObject->format('Y-m-d');
         }, $workDays);
 
-        return $employee->fingerprints()->whereIn('date', $workDates)->where('is_checked', 0)->get();
+        return $employee->fingerprints()->whereIn('date', $workDates)->where('is_checked', 0)->orderBy('date', 'asc')->get();
     }
 
     public function decrementMaxLeaveAllowed($employee, $date, $reason)
@@ -447,6 +447,11 @@ class calculateDiscountsAsDays implements ShouldQueue
             if ($fingerprint->date >= $leave->pivot->from_date && $fingerprint->date <= $leave->pivot->to_date && $leave->pivot->is_checked == 0 && substr($leave->id, 1, 1) == 1) {
                 $fingerprint->excuse = $leave->name;
                 $fingerprint->save();
+
+                if (($leave->pivot->from_date === $leave->pivot->to_date) || ($fingerprint->date >= $leave->pivot->to_date)) {
+                    $leave->pivot->is_checked = 1;
+                    $leave->pivot->save();
+                }
 
                 return true;
             }
