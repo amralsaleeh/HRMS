@@ -29,16 +29,16 @@
             <div class="card-body text-nowrap">
               <h5 class="card-title mb-0">Welcome, {{ Auth::user()->name }}! 👋</h5>
               <p class="mb-2">Start your day with a smile</p>
-              <h5 class="text-primary mt-2 mb-2">{{ now()->format('Y/m/d - H:i') }}</h5>
+              <h5 wire:poll.60s class="text-primary mt-3 mb-2">{{ now()->format('Y/m/d - H:i') }}</h5>
               <div class="btn-group dropend">
                 <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="ti ti-menu-2 ti-xs me-1"></i> Add New</button>
                 <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" href="javascript:void(0);"><i class="ti ti-menu-2 ti-xs me-1"></i> Employee</a></li>
+                  <li><a class="dropdown-item" href="{{ route('structure-employees') }}"><i class="ti ti-menu-2 ti-xs me-1"></i> Employee</a></li>
                   <li>
                     <hr class="dropdown-divider">
                   </li>
-                  <li><a class="dropdown-item" href="javascript:void(0);"><i class="ti ti-menu-2 ti-xs me-1"></i> Fingerprint</a></li>
-                  <li><a class="dropdown-item" href="javascript:void(0);"><i class="ti ti-menu-2 ti-xs me-1"></i> Leave</a></li>
+                  <li><a class="dropdown-item" href="{{ route('attendance-fingerprints') }}"><i class="ti ti-menu-2 ti-xs me-1"></i> Fingerprint</a></li>
+                  <li><a class="dropdown-item" href="{{ route('attendance-leaves') }}"><i class="ti ti-menu-2 ti-xs me-1"></i> Leave</a></li>
                 </ul>
               </div>
             </div>

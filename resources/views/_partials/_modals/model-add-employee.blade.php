@@ -9,7 +9,7 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         <div class="text-center mb-4">
           <h3 class="mb-2"></h3>
-          <h3 class="mb-2">{{ $isEdit ? 'Update Employee' : 'New Employee' }}</h3>
+          {{-- <h3 class="mb-2">{{ $isEdit ? 'Update Employee' : 'New Employee' }}</h3> --}}
           <p class="text-muted">Please fill out the following information</p>
         </div>
         <form wire:submit="submitEmployee" class="row g-3">

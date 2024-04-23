@@ -7,7 +7,7 @@
 @section('title', 'Employees - Structure')
 
 <div class="demo-inline-spacing">
-  <button type="button" class="btn btn-primary">
+  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#employeeModal">
     <span class="ti-xs ti ti-plus me-1"></span>Add New Employee
   </button>
 </div>
@@ -84,4 +84,7 @@
   </div>
 
 </div>
+
+{{-- Modal --}}
+@include('_partials/_modals/model-add-employee')
 </div>
