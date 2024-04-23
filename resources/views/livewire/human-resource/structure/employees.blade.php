@@ -7,7 +7,7 @@
 @section('title', 'Employees - Structure')
 
 <div class="demo-inline-spacing">
-  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#employeeModal">
+  <button wire:click='showNewEmployeeModal' type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#employeeModal">
     <span class="ti-xs ti ti-plus me-1"></span>Add New Employee
   </button>
 </div>
@@ -51,7 +51,7 @@
             <div class="dropdown">
               <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown"><i class="ti ti-dots-vertical"></i></button>
               <div class="dropdown-menu">
-                <a class="dropdown-item" href="#"><i class="ti ti-pencil me-1"></i> Edit</a>
+                <a wire:click='showEditEmployeeModal({{ $employee }})' class="dropdown-item" data-bs-toggle="modal" data-bs-target="#employeeModal"><i class="ti ti-pencil me-1"></i> Edit</a>
                 <a class="dropdown-item" href="#"><i class="ti ti-trash me-1"></i> Delete</a>
               </div>
             </div>
