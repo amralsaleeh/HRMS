@@ -132,7 +132,7 @@ class calculateDiscountsAsDays implements ShouldQueue
                                 $duration = Carbon::parse($leave->pivot->start_at)->diff(Carbon::parse($leave->pivot->end_at));
                                 $durationInSeconds = Carbon::parse($leave->pivot->start_at)->diffInSeconds(Carbon::parse($leave->pivot->end_at));
 
-                                if ($durationInSeconds >= $this->absenceThreshold) {
+                                if ($durationInSeconds > $this->absenceThreshold) {
                                     if ($employee->max_leave_allowed > 0) {
                                         $this->decrementMaxLeaveAllowed($employee, $leave->pivot->from_date, 'Administrative leave - Exceeded the 3 hours limit');
                                     } else {
@@ -356,7 +356,7 @@ class calculateDiscountsAsDays implements ShouldQueue
                 $duration = Carbon::parse($fingerprint->check_out)->diff(Carbon::parse($center->end_work_hour));
                 $durationInSeconds = Carbon::parse($fingerprint->check_out)->diffInSeconds(Carbon::parse($center->end_work_hour));
 
-                if ($durationInSeconds >= $this->absenceThreshold) {
+                if ($durationInSeconds > $this->absenceThreshold) {
                     if ($employee->max_leave_allowed > 0) {
                         $this->decrementMaxLeaveAllowed($employee, $fingerprint->date, 'Administrative leave - Exceeded the 3 hours limit');
                     } else {
@@ -406,7 +406,7 @@ class calculateDiscountsAsDays implements ShouldQueue
                 $duration = Carbon::parse($center->start_work_hour)->diff(Carbon::parse($fingerprint->check_in));
                 $durationInSeconds = Carbon::parse($center->start_work_hour)->diffInSeconds(Carbon::parse($fingerprint->check_in));
 
-                if ($durationInSeconds >= $this->absenceThreshold) {
+                if ($durationInSeconds > $this->absenceThreshold) {
                     if ($employee->max_leave_allowed > 0) {
                         $this->decrementMaxLeaveAllowed($employee, $fingerprint->date, 'Administrative leave - Exceeded the 3 hours limit');
                     } else {
