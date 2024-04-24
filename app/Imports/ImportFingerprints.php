@@ -26,6 +26,8 @@ class ImportFingerprints implements ShouldQueue, ToModel, WithChunkReading, With
 
     private $import;
 
+    private $lastEmployeeId;
+
     public function __construct($user_id, int $file_id)
     {
         $this->user_id = $user_id;
@@ -91,7 +93,7 @@ class ImportFingerprints implements ShouldQueue, ToModel, WithChunkReading, With
             $check_out = substr($log, -5);
         }
 
-        if (Employee::find($employee_id)->where('is_active', 1)) {
+        if (Employee::where('is_active', 1)->find($employee_id)) {
             Fingerprint::firstOrCreate([
                 'employee_id' => $employee_id,
                 'date' => $date,
@@ -100,8 +102,12 @@ class ImportFingerprints implements ShouldQueue, ToModel, WithChunkReading, With
                 'check_out' => $check_out,
             ]);
         } else {
-            Log::alert('Employee not find in the records: '.$employee_id);
+            if ($this->lastEmployeeId != $row['ac_no']) {
+                Log::warning('Employee not find in the records: '.$employee_id);
+            }
         }
+
+        $this->lastEmployeeId = $row['ac_no'];
 
         $importRow = Import::find($this->file_id);
         $importRow->update([
