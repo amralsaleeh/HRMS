@@ -77,6 +77,7 @@ class calculateDiscountsAsDays implements ShouldQueue
 
             foreach ($centerEmployees as $employee) {
                 $employeeContract = $employee->contract()->first();
+                $employeeStartDate = $employee->timelines()->latest()->first()->start_date;
                 $employeeLeaves = $employee->leaves()->where('to_date', '>=', $fromDate)->where('is_checked', 0)->orderBy('from_date', 'asc')->get();
                 $employeeFingerprints = $this->getEmployeeFingerprints($workDays, $employee);
 
@@ -177,6 +178,12 @@ class calculateDiscountsAsDays implements ShouldQueue
 
                 $employeeFingerprints = $this->getEmployeeFingerprints($workDays, $employee);
                 foreach ($employeeFingerprints as $fingerprint) {
+                    if ($fingerprint->date < $employeeStartDate) {
+                        $this->setFingerprintIsChecked($employeeFingerprints, $date, 'Employee hasn\'t started working yet');
+
+                        continue;
+                    }
+
                     if ($fingerprint->log == null) {
                         // No fingerprint
                         if (! $this->isThereDailyExcuse($fingerprint, $employeeLeaves)) {
