@@ -13,7 +13,7 @@
     </tr>
     </thead>
     <tbody>
-    @foreach($employeeDiscounts as $employee)
+    @foreach($exportedDiscounts as $employee)
         <tr>
             <td bgcolor=green align=center style="border: 3px solid #CCC;">{{ $employee->id }}</td>
             <td bgcolor=green align=center style="border: 3px solid #CCC;">{{ $employee->full_name }}</td>

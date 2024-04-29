@@ -12,9 +12,9 @@ class ExportDiscounts implements FromView, ShouldAutoSize, WithEvents
 {
     public $data;
 
-    public function __construct($employeeDiscounts)
+    public function __construct($exportedDiscounts)
     {
-        $this->data = $employeeDiscounts;
+        $this->data = $exportedDiscounts;
     }
 
     public function registerEvents(): array
@@ -30,7 +30,7 @@ class ExportDiscounts implements FromView, ShouldAutoSize, WithEvents
     public function view(): View
     {
         return view('exports.discounts', [
-            'employeeDiscounts' => $this->data,
+            'exportedDiscounts' => $this->data,
         ]);
     }
 }
