@@ -2,13 +2,17 @@
 
 namespace App\Livewire\HumanResource;
 
+use App\Exports\ExportDiscounts;
 use App\Models\Discount;
 use App\Models\Employee;
 use Livewire\Component;
+use Maatwebsite\Excel\Facades\Excel;
 
 class Statistics extends Component
 {
     public $batches;
+
+    public $employeeDiscounts;
 
     public $selectedBatch;
 
@@ -27,7 +31,7 @@ class Statistics extends Component
 
     public function getEmployeeDiscounts()
     {
-        return Employee::whereHas('discounts', function ($query) {
+        $this->employeeDiscounts = Employee::whereHas('discounts', function ($query) {
             $query->where('batch', $this->selectedBatch);
         })->with(['discounts' => function ($query) {
             $query->where('batch', $this->selectedBatch);
@@ -37,5 +41,12 @@ class Statistics extends Component
                 return $discount->rate > 0;
             })->count();
         })->sortBy('first_name')->sortByDesc('cash_discounts_count');
+
+        return $this->employeeDiscounts;
+    }
+
+    public function exportDiscounts()
+    {
+        return Excel::download(new ExportDiscounts($this->employeeDiscounts), 'Discounts - '.$this->selectedBatch.'.xlsx');
     }
 }
