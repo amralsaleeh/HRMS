@@ -18,8 +18,8 @@
             <td bgcolor=green align=center style="border: 3px solid #CCC;">{{ $employee->id }}</td>
             <td bgcolor=green align=center style="border: 3px solid #CCC;">{{ $employee->full_name }}</td>
             <td bgcolor=green align=center style="border: 3px solid #CCC;">{{ $employee->contract->work_rate }}</td>
-            <td bgcolor=red align=center style="border: 3px solid #CCC;">{{ count($employee->discounts) }}</td>
-            <td bgcolor=red align=center style="border: 3px solid #CCC;">{{ $employee->cash_discounts_count }}</td>
+            <td bgcolor=gray align=center style="border: 3px solid #CCC;">{{ count($employee->discounts) }}</td>
+            <td @if ( $employee->cash_discounts_count != 0 ) bgcolor=red @else bgcolor=gray @endif align=center style="border: 3px solid #CCC;">{{ $employee->cash_discounts_count }}</td>
         </tr>
         @foreach($employee->discounts as $discount)
           <tr>
