@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\HomePage;
 use App\Http\Controllers\language\LanguageController;
+use App\Livewire\ContactUs;
 use App\Livewire\Dashboard;
 use App\Livewire\HumanResource\Attendance\Fingerprints;
 use App\Livewire\HumanResource\Attendance\Leaves;
@@ -83,3 +84,5 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
         Route::get('/reports', ComingSoon::class)->name('reports');
     });
 });
+
+Route::get('/contact-us', ContactUs::class)->name('contact-us');

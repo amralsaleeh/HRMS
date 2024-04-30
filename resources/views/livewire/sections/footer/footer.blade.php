@@ -8,7 +8,7 @@
             document.write(new Date().getFullYear())
 
           </script>
-          , made with ❤️ by <a href="http://namaa.sy/" target="_blank" class="fw-semibold">IT Department</a>
+          , made with ❤️ by <a href="{{ route('contact-us') }}" target="_blank" class="fw-semibold">IT Department</a>
         </div>
         <div>
           <a href="https://data.namaa.sy/" target="_blank" class="footer-link me-4">Data system</a>
