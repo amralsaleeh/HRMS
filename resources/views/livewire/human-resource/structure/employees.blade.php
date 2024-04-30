@@ -13,7 +13,12 @@
 </div>
 <br>
 <div class="card">
-  <h5 class="card-header">Employees</h5>
+  <div class="card-header d-flex justify-content-between">
+    <h5 class="card-title m-0 me-2">Employees</h5>
+    <div class="col-4">
+      <input wire:model.live="search_term" type="text" class="form-control" placeholder="Search (ID, Name...)">
+    </div>
+  </div>
   <div class="table-responsive text-nowrap">
     <table class="table">
       <thead>

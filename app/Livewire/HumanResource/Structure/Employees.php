@@ -15,6 +15,8 @@ class Employees extends Component
 
     public $employee;
 
+    public $search_term = null;
+
     public $isEdit = false;
 
     public $confirmedId;
@@ -56,7 +58,10 @@ class Employees extends Component
 
     public function render()
     {
-        $employees = Employee::paginate(20);
+        $employees = Employee::where('id', 'like', '%'.$this->search_term.'%')
+            ->orWhere('first_name', 'like', '%'.$this->search_term.'%')
+            ->orWhere('last_name', 'like', '%'.$this->search_term.'%')
+            ->paginate(20);
 
         return view('livewire.human-resource.structure.employees', [
             'employees' => $employees, ]
