@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\HomePage;
 use App\Http\Controllers\language\LanguageController;
+use App\Livewire\Assets\Products;
 use App\Livewire\ContactUs;
 use App\Livewire\Dashboard;
 use App\Livewire\HumanResource\Attendance\Fingerprints;
@@ -76,7 +77,7 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
 
     // 👉 Assets
     Route::group(['middleware' => ['role:Admin|Assets']], function () {
-        Route::get('/products', ComingSoon::class)->name('products');
+        Route::get('/products', Products::class)->name('products');
         Route::get('/categories', ComingSoon::class)->name('categories');
         Route::get('/transfers', ComingSoon::class)->name('transfers');
     });
