@@ -46,7 +46,7 @@
     <div class="col-4">
       <div style="text-align: center">
         <h5 class="card-title">Sewar Khalil</h5>
-        <h6 class="card-subtitle text-muted">Data Analysiser</h6>
+        <h6 class="card-subtitle text-muted">Data Analyst</h6>
         <br>
       </div>
       <div class="badge-base LI-profile-badge" data-locale="en_US" data-size="large" data-theme="light" data-type="HORIZONTAL" data-vanity="sewar-khalil" data-version="v1">
