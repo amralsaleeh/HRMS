@@ -12,7 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('products', function (Blueprint $table) {
-            $table->id();
+            $table->string('id');
+            $table->primary('id');
             $table->string('old_id');
             $table->string('serial_number')->nullable();
             $table->enum('status', ['Good', 'Fine', 'Bad', 'Damaged']);
