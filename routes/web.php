@@ -2,7 +2,8 @@
 
 use App\Http\Controllers\HomePage;
 use App\Http\Controllers\language\LanguageController;
-use App\Livewire\Assets\Products;
+use App\Livewire\AM\AM;
+use App\Livewire\Assets\Assets;
 use App\Livewire\ContactUs;
 use App\Livewire\Dashboard;
 use App\Livewire\HumanResource\Attendance\Fingerprints;
@@ -35,7 +36,7 @@ Route::get('lang/{locale}', [LanguageController::class, 'swap']);
 
 Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified'])->group(function () {
     // 👉 Dashboard
-    Route::group(['middleware' => ['role:Admin|Assets|HR']], function () {
+    Route::group(['middleware' => ['role:Admin|AM|HR']], function () {
         Route::get('/dashboard', Dashboard::class)->name('dashboard');
     });
 
@@ -47,7 +48,7 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
         });
     });
 
-    Route::group(['middleware' => ['role:Admin|Assets|HR']], function () {
+    Route::group(['middleware' => ['role:Admin|AM|HR']], function () {
         Route::prefix('structure')->group(function () {
             Route::get('/centers', Centers::class)->name('structure-centers');
             Route::get('/departments', Departments::class)->name('structure-departments');
@@ -63,7 +64,7 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
         Route::get('/holidays', Holidays::class)->name('holidays');
     });
 
-    Route::group(['middleware' => ['role:Admin|Assets|HR']], function () {
+    Route::group(['middleware' => ['role:Admin|AM|HR']], function () {
         Route::get('/statistics', Statistics::class)->name('statistics');
     });
 
@@ -75,14 +76,14 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
         });
     });
 
-    // 👉 Assets
-    Route::group(['middleware' => ['role:Admin|Assets']], function () {
-        Route::get('/products', Products::class)->name('products');
-        Route::get('/categories', ComingSoon::class)->name('categories');
-        Route::get('/transfers', ComingSoon::class)->name('transfers');
+    // 👉 AM
+    Route::group(['middleware' => ['role:Admin|AM']], function () {
+        Route::get('/assets/inventory', Assets::class)->name('inventory');
+        Route::get('/assets/categories', ComingSoon::class)->name('categories');
+        Route::get('/assets/transfers', ComingSoon::class)->name('transfers');
     });
-    Route::group(['middleware' => ['role:Admin|Assets|HR']], function () {
-        Route::get('/reports', ComingSoon::class)->name('reports');
+    Route::group(['middleware' => ['role:Admin|AM|HR']], function () {
+        Route::get('/assets/reports', ComingSoon::class)->name('reports');
     });
 });
 

@@ -5,11 +5,11 @@
       "name": "Dashboard",
       "icon": "menu-icon tf-icons ti ti-dashboard",
       "slug": "dashboard",
-      "role": ["Assets", "HR"]
+      "role": ["AM", "HR"]
     },
     {
       "menuHeader": "Human resource",
-      "role": ["Assets", "HR"]
+      "role": ["AM", "HR"]
     },
     {
       "name": "Attendance",
@@ -33,7 +33,7 @@
       "name": "Structure",
       "icon": "menu-icon tf-icons ti ti-hierarchy",
       "slug": "structure",
-      "role": ["Assets", "HR"],
+      "role": ["AM", "HR"],
       "submenu": [
         {
           "url": "structure/centers",
@@ -83,7 +83,7 @@
       "name": "Statistics",
       "icon": "menu-icon tf-icons ti ti-device-desktop-analytics",
       "slug": "statistics",
-      "role": ["Assets", "HR"]
+      "role": ["AM", "HR"]
     },
     {
       "name": "Settings",
@@ -110,35 +110,35 @@
     },
     {
       "menuHeader": "Assets",
-      "role": ["Assets", "HR"]
+      "role": ["AM", "HR"]
     },
     {
-      "url": "/products",
-      "name": "Products",
+      "url": "/assets/inventory",
+      "name": "Inventory",
       "icon": "menu-icon tf-icons ti ti-barcode",
       "slug": "products",
-      "role": ["Assets"]
+      "role": ["AM"]
     },
     {
-      "url": "/categories",
+      "url": "/assets/categories",
       "name": "Categories",
       "icon": "menu-icon tf-icons ti ti-category",
       "slug": "categories",
-      "role": ["Assets"]
+      "role": ["AM"]
     },
     {
-      "url": "/transfers",
+      "url": "/assets/transfers",
       "name": "Transfers",
       "icon": "menu-icon tf-icons ti ti-arrow-guide",
       "slug": "transfers",
-      "role": ["Assets"]
+      "role": ["AM"]
     },
     {
-      "url": "/reports",
+      "url": "/assets/reports",
       "name": "Reports",
       "icon": "menu-icon tf-icons ti ti-file-analytics",
       "slug": "reports",
-      "role": ["Assets", "HR"]
+      "role": ["AM", "HR"]
     }
   ]
 }
