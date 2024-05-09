@@ -67,7 +67,7 @@ class calculateDiscountsAsDays implements ShouldQueue
             ]);
 
             $startOfWork = carbon::parse($center->start_work_hour)->addMinutes(5)->format('H:i'); // TODO: Make 5 inserted variable on settings table
-            $delayThreshold = carbon::parse($center->start_work_hour)->addMinutes(30)->format('H:i'); // TODO: Make 30 inserted variable on settings table
+            $delayThreshold = carbon::parse($center->start_work_hour)->addMinutes(29)->format('H:i'); // TODO: Make 29 inserted variable on settings table
             $endOfWork = carbon::parse($center->end_work_hour)->subMinutes(5)->format('H:i'); // TODO: Make 5 inserted variable on settings table
 
             $workDays = $this->calculateWorkDays($center, $fromDate, $toDate);
@@ -78,6 +78,7 @@ class calculateDiscountsAsDays implements ShouldQueue
             foreach ($centerEmployees as $employee) {
                 $employeeContract = $employee->contract()->first();
                 $employeeStartDate = $employee->timelines()->latest()->first()->start_date;
+                $employeeEndDate = $employee->timelines()->latest()->first()->end_date;
                 $employeeLeaves = $employee->leaves()->where('to_date', '>=', $fromDate)->where('is_checked', 0)->orderBy('from_date', 'asc')->get();
                 $employeeFingerprints = $this->getEmployeeFingerprints($workDays, $employee);
 
@@ -183,6 +184,11 @@ class calculateDiscountsAsDays implements ShouldQueue
 
                         continue;
                     }
+                    if ($fingerprint->date > $employeeEndDate) {
+                        $this->setFingerprintIsChecked($employeeFingerprints, $date, 'Employee resigned on '.$employeeEndDate);
+
+                        continue;
+                    }
 
                     if ($fingerprint->log == null) {
                         // No fingerprint
@@ -257,7 +263,7 @@ class calculateDiscountsAsDays implements ShouldQueue
     {
         return Employee::whereHas('timelines', function ($query) use ($centerId) {
             $query->where('center_id', $centerId)
-                ->whereNull('end_date');
+                /* ->whereNull('end_date') */;
         })->where('is_active', true)->get();
     }
 
