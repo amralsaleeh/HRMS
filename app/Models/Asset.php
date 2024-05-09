@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Product extends Model
+class Asset extends Model
 {
     use CreatedUpdatedDeletedBy, HasFactory, SoftDeletes;
 
@@ -24,5 +24,9 @@ class Product extends Model
         'acquisition_type',
         'funded_by',
         'note',
+    ];
+
+    protected $casts = [
+        'id' => 'string',
     ];
 }
