@@ -79,7 +79,7 @@ class calculateDiscountsAsDays implements ShouldQueue
                 $employeeContract = $employee->contract()->first();
                 $employeeStartDate = $employee->timelines()->latest()->first()->start_date;
                 $employeeEndDate = $employee->timelines()->latest()->first()->end_date;
-                $employeeLeaves = $employee->leaves()->where('to_date', '>=', $fromDate)->where('is_checked', 0)->orderBy('from_date', 'asc')->get();
+                $employeeLeaves = $employee->leaves()->where('to_date', '<=', $toDate)->where('is_checked', 0)->orderBy('from_date', 'asc')->get();
                 $employeeFingerprints = $this->getEmployeeFingerprints($workDays, $employee);
 
                 $employeeTotalWorkDaysInMinutes = intval($workDaysInMinutes * ($employeeContract->work_rate / 100));
