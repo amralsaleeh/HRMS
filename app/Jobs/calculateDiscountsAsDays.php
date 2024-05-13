@@ -77,8 +77,7 @@ class calculateDiscountsAsDays implements ShouldQueue
 
             foreach ($centerEmployees as $employee) {
                 $employeeContract = $employee->contract()->first();
-                $employeeStartDate = $employee->timelines()->latest()->first()->start_date;
-                $employeeEndDate = $employee->timelines()->latest()->first()->end_date;
+                [$employeeStartDate, $employeeEndDate] = $this->calculateTimelineHistory($employee);
                 $employeeLeaves = $employee->leaves()->where('to_date', '<=', $toDate)->where('is_checked', 0)->orderBy('from_date', 'asc')->get();
                 $employeeFingerprints = $this->getEmployeeFingerprints($workDays, $employee);
 
@@ -180,12 +179,12 @@ class calculateDiscountsAsDays implements ShouldQueue
                 $employeeFingerprints = $this->getEmployeeFingerprints($workDays, $employee);
                 foreach ($employeeFingerprints as $fingerprint) {
                     if ($fingerprint->date < $employeeStartDate) {
-                        $this->setFingerprintIsChecked($employeeFingerprints, $date, 'Employee hasn\'t started working yet');
+                        $fingerprint->update(['excuse' => 'Employee hasn\'t started working yet', 'is_checked' => 1]);
 
                         continue;
                     }
-                    if ($fingerprint->date > $employeeEndDate) {
-                        $this->setFingerprintIsChecked($employeeFingerprints, $date, 'Employee resigned on '.$employeeEndDate);
+                    if ($employeeEndDate != null && $fingerprint->date > $employeeEndDate) {
+                        $fingerprint->update(['excuse' => 'Employee resigned on '.$employeeEndDate, 'is_checked' => 1]);
 
                         continue;
                     }
@@ -265,6 +264,22 @@ class calculateDiscountsAsDays implements ShouldQueue
             $query->where('center_id', $centerId)
                 /* ->whereNull('end_date') */;
         })->where('is_active', true)->get();
+    }
+
+    public function calculateTimelineHistory($employee)
+    {
+        $timelines = $employee->timelines()->get();
+        $timelinesCount = count($timelines);
+
+        if ($timelinesCount === 1) {
+            $startDate = $timelines[0]->start_date;
+            $endDate = $timelines[0]->end_date;
+        } else {
+            $startDate = $timelines[0]->start_date;
+            $endDate = $timelines[$timelinesCount - 1]->end_date;
+        }
+
+        return [$startDate, $endDate];
     }
 
     public function getEmployeeFingerprints($workDays, $employee)
