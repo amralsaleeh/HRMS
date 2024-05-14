@@ -1,3 +1,11 @@
+<div>
+
+@php
+  $configData = Helper::appClasses();
+@endphp
+
+@section('title', 'Inventory - Assets')
+
 <div class="card">
   <div class="card-header d-flex justify-content-between">
     <h5 class="card-title m-0 me-2">Assets</h5>
@@ -58,5 +66,8 @@
   <div class="row mt-4">
     {{ $assets->links() }}
   </div>
+</div>
 
+{{-- Modal --}}
+{{-- @include('_partials/_modals/model-add-employee') --}}
 </div>
