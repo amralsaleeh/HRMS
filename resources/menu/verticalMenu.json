@@ -127,13 +127,6 @@
       "role": ["AM"]
     },
     {
-      "url": "/assets/transfers",
-      "name": "Transfers",
-      "icon": "menu-icon tf-icons ti ti-arrow-guide",
-      "slug": "transfers",
-      "role": ["AM"]
-    },
-    {
       "url": "/assets/reports",
       "name": "Reports",
       "icon": "menu-icon tf-icons ti ti-file-analytics",

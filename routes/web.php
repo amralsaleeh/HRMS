@@ -3,6 +3,7 @@
 use App\Http\Controllers\HomePage;
 use App\Http\Controllers\language\LanguageController;
 use App\Livewire\AM\AM;
+use App\Livewire\Assets\Categories;
 use App\Livewire\Assets\Inventory;
 use App\Livewire\ContactUs;
 use App\Livewire\Dashboard;
@@ -79,8 +80,8 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
     // 👉 AM
     Route::group(['middleware' => ['role:Admin|AM']], function () {
         Route::get('/assets/inventory', Inventory::class)->name('inventory');
-        Route::get('/assets/categories', ComingSoon::class)->name('categories');
-        Route::get('/assets/transfers', ComingSoon::class)->name('transfers');
+        Route::get('/assets/categories', Categories::class)->name('categories');
+        // Route::get('/assets/transfers', ComingSoon::class)->name('transfers');
     });
     Route::group(['middleware' => ['role:Admin|AM|HR']], function () {
         Route::get('/assets/reports', ComingSoon::class)->name('reports');
