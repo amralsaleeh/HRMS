@@ -4,7 +4,7 @@
   $configData = Helper::appClasses();
 @endphp
 
-@section('title', 'HERE')
+@section('title', 'Categories')
 
 @section('vendor-style')
 
@@ -29,7 +29,7 @@
     <div class="card">
       <div class="card-header d-flex justify-content-between">
         <h5 class="card-title m-0 me-2">Categories</h5>
-        <div class="col-4">
+        <div class="col-6">
           <input wire:model.live="search_term_categories" type="text" class="form-control" placeholder="Search (ID, Category...)">
         </div>
       </div>
@@ -89,8 +89,8 @@
     <div class="card">
       <div class="card-header d-flex justify-content-between">
         <h5 class="card-title m-0 me-2">Sub-Categories</h5>
-        <div class="col-4">
-          <input wire:model.live="search_term_sub_categories" type="text" class="form-control" placeholder="Search (ID, Category...)">
+        <div class="col-6">
+          <input wire:model.live="search_term_sub_categories" type="text" class="form-control" placeholder="Search (ID, Sub-Category...)">
         </div>
       </div>
       <div class="table-responsive text-nowrap">

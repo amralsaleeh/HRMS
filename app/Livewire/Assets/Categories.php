@@ -19,11 +19,11 @@ class Categories extends Component
     {
         $categories = Category::where('id', 'like', '%'.$this->search_term_categories.'%')
             ->orWhere('name', 'like', '%'.$this->search_term_categories.'%')
-            ->paginate(5);
+            ->paginate(6);
 
         $subCategories = SubCategory::where('id', 'like', '%'.$this->search_term_sub_categories.'%')
             ->orWhere('name', 'like', '%'.$this->search_term_sub_categories.'%')
-            ->paginate(5);
+            ->paginate(6);
 
         return view('livewire.assets.categories', [
             'categories' => $categories,
