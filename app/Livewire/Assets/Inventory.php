@@ -24,7 +24,8 @@ class Inventory extends Component
     {
         $assets = Asset::where('id', 'like', '%'.$this->search_term.'%')
             ->orWhere('old_id', 'like', '%'.$this->search_term.'%')
-            ->paginate(20);
+            ->orWhere('serial_number', 'like', '%'.$this->search_term.'%')
+            ->paginate(6);
 
         return view('livewire.assets.inventory', [
             'assets' => $assets, ]);

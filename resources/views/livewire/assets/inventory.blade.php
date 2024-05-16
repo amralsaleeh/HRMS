@@ -9,17 +9,28 @@
 <div class="card">
   <div class="card-header d-flex justify-content-between">
     <h5 class="card-title m-0 me-2">Assets</h5>
-    <div class="col-4">
-      <input wire:model.live="search_term" type="text" class="form-control" placeholder="Search (ID, Old ID...)">
+    <div class="dt-action-buttons text-xl-end text-lg-start text-md-end text-start d-flex align-items-center justify-content-end flex-md-row flex-column mb-3 mb-md-0 gap-2">
+      <div id="DataTables_Table_0_filter" class="dataTables_filter">
+        <label>
+          <input autofocus wire:model.live="search_term" type="text" class="form-control" placeholder="Search (ID, Old ID, Serial Number...)">
+        </label>
+      </div>
+      <div class="dt-buttons">
+        <button wire:click.prevent='showNewAssetModal' type="button" class="btn btn-primary"
+          data-bs-toggle="modal" data-bs-target="#assetModal">
+          <span class="ti-xs ti ti-plus me-1"></span>Add New Asset
+        </button>
+      </div>
     </div>
   </div>
   <div class="table-responsive text-nowrap">
     <table class="table table-hover">
       <thead>
         <tr>
-          <th>ID</th>
-          <th>Old ID</th>
-          <th>Serial Number</th>
+          <th class="col-1">ID</th>
+          <th class="col-1">Old ID</th>
+          <th class="col-1">Serial Number</th>
+          <th>Discripton</th>
           <th>Status</th>
           <th>Actions</th>
         </tr>
@@ -30,6 +41,7 @@
             <td><i class="ti ti-tag ti-sm text-danger me-3"></i> <strong>{{ $asset->id }}</strong></td>
             <td>{{ $asset->old_id }}</td>
             <td>{{ $asset->serial_number }}</td>
+            <td>{{ $asset->description }}</td>
             <td><span class="badge bg-label-{{ $colors[$asset->status] }} me-1">{{ $asset->status }}</span></td>
             <td>
               <div class="dropdown">
@@ -43,7 +55,7 @@
           </tr>
         @empty
           <tr>
-            <td colspan="5">
+            <td colspan="6">
               <div class="mt-2 mb-2" style="text-align: center">
                   <h3 class="mb-1 mx-2">Oopsie-doodle!</h3>
                   <p class="mb-4 mx-2">
@@ -66,7 +78,7 @@
   <div class="row mt-4">
     {{ $assets->links() }}
   </div>
-</div>
+</>
 
 {{-- Modal --}}
 {{-- @include('_partials/_modals/model-add-employee') --}}
