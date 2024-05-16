@@ -37,7 +37,7 @@
       </thead>
       <tbody class="table-border-bottom-0">
         @forelse ($assets as $asset)
-          <tr>
+          <tr wire:click='showAsset' class="cursor-pointer">
             <td><i class="ti ti-tag ti-sm text-danger me-3"></i> <strong>{{ $asset->id }}</strong></td>
             <td>{{ $asset->old_id }}</td>
             <td>{{ $asset->serial_number }}</td>

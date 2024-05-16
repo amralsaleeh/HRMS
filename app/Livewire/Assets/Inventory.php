@@ -30,4 +30,9 @@ class Inventory extends Component
         return view('livewire.assets.inventory', [
             'assets' => $assets, ]);
     }
+
+    public function showAsset()
+    {
+        dd('Show The Asset Model');
+    }
 }
