@@ -26,6 +26,9 @@
 
 <div class="row justify-content-between">
   <div class="col-6">
+    <div class="d-flex justify-content-start mb-2">
+      <button wire:click='showCategoryModal' type="button" class="btn btn-primary waves-effect"><span class="ti-xs ti ti-plus me-1"></span>Add New Category</button>
+    </div>
     <div class="card">
       <div class="card-header d-flex justify-content-between">
         <h5 class="card-title m-0 me-2">Categories</h5>
@@ -86,6 +89,9 @@
   </div>
 
   <div class="col-6">
+    <div class="d-flex justify-content-start mb-2">
+      <button wire:click='showSubCategoryModal' type="button" class="btn btn-primary waves-effect"><span class="ti-xs ti ti-plus me-1"></span>Add New Sub-Category</button>
+    </div>
     <div class="card">
       <div class="card-header d-flex justify-content-between">
         <h5 class="card-title m-0 me-2">Sub-Categories</h5>
