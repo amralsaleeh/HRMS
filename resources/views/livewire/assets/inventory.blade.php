@@ -6,6 +6,27 @@
 
 @section('title', 'Inventory - Assets')
 
+@section('vendor-style')
+
+@endsection
+
+@section('page-style')
+  <style>
+    .btn-tr {
+      opacity: 0;
+    }
+
+    tr:hover .btn-tr {
+      display: inline-block;
+      opacity: 1;
+    }
+
+    tr:hover .td {
+      color: #7367f0 !important;
+    }
+  </style>
+@endsection
+
 <div class="card">
   <div class="card-header d-flex justify-content-between">
     <h5 class="card-title m-0 me-2">Assets</h5>
@@ -32,25 +53,27 @@
           <th class="col-1">Serial Number</th>
           <th>Discripton</th>
           <th>Status</th>
-          <th>Actions</th>
+          <th>{{-- Actions --}}</th>
         </tr>
       </thead>
       <tbody class="table-border-bottom-0">
         @forelse ($assets as $asset)
-          <tr wire:click='showAsset' class="cursor-pointer">
-            <td><i class="ti ti-tag ti-sm text-danger me-3"></i> <strong>{{ $asset->id }}</strong></td>
+          <tr>
+            <td wire:click='showAsset' class="td" style="cursor: pointer;"><i class="ti ti-tag ti-sm text-danger me-3"></i> <strong>{{ $asset->id }}</strong></td>
             <td>{{ $asset->old_id }}</td>
             <td>{{ $asset->serial_number }}</td>
             <td>{{ $asset->description }}</td>
             <td><span class="badge bg-label-{{ $colors[$asset->status] }} me-1">{{ $asset->status }}</span></td>
             <td>
-              <div class="dropdown">
-                <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown"><i class="ti ti-dots-vertical"></i></button>
-                <div class="dropdown-menu">
-                  <a class="dropdown-item" href="javascript:void(0);"><i class="ti ti-pencil me-1"></i> Edit</a>
-                  <a class="dropdown-item" href="javascript:void(0);"><i class="ti ti-trash me-1"></i> Delete</a>
-                </div>
-              </div>
+              <button type="button" class="btn btn-sm btn-tr rounded-pill btn-icon btn-outline-secondary waves-effect">
+                <span class="ti ti-arrow-guide"></span>
+              </button>
+              <button type="button" class="btn btn-sm btn-tr rounded-pill btn-icon btn-outline-secondary waves-effect">
+                <span class="ti ti-pencil"></span>
+              </button>
+              <button type="button" class="btn btn-sm btn-tr rounded-pill btn-icon btn-outline-danger waves-effect">
+                <span class="ti ti-trash"></span>
+              </button>
             </td>
           </tr>
         @empty

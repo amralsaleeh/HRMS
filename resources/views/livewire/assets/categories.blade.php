@@ -11,7 +11,16 @@
 @endsection
 
 @section('page-style')
+  <style>
+    .btn-tr {
+      opacity: 0;
+    }
 
+    tr:hover .btn-tr {
+      display: inline-block;
+      opacity: 1;
+    }
+  </style>
 @endsection
 
 {{-- <nav aria-label="breadcrumb">
@@ -42,22 +51,21 @@
             <tr>
               <th>ID</th>
               <th>Name</th>
-              <th>Actions</th>
+              <th>{{-- Actions --}}</th>
             </tr>
           </thead>
           <tbody class="table-border-bottom-0">
             @forelse ($categories as $category)
               <tr>
-                <td><i class="ti ti-tag ti-sm text-danger me-3"></i> <strong>{{ $category->id }}</strong></td>
+                <td><i class="ti ti-tag ti-sm text-primary me-3"></i> <strong>{{ $category->id }}</strong></td>
                 <td>{{ $category->name }}</td>
                 <td>
-                  <div class="dropdown">
-                    <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown"><i class="ti ti-dots-vertical"></i></button>
-                    <div class="dropdown-menu">
-                      <a class="dropdown-item" href="javascript:void(0);"><i class="ti ti-pencil me-1"></i> Edit</a>
-                      <a class="dropdown-item" href="javascript:void(0);"><i class="ti ti-trash me-1"></i> Delete</a>
-                    </div>
-                  </div>
+                  <button type="button" class="btn btn-sm btn-tr rounded-pill btn-icon btn-outline-secondary waves-effect">
+                    <span class="ti ti-pencil"></span>
+                  </button>
+                  <button type="button" class="btn btn-sm btn-tr rounded-pill btn-icon btn-outline-danger waves-effect">
+                    <span class="ti ti-trash"></span>
+                  </button>
                 </td>
               </tr>
             @empty
@@ -105,22 +113,21 @@
             <tr>
               <th>ID</th>
               <th>Name</th>
-              <th>Actions</th>
+              <th>{{-- Actions --}}</th>
             </tr>
           </thead>
           <tbody class="table-border-bottom-0">
             @forelse ($subCategories as $subCategory)
               <tr>
-                <td><i class="ti ti-tag ti-sm text-danger me-3"></i> <strong>{{ $subCategory->id }}</strong></td>
+                <td><i class="ti ti-tag ti-sm text-primary me-3"></i> <strong>{{ $subCategory->id }}</strong></td>
                 <td>{{ $subCategory->name }}</td>
                 <td>
-                  <div class="dropdown">
-                    <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown"><i class="ti ti-dots-vertical"></i></button>
-                    <div class="dropdown-menu">
-                      <a class="dropdown-item" href="javascript:void(0);"><i class="ti ti-pencil me-1"></i> Edit</a>
-                      <a class="dropdown-item" href="javascript:void(0);"><i class="ti ti-trash me-1"></i> Delete</a>
-                    </div>
-                  </div>
+                  <button type="button" class="btn btn-sm btn-tr rounded-pill btn-icon btn-outline-secondary waves-effect">
+                    <span class="ti ti-pencil"></span>
+                  </button>
+                  <button type="button" class="btn btn-sm btn-tr rounded-pill btn-icon btn-outline-danger waves-effect">
+                    <span class="ti ti-trash"></span>
+                  </button>
                 </td>
               </tr>
             @empty
