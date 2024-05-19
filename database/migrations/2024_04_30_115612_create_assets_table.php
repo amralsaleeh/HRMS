@@ -19,6 +19,7 @@ return new class extends Migration
             $table->enum('status', ['Good', 'Fine', 'Bad', 'Damaged']);
             $table->string('description')->nullable();
             $table->boolean('in_service')->default(1);
+            $table->boolean('is_gpr')->default(1);
             $table->integer('real_price')->nullable();
             $table->integer('expected_price')->nullable();
             $table->date('acquisition_date')->nullable();
