@@ -20,6 +20,10 @@
       display: inline-block;
       opacity: 1;
     }
+
+    tr:hover .td {
+      color: #7367f0 !important;
+    }
   </style>
 @endsection
 
@@ -49,7 +53,7 @@
         <table class="table table-hover">
           <thead>
             <tr>
-              <th>ID</th>
+              <th class="col-1">ID</th>
               <th>Name</th>
               <th>{{-- Actions --}}</th>
             </tr>
@@ -58,7 +62,7 @@
             @forelse ($categories as $category)
               <tr>
                 <td><i class="ti ti-tag ti-sm text-primary me-3"></i> <strong>{{ $category->id }}</strong></td>
-                <td>{{ $category->name }}</td>
+                <td wire:click='showCategoryInfo({{ $category->id }})' data-bs-toggle="modal" data-bs-target="#centerModal" class="td" style="cursor: pointer;">{{ $category->name }}</td>
                 <td>
                   <button type="button" class="btn btn-sm btn-tr rounded-pill btn-icon btn-outline-secondary waves-effect">
                     <span class="ti ti-pencil"></span>
@@ -111,7 +115,7 @@
         <table class="table table-hover">
           <thead>
             <tr>
-              <th>ID</th>
+              <th class="col-1">ID</th>
               <th>Name</th>
               <th>{{-- Actions --}}</th>
             </tr>
@@ -120,7 +124,7 @@
             @forelse ($subCategories as $subCategory)
               <tr>
                 <td><i class="ti ti-tag ti-sm text-primary me-3"></i> <strong>{{ $subCategory->id }}</strong></td>
-                <td>{{ $subCategory->name }}</td>
+                <td wire:click='showSubCategoryInfo' class="td" style="cursor: pointer;">{{ $subCategory->name }}</td>
                 <td>
                   <button type="button" class="btn btn-sm btn-tr rounded-pill btn-icon btn-outline-secondary waves-effect">
                     <span class="ti ti-pencil"></span>
@@ -158,6 +162,9 @@
     </div>
   </div>
 </div>
+
+{{-- Modal --}}
+@include('_partials/_modals/modal-category')
 
 @push('custom-scripts')
 
