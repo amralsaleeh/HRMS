@@ -2,6 +2,7 @@
 
   @php
     $configData = Helper::appClasses();
+    use Carbon\Carbon;
   @endphp
 
   @section('title', 'Dashboard')
@@ -11,8 +12,24 @@
   @endsection
 
   @section('page-style')
+    <style>
+      .btn-tr {
+        opacity: 0;
+      }
 
+      tr:hover .btn-tr {
+        display: inline-block;
+        opacity: 1;
+      }
+
+      tr:hover .td {
+        color: #7367f0 !important;
+      }
+    </style>
   @endsection
+
+  {{-- Alerts --}}
+  @include('_partials/_alerts/alert-general')
 
   {{-- <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
@@ -21,24 +38,31 @@
       </li>
     </ol>
   </nav> --}}
+
   <div class="row">
     <div class="col-xl-4 mb-4 col-lg-5 col-12">
       <div class="card">
         <div class="d-flex align-items-end row">
           <div class="col-7">
             <div class="card-body text-nowrap">
-              <h5 class="card-title mb-0">Welcome, {{ Auth::user()->name }}! 👋</h5>
+              <h5 class="card-title mb-0">Hi, {{ Auth::user()->name }}! 👋</h5>
               <p class="mb-2">Start your day with a smile</p>
-              <h5 wire:poll.60s class="text-primary mt-3 mb-2">{{ now()->format('Y/m/d - H:i') }}</h5>
+              {{-- <h5 wire:poll.60s class="text-primary mt-3 mb-2">{{ now()->format('Y/m/d - H:i') }}</h5> --}}
+              <h5 id="date" class="text-primary mt-3 mb-1"></h5>
+              <h5 id="time" class="text-primary mb-2"></h5>
               <div class="btn-group dropend">
                 <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="ti ti-menu-2 ti-xs me-1"></i> Add New</button>
                 <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" href="{{ route('structure-employees') }}"><i class="ti ti-menu-2 ti-xs me-1"></i> Employee</a></li>
-                  <li>
-                    <hr class="dropdown-divider">
-                  </li>
-                  <li><a class="dropdown-item" href="{{ route('attendance-fingerprints') }}"><i class="ti ti-menu-2 ti-xs me-1"></i> Fingerprint</a></li>
-                  <li><a class="dropdown-item" href="{{ route('attendance-leaves') }}"><i class="ti ti-menu-2 ti-xs me-1"></i> Leave</a></li>
+                  @can('create employees')
+                    <li><a class="dropdown-item" href="{{ route('structure-employees') }}"><i class="ti ti-menu-2 ti-xs me-1"></i> Employee</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                  @endcan
+                  @can('create fingerprints')
+                    <li><a class="dropdown-item" href="{{ route('attendance-fingerprints') }}"><i class="ti ti-menu-2 ti-xs me-1"></i> Fingerprint</a></li>
+                  @endcan
+                  @can('create leaves')
+                    <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#leaveModal" href=""><i class="ti ti-menu-2 ti-xs me-1"></i> Leave</a></li>
+                  @endcan
                 </ul>
               </div>
             </div>
@@ -56,50 +80,78 @@
       <div class="card h-100">
         <div class="card-header">
           <div class="d-flex justify-content-between mb-3">
-            <h5 class="card-title mb-0">SMS Statistics</h5>
-            <small class="text-muted">{{ $accountBalance['status'] == 200 ? 'Updated recently' : 'Error, Update unavailable' }}</small>
+            <h5 class="card-title mb-0">Statistics</h5>
+            @can('read sms')
+              <small class="text-muted">{{ $accountBalance['status'] == 200 ? 'Updated recently' : 'Error, Update unavailable' }}</small>
+            @endcan
           </div>
         </div>
-        <div class="card-body">
-          <div class="row gy-3">
-            <div class="col-md-3 col-6">
-              <div class="d-flex align-items-center">
-                <div class="badge rounded-pill bg-label-primary me-3 p-2"><i class="ti ti-activity ti-sm"></i></div>
-                <div class="card-info">
-                  <h5 class="mb-0">{{ $accountBalance['is_active'] }}</h5>
-                  <small>Status</small>
+        @can('read sms')
+          <div class="card-body">
+            <div class="row gy-3">
+              <div class="col-md-3 col-6">
+                <div class="d-flex align-items-center">
+                  <div class="badge rounded-pill bg-label-primary me-3 p-2"><i class="ti ti-activity ti-sm"></i></div>
+                  <div class="card-info">
+                    <h5 class="mb-0">{{ $accountBalance['is_active'] }}</h5>
+                    <small>Status</small>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div class="col-md-3 col-6">
-              <div class="d-flex align-items-center">
-                <div class="badge rounded-pill bg-label-info me-3 p-2"><i class="ti ti-calculator ti-sm"></i></div>
-                <div class="card-info">
-                  <h5 class="mb-0">{{ $accountBalance['balance'] }}</h5>
-                  <small>Balance</small>
+              <div class="col-md-3 col-6">
+                <div class="d-flex align-items-center">
+                  <div class="badge rounded-pill bg-label-info me-3 p-2"><i class="ti ti-calculator ti-sm"></i></div>
+                  <div class="card-info">
+                    <h5 class="mb-0">{{ $accountBalance['balance'] }}</h5>
+                    <small>Balance</small>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div class="col-md-3 col-6">
-              <div class="d-flex align-items-center">
-                <div class="badge rounded-pill bg-label-success me-3 p-2"><i class="ti ti-speakerphone ti-sm"></i></div>
-                <div class="card-info">
-                  <h5 class="mb-0">{{ $messagesStatus['sent'] }}</h5>
-                  <small>Successful</small>
+              <div class="col-md-3 col-6">
+                <div class="d-flex align-items-center">
+                  <div class="badge rounded-pill bg-label-success me-3 p-2"><i class="ti ti-speakerphone ti-sm"></i></div>
+                  <div class="card-info">
+                    <h5 class="mb-0">{{ $messagesStatus['sent'] }}</h5>
+                    <small>Successful</small>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div class="col-md-3 col-6">
-              <div class="d-flex align-items-center">
-                <div wire:click='sendPendingMessages' class="badge rounded-pill bg-label-danger me-3 p-2" style="cursor: pointer"><i class="ti ti-send ti-sm"></i></div>
-                <div class="card-info">
-                  <h5 class="mb-0">{{ $messagesStatus['unsent'] }}</h5>
-                  <small>Pending</small>
+              <div class="col-md-3 col-6">
+                <div class="d-flex align-items-center">
+                  <div wire:click='sendPendingMessages' class="badge rounded-pill bg-label-danger me-3 p-2" style="cursor: pointer"><i class="ti ti-send ti-sm"></i></div>
+                  <div class="card-info">
+                    <h5 class="mb-0">{{ $messagesStatus['unsent'] }}</h5>
+                    <small>Pending</small>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
+        @endcan
+        @can('create leaves')
+          <div class="card-body">
+            <div class="row gy-3">
+              <div class="col-md-6 col-6">
+                <div class="d-flex align-items-center">
+                  <div class="badge rounded-pill bg-label-primary me-3 p-2"><i class="ti ti-users ti-sm"></i></div>
+                  <div class="card-info">
+                    <h5 class="mb-0">{{ count($activeEmployees) }}</h5>
+                    <small>Active Employees</small>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6 col-6">
+                <div class="d-flex align-items-center">
+                  <div class="badge rounded-pill bg-label-success me-3 p-2"><i class="ti ti-calendar ti-sm"></i></div>
+                  <div class="card-info">
+                    <h5 class="mb-0">{{ count($leaveRecords) }}</h5>
+                    <small>Today Records</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        @endcan
       </div>
     </div>
 
@@ -217,6 +269,68 @@
   <div class="row">
     <div class="col">
       <div class="card">
+        <h5 class="card-header">Leaves Records</h5>
+        <div class="table-responsive text-nowrap">
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th class="col-1">ID</th>
+                <th>Employee</th>
+                <th class="col-1">Type</th>
+                <th style="text-align: center">Details</th>
+                <th class="col-1">Actions</th>
+              </tr>
+            </thead>
+            <tbody class="table-border-bottom-0">
+              @forelse($leaveRecords as $leave)
+                <tr>
+                  <td><strong>{{ $leave->id }}</strong></td>
+                  <td class="td">{{ $this->getEmployeeName($leave->employee_id) }}</td>
+                  <td>{{ $this->getLeaveType($leave->leave_id) }}</td>
+                  <td style="text-align: center">
+                    <span class="badge bg-label-primary mb-2 me-1" style="font-size: 14px">{{ $leave->from_date . ' --> ' . $leave->to_date }}</span>
+                    <br>
+                    @if ($leave->start_at !== null)
+                      <span class="badge bg-label-secondary me-1">{{ Carbon::parse($leave->start_at)->format('H:i') . ' --> ' . Carbon::parse($leave->end_at)->format('H:i') }}</span>
+                    @endif
+                  </td>
+                  <td>
+                    <button type="button" class="btn btn-sm btn-tr rounded-pill btn-icon btn-outline-secondary waves-effect">
+                      <span class="ti ti-pencil"></span>
+                    </button>
+                    <button type="button" class="btn btn-sm btn-tr rounded-pill btn-icon btn-outline-danger waves-effect">
+                      <span class="ti ti-trash"></span>
+                    </button>
+                  </td>
+                </tr>
+              @empty
+                <tr>
+                  <td colspan="6">
+                    <div class="mt-2 mb-2" style="text-align: center">
+                        <h3 class="mb-1 mx-2">Oopsie-doodle!</h3>
+                        <p class="mb-4 mx-2">
+                          No data found, please sprinkle some data in my virtual bowl, and let the fun begin!
+                        </p>
+                        <button class="btn btn-label-primary mb-4" data-bs-toggle="modal" data-bs-target="#leaveModal">
+                            Add New Leave
+                          </button>
+                        <div>
+                          <img src="{{ asset('assets/img/illustrations/page-misc-under-maintenance.png') }}" width="200" class="img-fluid">
+                        </div>
+                    </div>
+                  </td>
+                </tr>
+              @endforelse
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mt-4">
+    <div class="col">
+      <div class="card">
         <h5 class="card-header">Change Logs</h5>
         <div class="card-body">
           @foreach ($changelogs as $changelog)
@@ -231,7 +345,29 @@
     </div>
   </div>
 
-  @push('custom-scripts')
+  {{-- Modals --}}
+  @include('_partials/_modals/modal-leaveWithEmployee')
 
+  @push('custom-scripts')
+    <script>
+        function updateClock() {
+            const now = new Date();
+            const dateOptions = {
+                weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+            };
+            const timeOptions = {
+                hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false
+            };
+
+            const formattedDate = now.toLocaleDateString('en-US', dateOptions);
+            const formattedTime = now.toLocaleTimeString('en-US', timeOptions);
+
+            document.getElementById('date').innerHTML = formattedDate;
+            document.getElementById('time').innerHTML = formattedTime;
+        }
+
+        setInterval(updateClock, 1000); // Update every second
+        updateClock(); // Initial call to display clock immediately
+    </script>
   @endpush
 </div>

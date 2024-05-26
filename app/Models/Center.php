@@ -32,6 +32,11 @@ class Center extends Model
         return $this->belongsToMany(Holiday::class);
     }
 
+    public function activeEmployees()
+    {
+        return $this->timelines()->whereNull('end_date')->with('employee');
+    }
+
     protected function name(): Attribute
     {
         return Attribute::make(
