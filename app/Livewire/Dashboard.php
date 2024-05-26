@@ -62,17 +62,17 @@ class Dashboard extends Component
             //
         }
 
+        $this->changelogs = Changelog::all();
+    }
+
+    public function render()
+    {
         $this->leaveRecords = DB::table('employee_leave')
             ->where('created_by', Auth::user()->name)
             ->whereDate('created_at', Carbon::today()->toDate())
             ->orderBy('created_at')
             ->get();
 
-        $this->changelogs = Changelog::all();
-    }
-
-    public function render()
-    {
         return view('livewire.dashboard');
     }
 
