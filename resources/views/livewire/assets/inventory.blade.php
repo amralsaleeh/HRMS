@@ -36,6 +36,9 @@
           <input autofocus wire:model.live="search_term" type="text" class="form-control" placeholder="Search (ID, Old ID, Serial Number...)">
         </label>
       </div>
+
+
+
       <div class="dt-buttons">
         <button wire:click.prevent='showNewAssetModal' type="button" class="btn btn-primary"
           data-bs-toggle="modal" data-bs-target="#assetModal">
@@ -53,13 +56,16 @@
           <th class="col-1">Serial Number</th>
           <th>Discripton</th>
           <th>Status</th>
-          <th>{{-- Actions --}}</th>
+          <th>Actions</th>
         </tr>
       </thead>
       <tbody class="table-border-bottom-0">
         @forelse ($assets as $asset)
           <tr>
             <td wire:click='showAsset' class="td" style="cursor: pointer;"><i class="ti ti-tag ti-sm text-danger me-3"></i> <strong>{{ $asset->id }}</strong></td>
+         {{-- wire:click='showAsset' --}}
+          <tr class="cursor-pointer">
+            <td><i class="ti ti-tag ti-sm text-danger me-3"></i> <strong>{{ $asset->id }}</strong></td>
             <td>{{ $asset->old_id }}</td>
             <td>{{ $asset->serial_number }}</td>
             <td>{{ $asset->description }}</td>
@@ -69,11 +75,21 @@
                 <span class="ti ti-arrow-guide"></span>
               </button>
               <button type="button" class="btn btn-sm btn-tr rounded-pill btn-icon btn-outline-secondary waves-effect">
-                <span class="ti ti-pencil"></span>
+                <span wire:click.prevent='showEditAssetModal({{ $asset }})' data-bs-toggle="modal" data-bs-target="#assetModal" class="ti ti-pencil"></span>
               </button>
               <button type="button" class="btn btn-sm btn-tr rounded-pill btn-icon btn-outline-danger waves-effect">
-                <span class="ti ti-trash"></span>
+                <span wire:click.prevent='confirmDeleteAsset({{ $asset }})' class="ti ti-trash"></span>
               </button>
+              <div class="dropdown">
+                <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown"><i class="ti ti-dots-vertical"></i></button>
+                <div class="dropdown-menu">
+                  <a wire:click.prevent='showEditAssetModal({{ $asset }})' data-bs-toggle="modal" data-bs-target="#assetModal" class="dropdown-item" href="javascript:void(0);"><i class="ti ti-pencil me-1"></i> Edit</a>
+                  <a wire:click.prevent='confirmDeleteAsset({{ $asset }})' class="dropdown-item" href="javascript:void(0);"><i class="ti ti-trash me-1"></i> Delete</a>
+                </div>
+                @if ($confirmedId === $asset->id)
+                  <button wire:click.prevent='deleteAsset({{ $asset }})' type="button" class="btn btn-sm btn-danger waves-effect waves-light">Sure?</button>
+                @endif
+              </div>
             </td>
           </tr>
         @empty
@@ -101,8 +117,8 @@
   <div class="row mt-4">
     {{ $assets->links() }}
   </div>
-</>
+{{-- </> --}}
 
 {{-- Modal --}}
-{{-- @include('_partials/_modals/model-add-employee') --}}
+@include('_partials/_modals/modal-inventory')
 </div>

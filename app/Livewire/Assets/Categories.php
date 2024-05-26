@@ -4,6 +4,7 @@ namespace App\Livewire\Assets;
 
 use App\Models\Category;
 use App\Models\SubCategory;
+use Livewire\Attributes\Rule;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -15,12 +16,22 @@ class Categories extends Component
 
     public $search_term_sub_categories = null;
 
-    public $categoryInfo;
+    public $category;
 
-    public function mount()
-    {
-        $this->showCategoryInfo(1);
-    }
+    public $subCategory;
+
+    #[Rule('required')]
+    public $categoryName;
+
+    // #[Rule('required')]
+    public $subCategoryName;
+
+    public $isEdit = false;
+
+    // public $confirmedId;
+    public $confirmedCategoryId;
+
+    public $confirmedSubCategoryId;
 
     public function render()
     {
@@ -38,10 +49,119 @@ class Categories extends Component
         ]);
     }
 
-    public function showCategoryInfo($categoryId)
+    public function submitCategory()
     {
-        $category = Category::with('subCategory')->find($categoryId);
 
-        $this->categoryInfo = $category;
+        $this->isEdit ? $this->editCategory() : $this->addCategory();
+
+    }
+
+    public function addCategory()
+    {
+        // dd('sds');
+        $this->validate();
+
+        Category::create([
+            'name' => $this->categoryName,
+        ]);
+
+        $this->dispatch('closeModal', elementId: '#categoryModal');
+        $this->dispatch('toastr', type: 'success'/* , title: 'Done!' */ , message: 'Going Well!');
+    }
+
+    public function editCategory()
+    {
+        $this->validate();
+
+        $this->category->update([
+            'name' => $this->categoryName,
+        ]);
+
+        $this->dispatch('closeModal', elementId: '#categoryModal');
+        $this->dispatch('toastr', type: 'success'/* , title: 'Done!' */ , message: 'Going Well!');
+
+        $this->reset('isEdit', 'categoryName');
+    }
+
+    public function confirmDeleteCategory($id)
+    {
+        $this->confirmedCategoryId = $id;
+    }
+
+    public function deleteCategory(Category $category)
+    {
+        $category->delete();
+        $this->dispatch('toastr', type: 'success'/* , title: 'Done!' */ , message: 'Going Well!');
+    }
+
+    public function showNewCategoryModal()
+    {
+        $this->reset('isEdit', 'categoryName');
+    }
+
+    public function showEditCategoryModal(Category $category)
+    {
+
+        $this->reset('isEdit', 'categoryName');
+        $this->isEdit = true;
+        $this->category = $category;
+        $this->categoryName = $category->name;
+
+    }
+
+    public function submitSubCategory()
+    {
+        $this->isEdit ? $this->editSubCategory() : $this->addSubCategory();
+    }
+
+    public function addSubCategory()
+    {
+        $this->validate();
+
+        SubCategory::create([
+            'name' => $this->subCategoryName,
+        ]);
+
+        $this->dispatch('closeModal', elementId: '#subCategoryModal');
+        $this->dispatch('toastr', type: 'success'/* , title: 'Done!' */ , message: 'Going Well!');
+    }
+
+    public function editSubCategory()
+    {
+        $this->validate();
+
+        $this->subCategory->update([
+            'name' => $this->subCategoryName,
+        ]);
+
+        $this->dispatch('closeModal', elementId: '#subCategoryModal');
+        $this->dispatch('toastr', type: 'success'/* , title: 'Done!' */ , message: 'Going Well!');
+
+        $this->reset('isEdit', 'subCategoryName');
+    }
+
+    public function confirmDeleteSubCategory($id)
+    {
+        $this->confirmedSubCategoryId = $id;
+    }
+
+    public function deleteSubCategory(SubCategory $subCategory)
+    {
+        $subCategory->delete();
+        $this->dispatch('toastr', type: 'success'/* , title: 'Done!' */ , message: 'Going Well!');
+    }
+
+    public function showNewSubCategoryModal()
+    {
+        $this->reset('isEdit', 'subCategoryName');
+    }
+
+    public function showEditSubCategoryModal(SubCategory $subCategory)
+    {
+        $this->reset('isEdit', 'subCategoryName');
+        $this->isEdit = true;
+        $this->subCategory = $subCategory;
+        $this->subCategoryName = $subCategory->name;
+
     }
 }
