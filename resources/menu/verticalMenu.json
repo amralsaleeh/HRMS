@@ -5,7 +5,7 @@
       "name": "Dashboard",
       "icon": "menu-icon tf-icons ti ti-dashboard",
       "slug": "dashboard",
-      "role": ["AM", "HR"]
+      "role": ["AM", "CC", "HR"]
     },
     {
       "menuHeader": "Human resource",

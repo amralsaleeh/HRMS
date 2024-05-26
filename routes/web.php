@@ -37,7 +37,7 @@ Route::get('lang/{locale}', [LanguageController::class, 'swap']);
 
 Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified'])->group(function () {
     // 👉 Dashboard
-    Route::group(['middleware' => ['role:Admin|AM|HR']], function () {
+    Route::group(['middleware' => ['role:Admin|AM|CC|HR']], function () {
         Route::get('/dashboard', Dashboard::class)->name('dashboard');
     });
 
