@@ -8,11 +8,11 @@ use Livewire\Component;
 
 class VerticalMenu extends Component
 {
-    public $role;
+    public $role = null;
 
     public function mount()
     {
-        $this->role = User::find(Auth::id())->getRoleNames()->first();
+        $this->role = User::find(Auth::id())?->getRoleNames()->first();
     }
 
     public function render()
