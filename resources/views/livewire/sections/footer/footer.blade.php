@@ -6,7 +6,6 @@
         <div>
           © <script>
             document.write(new Date().getFullYear())
-
           </script>
           , made with ❤️ by <a href="{{ route('contact-us') }}" target="_blank" class="fw-semibold">IT Department</a> for a better work environment.
         </div>
