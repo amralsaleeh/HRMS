@@ -88,3 +88,5 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
 });
 
 Route::get('/contact-us', ContactUs::class)->name('contact-us');
+
+Route::webhooks('/deploy');
