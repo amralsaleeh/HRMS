@@ -13,6 +13,5 @@ class deploy extends ProcessWebhookJob
         // perform the work here
 
         info('Deploy Complete Successfully');
-
     }
 }
