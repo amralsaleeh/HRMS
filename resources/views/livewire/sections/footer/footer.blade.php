@@ -11,7 +11,7 @@
         </div>
         <div>
           <a href="https://data.namaa.sy/" target="_blank" class="footer-link me-4">Data system</a>
-          <a href="http://namaa.sy/" target="_blank" class="footer-link d-none d-sm-inline-block">Namaa</a>
+          <a href="http://www.namaa.sy/" target="_blank" class="footer-link d-none d-sm-inline-block">Namaa</a>
         </div>
       </div>
     </div>
