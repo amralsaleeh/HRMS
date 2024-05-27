@@ -2,9 +2,9 @@
 
 namespace App\Jobs;
 
-use Spatie\WebhookClient\Jobs\ProcessWebhookJob as SpatieProcessWebhookJob;
+use Spatie\WebhookClient\Jobs\ProcessWebhookJob;
 
-class deploy extends SpatieProcessWebhookJob
+class deploy extends ProcessWebhookJob
 {
     public function handle()
     {
