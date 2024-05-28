@@ -40,8 +40,6 @@
 <div class="row justify-content-between">
   <div class="col-6">
     <div class="d-flex justify-content-start mb-2">
-
-      {{-- wire:click='showCategoryModal' --}}
       <button wire:click.prevent='showNewCategoryModal' type="button" data-bs-toggle="modal" data-bs-target="#categoryModal" class="btn btn-primary waves-effect"><span class="ti-xs ti ti-plus me-1"></span>Add New Category</button>
     </div>
     <div class="card">
@@ -64,7 +62,7 @@
             @forelse ($categories as $category)
               <tr>
                 <td><i class="ti ti-tag ti-sm text-primary me-3"></i> <strong>{{ $category->id }}</strong></td>
-                <td wire:click='showCategoryInfo({{ $category->id }})' data-bs-toggle="modal" data-bs-target="#centerModal" class="td" style="cursor: pointer;">{{ $category->name }}</td>
+                <td wire:click='showCategoryInfo({{ $category->id }})' data-bs-toggle="modal" data-bs-target="#categoryInfoModal" class="td" style="cursor: pointer;">{{ $category->name }}</td>
                 <td>
                   <button type="button" class="btn btn-sm btn-tr rounded-pill btn-icon btn-outline-secondary waves-effect">
                     <span wire:click.prevent='showEditCategoryModal({{ $category }})' data-bs-toggle="modal" data-bs-target="#categoryModal" class="ti ti-pencil"></span>
@@ -73,8 +71,8 @@
                     <span wire:click.prevent='confirmDeleteCategory({{ $category->id }})' class="ti ti-trash"></span>
                   </button>
                   @if ($confirmedCategoryId === $category->id)
-                  <button wire:click.prevent='deleteCategory({{ $category }})' type="button" class="btn btn-sm btn-danger waves-effect waves-light">Sure?</button>
-                @endif
+                    <button wire:click.prevent='deleteCategory({{ $category }})' type="button" class="btn btn-sm btn-danger waves-effect waves-light">Sure?</button>
+                  @endif
                 </td>
               </tr>
             @empty
@@ -107,8 +105,6 @@
 
   <div class="col-6">
     <div class="d-flex justify-content-start mb-2">
-
-
       <button wire:click='showNewSubCategoryModal' type="button" data-bs-toggle="modal" data-bs-target="#subCategoryModal" class="btn btn-primary waves-effect"><span class="ti-xs ti ti-plus me-1"></span>Add New Sub-Category</button>
     </div>
     <div class="card">
@@ -139,10 +135,9 @@
                   <button type="button" class="btn btn-sm btn-tr rounded-pill btn-icon btn-outline-danger waves-effect">
                     <span wire:click.prevent='confirmDeleteSubCategory({{ $subCategory->id }})' class="ti ti-trash"></span>
                   </button>
-
                   @if ($confirmedSubCategoryId === $subCategory->id)
-                  <button wire:click.prevent='deleteSubCategory({{ $subCategory }})' type="button" class="btn btn-sm btn-danger waves-effect waves-light">Sure?</button>
-                @endif
+                    <button wire:click.prevent='deleteSubCategory({{ $subCategory }})' type="button" class="btn btn-sm btn-danger waves-effect waves-light">Sure?</button>
+                  @endif
                 </td>
               </tr>
             @empty
@@ -176,13 +171,11 @@
 
 {{-- Modal --}}
 @include('_partials/_modals/modal-category')
+@include('_partials/_modals/modal-categoryInfo')
+@include('_partials/_modals/modal-sub-category')
 
 @push('custom-scripts')
 
 @endpush
-
-{{-- Modal --}}
-@include('_partials/_modals/modal-category')
-@include('_partials/_modals/modal-sub-category')
 
 </div>

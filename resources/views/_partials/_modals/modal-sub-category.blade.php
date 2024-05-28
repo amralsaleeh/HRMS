@@ -17,10 +17,6 @@
             <label class="form-label w-100">Name</label>
             <input wire:model='subCategoryName' class="form-control @error('subCategoryName') is-invalid @enderror" type="text" />
           </div>
-
-
-
-
           <div class="col-12 text-center">
             <button type="submit" class="btn btn-primary me-sm-3 me-1">Submit</button>
             <button type="reset" class="btn btn-label-secondary btn-reset" data-bs-dismiss="modal" aria-label="Close">Cancel</button>

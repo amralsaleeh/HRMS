@@ -60,8 +60,6 @@ class Inventory extends Component
 
     public function render()
     {
-        // $this->asset = Asset::all();
-
         $assets = Asset::where('id', 'like', '%'.$this->search_term.'%')
             ->orWhere('old_id', 'like', '%'.$this->search_term.'%')
             ->orWhere('serial_number', 'like', '%'.$this->search_term.'%')
@@ -71,20 +69,19 @@ class Inventory extends Component
             'assets' => $assets, ]);
     }
 
-    // public function showAsset()
-    // {
-    //     dd('Show The Asset Model');
-    // }
-
     public function submitAsset()
     {
         $this->isEdit ? $this->editAsset() : $this->addAsset();
     }
 
+    public function showNewAssetModal()
+    {
+        $this->reset('isEdit', 'assetId', 'oldId', 'description', 'status', 'inService', 'realPrice', 'expectedPrice', 'acquisitionDate', 'acquisitionType', 'fundedBy', 'note');
+    }
+
     public function addAsset()
     {
-        $this->validate();
-
+        // $this->validate();
         Asset::create([
             'id' => $this->assetId,
             'old_id' => $this->oldId,
@@ -97,17 +94,33 @@ class Inventory extends Component
             'acquisition_type' => $this->acquisitionType,
             'funded_by' => $this->fundedBy,
             'note' => $this->note,
-
         ]);
 
         $this->dispatch('closeModal', elementId: '#assetModal');
         $this->dispatch('toastr', type: 'success'/* , title: 'Done!' */ , message: 'Going Well!');
     }
 
+    public function showEditAssetModal(Asset $asset)
+    {
+        $this->reset('isEdit', 'assetId', 'oldId', 'description', 'status', 'inService', 'realPrice', 'expectedPrice', 'acquisitionDate', 'acquisitionType', 'fundedBy', 'note');
+        $this->isEdit = true;
+        $this->asset = $asset;
+        $this->assetId = $asset->id;
+        $this->oldId = $asset->old_id;
+        $this->description = $asset->description;
+        $this->status = $asset->status;
+        $this->inService = $asset->in_service;
+        $this->realPrice = $asset->real_price;
+        $this->expectedPrice = $asset->expectedPrice;
+        $this->acquisitionDate = $asset->acquisition_date;
+        $this->acquisitionType = $asset->acquisition_type;
+        $this->fundedBy = $asset->funded_by;
+        $this->note = $asset->note;
+    }
+
     public function editAsset()
     {
-        $this->validate();
-
+        // $this->validate();
         $this->asset->update([
             'id' => $this->assetId,
             'old_id' => $this->oldId,
@@ -137,30 +150,5 @@ class Inventory extends Component
     {
         $asset->delete();
         $this->dispatch('toastr', type: 'success'/* , title: 'Done!' */ , message: 'Going Well!');
-    }
-
-    public function showNewAssetModal()
-    {
-        $this->reset('isEdit', 'assetId', 'oldId', 'description', 'status', 'inService', 'realPrice', 'expectedPrice', 'acquisitionDate', 'acquisitionType', 'fundedBy', 'note');
-    }
-
-    public function showEditAssetModal(Asset $asset)
-    {
-        // dd($asset);
-        $this->reset('isEdit', 'assetId', 'oldId', 'description', 'status', 'inService', 'realPrice', 'expectedPrice', 'acquisitionDate', 'acquisitionType', 'fundedBy', 'note');
-        $this->isEdit = true;
-        $this->asset = $asset;
-        $this->assetId = $asset->id;
-        $this->oldId = $asset->old_id;
-        $this->description = $asset->description;
-        $this->status = $asset->status;
-        $this->inService = $asset->in_service;
-        $this->realPrice = $asset->real_price;
-        $this->expectedPrice = $asset->expectedPrice;
-        $this->acquisitionDate = $asset->acquisition_date;
-        $this->acquisitionType = $asset->acquisition_type;
-        $this->fundedBy = $asset->funded_by;
-        $this->note = $asset->note;
-        // dd($this->assetId);
     }
 }
