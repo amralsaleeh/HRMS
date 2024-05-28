@@ -69,27 +69,30 @@
                 <span class="ti ti-arrow-guide"></span>
               </button>
               <button type="button" class="btn btn-sm btn-tr rounded-pill btn-icon btn-outline-secondary waves-effect">
-                <span class="ti ti-pencil"></span>
+                <span wire:click.prevent='showEditAssetModal({{ $asset }})' data-bs-toggle="modal" data-bs-target="#assetModal" class="ti ti-pencil"></span>
               </button>
               <button type="button" class="btn btn-sm btn-tr rounded-pill btn-icon btn-outline-danger waves-effect">
-                <span class="ti ti-trash"></span>
+                <span wire:click.prevent='confirmDeleteAsset({{ $asset }})' class="ti ti-trash"></span>
               </button>
+              @if ($confirmedId === $asset->id)
+                <button wire:click.prevent='deleteAsset({{ $asset }})' type="button" class="btn btn-sm btn-danger waves-effect waves-light">Sure?</button>
+              @endif
             </td>
           </tr>
         @empty
           <tr>
             <td colspan="6">
               <div class="mt-2 mb-2" style="text-align: center">
-                  <h3 class="mb-1 mx-2">Oopsie-doodle!</h3>
-                  <p class="mb-4 mx-2">
-                    No data found, please sprinkle some data in my virtual bowl, and let the fun begin!
-                  </p>
-                  <button class="btn btn-label-primary mb-4" data-bs-toggle="modal" data-bs-target="#assetModal">
-                      Add New Asset
-                    </button>
-                  <div>
-                    <img src="{{ asset('assets/img/illustrations/page-misc-under-maintenance.png') }}" width="200" class="img-fluid">
-                  </div>
+                <h3 class="mb-1 mx-2">Oopsie-doodle!</h3>
+                <p class="mb-4 mx-2">
+                  No data found, please sprinkle some data in my virtual bowl, and let the fun begin!
+                </p>
+                <button class="btn btn-label-primary mb-4" data-bs-toggle="modal" data-bs-target="#assetModal">
+                    Add New Asset
+                  </button>
+                <div>
+                  <img src="{{ asset('assets/img/illustrations/page-misc-under-maintenance.png') }}" width="200" class="img-fluid">
+                </div>
               </div>
             </td>
           </tr>
@@ -101,8 +104,7 @@
   <div class="row mt-4">
     {{ $assets->links() }}
   </div>
-</>
 
 {{-- Modal --}}
-{{-- @include('_partials/_modals/model-add-employee') --}}
+@include('_partials/_modals/modal-inventory')
 </div>
