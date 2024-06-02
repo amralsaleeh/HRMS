@@ -35,8 +35,8 @@ $configData = Helper::appClasses();
           </a>
         </div>
         <!-- /Logo -->
-        <h3 class="mb-1">Welcome to {{config('variables.templateName')}}! 👋</h3>
-        <p class="mb-4">Please sign-in to your account and start the adventure</p>
+        <h3 class="mb-1">Welcome to {{ env('APP_NAME', 'null'), }}! 👋</h3>
+        <p class="mb-4">Please sign-in to your account</p>
 
         @if (session('status'))
         <div class="alert alert-success mb-1 rounded-0" role="alert">
@@ -60,11 +60,11 @@ $configData = Helper::appClasses();
           <div class="mb-3 form-password-toggle">
             <div class="d-flex justify-content-between">
               <label class="form-label" for="login-password">Password</label>
-              @if (Route::has('password.request'))
+              {{-- @if (Route::has('password.request'))
               <a href="{{ route('password.request') }}">
                 <small>Forgot Password?</small>
               </a>
-              @endif
+              @endif --}}
             </div>
             <div class="input-group input-group-merge @error('password') is-invalid @enderror">
               <input type="password" id="login-password" class="form-control @error('password') is-invalid @enderror" name="password" placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;" aria-describedby="password" />
@@ -86,33 +86,6 @@ $configData = Helper::appClasses();
           </div>
           <button class="btn btn-primary d-grid w-100" type="submit">Sign in</button>
         </form>
-
-        <p class="text-center">
-          <span>New on our platform?</span>
-          @if (Route::has('register'))
-          <a href="{{ route('register') }}">
-            <span>Create an account</span>
-          </a>
-          @endif
-        </p>
-
-        <div class="divider my-4">
-          <div class="divider-text">or</div>
-        </div>
-
-        <div class="d-flex justify-content-center">
-          <a href="javascript:;" class="btn btn-icon btn-label-facebook me-3">
-            <i class="tf-icons fa-brands fa-facebook-f fs-5"></i>
-          </a>
-
-          <a href="javascript:;" class="btn btn-icon btn-label-google-plus me-3">
-            <i class="tf-icons fa-brands fa-google fs-5"></i>
-          </a>
-
-          <a href="javascript:;" class="btn btn-icon btn-label-twitter">
-            <i class="tf-icons fa-brands fa-twitter fs-5"></i>
-          </a>
-        </div>
       </div>
     </div>
     <!-- /Login -->
