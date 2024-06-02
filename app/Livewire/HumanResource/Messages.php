@@ -91,7 +91,7 @@ class Messages extends Component
     public function generateMessages()
     {
         $employeesDiscounts = Employee::with(['discounts' => function ($query) {
-            // $query->whereBetween('date', explode(' to ', $this->batch));
+            $query->whereBetween('date', explode(' to ', $this->batch));
             $query->where('is_sent', 0)->where('batch', $this->selectedBatch);
         }])->where('is_active', 1)->get();
 
@@ -114,8 +114,8 @@ class Messages extends Component
 - عداد الساعات: '.Carbon::parse($employee->hourly_counter)->format('H:i').'
 - عداد التأخير: '.Carbon::parse($employee->delay_counter)->format('H:i').'
 
-بكل الشكر على تعاونك،
-قسم الموارد البشرية.';
+وجودك مهم،
+مشروع الحماية المجتمعية.';
 
                 Message::create([
                     'employee_id' => $employee->id,
