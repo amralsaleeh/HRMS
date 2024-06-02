@@ -152,10 +152,10 @@ class Employee extends Model
     public function getEmployeePhoto()
     {
         $defaultPhotoName = 'profile-photos/.default-photo.jpg';
-        $data = User::where('employee_id', $this->id)->first();
+        $user = User::where('employee_id', $this->id)->first();
 
-        if ($data) {
-            return 'storage/'.$data->profile_photo_path;
+        if ($user) {
+            return 'storage/'.$user->profile_photo_path;
         }
 
         return 'storage/'.$defaultPhotoName;
