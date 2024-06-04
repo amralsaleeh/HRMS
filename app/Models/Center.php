@@ -34,7 +34,11 @@ class Center extends Model
 
     public function activeEmployees()
     {
-        return $this->timelines()->whereNull('end_date')->with('employee');
+        return $this->timelines()
+            ->whereNull('end_date')
+            ->join('employees', 'timelines.employee_id', '=', 'employees.id')
+            ->orderBy('employees.first_name', 'asc')
+            ->with('employee');
     }
 
     protected function name(): Attribute
