@@ -61,7 +61,7 @@
                     <li><a class="dropdown-item" href="{{ route('attendance-fingerprints') }}"><i class="ti ti-menu-2 ti-xs me-1"></i> Fingerprint</a></li>
                   @endcan
                   @can('create leaves')
-                    <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#leaveModal" href=""><i class="ti ti-menu-2 ti-xs me-1"></i> Leave</a></li>
+                    <li><a wire:click.prevent='showNewLeaveModal' class="dropdown-item" data-bs-toggle="modal" data-bs-target="#leaveModal" href=""><i class="ti ti-menu-2 ti-xs me-1"></i> Leave</a></li>
                   @endcan
                 </ul>
               </div>
@@ -296,11 +296,18 @@
                   </td>
                   <td>
                     <button type="button" class="btn btn-sm btn-tr rounded-pill btn-icon btn-outline-secondary waves-effect">
-                      <span class="ti ti-pencil"></span>
+                      <span wire:click.prevent="showEditLeaveModal({{ $leave->id }})"  data-bs-toggle="modal" data-bs-target="#leaveModal" class="ti ti-pencil"></span>
                     </button>
                     <button type="button" class="btn btn-sm btn-tr rounded-pill btn-icon btn-outline-danger waves-effect">
-                      <span class="ti ti-trash"></span>
+                      <span wire:click.prevent="confirmDeleteLeave({{ $leave->id }})" class="ti ti-trash"></span>
                     </button>
+                    @if ($confirmedId === $leave->id)
+                    <button wire:click.prevent="deleteLeave" type="button"
+                            class="btn btn-xs btn-danger waves-effect waves-light">Sure?
+                    </button>
+                  @endif
+
+
                   </td>
                 </tr>
               @empty

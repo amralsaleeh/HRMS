@@ -1,5 +1,6 @@
 @push('custom-css')
-
+  <link rel="stylesheet" href="{{asset('assets/vendor/libs/select2/select2.css')}}" />
+  <link rel="stylesheet" href="{{asset('assets/vendor/libs/flatpickr/flatpickr.css')}}" />
 @endpush
 
 <div wire:ignore.self class="modal fade" id="assetModal" tabindex="-1" aria-hidden="true">
@@ -70,7 +71,8 @@
 
           <div class="col-md-6 col-12 mb-4">
             <label class="form-label w-100">Acquisition Date</label>
-            <input wire:model='acquisitionDate' class="form-control @error('acquisitionDate') is-invalid @enderror" type="date" />
+            {{-- <input wire:model='acquisitionDate' type="text" class="form-control flatpickr-input active @error('acquisitionDate') is-invalid @enderror" placeholder="YYYY/MM/DD" id="flatpickr-From-Date" readonly="readonly" /> --}}
+            <input wire:model='acquisitionDate'type="text" class="form-control flatpickr-input active @error('acquisitionDate') is-invalid @enderror" placeholder="YYYY/MM/DD" id="flatpickr-Acquisition-Date" readonly="readonly" />
           </div>
 
           <div class="col-md-6 col-12 mb-4">
@@ -111,5 +113,19 @@
 </div>
 
 @push('custom-scripts')
+<script src="{{asset('assets/vendor/libs/select2/select2.js')}}"></script>
+<script src="{{asset('assets/vendor/libs/flatpickr/flatpickr.js')}}"></script>
+
+<script>
+  $(document).ready(function () {
+    const flatpickrAcquisitionDate = document.querySelector('#flatpickr-Acquisition-Date');
+    if (typeof flatpickrAcquisitionDate != undefined) {
+      flatpickrAcquisitionDate.flatpickr({
+        dateFormat: "Y-m-d",
+      });
+    }
+  });
+</script>
+
 
 @endpush
