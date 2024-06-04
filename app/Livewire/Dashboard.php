@@ -33,17 +33,13 @@ class Dashboard extends Component
 
     public $isEdit = false;
 
-    public $fromDate;
-
-    public $toDate;
-
-    public $startAt;
-
-    public $endAt;
-
     public $leaveRecords = [];
 
     public $newLeaveInfo = [];
+
+    public $fromDateLimit;
+
+    public $employeePhoto = 'profile-photos/.default-photo.jpg';
 
     public function mount()
     {
@@ -62,7 +58,8 @@ class Dashboard extends Component
             //
         }
 
-        $this->changelogs = Changelog::all();
+        $this->fromDateLimit = Carbon::now()->subDays(7)->format('Y-m-d');
+        $this->changelogs = Changelog::latest()->get();
     }
 
     public function render()
@@ -76,6 +73,11 @@ class Dashboard extends Component
         return view('livewire.dashboard');
     }
 
+    public function updatedSelectedEmployeeId()
+    {
+        $this->employeePhoto = Employee::find($this->selectedEmployeeId)?->profile_photo_path;
+    }
+
     public function sendPendingMessages()
     {
         if ($this->messagesStatus['unsent'] != 0) {
@@ -86,14 +88,43 @@ class Dashboard extends Component
         }
     }
 
+    public function showCreateLeaveModal()
+    {
+        $this->dispatch('clearSelect2Values');
+        $this->reset('selectedEmployeeId', 'employeePhoto', 'newLeaveInfo');
+    }
+
     public function submitLeave()
     {
+        $this->validate(
+            [
+                'selectedEmployeeId' => 'required',
+                'newLeaveInfo.LeaveId' => 'required',
+                'newLeaveInfo.fromDate' => 'required|date',
+                'newLeaveInfo.toDate' => 'required|date',
+            ],
+            null,
+            [
+                'selectedEmployeeId' => 'Employee',
+                'newLeaveInfo.LeaveId' => 'Type',
+                'newLeaveInfo.fromDate' => 'From Date',
+                'newLeaveInfo.toDate' => 'To Date',
+            ]);
+
         $this->isEdit ? $this->editLeave() : $this->addLeave();
     }
 
     public function addLeave()
     {
         $employee = Employee::find($this->selectedEmployeeId);
+
+        if (substr($this->newLeaveInfo['LeaveId'], 1, 1) == 1 && ($this->newLeaveInfo['startAt'] != null || $this->newLeaveInfo['endAt'] != null)) {
+            session()->flash('error', 'Cann\'t add daily leave with time!');
+            $this->dispatch('closeModal', elementId: '#leaveModal');
+            $this->dispatch('toastr', type: 'error'/* , title: 'Done!' */ , message: 'Requires Attention!');
+
+            return;
+        }
 
         if ($this->newLeaveInfo['fromDate'] > $this->newLeaveInfo['toDate']) {
             session()->flash('error', 'Check the dates entered. "From Date" cannot be greater than "To Date"');
@@ -103,7 +134,7 @@ class Dashboard extends Component
             return;
         }
 
-        if ($this->startAt > $this->endAt) {
+        if ($this->newLeaveInfo['startAt'] > $this->newLeaveInfo['endAt']) {
             session()->flash('error', 'Check the times entered. "Start At" cannot be greater than "End To"');
             $this->dispatch('closeModal', elementId: '#leaveModal');
             $this->dispatch('toastr', type: 'error'/* , title: 'Done!' */ , message: 'Requires Attention!');
@@ -114,8 +145,9 @@ class Dashboard extends Component
         $employee->leaves()->attach($this->newLeaveInfo['LeaveId'], [
             'from_date' => $this->newLeaveInfo['fromDate'],
             'to_date' => $this->newLeaveInfo['toDate'],
-            'start_at' => $this->startAt,
-            'end_at' => $this->endAt,
+            'start_at' => $this->newLeaveInfo['startAt'],
+            'end_at' => $this->newLeaveInfo['endAt'],
+            'note' => $this->newLeaveInfo['note'],
             'created_by' => Auth::user()->name,
             'updated_by' => Auth::user()->name,
             'created_at' => now(),

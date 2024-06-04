@@ -61,7 +61,7 @@
                     <li><a class="dropdown-item" href="{{ route('attendance-fingerprints') }}"><i class="ti ti-menu-2 ti-xs me-1"></i> Fingerprint</a></li>
                   @endcan
                   @can('create leaves')
-                    <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#leaveModal" href=""><i class="ti ti-menu-2 ti-xs me-1"></i> Leave</a></li>
+                    <li><a wire:click='showCreateLeaveModal' class="dropdown-item" data-bs-toggle="modal" data-bs-target="#leaveModal" href=""><i class="ti ti-menu-2 ti-xs me-1"></i> Leave</a></li>
                   @endcan
                 </ul>
               </div>
@@ -331,7 +331,7 @@
   <div class="row mt-4">
     <div class="col">
       <div class="card">
-        <h5 class="card-header">Change Logs</h5>
+        <h5 class="card-header">Changelog</h5>
         <div class="card-body">
           @foreach ($changelogs as $changelog)
             <small all class="text-light fw-semibold">{{ $changelog->version }}</small>
