@@ -40,18 +40,18 @@ class Messages extends Component
     {
         $this->selectedEmployee = Employee::first();
         $this->batches = Discount::where('is_sent', 0)->distinct()->pluck('batch')->toArray();
+
+        // try {
+        //     $this->accountBalance = $this->CheckAccountBalance();
+        // } catch (Throwable $th) {
+        //     //
+        // }
     }
 
     public function render()
     {
-        try {
-            $this->accountBalance = $this->CheckAccountBalance();
-            $this->messagesStatus = Message::selectRaw('SUM(CASE WHEN is_sent = 1 THEN 1 ELSE 0 END) AS sent, SUM(CASE WHEN is_sent = 0 THEN 1 ELSE 0 END) AS unsent')
-                ->first();
-            $this->messagesStatus = ['sent' => Number::format($this->messagesStatus['sent'] != null ? $this->messagesStatus['sent'] : 0), 'unsent' => Number::format($this->messagesStatus['unsent'] != null ? $this->messagesStatus['unsent'] : 0)];
-        } catch (Throwable $th) {
-            //
-        }
+        $this->messagesStatus = Message::selectRaw('SUM(CASE WHEN is_sent = 1 THEN 1 ELSE 0 END) AS sent, SUM(CASE WHEN is_sent = 0 THEN 1 ELSE 0 END) AS unsent')->first();
+        $this->messagesStatus = ['sent' => Number::format($this->messagesStatus['sent'] != null ? $this->messagesStatus['sent'] : 0), 'unsent' => Number::format($this->messagesStatus['unsent'] != null ? $this->messagesStatus['unsent'] : 0)];
 
         $this->employees = Employee::where('first_name', 'like', '%'.$this->searchTerm.'%')->get();
         $this->messages = Message::where('employee_id', $this->selectedEmployee->id)->get();
@@ -90,10 +90,13 @@ class Messages extends Component
 
     public function generateMessages()
     {
-        $employeesDiscounts = Employee::with(['discounts' => function ($query) {
-            $query->whereBetween('date', explode(' to ', $this->batch));
+        $employeesDiscounts = Employee::with(['timelines', 'discounts' => function ($query) {
             $query->where('is_sent', 0)->where('batch', $this->selectedBatch);
-        }])->where('is_active', 1)->get();
+        }])/* ->whereHas('timelines', function ($query) {
+            $query->where('department_id', 1)->where('end_date', null);
+        }) */ ->where('is_active', 1)->get();
+
+        $dates = explode(' to ', $this->selectedBatch);
 
         foreach ($employeesDiscounts as $employee) {
             $cashDiscountCount = 0;
@@ -106,7 +109,7 @@ class Messages extends Component
                     $discount->save();
                 }
 
-                $messageBody = 'السيد/ة '.$employee->full_name.'، يرجى الاطلاع على التفاصيل التالية:
+                $messageBody = 'عزيزي صاحب المعرف رقم ('.$employee->id.')، يرجى الاطلاع على التفاصيل التالية وذلك لغاية ('.$dates[1].'):
 
 - الحسم المالي: '.$cashDiscountCount.'
 

@@ -178,7 +178,7 @@
             <div class="d-flex overflow-hidden align-items-center">
               <i class="ti ti-menu-2 ti-sm cursor-pointer d-lg-none d-block me-2" data-bs-toggle="sidebar" data-overlay data-target="#app-chat-contacts"></i>
               <div class="flex-shrink-0 avatar">
-                <img src="{{ asset($selectedEmployee->getEmployeePhoto()) }}" alt="Avatar" class="rounded-circle" data-bs-toggle="sidebar" data-overlay data-target="#app-chat-sidebar-right">
+                <img src="{{ asset($selectedEmployee->profile_photo_path) }}" alt="Avatar" class="rounded-circle" data-bs-toggle="sidebar" data-overlay data-target="#app-chat-sidebar-right">
               </div>
               <div class="chat-contact-info flex-grow-1 ms-2">
                 <h6 class="m-0">{{ $selectedEmployee->full_name }}</h6>
