@@ -36,6 +36,7 @@ class Employee extends Model
         'delay_counter',
         'hourly_counter',
         'is_active',
+        'profile_photo_path',
     ];
 
     public function user(): HasOne
@@ -66,7 +67,7 @@ class Employee extends Model
     public function leaves(): BelongsToMany
     {
         return $this->belongsToMany(Leave::class)
-            ->withPivot('id', 'from_date', 'to_date', 'start_at', 'end_at', 'is_authorized', 'is_checked',
+            ->withPivot('id', 'from_date', 'to_date', 'start_at', 'end_at', 'note', 'is_authorized', 'is_checked',
                 'created_by', 'updated_by', 'deleted_by', 'created_at', 'updated_at', 'deleted_at');
     }
 

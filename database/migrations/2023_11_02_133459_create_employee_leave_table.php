@@ -19,6 +19,7 @@ return new class extends Migration
             $table->date('to_date');
             $table->time('start_at')->nullable();
             $table->time('end_at')->nullable();
+            $table->string('note')->nullable();
             $table->boolean('is_authorized')->default(0);
             $table->boolean('is_checked')->default(0);
             $table->string('created_by');
