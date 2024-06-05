@@ -278,7 +278,7 @@
                 <th>Employee</th>
                 <th class="col-1">Type</th>
                 <th style="text-align: center">Details</th>
-                <th class="col-1">Actions</th>
+                <th style="text-align: center">Actions</th>
               </tr>
             </thead>
             <tbody class="table-border-bottom-0">
@@ -294,13 +294,18 @@
                       <span class="badge bg-label-secondary me-1">{{ Carbon::parse($leave->start_at)->format('H:i') . ' --> ' . Carbon::parse($leave->end_at)->format('H:i') }}</span>
                     @endif
                   </td>
-                  <td>
+                  <td style="text-align: center">
                     <button type="button" class="btn btn-sm btn-tr rounded-pill btn-icon btn-outline-secondary waves-effect">
-                      <span class="ti ti-pencil"></span>
+                      <span wire:click.prevent="showEditLeaveModal({{ $leave->id }})"  data-bs-toggle="modal" data-bs-target="#leaveModal" class="ti ti-pencil"></span>
                     </button>
                     <button type="button" class="btn btn-sm btn-tr rounded-pill btn-icon btn-outline-danger waves-effect">
-                      <span class="ti ti-trash"></span>
+                      <span wire:click.prevent="confirmDeleteLeave({{ $leave->id }})" class="ti ti-trash"></span>
                     </button>
+                    @if ($confirmedId === $leave->id)
+                    <button wire:click.prevent="destroyLeave" type="button" class="btn btn-xs btn-danger waves-effect waves-light">
+                      Sure?
+                    </button>
+                    @endif
                   </td>
                 </tr>
               @empty

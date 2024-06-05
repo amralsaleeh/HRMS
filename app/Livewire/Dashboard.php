@@ -31,11 +31,24 @@ class Dashboard extends Component
 
     public $leaveTypes;
 
+    public $employeeLeaveId;
+
+    public $employeeLeaveRecord;
+
     public $isEdit = false;
+
+    public $confirmedId;
 
     public $leaveRecords = [];
 
-    public $newLeaveInfo = [];
+    public $newLeaveInfo = [
+        'LeaveId' => null,
+        'fromDate' => null,
+        'toDate' => null,
+        'startAt' => null,
+        'endAt' => null,
+        'note' => null,
+    ];
 
     public $fromDateLimit;
 
@@ -91,7 +104,69 @@ class Dashboard extends Component
     public function showCreateLeaveModal()
     {
         $this->dispatch('clearSelect2Values');
-        $this->reset('selectedEmployeeId', 'employeePhoto', 'newLeaveInfo');
+        $this->reset('selectedEmployeeId', 'employeePhoto', 'newLeaveInfo', 'isEdit');
+    }
+
+    public function createLeave()
+    {
+        $employee = Employee::find($this->selectedEmployeeId);
+
+        $employee->leaves()->attach($this->newLeaveInfo['LeaveId'], [
+            'from_date' => $this->newLeaveInfo['fromDate'],
+            'to_date' => $this->newLeaveInfo['toDate'],
+            'start_at' => $this->newLeaveInfo['startAt'],
+            'end_at' => $this->newLeaveInfo['endAt'],
+            'note' => $this->newLeaveInfo['note'],
+            'created_by' => Auth::user()->name,
+            'updated_by' => Auth::user()->name,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        $this->dispatch('closeModal', elementId: '#leaveModal');
+        $this->dispatch('toastr', type: 'success'/* , title: 'Done!' */ , message: 'Going Well!');
+    }
+
+    public function showEditLeaveModal($id)
+    {
+        $this->reset('newLeaveInfo');
+
+        $this->isEdit = true;
+        $this->employeeLeaveId = $id;
+
+        $record = DB::table('employee_leave')->where('id', $this->employeeLeaveId)->first();
+
+        $this->selectedEmployeeId = $record->employee_id;
+        $this->newLeaveInfo = [
+            'LeaveId' => $record->leave_id,
+            'fromDate' => $record->from_date,
+            'toDate' => $record->to_date,
+            'startAt' => $record->start_at,
+            'endAt' => $record->end_at,
+            'note' => $record->note,
+        ];
+
+        $this->dispatch('setSelect2Values', employeeId: $this->selectedEmployeeId, leaveId: $record->leave_id);
+    }
+
+    public function updateLeave()
+    {
+        DB::table('employee_leave')->where('id', $this->employeeLeaveId)->update([
+            'employee_id' => $this->selectedEmployeeId,
+            'leave_id' => $this->newLeaveInfo['LeaveId'],
+            'from_date' => $this->newLeaveInfo['fromDate'],
+            'to_date' => $this->newLeaveInfo['toDate'],
+            'start_at' => $this->newLeaveInfo['startAt'],
+            'end_at' => $this->newLeaveInfo['endAt'],
+            'note' => $this->newLeaveInfo['note'],
+            'updated_by' => Auth::user()->name,
+            'updated_at' => now(),
+        ]);
+
+        $this->dispatch('closeModal', elementId: '#leaveModal');
+        $this->dispatch('toastr', type: 'success'/* , title: 'Done!' */ , message: 'Going Well!');
+
+        $this->reset('isEdit', 'newLeaveInfo');
     }
 
     public function submitLeave()
@@ -110,13 +185,6 @@ class Dashboard extends Component
                 'newLeaveInfo.fromDate' => 'From Date',
                 'newLeaveInfo.toDate' => 'To Date',
             ]);
-
-        $this->isEdit ? $this->editLeave() : $this->addLeave();
-    }
-
-    public function addLeave()
-    {
-        $employee = Employee::find($this->selectedEmployeeId);
 
         if (substr($this->newLeaveInfo['LeaveId'], 1, 1) == 1 && ($this->newLeaveInfo['startAt'] != null || $this->newLeaveInfo['endAt'] != null)) {
             session()->flash('error', 'Cann\'t add daily leave with time!');
@@ -142,20 +210,19 @@ class Dashboard extends Component
             return;
         }
 
-        $employee->leaves()->attach($this->newLeaveInfo['LeaveId'], [
-            'from_date' => $this->newLeaveInfo['fromDate'],
-            'to_date' => $this->newLeaveInfo['toDate'],
-            'start_at' => $this->newLeaveInfo['startAt'],
-            'end_at' => $this->newLeaveInfo['endAt'],
-            'note' => $this->newLeaveInfo['note'],
-            'created_by' => Auth::user()->name,
-            'updated_by' => Auth::user()->name,
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
+        $this->isEdit ? $this->updateLeave() : $this->createLeave();
+    }
 
-        $this->dispatch('closeModal', elementId: '#leaveModal');
+    public function confirmDeleteLeave($id)
+    {
+        $this->confirmedId = $id;
+    }
+
+    public function destroyLeave()
+    {
+        DB::table('employee_leave')->where('id', $this->confirmedId)->delete();
         $this->dispatch('toastr', type: 'success'/* , title: 'Done!' */ , message: 'Going Well!');
+        $this->confirmedId = null; // Reset the confirmedId after deletion
     }
 
     public function getEmployeeName($id)

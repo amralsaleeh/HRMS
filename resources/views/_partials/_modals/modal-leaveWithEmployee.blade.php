@@ -208,6 +208,17 @@
     <script>
       'use strict';
 
+      window.addEventListener('setSelect2Values', event => {
+        $(function () {
+          $("#select2selectedEmployeeId").val(event.detail.employeeId).trigger('change');
+          $("#select2LeaveId").val(event.detail.leaveId).trigger('change');
+        });
+      })
+    </script>
+
+    <script>
+      'use strict';
+
       window.addEventListener('clearSelect2Values', event => {
         $(function () {
           $('#select2selectedEmployeeId').select2('val', '0')
