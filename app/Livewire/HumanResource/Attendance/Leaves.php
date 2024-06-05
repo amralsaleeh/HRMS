@@ -4,9 +4,11 @@ namespace App\Livewire\HumanResource\Attendance;
 
 use App\Imports\ImportLeaves;
 use App\Livewire\Sections\Navbar\Navbar;
+use App\Models\Center;
 use App\Models\Employee;
 use App\Models\Leave;
 use App\Notifications\DefaultNotification;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Notification;
@@ -26,11 +28,11 @@ class Leaves extends Component
     */
 
     // Variables - Start //
-    public $employees = [];
+    public $activeEmployees = [];
 
     public $selectedEmployee;
 
-    public $selectedEmployeeId = 1;
+    public $selectedEmployeeId;
 
     public $dateRange;
 
@@ -43,8 +45,6 @@ class Leaves extends Component
     public $startAt;
 
     public $endAt;
-
-    // public $leave;
 
     public $isEdit = false;
 
@@ -65,10 +65,19 @@ class Leaves extends Component
 
     public function mount()
     {
-        $this->employees = Employee::all();
-        $this->selectedEmployee = Employee::find(1);
+        $this->selectedEmployeeId = Auth::user()->employee_id;
+        $this->selectedEmployee = Employee::find(Auth::user()->employee_id);
 
         $this->leaveTypes = Leave::all();
+
+        $user = Employee::find(Auth::user()->employee_id);
+        $center = Center::find($user->timelines()->where('end_date', null)->first()->center_id);
+        $this->activeEmployees = $center->activeEmployees()->get();
+
+        $currentMonth = Carbon::now();
+        $previousMonth = $currentMonth->copy()->subMonth();
+        $this->dateRange = $previousMonth->format('Y-n-1').' to '.$currentMonth->format('Y-n-1');
+
     }
 
     public function render()

@@ -31,8 +31,8 @@
                 <div wire:ignore class="col-12">
                   <label class="form-label">Employee</label>
                   <select wire:model='selectedEmployeeId' class="select2 form-control" id="select2selectedEmployeeId">
-                    @forelse ($employees as $employee)
-                      <option value="{{ $employee->id }}">{{ $employee->id . ' - ' . $employee->full_name }}</option>
+                    @forelse ($activeEmployees as $employee)
+                      <option value="{{ $employee->id }}">{{ $employee->id . ' - ' . $employee->first_name . ' ' . $employee->father_name . ' ' . $employee->last_name }}</option>
                     @empty
                       <option value="0" disabled>No Employees Found!</option>
                     @endforelse
@@ -40,6 +40,14 @@
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+
+        <div class="border-bottom p-3 my-sm-0 mb-3">
+          <div class="col-12">
+            <label class="form-label">Date Range</label>
+            <input wire:model='dateRange' type="text" class="form-control flatpickr-input active"
+                   id="flatpickr-range" placeholder="YYYY-MM-DD to YYYY-MM-DD" readonly="readonly">
           </div>
         </div>
 
@@ -56,14 +64,6 @@
                 @endforelse
               </select>
             </div>
-          </div>
-        </div>
-
-        <div class="border-bottom p-3 my-sm-0 mb-3">
-          <div class="col-12">
-            <label class="form-label">Date Range</label>
-            <input wire:model='dateRange' type="text" class="form-control flatpickr-input active"
-                   id="flatpickr-range" placeholder="YYYY-MM-DD to YYYY-MM-DD" readonly="readonly">
           </div>
         </div>
 
@@ -85,7 +85,7 @@
               <div class="row d-flex justify-content-between">
                 <div class="col-8 d-flex overflow-hidden align-items-center">
                   <div class="flex-shrink-0 avatar">
-                    <img src="{{ asset($selectedEmployee->getEmployeePhoto()) }}" class="rounded-circle" alt="Avatar">
+                    <img src="{{ Storage::disk("public")->url($selectedEmployee->profile_photo_path) }}" class="rounded-circle" alt="Avatar">
                   </div>
                   <div class="chat-contact-info flex-grow-1 ms-2">
                     <h6 class="m-0">{{ $selectedEmployee->full_name }}</h6>
