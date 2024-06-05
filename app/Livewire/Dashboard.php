@@ -45,9 +45,9 @@ class Dashboard extends Component
     {
         $user = Employee::find(Auth::user()->employee_id);
         $center = Center::find($user->timelines()->where('end_date', null)->first()->center_id);
+        $this->activeEmployees = $center->activeEmployees()->get();
 
         $this->leaveTypes = Leave::all();
-        $this->activeEmployees = $center->activeEmployees()->get();
 
         try {
             $this->accountBalance = $this->CheckAccountBalance();

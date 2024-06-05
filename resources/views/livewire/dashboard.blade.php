@@ -269,7 +269,7 @@
   <div class="row">
     <div class="col">
       <div class="card">
-        <h5 class="card-header">Leaves Records</h5>
+        <h5 class="card-header">Today Leaves</h5>
         <div class="table-responsive text-nowrap">
           <table class="table table-hover">
             <thead>
