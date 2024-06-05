@@ -6,6 +6,7 @@ use App\Jobs\sendPendingMessages;
 use App\Models\Center;
 use App\Models\Changelog;
 use App\Models\Employee;
+use App\Models\EmployeeLeave;
 use App\Models\Leave;
 use App\Models\Message;
 use Carbon\Carbon;
@@ -77,8 +78,7 @@ class Dashboard extends Component
 
     public function render()
     {
-        $this->leaveRecords = DB::table('employee_leave')
-            ->where('created_by', Auth::user()->name)
+        $this->leaveRecords = EmployeeLeave::where('created_by', Auth::user()->name)
             ->whereDate('created_at', Carbon::today()->toDate())
             ->orderBy('created_at')
             ->get();
@@ -109,19 +109,18 @@ class Dashboard extends Component
 
     public function createLeave()
     {
-        $employee = Employee::find($this->selectedEmployeeId);
-
-        $employee->leaves()->attach($this->newLeaveInfo['LeaveId'], [
+        EmployeeLeave::firstOrCreate([
+            'employee_id' => $this->selectedEmployeeId,
+            'leave_id' => $this->newLeaveInfo['LeaveId'],
             'from_date' => $this->newLeaveInfo['fromDate'],
             'to_date' => $this->newLeaveInfo['toDate'],
             'start_at' => $this->newLeaveInfo['startAt'],
             'end_at' => $this->newLeaveInfo['endAt'],
             'note' => $this->newLeaveInfo['note'],
-            'created_by' => Auth::user()->name,
-            'updated_by' => Auth::user()->name,
-            'created_at' => now(),
-            'updated_at' => now(),
         ]);
+
+        session()->flash('success', 'Success, record created successfully!');
+        $this->dispatch('scrollToTop');
 
         $this->dispatch('closeModal', elementId: '#leaveModal');
         $this->dispatch('toastr', type: 'success'/* , title: 'Done!' */ , message: 'Going Well!');
@@ -151,7 +150,7 @@ class Dashboard extends Component
 
     public function updateLeave()
     {
-        DB::table('employee_leave')->where('id', $this->employeeLeaveId)->update([
+        EmployeeLeave::find($this->employeeLeaveId)->update([
             'employee_id' => $this->selectedEmployeeId,
             'leave_id' => $this->newLeaveInfo['LeaveId'],
             'from_date' => $this->newLeaveInfo['fromDate'],
@@ -159,9 +158,10 @@ class Dashboard extends Component
             'start_at' => $this->newLeaveInfo['startAt'],
             'end_at' => $this->newLeaveInfo['endAt'],
             'note' => $this->newLeaveInfo['note'],
-            'updated_by' => Auth::user()->name,
-            'updated_at' => now(),
         ]);
+
+        session()->flash('success', 'Success, record updated successfully!');
+        $this->dispatch('scrollToTop');
 
         $this->dispatch('closeModal', elementId: '#leaveModal');
         $this->dispatch('toastr', type: 'success'/* , title: 'Done!' */ , message: 'Going Well!');
@@ -220,9 +220,10 @@ class Dashboard extends Component
 
     public function destroyLeave()
     {
-        DB::table('employee_leave')->where('id', $this->confirmedId)->delete();
+        EmployeeLeave::find($this->confirmedId)->delete();
+
         $this->dispatch('toastr', type: 'success'/* , title: 'Done!' */ , message: 'Going Well!');
-        $this->confirmedId = null; // Reset the confirmedId after deletion
+        $this->confirmedId = null;
     }
 
     public function getEmployeeName($id)

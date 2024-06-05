@@ -62,6 +62,15 @@
   })
 </script>
 
+<script>
+  window.addEventListener('scrollToTop', event => {
+     window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+  })
+</script>
+
 <!-- END: Theme JS-->
 
 <!-- Pricing Modal JS-->
