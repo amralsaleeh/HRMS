@@ -44,6 +44,11 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
     Route::group(['middleware' => ['role:Admin|HR']], function () {
         Route::prefix('attendance')->group(function () {
             Route::get('/fingerprints', Fingerprints::class)->name('attendance-fingerprints');
+        });
+    });
+
+    Route::group(['middleware' => ['role:Admin|HR|CC|CR']], function () {
+        Route::prefix('attendance')->group(function () {
             Route::get('/leaves', Leaves::class)->name('attendance-leaves');
         });
     });

@@ -9,23 +9,25 @@
     },
     {
       "menuHeader": "Human resource",
-      "role": ["AM", "HR"]
+      "role": ["AM", "HR", "CC", "CR"]
     },
     {
       "name": "Attendance",
       "icon": "menu-icon tf-icons ti ti-door-exit",
       "slug": "attendance",
-      "role": ["HR"],
+      "role": ["HR", "CC", "CR"],
       "submenu": [
         {
           "url": "attendance/fingerprints",
           "name": "Fingerprints",
-          "slug": "attendance-fingerprints"
+          "slug": "attendance-fingerprints",
+          "role": ["HR"]
         },
         {
           "url": "attendance/leaves",
           "name": "Leaves",
-          "slug": "attendance-leaves"
+          "slug": "attendance-leaves",
+          "role": ["CC", "CR"]
         }
       ]
     },

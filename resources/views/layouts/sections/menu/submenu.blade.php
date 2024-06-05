@@ -1,7 +1,7 @@
 <ul class="menu-sub">
   @if (isset($menu))
     @foreach ($menu as $submenu)
-
+    @if ($role === 'Admin' || isset($submenu->role) && in_array($role, $submenu->role))
     {{-- active menu method --}}
     @php
       $activeClass = null;
@@ -40,6 +40,7 @@
           @include('layouts.sections.menu.submenu',['menu' => $submenu->submenu])
         @endif
       </li>
+    @endif
     @endforeach
   @endif
 </ul>
