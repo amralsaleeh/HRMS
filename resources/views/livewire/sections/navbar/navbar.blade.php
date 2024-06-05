@@ -108,7 +108,7 @@
             <!-- Progress Bar -->
 
             <!-- Language -->
-            <li class="nav-item dropdown-language dropdown me-2 me-xl-1">
+            {{-- <li class="nav-item dropdown-language dropdown me-2 me-xl-1">
               <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
                 <i class="fi fi-us fis rounded-circle me-1 fs-3"></i>
               </a>
@@ -126,7 +126,7 @@
                   </a>
                 </li>
               </ul>
-            </li>
+            </li> --}}
             <!-- Language -->
 
             <!-- Notification -->
