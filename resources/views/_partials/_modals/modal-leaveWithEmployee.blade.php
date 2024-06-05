@@ -16,7 +16,7 @@
           </div>
           <div class="d-flex justify-content-center mb-4">
             <div class="avatar" style="width: 6rem; height: 6rem">
-              <img src="{{ Storage::disk("public")->url($employeePhoto) }}" alt="Avatar" class="rounded-circle">
+              <img src="{{ Storage::disk("public")->exists($employeePhoto) ? Storage::disk("public")->url($employeePhoto) : Storage::disk("public")->url('profile-photos/.default-photo.jpg') }}" alt="Avatar" class="rounded-circle">
             </div>
           </div>
           <form wire:submit="submitLeave">
