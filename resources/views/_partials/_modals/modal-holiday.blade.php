@@ -28,11 +28,11 @@
           </div>
           <div class="col-md-6 col-12 mb-4">
             <label class="form-label">From Date</label>
-            <input wire:model='fromDate' type="date" class="form-control @error('fromDate') is-invalid @enderror" placeholder="YYYY/MM/DD" id="fromDate" autocomplete="off" />
+            <input wire:model='fromDate' type="text" class="form-control flatpickr-input active @error('fromDate') is-invalid @enderror" placeholder="YYYY/MM/DD" id="flatpickr-From-Date" readonly="readonly"/>
           </div>
           <div class="col-md-6 col-12 mb-4">
             <label class="form-label">To Date</label>
-            <input wire:model='toDate' type="date" class="form-control @error('toDate') is-invalid @enderror" placeholder="YYYY/MM/DD" id="toDate" autocomplete="off" />
+            <input wire:model='toDate' type="text" class="form-control flatpickr-input active @error('toDate') is-invalid @enderror" placeholder="YYYY/MM/DD" id="flatpickr-To-Date" readonly="readonly"/>
           </div>
 
           <div class="col-12 mb-4">
@@ -78,6 +78,26 @@
         var data = $('#selectCenters').select2("val");
     @this.set('centers', data);
     });
+  });
+</script>
+
+<script>
+  $(document).ready(function () {
+    const flatpickrFromDate = document.querySelector('#flatpickr-From-Date');
+    if (typeof flatpickrFromDate != undefined) {
+      flatpickrFromDate.flatpickr({
+        dateFormat: "Y-m-d",
+      });
+    }
+  });
+
+  $(document).ready(function () {
+    const flatpickrToDate = document.querySelector('#flatpickr-To-Date');
+    if (typeof flatpickrToDate != undefined) {
+      flatpickrToDate.flatpickr({
+        dateFormat: "Y-m-d",
+      });
+    }
   });
 </script>
 
