@@ -1,12 +1,12 @@
 <?php
 
 use App\Http\Controllers\language\LanguageController;
-use App\Livewire\AM\AM;
 use App\Livewire\Assets\Categories;
 use App\Livewire\Assets\Inventory;
 use App\Livewire\ContactUs;
 use App\Livewire\Dashboard;
 use App\Livewire\HumanResource\Attendance\Fingerprints;
+use App\Livewire\HumanResource\Attendance\Leaves;
 use App\Livewire\HumanResource\Discounts;
 use App\Livewire\HumanResource\Holidays;
 use App\Livewire\HumanResource\Messages;
@@ -46,13 +46,13 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
         });
     });
 
-    Route::group(['middleware' => ['role:Admin|HR|CC|CR']], function () {
+    Route::group(['middleware' => ['role:Admin|HR|CC']], function () {
         Route::prefix('attendance')->group(function () {
-            Route::get('/leaves', ComingSoon::class)->name('attendance-leaves');
+            Route::get('/leaves', Leaves::class)->name('attendance-leaves');
         });
     });
 
-    Route::group(['middleware' => ['role:Admin|AM|HR']], function () {
+    Route::group(['middleware' => ['role:Admin|HR']], function () {
         Route::prefix('structure')->group(function () {
             Route::get('/centers', Centers::class)->name('structure-centers');
             Route::get('/departments', Departments::class)->name('structure-departments');
@@ -68,7 +68,7 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
         Route::get('/holidays', Holidays::class)->name('holidays');
     });
 
-    Route::group(['middleware' => ['role:Admin|AM|HR']], function () {
+    Route::group(['middleware' => ['role:Admin|HR']], function () {
         Route::get('/statistics', Statistics::class)->name('statistics');
     });
 
@@ -80,7 +80,7 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
         });
     });
 
-    // 👉 AM
+    // 👉 Assets
     Route::group(['middleware' => ['role:Admin|AM']], function () {
         Route::get('/assets/inventory', Inventory::class)->name('inventory');
         Route::get('/assets/categories', Categories::class)->name('categories');

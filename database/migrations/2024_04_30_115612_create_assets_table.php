@@ -16,6 +16,7 @@ return new class extends Migration
             $table->primary('id');
             $table->string('old_id')->nullable();
             $table->string('serial_number')->nullable();
+            $table->enum('class', ['Electronic', 'Furniture', 'Gear']);
             $table->enum('status', ['Good', 'Fine', 'Bad', 'Damaged']);
             $table->string('description')->nullable();
             $table->boolean('in_service')->default(1);

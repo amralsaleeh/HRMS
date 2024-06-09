@@ -299,7 +299,7 @@
                       <span wire:click.prevent="showEditLeaveModal({{ $leave->id }})"  data-bs-toggle="modal" data-bs-target="#leaveModal" class="ti ti-pencil"></span>
                     </button>
                     <button type="button" class="btn btn-sm btn-tr rounded-pill btn-icon btn-outline-danger waves-effect">
-                      <span wire:click.prevent="confirmDeleteLeave({{ $leave->id }})" class="ti ti-trash"></span>
+                      <span wire:click.prevent="confirmDestroyLeave({{ $leave->id }})" class="ti ti-trash"></span>
                     </button>
                     @if ($confirmedId === $leave->id)
                     <button wire:click.prevent="destroyLeave" type="button" class="btn btn-xs btn-danger waves-effect waves-light">

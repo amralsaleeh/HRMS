@@ -5,7 +5,7 @@
   @endpush
 
   <div wire:ignore.self class="modal fade" id="leaveModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-simple">
+    <div class="modal-dialog modal-xl modal-simple">
       <div class="modal-content p-3 p-md-5">
         <div class="modal-body">
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -15,9 +15,17 @@
             <p class="text-muted">Please fill out the following information</p>
           </div>
           <form wire:submit="submitLeave" class="row g-3">
-
-            <div wire:ignore class="col-12 mb-4">
-              <label class="form-label w-100">Name</label>
+            @if ($errors->any())
+            <div class="alert alert-danger">
+              <ul>
+                @foreach ($errors->all() as $error)
+                  <li>{{ $error }}</li>
+                @endforeach
+              </ul>
+            </div>
+            @endif
+            <div wire:ignore class="col-12">
+              <label class="form-label w-100">Type</label>
               <select wire:model='newLeaveInfo.LeaveId' name="updated_name" class="select2 form-control" id="select2LeaveId">
                 <option value=""></option>
                 @forelse ($leaveTypes as $leaveType)
@@ -27,21 +35,25 @@
                 @endforelse
               </select>
             </div>
-            <div class="col-md-6 col-12 mb-4">
+            <div class="col-md-3 col-12">
               <label class="form-label">From Date</label>
-              <input  wire:model='newLeaveInfo.fromDate' type="text" class="form-control flatpickr-input active  @error('fromDate') is-invalid @enderror"  placeholder="YYYY-MM-DD" id="flatpickr-date-from" readonly="readonly">
+              <input  wire:model='newLeaveInfo.fromDate' type="text" class="form-control flatpickr-input active  @error('newLeaveInfo.fromDate') is-invalid @enderror" placeholder="YYYY-MM-DD" id="flatpickr-date-from" readonly="readonly">
             </div>
-            <div class="col-md-6 col-12 mb-4">
+            <div class="col-md-3 col-12">
               <label class="form-label w-100">To Date</label>
-              <input wire:model='newLeaveInfo.toDate'  class="form-control flatpickr-input active @error('toDate') is-invalid @enderror" type="text" placeholder="YYYY-MM-DD" id="flatpickr-date-to" readonly="readonly" />
+              <input wire:model='newLeaveInfo.toDate'  class="form-control flatpickr-input active @error('newLeaveInfo.toDate') is-invalid @enderror" type="text" placeholder="YYYY-MM-DD" id="flatpickr-date-to" readonly="readonly" />
             </div>
-            <div class="col-md-6 col-12 mb-4">
+            <div class="col-md-3 col-12">
               <label class="form-label w-100">Start At</label>
-              <input wire:model='startAt' class="form-control @error('startAt') is-invalid @enderror" type="text"  placeholder="HH:MM" id="startAt" autocomplete="off" />
+              <input wire:model='newLeaveInfo.startAt' class="form-control @error('newLeaveInfo.startAt') is-invalid @enderror" type="text" placeholder="HH:MM" id="startAt" autocomplete="off" />
             </div>
-            <div class="col-md-6 col-12 mb-4">
+            <div class="col-md-3 col-12">
               <label class="form-label w-100">End At</label>
-              <input wire:model='endAt' class="form-control @error('endAt') is-invalid @enderror" type="text"  placeholder="HH:MM" id="endAt" autocomplete="off" />
+              <input wire:model='newLeaveInfo.endAt' class="form-control @error('newLeaveInfo.endAt') is-invalid @enderror" type="text" placeholder="HH:MM" id="endAt" autocomplete="off" />
+            </div>
+            <div class="col-12 mb-4">
+              <label class="form-label w-100">Note</label>
+              <input wire:model='newLeaveInfo.note' class="form-control" type="text" autocomplete="off" />
             </div>
             <div class="col-12 text-center">
               <button type="submit" class="btn btn-primary me-sm-3 me-1">Submit</button>
@@ -117,7 +129,6 @@
             var $this = $(this);
             $this.wrap('<div class="position-relative"></div>').select2({
               placeholder: 'Select..',
-              allowClear: true,
               dropdownParent: $this.parent()
             });
           });
@@ -129,5 +140,28 @@
         });
       });
     </script>
+
+    <script>
+      'use strict';
+
+      window.addEventListener('setSelect2Values', event => {
+        $(function () {
+          $("#select2selectedEmployeeId").val(event.detail.employeeId).trigger('change');
+          $("#select2LeaveId").val(event.detail.leaveId).trigger('change');
+        });
+      })
+    </script>
+
+    <script>
+      'use strict';
+
+      window.addEventListener('clearSelect2Values', event => {
+        $(function () {
+          // $('#select2selectedEmployeeId').select2('val', '0')
+          $('#select2LeaveId').select2('val', '0')
+        });
+      })
+    </script>
+
   @endpush
 </div>

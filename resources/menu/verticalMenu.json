@@ -9,13 +9,13 @@
     },
     {
       "menuHeader": "Human resource",
-      "role": ["AM", "HR", "CC", "CR"]
+      "role": ["HR", "CC"]
     },
     {
       "name": "Attendance",
       "icon": "menu-icon tf-icons ti ti-door-exit",
       "slug": "attendance",
-      "role": ["HR", "CC", "CR"],
+      "role": ["HR", "CC"],
       "submenu": [
         {
           "url": "attendance/fingerprints",
@@ -27,7 +27,7 @@
           "url": "attendance/leaves",
           "name": "Leaves",
           "slug": "attendance-leaves",
-          "role": ["CC", "CR"]
+          "role": ["HR", "CC"]
         }
       ]
     },
@@ -35,27 +35,31 @@
       "name": "Structure",
       "icon": "menu-icon tf-icons ti ti-hierarchy",
       "slug": "structure",
-      "role": ["AM", "HR"],
+      "role": ["HR"],
       "submenu": [
         {
           "url": "structure/centers",
           "name": "Centers",
-          "slug": "structure-centers"
+          "slug": "structure-centers",
+          "role": ["HR"]
         },
         {
           "url": "structure/departments",
           "name": "Departments",
-          "slug": "structure-departments"
+          "slug": "structure-departments",
+          "role": ["HR"]
         },
         {
           "url": "structure/positions",
           "name": "Positions",
-          "slug": "structure-positions"
+          "slug": "structure-positions",
+          "role": ["HR"]
         },
         {
           "url": "structure/employees",
           "name": "Employees",
-          "slug": "structure-employees"
+          "slug": "structure-employees",
+          "role": ["HR"]
         }
       ]
     },
@@ -85,7 +89,7 @@
       "name": "Statistics",
       "icon": "menu-icon tf-icons ti ti-device-desktop-analytics",
       "slug": "statistics",
-      "role": ["AM", "HR"]
+      "role": ["HR"]
     },
     {
       "name": "Settings",
