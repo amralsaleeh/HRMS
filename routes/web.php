@@ -6,6 +6,7 @@ use App\Livewire\Assets\Inventory;
 use App\Livewire\ContactUs;
 use App\Livewire\Dashboard;
 use App\Livewire\HumanResource\Attendance\Fingerprints;
+use App\Livewire\HumanResource\Attendance\Leaves;
 use App\Livewire\HumanResource\Discounts;
 use App\Livewire\HumanResource\Holidays;
 use App\Livewire\HumanResource\Messages;
@@ -47,7 +48,7 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
 
     Route::group(['middleware' => ['role:Admin|HR|CC']], function () {
         Route::prefix('attendance')->group(function () {
-            Route::get('/leaves', ComingSoon::class)->name('attendance-leaves');
+            Route::get('/leaves', Leaves::class)->name('attendance-leaves');
         });
     });
 
