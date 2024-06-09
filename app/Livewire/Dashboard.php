@@ -43,7 +43,7 @@ class Dashboard extends Component
     public $leaveRecords = [];
 
     public $newLeaveInfo = [
-        'LeaveId' => null,
+        'LeaveId' => '',
         'fromDate' => null,
         'toDate' => null,
         'startAt' => null,
@@ -194,6 +194,14 @@ class Dashboard extends Component
             return;
         }
 
+        if (substr($this->newLeaveInfo['LeaveId'], 1, 1) == 2 && ($this->newLeaveInfo['startAt'] == null || $this->newLeaveInfo['endAt'] == null)) {
+            session()->flash('error', 'Cann\'t add hourly leave without time!');
+            $this->dispatch('closeModal', elementId: '#leaveModal');
+            $this->dispatch('toastr', type: 'error'/* , title: 'Done!' */ , message: 'Requires Attention!');
+
+            return;
+        }
+
         if ($this->newLeaveInfo['fromDate'] > $this->newLeaveInfo['toDate']) {
             session()->flash('error', 'Check the dates entered. "From Date" cannot be greater than "To Date"');
             $this->dispatch('closeModal', elementId: '#leaveModal');
@@ -213,7 +221,7 @@ class Dashboard extends Component
         $this->isEdit ? $this->updateLeave() : $this->createLeave();
     }
 
-    public function confirmDeleteLeave($id)
+    public function confirmDestroyLeave($id)
     {
         $this->confirmedId = $id;
     }
