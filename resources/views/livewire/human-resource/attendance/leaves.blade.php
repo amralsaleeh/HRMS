@@ -93,7 +93,7 @@
                   </div>
                 </div>
                 <div class="col-4 btn-group d-flex justify-content-end">
-                  <button wire:click.prevent='showNewLeaveModal' type="button" class="btn btn-primary"
+                  <button wire:click.prevent='showCreateLeaveModal' type="button" class="btn btn-primary"
                           data-bs-toggle="modal" data-bs-target="#leaveModal">
                     <span class="ti-xs ti ti-plus me-1"></span>Add New Record
                   </button>
@@ -107,12 +107,14 @@
                       <h6 class="dropdown-header text-uppercase">Import & Export</h6>
                     </li>
                     <li>
+                      @can('Import leaves')
                       <button class="dropdown-item" data-bs-toggle="modal" data-bs-target="#importModal">
                         <i class="ti ti-table-import me-1"></i> Import From Excel
                       </button>
+                      @endcan
                     </li>
                     <li>
-                      <button wire:click='exportToExcel()' class="dropdown-item" disabled>
+                      <button wire:click='exportToExcel()' class="dropdown-item">
                         <i class="ti ti-table-export me-1"></i> Export To Excel
                       </button>
                     </li>
@@ -142,12 +144,12 @@
                       <td>{{ $leave->pivot->end_at ? Carbon::parse($leave->pivot->end_at)->format('H:i') : '-' }}</td>
                       <td>
                         <div>
-                          <a wire:click.prevent="showEditLeaveModal({{ $leave->pivot->id }})"  data-bs-toggle="modal" data-bs-target="#leaveModal" href=""><i
+                          <a wire:click.prevent="showUpdateLeaveModal({{ $leave->pivot->id }})"  data-bs-toggle="modal" data-bs-target="#leaveModal" href=""><i
                               class="ti ti-edit text-info"></i></a>
-                          <a wire:click.prevent="confirmDeleteLeave({{ $leave->pivot->id }})" href=""><i
+                          <a wire:click.prevent="confirmDestroyLeave({{ $leave->pivot->id }})" href=""><i
                               class="ti ti-trash text-danger"></i></a>
                           @if ($confirmedId === $leave->pivot->id)
-                            <button wire:click.prevent='deleteLeave({{ $leave }})' type="button"
+                            <button wire:click.prevent='destroyLeave({{ $leave }})' type="button"
                                     class="btn btn-xs btn-danger waves-effect waves-light">Sure?
                             </button>
                           @endif
@@ -162,8 +164,9 @@
                           <p class="mb-4 mx-2">
                             No data found, please sprinkle some data in my virtual bowl, and let the fun begin!
                           </p>
-                          <button class="btn btn-label-primary mb-4" data-bs-toggle="modal" data-bs-target="#importModal">
-                            Import From Excel
+                          <button class="btn btn-label-primary mb-4"
+                            data-bs-toggle="modal" data-bs-target="#leaveModal">
+                            Add New Record
                           </button>
                           <div>
                             <img src="{{ asset('assets/img/illustrations/page-misc-under-maintenance.png') }}"

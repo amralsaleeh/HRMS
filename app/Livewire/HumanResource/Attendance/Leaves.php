@@ -2,15 +2,18 @@
 
 namespace App\Livewire\HumanResource\Attendance;
 
+use App\Exports\ExportLeaves;
 use App\Imports\ImportLeaves;
 use App\Livewire\Sections\Navbar\Navbar;
 use App\Models\Center;
 use App\Models\Employee;
+use App\Models\EmployeeLeave;
 use App\Models\Leave;
 use App\Notifications\DefaultNotification;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Notification;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -27,7 +30,7 @@ class Leaves extends Component
     2 Task  - 2 Hourly - LeaveID
     */
 
-    // Variables - Start //
+    // 👉 Variables
     public $activeEmployees = [];
 
     public $selectedEmployee;
@@ -40,17 +43,18 @@ class Leaves extends Component
 
     public $toDate;
 
-    public $name;
+    public $employeeLeaveId;
 
-    public $startAt;
-
-    public $endAt;
+    public $newLeaveInfo = [
+        'LeaveId' => '',
+        'fromDate' => null,
+        'toDate' => null,
+        'startAt' => null,
+        'endAt' => null,
+        'note' => null,
+    ];
 
     public $isEdit = false;
-
-    public $newLeaveInfo = [];
-
-    public $employee_leave_id;
 
     public $leaveTypes;
 
@@ -61,7 +65,6 @@ class Leaves extends Component
     public $confirmedId;
 
     public $file;
-    // Variables - End //
 
     public function mount()
     {
@@ -74,10 +77,9 @@ class Leaves extends Component
         $center = Center::find($user->timelines()->where('end_date', null)->first()->center_id);
         $this->activeEmployees = $center->activeEmployees()->get();
 
-        $currentMonth = Carbon::now();
-        $previousMonth = $currentMonth->copy()->subMonth();
-        $this->dateRange = $previousMonth->format('Y-n-1').' to '.$currentMonth->format('Y-n-1');
-
+        $currentDate = Carbon::now();
+        $previousMonth = $currentDate->copy()->subMonth();
+        $this->dateRange = $previousMonth->format('Y-n-1').' to '.$currentDate;
     }
 
     public function render()
@@ -91,13 +93,10 @@ class Leaves extends Component
 
     public function applyFilter()
     {
-        // Employee
         $this->selectedEmployee = Employee::find($this->selectedEmployeeId);
 
-        // Leave type
         $this->selectedLeave = Leave::find($this->selectedLeaveId);
 
-        // Date range
         if ($this->dateRange) {
             $dates = explode(' to ', $this->dateRange);
 
@@ -114,6 +113,137 @@ class Leaves extends Component
             ->whereBetween('from_date', [$this->fromDate, $this->toDate])
             ->orderBy('from_date')
             ->paginate(7);
+    }
+
+    public function submitLeave()
+    {
+        $this->validate(
+            [
+                'selectedEmployeeId' => 'required',
+                'newLeaveInfo.LeaveId' => 'required',
+                'newLeaveInfo.fromDate' => 'required|date',
+                'newLeaveInfo.toDate' => 'required|date',
+            ],
+            null,
+            [
+                'selectedEmployeeId' => 'Employee',
+                'newLeaveInfo.LeaveId' => 'Type',
+                'newLeaveInfo.fromDate' => 'From Date',
+                'newLeaveInfo.toDate' => 'To Date',
+            ]);
+
+        if (substr($this->newLeaveInfo['LeaveId'], 1, 1) == 1 && ($this->newLeaveInfo['startAt'] != null || $this->newLeaveInfo['endAt'] != null)) {
+            session()->flash('error', 'Cann\'t add daily leave with time!');
+            $this->dispatch('closeModal', elementId: '#leaveModal');
+            $this->dispatch('toastr', type: 'error'/* , title: 'Done!' */ , message: 'Requires Attention!');
+
+            return;
+        }
+
+        if (substr($this->newLeaveInfo['LeaveId'], 1, 1) == 2 && ($this->newLeaveInfo['startAt'] == null || $this->newLeaveInfo['endAt'] == null)) {
+            session()->flash('error', 'Cann\'t add hourly leave without time!');
+            $this->dispatch('closeModal', elementId: '#leaveModal');
+            $this->dispatch('toastr', type: 'error'/* , title: 'Done!' */ , message: 'Requires Attention!');
+
+            return;
+        }
+
+        if ($this->newLeaveInfo['fromDate'] > $this->newLeaveInfo['toDate']) {
+            session()->flash('error', 'Check the dates entered. "From Date" cannot be greater than "To Date"');
+            $this->dispatch('closeModal', elementId: '#leaveModal');
+            $this->dispatch('toastr', type: 'error'/* , title: 'Done!' */ , message: 'Requires Attention!');
+
+            return;
+        }
+
+        if ($this->newLeaveInfo['startAt'] > $this->newLeaveInfo['endAt']) {
+            session()->flash('error', 'Check the times entered. "Start At" cannot be greater than "End To"');
+            $this->dispatch('closeModal', elementId: '#leaveModal');
+            $this->dispatch('toastr', type: 'error'/* , title: 'Done!' */ , message: 'Requires Attention!');
+
+            return;
+        }
+
+        $this->isEdit ? $this->updateLeave() : $this->createLeave();
+    }
+
+    public function showCreateLeaveModal()
+    {
+        $this->dispatch('clearSelect2Values');
+        $this->reset('isEdit', 'newLeaveInfo');
+    }
+
+    public function createLeave()
+    {
+        EmployeeLeave::firstOrCreate([
+            'employee_id' => $this->selectedEmployeeId,
+            'leave_id' => $this->newLeaveInfo['LeaveId'],
+            'from_date' => $this->newLeaveInfo['fromDate'],
+            'to_date' => $this->newLeaveInfo['toDate'],
+            'start_at' => $this->newLeaveInfo['startAt'],
+            'end_at' => $this->newLeaveInfo['endAt'],
+            'note' => $this->newLeaveInfo['note'],
+        ]);
+
+        session()->flash('success', 'Success, record created successfully!');
+        $this->dispatch('scrollToTop');
+
+        $this->dispatch('closeModal', elementId: '#leaveModal');
+        $this->dispatch('toastr', type: 'success'/* , title: 'Done!' */ , message: 'Going Well!');
+    }
+
+    public function showUpdateLeaveModal($id)
+    {
+        $this->reset('newLeaveInfo');
+
+        $this->isEdit = true;
+        $this->employeeLeaveId = $id;
+
+        $record = DB::table('employee_leave')->where('id', $this->employeeLeaveId)->first();
+
+        $this->selectedEmployeeId = $record->employee_id;
+        $this->newLeaveInfo = [
+            'LeaveId' => $record->leave_id,
+            'fromDate' => $record->from_date,
+            'toDate' => $record->to_date,
+            'startAt' => $record->start_at,
+            'endAt' => $record->end_at,
+            'note' => $record->note,
+        ];
+
+        $this->dispatch('setSelect2Values', employeeId: $this->selectedEmployeeId, leaveId: $record->leave_id);
+    }
+
+    public function updateLeave()
+    {
+        EmployeeLeave::find($this->employeeLeaveId)->update([
+            'employee_id' => $this->selectedEmployeeId,
+            'leave_id' => $this->newLeaveInfo['LeaveId'],
+            'from_date' => $this->newLeaveInfo['fromDate'],
+            'to_date' => $this->newLeaveInfo['toDate'],
+            'start_at' => $this->newLeaveInfo['startAt'],
+            'end_at' => $this->newLeaveInfo['endAt'],
+            'note' => $this->newLeaveInfo['note'],
+        ]);
+
+        session()->flash('success', 'Success, record updated successfully!');
+        $this->dispatch('scrollToTop');
+
+        $this->dispatch('closeModal', elementId: '#leaveModal');
+        $this->dispatch('toastr', type: 'success'/* , title: 'Done!' */ , message: 'Going Well!');
+
+        $this->reset('isEdit', 'newLeaveInfo');
+    }
+
+    public function confirmDestroyLeave($id)
+    {
+        $this->confirmedId = $id;
+    }
+
+    public function destroyLeave()
+    {
+        $this->selectedEmployee->leaves()->wherePivot('id', $this->confirmedId)->detach();
+        $this->dispatch('toastr', type: 'success'/* , title: 'Done!' */ , message: 'Going Well!');
     }
 
     public function importFromExcel()
@@ -141,81 +271,32 @@ class Leaves extends Component
         $this->dispatch('closeModal', elementId: '#importModal');
     }
 
-    //function to delete and update and insert
-
-    public function submitLeave()
+    public function exportToExcel()
     {
-        $this->isEdit ? $this->editLeave() : $this->addLeave();
-    }
+        $centerEmployees = array_map(function ($object) {
+            return $object['id'];
+        }, $this->activeEmployees->toArray());
 
-    public function addLeave()
-    {
-        $employee = Employee::find($this->selectedEmployeeId);
+        $leavesToExport = DB::table('employee_leave')
+            ->select([
+                'employee_leave.id AS ID',
+                DB::raw('CONCAT(employees.first_name, " ", employees.last_name) AS Employee'),
+                'leaves.name AS Leave',
+                'employee_leave.from_date AS From Date',
+                'employee_leave.to_date AS To Date',
+                'employee_leave.start_at AS Start At',
+                'employee_leave.end_at AS End At',
+                'employee_leave.note AS Note',
+                'employee_leave.created_by As Created By',
+                'employee_leave.updated_by As Updated By',
+            ])
+            ->leftJoin('employees', 'employee_leave.employee_id', '=', 'employees.id') // Left join for missing employee
+            ->leftJoin('leaves', 'employee_leave.leave_id', '=', 'leaves.id') // Left join for missing leave type
+            ->whereIn('employee_leave.employee_id', $centerEmployees)
+            ->where('employee_leave.created_at', '>', Carbon::now()->subDays(7)->format('Y-m-d'))
+            ->get();
 
-        $employee->leaves()->attach($this->newLeaveInfo['LeaveId'], [
-            'from_date' => $this->newLeaveInfo['fromDate'],
-            'to_date' => $this->newLeaveInfo['toDate'],
-            'start_at' => $this->startAt,
-            'end_at' => $this->endAt,
-            'created_by' => Auth::user()->name,
-            'updated_by' => Auth::user()->name,
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
-
-        $this->dispatch('closeModal', elementId: '#leaveModal');
-        $this->dispatch('toastr', type: 'success'/* , title: 'Done!' */ , message: 'Going Well!');
-    }
-
-    public function editLeave()
-    {
-        // $this->validate();
-        // $this->leave->update([
-        //     'name' => $this->name,
-        // ]);
-        // $employee = Employee::find($this->selectedEmployeeId);
-
-        $leave = $this->selectedEmployee->leaves()->wherePivot('id', $this->employee_leave_id)->first();
-
-        $leave->pivot->from_date = $this->newLeaveInfo['fromDate'];
-        $leave->pivot->to_date = $this->newLeaveInfo['toDate'];
-        $leave->pivot->start_at = $this->startAt;
-        $leave->pivot->end_at = $this->endAt;
-        $leave->pivot->save();
-
-        $this->dispatch('closeModal', elementId: '#leaveModal');
-        $this->dispatch('toastr', type: 'success'/* , title: 'Done!' */ , message: 'Going Well!');
-
-        $this->reset('isEdit', 'newLeaveInfo', 'startAt', 'endAt');
-    }
-
-    public function confirmDeleteLeave($id)
-    {
-        $this->confirmedId = $id;
-    }
-
-    public function deleteLeave()
-    {
-        $this->selectedEmployee->leaves()->wherePivot('id', $this->confirmedId)->detach();
-        $this->dispatch('toastr', type: 'success'/* , title: 'Done!' */ , message: 'Going Well!');
-    }
-
-    public function showNewLeaveModal()
-    {
-        $this->reset('isEdit', 'newLeaveInfo', 'startAt', 'endAt');
-    }
-
-    public function showEditLeaveModal($leave_pivot_id)
-    {
-        $this->reset('newLeaveInfo', 'startAt', 'endAt');
-        $this->isEdit = true;
-        $this->employee_leave_id = $leave_pivot_id;
-        $leave = $this->selectedEmployee->leaves()->wherePivot('id', $this->employee_leave_id)->first();
-
-        $this->newLeaveInfo['fromDate'] = $leave->pivot->from_date;
-        $this->newLeaveInfo['toDate'] = $leave->pivot->to_date;
-        $this->startAt = $leave->pivot->start_at;
-        $this->endAt = $leave->pivot->end_at;
+        return Excel::download(new ExportLeaves($leavesToExport), 'Leaves - '.Auth::user()->name.' - '.Carbon::now()->subDays(7)->format('Y-m-d').' --> '.Carbon::now()->format('Y-m-d').'.xlsx');
 
     }
 }
