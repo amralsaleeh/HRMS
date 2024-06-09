@@ -23,4 +23,9 @@ class EmployeeLeave extends Model
         'end_at',
         'note',
     ];
+
+    protected $hidden = [
+        'deleted_by',
+        'deleted_at',
+    ];
 }
