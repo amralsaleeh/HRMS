@@ -34,11 +34,22 @@ class Center extends Model
 
     public function activeEmployees()
     {
-        return $this->timelines()
+        $centerEmployees = $this->timelines()
             ->whereNull('end_date')
             ->join('employees', 'timelines.employee_id', '=', 'employees.id')
             ->orderBy('employees.first_name', 'asc')
-            ->with('employee');
+            ->with('employee')->get();
+
+        $notAffiliatedEmployees = Center::find(100)->timelines()
+            ->whereNull('end_date')
+            ->join('employees', 'timelines.employee_id', '=', 'employees.id')
+            ->orderBy('employees.first_name', 'asc')
+            ->with('employee')->get();
+
+        $mergedEmployees = $centerEmployees->merge($notAffiliatedEmployees);
+        $mergedEmployees = $mergedEmployees->sortBy('employee.first_name');
+
+        return $mergedEmployees;
     }
 
     protected function name(): Attribute

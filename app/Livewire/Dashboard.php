@@ -59,7 +59,7 @@ class Dashboard extends Component
     {
         $user = Employee::find(Auth::user()->employee_id);
         $center = Center::find($user->timelines()->where('end_date', null)->first()->center_id);
-        $this->activeEmployees = $center->activeEmployees()->get();
+        $this->activeEmployees = $center->activeEmployees();
 
         $this->selectedEmployeeId = Auth::user()->employee_id;
         $this->employeePhoto = $user->profile_photo_path;
