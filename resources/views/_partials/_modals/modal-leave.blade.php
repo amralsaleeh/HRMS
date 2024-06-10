@@ -96,6 +96,7 @@
         const checkIn = document.querySelector('#startAt');
         if (startAt) {
           startAt.flatpickr({
+            allowInput: true,
             enableTime: true,
             noCalendar: true,
             time_24hr: true,
@@ -107,6 +108,7 @@
         const checkOut = document.querySelector('#endAt');
         if (endAt) {
           endAt.flatpickr({
+            allowInput: true,
             enableTime: true,
             noCalendar: true,
             time_24hr: true,
