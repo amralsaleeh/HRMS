@@ -72,7 +72,7 @@ class Dashboard extends Component
             //
         }
 
-        $this->fromDateLimit = Carbon::now()->subDays(7)->format('Y-m-d');
+        $this->fromDateLimit = Carbon::now()->subDays(30)->format('Y-m-d');
         $this->changelogs = Changelog::latest()->get();
     }
 
