@@ -126,6 +126,7 @@
                 <table class="table">
                   <thead>
                   <tr>
+                    <th>ID</th>
                     <th>Name</th>
                     <th>From Date</th>
                     <th>To Date</th>
@@ -137,6 +138,7 @@
                   <tbody class="table-border-bottom-0">
                   @forelse($leaves as $leave)
                     <tr>
+                      <td>{{ $leave->pivot->id }}</td>
                       <td>{{ $leave->name }}</td>
                       <td>{{ $leave->pivot->from_date }}</td>
                       <td>{{ $leave->pivot->to_date }}</td>

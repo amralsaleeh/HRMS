@@ -111,6 +111,7 @@ class Leaves extends Component
                 return $query->where('leaves.id', $this->selectedLeaveId);
             })
             ->whereBetween('from_date', [$this->fromDate, $this->toDate])
+            ->where('is_checked', 0)
             ->orderBy('from_date')
             ->paginate(7);
     }
@@ -294,6 +295,7 @@ class Leaves extends Component
             ->leftJoin('leaves', 'employee_leave.leave_id', '=', 'leaves.id') // Left join for missing leave type
             ->whereIn('employee_leave.employee_id', $centerEmployees)
             ->where('employee_leave.created_at', '>', Carbon::now()->subDays(7)->format('Y-m-d'))
+            ->where('is_checked', 0)
             ->get();
 
         return Excel::download(new ExportLeaves($leavesToExport), 'Leaves - '.Auth::user()->name.' - '.Carbon::now()->subDays(7)->format('Y-m-d').' --> '.Carbon::now()->format('Y-m-d').'.xlsx');
