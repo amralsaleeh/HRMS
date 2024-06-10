@@ -221,7 +221,7 @@
 
       window.addEventListener('clearSelect2Values', event => {
         $(function () {
-          $('#select2selectedEmployeeId').select2('val', '0')
+          // $('#select2selectedEmployeeId').select2('val', '0')
           $('#select2LeaveId').select2('val', '0')
         });
       })
