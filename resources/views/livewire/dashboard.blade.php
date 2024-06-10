@@ -45,23 +45,23 @@
         <div class="d-flex align-items-end row">
           <div class="col-7">
             <div class="card-body text-nowrap">
-              <h5 class="card-title mb-0">Hi, {{ Auth::user()->name }}! 👋</h5>
-              <p class="mb-2">Start your day with a smile</p>
+              <h5 class="card-title mb-0">{{ __('Hi,') }} {{ Auth::user()->name }}! 👋</h5>
+              <p class="mb-2">{{ __('Start your day with a smile') }}</p>
               {{-- <h5 wire:poll.60s class="text-primary mt-3 mb-2">{{ now()->format('Y/m/d - H:i') }}</h5> --}}
               <h5 id="date" class="text-primary mt-3 mb-1"></h5>
               <h5 id="time" class="text-primary mb-2"></h5>
               <div class="btn-group dropend">
-                <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="ti ti-menu-2 ti-xs me-1"></i> Add New</button>
+                <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="ti ti-menu-2 ti-xs me-1"></i>{{ __('Add New') }}</button>
                 <ul class="dropdown-menu">
                   @can('create employees')
-                    <li><a class="dropdown-item" href="{{ route('structure-employees') }}"><i class="ti ti-menu-2 ti-xs me-1"></i> Employee</a></li>
+                    <li><a class="dropdown-item" href="{{ route('structure-employees') }}"><i class="ti ti-menu-2 ti-xs me-1"></i> {{ __('Employee') }}</a></li>
                     <li><hr class="dropdown-divider"></li>
                   @endcan
                   @can('create fingerprints')
-                    <li><a class="dropdown-item" href="{{ route('attendance-fingerprints') }}"><i class="ti ti-menu-2 ti-xs me-1"></i> Fingerprint</a></li>
+                    <li><a class="dropdown-item" href="{{ route('attendance-fingerprints') }}"><i class="ti ti-menu-2 ti-xs me-1"></i>{{ __('Fingerprint') }}</a></li>
                   @endcan
                   @can('create leaves')
-                    <li><a wire:click='showCreateLeaveModal' class="dropdown-item" data-bs-toggle="modal" data-bs-target="#leaveModal" href=""><i class="ti ti-menu-2 ti-xs me-1"></i> Leave</a></li>
+                    <li><a wire:click='showCreateLeaveModal' class="dropdown-item" data-bs-toggle="modal" data-bs-target="#leaveModal" href=""><i class="ti ti-menu-2 ti-xs me-1"></i>{{ __('Leave') }}</a></li>
                   @endcan
                 </ul>
               </div>
@@ -80,7 +80,7 @@
       <div class="card h-100">
         <div class="card-header">
           <div class="d-flex justify-content-between mb-3">
-            <h5 class="card-title mb-0">Statistics</h5>
+            <h5 class="card-title mb-0">{{ __('Statistics') }}</h5>
             @can('read sms')
               <small class="text-muted">{{ $accountBalance['status'] == 200 ? 'Updated recently' : 'Error, Update unavailable' }}</small>
             @endcan
@@ -94,7 +94,7 @@
                   <div class="badge rounded-pill bg-label-primary me-3 p-2"><i class="ti ti-activity ti-sm"></i></div>
                   <div class="card-info">
                     <h5 class="mb-0">{{ $accountBalance['is_active'] }}</h5>
-                    <small>Status</small>
+                    <small>{{ __('Status') }}</small>
                   </div>
                 </div>
               </div>
@@ -103,7 +103,7 @@
                   <div class="badge rounded-pill bg-label-info me-3 p-2"><i class="ti ti-calculator ti-sm"></i></div>
                   <div class="card-info">
                     <h5 class="mb-0">{{ $accountBalance['balance'] }}</h5>
-                    <small>Balance</small>
+                    <small>{{ __('Balance') }}</small>
                   </div>
                 </div>
               </div>
@@ -112,7 +112,7 @@
                   <div class="badge rounded-pill bg-label-success me-3 p-2"><i class="ti ti-speakerphone ti-sm"></i></div>
                   <div class="card-info">
                     <h5 class="mb-0">{{ $messagesStatus['sent'] }}</h5>
-                    <small>Successful</small>
+                    <small>{{ __('Successful') }}</small>
                   </div>
                 </div>
               </div>
@@ -121,7 +121,7 @@
                   <div wire:click='sendPendingMessages' class="badge rounded-pill bg-label-danger me-3 p-2" style="cursor: pointer"><i class="ti ti-send ti-sm"></i></div>
                   <div class="card-info">
                     <h5 class="mb-0">{{ $messagesStatus['unsent'] }}</h5>
-                    <small>Pending</small>
+                    <small>{{ __('Pending') }}</small>
                   </div>
                 </div>
               </div>
@@ -136,7 +136,7 @@
                   <div class="badge rounded-pill bg-label-primary me-3 p-2"><i class="ti ti-users ti-sm"></i></div>
                   <div class="card-info">
                     <h5 class="mb-0">{{ count($activeEmployees) }}</h5>
-                    <small>Active Employees</small>
+                    <small>{{ __('Active Employees') }}</small>
                   </div>
                 </div>
               </div>
@@ -145,7 +145,7 @@
                   <div class="badge rounded-pill bg-label-success me-3 p-2"><i class="ti ti-calendar ti-sm"></i></div>
                   <div class="card-info">
                     <h5 class="mb-0">{{ count($leaveRecords) }}</h5>
-                    <small>Today Records</small>
+                    <small>{{ __('Today Records') }}</small>
                   </div>
                 </div>
               </div>
@@ -269,16 +269,16 @@
   <div class="row">
     <div class="col">
       <div class="card">
-        <h5 class="card-header">Today Leaves</h5>
+        <h5 class="card-header">{{ __('Today Leaves')}}</h5>
         <div class="table-responsive text-nowrap">
           <table class="table table-hover">
             <thead>
               <tr>
-                <th class="col-1">ID</th>
-                <th>Employee</th>
-                <th class="col-1">Type</th>
-                <th style="text-align: center">Details</th>
-                <th style="text-align: center">Actions</th>
+                <th class="col-1">{{ __('ID') }}</th>
+                <th>{{ __('Employee') }}</th>
+                <th class="col-1">{{ __('Type') }}</th>
+                <th style="text-align: center">{{ __('Details') }}</th>
+                <th style="text-align: center">{{ __('Actions') }}</th>
               </tr>
             </thead>
             <tbody class="table-border-bottom-0">
@@ -312,12 +312,12 @@
                 <tr>
                   <td colspan="6">
                     <div class="mt-2 mb-2" style="text-align: center">
-                        <h3 class="mb-1 mx-2">Oopsie-doodle!</h3>
+                        <h3 class="mb-1 mx-2">{{ __('Oopsie-doodle!') }}</h3>
                         <p class="mb-4 mx-2">
-                          No data found, please sprinkle some data in my virtual bowl, and let the fun begin!
+                          {{ __('No data found, please sprinkle some data in my virtual bowl, and let the fun begin!') }}
                         </p>
                         <button class="btn btn-label-primary mb-4" data-bs-toggle="modal" data-bs-target="#leaveModal">
-                            Add New Leave
+                            {{ __('Add New Leave') }}
                           </button>
                         <div>
                           <img src="{{ asset('assets/img/illustrations/page-misc-under-maintenance.png') }}" width="200" class="img-fluid">
@@ -336,7 +336,7 @@
   <div class="row mt-4">
     <div class="col">
       <div class="card">
-        <h5 class="card-header">Changelog</h5>
+        <h5 class="card-header">{{ __('Changelog') }}</h5>
         <div class="card-body">
           @foreach ($changelogs as $changelog)
             <small all class="text-light fw-semibold">{{ $changelog->version }}</small>

@@ -1,29 +1,29 @@
 <div class="offcanvas offcanvas-end event-sidebar" tabindex="-1" id="addRecordSidebar" aria-labelledby="addRecordSidebarLabel">
 
   <div class="offcanvas-header my-1">
-    <h5 class="offcanvas-title">Record Info</h5>
+    <h5 class="offcanvas-title">{{ __('Record Info') }}</h5>
     <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
   </div>
 
   <div class="offcanvas-body pt-0">
     <form wire:submit="submitFingerprint" class="row pt-0">
       <div class="mb-3">
-        <label class="form-label">Date</label>
+        <label class="form-label">{{ __('Date') }}</label>
         <input  wire:model='date' type="text" class="form-control flatpickr-input active  @error('date') is-invalid @enderror"  placeholder="YYYY-MM-DD" id="flatpickr-date" readonly="readonly" {{ $isEdit ? 'disabled readonly' : '' }}>
       </div>
       <div class="col-md-6 col-12 mb-3">
-        <label class="form-label">Check In</label>
+        <label class="form-label">{{ __('Check In') }}</label>
         <input wire:model='checkIn' type="text" class="form-control @error('checkIn') is-invalid @enderror" placeholder="HH:MM" id="checkIn" autocomplete="off"/>
       </div>
       <div class="col-md-6 col-12 mb-3">
-        <label class="form-label">Check Out</label>
+        <label class="form-label">{{ __('Check Out') }}</label>
         <input wire:model='checkOut' type="text" class="form-control @error('checkOut') is-invalid @enderror" placeholder="HH:MM" id="checkOut" autocomplete="off"/>
       </div>
 
       <div class="mb-3 d-flex justify-content-sm-between justify-content-start my-4">
         <div>
-          <button type="submit" class="btn btn-primary btn-add-event me-sm-3 me-1">Submit</button>
-          <button type="reset" class="btn btn-label-secondary btn-cancel me-sm-0 me-1" data-bs-dismiss="offcanvas">Cancel</button>
+          <button type="submit" class="btn btn-primary btn-add-event me-sm-3 me-1">{{ __('Submit') }}</button>
+          <button type="reset" class="btn btn-label-secondary btn-cancel me-sm-0 me-1" data-bs-dismiss="offcanvas">{{ __('Cancel') }}</button>
         </div>
       </div>
     </form>
