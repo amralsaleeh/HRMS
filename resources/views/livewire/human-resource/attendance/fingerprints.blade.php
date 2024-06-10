@@ -28,12 +28,12 @@
             <div class="sidebar-header">
               <div class="d-flex align-items-center me-3 me-lg-0">
                 <div wire:ignore class="col-12">
-                  <label class="form-label">Employee</label>
+                  <label class="form-label">{{ __('Employee') }}</label>
                   <select wire:model='selectedEmployeeId' class="select2 form-control" id="select2selectedEmployeeId">
                     @forelse ($employees as $employee)
                       <option value="{{ $employee->id }}">{{ $employee->id . ' - ' . $employee->full_name }}</option>
                     @empty
-                      <option value="0" disabled>No Employees Found!</option>
+                      <option value="0" disabled>{{ __('No Employees Found!') }}</option>
                     @endforelse
                   </select>
                 </div>
@@ -44,7 +44,7 @@
 
         <div class="border-bottom p-3 my-sm-0 mb-3">
           <div class="col-12">
-            <label class="form-label">Date Range</label>
+            <label class="form-label">{{ __('Date Range') }}</label>
             <input wire:model='dateRange' type="text" class="form-control flatpickr-input active"
                    id="flatpickr-range" placeholder="YYYY-MM-DD to YYYY-MM-DD" readonly="readonly">
           </div>
@@ -52,16 +52,16 @@
 
         <div class="border-bottom p-3 my-sm-0 mb-3">
           <div class="col-12">
-            <label class="form-label">Options</label>
+            <label class="form-label">{{ __('Options') }}</label>
           </div>
           <div class="ms-3">
             <div class="form-check form-check-danger mb-2">
               <input wire:model='isAbsence' class="form-check-input input-filter" type="checkbox" id="isAbsence">
-              <label class="form-check-label" for="isAbsence">Absence</label>
+              <label class="form-check-label" for="isAbsence">{{ __('Absence') }}</label>
             </div>
             <div class="form-check form-check-warning mb-2">
               <input wire:model='isOneFingerprint' class="form-check-input input-filter" type="checkbox" id="isOneFingerprint">
-              <label class="form-check-label" for="isOneFingerprint">One Fingerprint</label>
+              <label class="form-check-label" for="isOneFingerprint">{{ __('One Fingerprint') }}</label>
             </div>
           </div>
         </div>
@@ -69,7 +69,7 @@
         <div class="row p-5">
           <div class="d-grid gap-2 col-12 mx-auto">
             <button wire:click='applyFilter' class="btn btn-label-primary btn-xl waves-effect waves-light"
-                    type="button">Apply
+                    type="button">{{ __('Apply') }}
             </button>
           </div>
         </div>
@@ -95,7 +95,7 @@
                 <div class="col-4 btn-group d-flex justify-content-end">
                   <button wire:click.prevent='showNewFingerprintModal' type="button" class="btn btn-primary waves-effect waves-light"
                           data-bs-toggle="offcanvas" data-bs-target="#addRecordSidebar" aria-controls="addRecordSidebar"><i
-                          class="ti ti-plus me-1"></i> Add New Record
+                          class="ti ti-plus me-1"></i> {{ __('Add New Record') }}
                   </button>
                   <button type="button"
                           class="btn btn-primary dropdown-toggle dropdown-toggle-split waves-effect waves-light"
@@ -104,16 +104,16 @@
                   </button>
                   <ul class="dropdown-menu">
                     <li>
-                      <h6 class="dropdown-header text-uppercase">Import & Export</h6>
+                      <h6 class="dropdown-header text-uppercase">{{ __('Import & Export') }}</h6>
                     </li>
                     <li>
                       <button class="dropdown-item" data-bs-toggle="modal" data-bs-target="#importModal">
-                        <i class="ti ti-table-import me-1"></i> Import From Excel
+                        <i class="ti ti-table-import me-1"></i> {{ __('Import From Excel') }}
                       </button>
                     </li>
                     <li>
                       <button wire:click='exportToExcel()' class="dropdown-item">
-                        <i class="ti ti-table-export me-1"></i> Export To Excel
+                        <i class="ti ti-table-export me-1"></i> {{ __('Export To Excel') }}
                       </button>
                     </li>
                   </ul>
@@ -124,10 +124,10 @@
                 <table class="table">
                   <thead>
                   <tr>
-                    <th>Date</th>
-                    <th>Check In</th>
-                    <th>Check Out</th>
-                    <th class="col-1">Actions</th>
+                    <th>{{ __('Date') }}</th>
+                    <th>{{ __('Check In') }}</th>
+                    <th>{{ __('Check Out') }}</th>
+                    <th class="col-1">{{ __('Actions') }}</th>
                   </tr>
                   </thead>
                   <tbody class="table-border-bottom-0">
@@ -158,12 +158,12 @@
                     <tr>
                       <td colspan="4">
                         <div class="mt-2 mb-2" style="text-align: center">
-                          <h3 class="mb-1 mx-2">Oopsie-doodle!</h3>
+                          <h3 class="mb-1 mx-2">{{ __('Oopsie-doodle!') }}</h3>
                           <p class="mb-4 mx-2">
-                            No data found, please sprinkle some data in my virtual bowl, and let the fun begin!
+                            {{ __('No data found, please sprinkle some data in my virtual bowl, and let the fun begin!') }}
                           </p>
                           <button class="btn btn-label-primary mb-4" data-bs-toggle="modal" data-bs-target="#importModal">
-                            Import From Excel
+                            {{ __('Import From Excel') }}
                           </button>
                           <div>
                             <img src="{{ asset('assets/img/illustrations/page-misc-under-maintenance.png') }}"

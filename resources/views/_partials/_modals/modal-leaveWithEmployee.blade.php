@@ -11,8 +11,8 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           <div class="text-center mb-4">
             <h3 class="mb-2"></h3>
-            <h3 class="mb-2">{{ $isEdit ? 'Update Record' : 'New Record' }}</h3>
-            <p class="text-muted">Please fill out the following information</p>
+            <h3 class="mb-2">{{ $isEdit ? __('Update Record') : __('New Record') }}</h3>
+            <p class="text-muted">{{ __('Please fill out the following information') }}</p>
           </div>
           <div class="d-flex justify-content-center mb-4">
             <div class="avatar" style="width: 6rem; height: 6rem">
@@ -31,24 +31,24 @@
             @endif
             <div class="row mb-4">
               <div wire:ignore class="col-lg-6 col-12">
-                <label class="form-label">Employee</label>
+                <label class="form-label">{{ __('Employee') }}</label>
                 <select wire:model='selectedEmployeeId' class="select2 form-control" id="select2selectedEmployeeId">
                   <option value=""></option>
                   @forelse ($activeEmployees as $timeline)
                     <option value="{{ $timeline->employee->id }}">{{ $timeline->employee->id . ' - ' . $timeline->employee->full_name }}</option>
                   @empty
-                    <option value="0" disabled>No Employees Found!</option>
+                    <option value="0" disabled>{{__('No Employees Found!') }}</option>
                   @endforelse
                 </select>
               </div>
               <div wire:ignore class="col-lg-6 col-12">
-                <label class="form-label w-100">Type</label>
+                <label class="form-label w-100">{{ __('Type') }}</label>
                 <select wire:model='newLeaveInfo.LeaveId' name="updated_name" class="select2 form-control" id="select2LeaveId">
                   <option value=""></option>
                   @forelse ($leaveTypes as $leaveType)
                     <option value="{{ $leaveType->id }}">{{ $leaveType->name }}</option>
                   @empty
-                    <option value="0" disabled>No Leave Found!</option>
+                    <option value="0" disabled>{{ __('No Leave Found!') }}</option>
                   @endforelse
                 </select>
               </div>
@@ -57,32 +57,32 @@
               <div class="col-6">
                 <div class="row">
                   <div class="col-md-3 col-12">
-                  <label class="form-label">From Date</label>
+                  <label class="form-label">{{ __('From Date') }}</label>
                   <input wire:model='newLeaveInfo.fromDate' type="text" class="form-control flatpickr-input active  @error('newLeaveInfo.fromDate') is-invalid @enderror" id="flatpickr-date-from" readonly="readonly">
                 </div>
                 <div class="col-md-3 col-12">
-                  <label class="form-label w-100">To Date</label>
+                  <label class="form-label w-100">{{ __('To Date') }}</label>
                   <input wire:model='newLeaveInfo.toDate'  class="form-control flatpickr-input active @error('newLeaveInfo.toDate') is-invalid @enderror" type="text" id="flatpickr-date-to" readonly="readonly" />
                 </div>
                 <div class="col-md-3 col-12">
-                  <label class="form-label w-100">Start At</label>
+                  <label class="form-label w-100">{{ __('Start At') }}</label>
                   <input wire:model='newLeaveInfo.startAt' class="form-control @error('newLeaveInfo.startAt') is-invalid @enderror" type="text" id="startAt" autocomplete="off" />
                 </div>
                 <div class="col-md-3 col-12">
-                  <label class="form-label w-100">End At</label>
+                  <label class="form-label w-100">{{ __('End At') }}</label>
                   <input wire:model='newLeaveInfo.endAt' class="form-control @error('newLeaveInfo.endAt') is-invalid @enderror" type="text" id="endAt" autocomplete="off" />
                 </div>
                 </div>
               </div>
               <div class="col-6">
-                <label class="form-label">Note</label>
+                <label class="form-label">{{ __('Note') }}</label>
                 <input wire:model='newLeaveInfo.note' type="text" class="form-control">
               </div>
               </div>
             </div>
             <div class="col-12 text-center">
-              <button type="submit" class="btn btn-primary me-sm-3 me-1">Submit</button>
-              <button type="reset" class="btn btn-label-secondary btn-reset" data-bs-dismiss="modal" aria-label="Close">Cancel</button>
+              <button type="submit" class="btn btn-primary me-sm-3 me-1">{{ __('Submit') }}</button>
+              <button type="reset" class="btn btn-label-secondary btn-reset" data-bs-dismiss="modal" aria-label="Close">{{__('Cancel') }}</button>
             </div>
           </form>
         </div>
@@ -194,7 +194,7 @@
           select2LeaveId.each(function () {
             var $this = $(this);
             $this.wrap('<div class="position-relative"></div>').select2({
-              placeholder: 'Search...',
+              placeholder: "{{ __('Search...') }}",
               dropdownParent: $this.parent()
             });
           });
