@@ -28,7 +28,7 @@ class Dashboard extends Component
 
     public $center;
 
-    public $selectedEmployeeId = null;
+    public $selectedEmployeeId;
 
     public $leaveTypes;
 
@@ -61,6 +61,9 @@ class Dashboard extends Component
         $center = Center::find($user->timelines()->where('end_date', null)->first()->center_id);
         $this->activeEmployees = $center->activeEmployees()->get();
 
+        $this->selectedEmployeeId = Auth::user()->employee_id;
+        $this->employeePhoto = $user->profile_photo_path;
+
         $this->leaveTypes = Leave::all();
 
         try {
@@ -88,7 +91,13 @@ class Dashboard extends Component
 
     public function updatedSelectedEmployeeId()
     {
-        $this->employeePhoto = Employee::find($this->selectedEmployeeId)?->profile_photo_path;
+        $employee = Employee::find($this->selectedEmployeeId);
+
+        if ($employee) {
+            $this->employeePhoto = $employee->profile_photo_path;
+        } else {
+            $this->reset('employeePhoto');
+        }
     }
 
     public function sendPendingMessages()
@@ -104,7 +113,7 @@ class Dashboard extends Component
     public function showCreateLeaveModal()
     {
         $this->dispatch('clearSelect2Values');
-        $this->reset('selectedEmployeeId', 'employeePhoto', 'newLeaveInfo', 'isEdit');
+        $this->reset('selectedEmployeeId', 'newLeaveInfo', 'isEdit');
     }
 
     public function createLeave()

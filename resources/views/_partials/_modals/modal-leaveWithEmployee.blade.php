@@ -133,11 +133,12 @@
         const checkIn = document.querySelector('#startAt');
         if (checkIn) {
           checkIn.flatpickr({
+            allowInput: true,
             enableTime: true,
             noCalendar: true,
             time_24hr: true,
             defaultHour: 9,
-            minuteIncrement:5,
+            minuteIncrement:1,
             minTime: "9:00",
             maxTime: "15:30"
           });
@@ -146,12 +147,13 @@
         const checkOut = document.querySelector('#endAt');
         if (checkOut) {
           checkOut.flatpickr({
+            allowInput: true,
             enableTime: true,
             noCalendar: true,
             time_24hr: true,
             defaultHour: 15,
             defaultMinute: 30,
-            minuteIncrement:5,
+            minuteIncrement:1,
             minTime: "9:00",
             maxTime: "15:30"
           });
@@ -221,7 +223,7 @@
 
       window.addEventListener('clearSelect2Values', event => {
         $(function () {
-          $('#select2selectedEmployeeId').select2('val', '0')
+          // $('#select2selectedEmployeeId').select2('val', '0')
           $('#select2LeaveId').select2('val', '0')
         });
       })
