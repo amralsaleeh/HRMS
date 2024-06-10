@@ -33,7 +33,7 @@
     $containerNav = $containerNav ?? 'container-fluid';
     $navbarDetached = ($navbarDetached ?? 'navbar-detached');
     // $navbarDetached = ($navbarDetached ?? '');
-    $navbarHideToggle = ($navbarDetached ?? true);
+    // $navbarHideToggle = ($navbarDetached ?? true);
     use Illuminate\Support\Facades\App;
   @endphp
 
@@ -60,7 +60,7 @@
 
         <!-- ! Not required for layout-without-menu -->
         @if(!isset($navbarHideToggle))
-          <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0{{ isset($menuHorizontal) ? ' d-xl-none ' : '' }} {{ isset($contentNavbar) ?' d-xl-none ' : '' }}">
+          <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0{{ isset($menuHorizontal) ? ' d-xl-none ' : '' }} {{ isset($contentNavbar) ?' d-xl-none ' : '' }} d-xl-none">
             <a class="nav-item nav-link px-0 me-xl-4" href="javascript:void(0)">
               <i class="ti ti-menu-2 ti-sm"></i>
             </a>
