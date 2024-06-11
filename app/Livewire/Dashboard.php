@@ -104,16 +104,16 @@ class Dashboard extends Component
     {
         if ($this->messagesStatus['unsent'] != 0) {
             sendPendingMessages::dispatch();
-            session()->flash('info', "Let's go! Messages on their way!");
+            session()->flash('info', __('Let\'s go! Messages on their way!'));
         } else {
-            $this->dispatch('toastr', type: 'info'/* , title: 'Done!' */ , message: 'Everything has sent already!');
+            $this->dispatch('toastr', type: 'info'/* , title: 'Done!' */ , message: __('Everything has sent already!'));
         }
     }
 
     public function showCreateLeaveModal()
     {
         $this->dispatch('clearSelect2Values');
-        $this->reset('selectedEmployeeId', 'newLeaveInfo', 'isEdit');
+        $this->reset('newLeaveInfo', 'isEdit');
     }
 
     public function createLeave()
@@ -128,11 +128,11 @@ class Dashboard extends Component
             'note' => $this->newLeaveInfo['note'],
         ]);
 
-        session()->flash('success', 'Success, record created successfully!');
+        session()->flash('success', __('Success, record created successfully!'));
         $this->dispatch('scrollToTop');
 
         $this->dispatch('closeModal', elementId: '#leaveModal');
-        $this->dispatch('toastr', type: 'success'/* , title: 'Done!' */ , message: 'Going Well!');
+        $this->dispatch('toastr', type: 'success'/* , title: 'Done!' */ , message: __('Going Well!'));
     }
 
     public function showEditLeaveModal($id)
@@ -169,11 +169,11 @@ class Dashboard extends Component
             'note' => $this->newLeaveInfo['note'],
         ]);
 
-        session()->flash('success', 'Success, record updated successfully!');
+        session()->flash('success', __('Success, record updated successfully!'));
         $this->dispatch('scrollToTop');
 
         $this->dispatch('closeModal', elementId: '#leaveModal');
-        $this->dispatch('toastr', type: 'success'/* , title: 'Done!' */ , message: 'Going Well!');
+        $this->dispatch('toastr', type: 'success'/* , title: 'Done!' */ , message: __('Going Well!'));
 
         $this->reset('isEdit', 'newLeaveInfo');
     }
@@ -196,33 +196,33 @@ class Dashboard extends Component
             ]);
 
         if (substr($this->newLeaveInfo['LeaveId'], 1, 1) == 1 && ($this->newLeaveInfo['startAt'] != null || $this->newLeaveInfo['endAt'] != null)) {
-            session()->flash('error', 'Cann\'t add daily leave with time!');
+            session()->flash('error', __('Can\'t add daily leave with time!'));
             $this->dispatch('closeModal', elementId: '#leaveModal');
-            $this->dispatch('toastr', type: 'error'/* , title: 'Done!' */ , message: 'Requires Attention!');
+            $this->dispatch('toastr', type: 'error'/* , title: 'Done!' */ , message: __('Requires Attention!'));
 
             return;
         }
 
         if (substr($this->newLeaveInfo['LeaveId'], 1, 1) == 2 && ($this->newLeaveInfo['startAt'] == null || $this->newLeaveInfo['endAt'] == null)) {
-            session()->flash('error', 'Cann\'t add hourly leave without time!');
+            session()->flash('error', __('Can\'t add hourly leave without time!'));
             $this->dispatch('closeModal', elementId: '#leaveModal');
-            $this->dispatch('toastr', type: 'error'/* , title: 'Done!' */ , message: 'Requires Attention!');
+            $this->dispatch('toastr', type: 'error'/* , title: 'Done!' */ , message: __('Requires Attention!'));
 
             return;
         }
 
         if ($this->newLeaveInfo['fromDate'] > $this->newLeaveInfo['toDate']) {
-            session()->flash('error', 'Check the dates entered. "From Date" cannot be greater than "To Date"');
+            session()->flash('error', __('Check the dates entered. "From Date" can not be greater than "To Date"'));
             $this->dispatch('closeModal', elementId: '#leaveModal');
-            $this->dispatch('toastr', type: 'error'/* , title: 'Done!' */ , message: 'Requires Attention!');
+            $this->dispatch('toastr', type: 'error'/* , title: 'Done!' */ , message: __('Requires Attention!'));
 
             return;
         }
 
         if ($this->newLeaveInfo['startAt'] > $this->newLeaveInfo['endAt']) {
-            session()->flash('error', 'Check the times entered. "Start At" cannot be greater than "End To"');
+            session()->flash('error', __('Check the times entered. "Start At" can not be greater than "End To"'));
             $this->dispatch('closeModal', elementId: '#leaveModal');
-            $this->dispatch('toastr', type: 'error'/* , title: 'Done!' */ , message: 'Requires Attention!');
+            $this->dispatch('toastr', type: 'error'/* , title: 'Done!' */ , message: __('Requires Attention!'));
 
             return;
         }
@@ -239,7 +239,7 @@ class Dashboard extends Component
     {
         EmployeeLeave::find($this->confirmedId)->delete();
 
-        $this->dispatch('toastr', type: 'success'/* , title: 'Done!' */ , message: 'Going Well!');
+        $this->dispatch('toastr', type: 'success'/* , title: 'Done!' */ , message: __('Going Well!'));
         $this->confirmedId = null;
     }
 

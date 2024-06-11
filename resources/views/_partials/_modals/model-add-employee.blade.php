@@ -117,7 +117,7 @@
             <label class="form-label w-100" for="defaultSelect" class="form-label">{{ __('Is Active') }}</label>
             <select wire:model.defer="is_active" id="is_active" class="form-select">
               {{-- select  wire:model.defer="is_active" class="custom-select rounded-0 @error('is_active') is-invalid @enderror" id="gender" id="is_active" class="form-select" --}}
-              <option>{{ __('Is Active?') }}</option>
+              <option>{{ __('Is Active') }}</option>
               <option value="1">{{ __('Active') }}</option>
               <option value="0">{{ __('Inactive') }}</option>
             </select>
