@@ -304,7 +304,7 @@ class Leaves extends Component
 
         session()->flash('success', __('Well done! The file has been exported successfully.'));
 
-        return Excel::download(new ExportLeaves($leavesToExport), 'Leaves - '.Auth::user()->name.' - '.Carbon::now()->subDays(7)->format('Y-m-d').' --> '.Carbon::now()->format('Y-m-d').'.xlsx');
+        return Excel::download(new ExportLeaves($leavesToExport), 'Leaves - '.Auth::user()->name.' - '.Carbon::now()->subDays(7)->format('Y-m-d').' --- '.Carbon::now()->format('Y-m-d').'.xlsx');
 
     }
 }
