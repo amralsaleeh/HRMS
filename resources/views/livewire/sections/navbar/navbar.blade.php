@@ -245,7 +245,7 @@
                   <li>
                     <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                       <i class='ti ti-logout me-2'></i>
-                      <span class="align-middle">{{ __('Logout') }}</span>
+                      <span class="align-middle">{{ __('Sign out') }}</span>
                     </a>
                   </li>
                   <form method="POST" id="logout-form" action="{{ route('logout') }}">
