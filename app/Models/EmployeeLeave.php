@@ -22,9 +22,13 @@ class EmployeeLeave extends Model
         'start_at',
         'end_at',
         'note',
+        'is_authorized',
+        'is_checked',
     ];
 
     protected $hidden = [
+        'is_authorized',
+        'is_checked',
         'deleted_by',
         'deleted_at',
     ];
