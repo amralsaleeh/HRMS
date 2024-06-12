@@ -282,6 +282,8 @@ class Leaves extends Component
             return $object['id'];
         }, $this->activeEmployees->toArray());
 
+        $firstName = explode(' ', Auth::user()->name)[0];
+
         $leavesToExport = DB::table('employee_leave')
             ->select([
                 'employee_leave.id AS ID',
@@ -300,6 +302,7 @@ class Leaves extends Component
             ->whereIn('employee_leave.employee_id', $centerEmployees)
             ->where('employee_leave.created_at', '>=', Carbon::now()->subDays(7)->format('Y-m-d'))
             ->where('is_checked', 0)
+            ->where(DB::raw('SUBSTRING_INDEX(employee_leave.created_by, " ", 1)'), '=', $firstName)
             ->get();
 
         session()->flash('success', __('Well done! The file has been exported successfully.'));
