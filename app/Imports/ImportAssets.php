@@ -14,80 +14,22 @@ class ImportAssets implements ToModel, WithHeadingRow
 {
     public function model(array $row)
     {
-        // dd($row);
-        // 👉 Assets
-        Asset::firstOrCreate([
-            'id' => $row['id'],
-            'old_id' => null,
-            'serial_number' => $row['serial_number'],
-            'status' => $row['status'],
-            'description' => null,
-            'in_service' => $row['in_service'],
-            'is_gpr' => $row['is_gpr'],
-            'real_price' => $row['real_price'],
-            'expected_price' => null,
-            'acquisition_date' => null,
-            'acquisition_type' => $row['acquisition_type'],
-            'funded_by' => $row['funded_by'],
-            'note' => $row['note'],
-        ]);
-
-        // $assetsText = $row[3];
-        // $parts = explode('_-_', $assetsText);
-
-        // $categoryText = $parts[0];
-        // $subCategoryText = $parts[1];
-
-        // $old_code = $row[5];
-        // $quantity = $row[4];
-
-        // $category = Category::where('name', $categoryText)->first();
-        // if (! $category) {
-        //     info($categoryText.' Category - NOT FOUND!!');
-        // }
-
-        // $subCategory = SubCategory::where('name', $subCategoryText)->first();
-        // if (! $subCategory) {
-        //     info($subCategory.$row.' SubCategory - NOT FOUND!!');
-        // }
-
-        // $category_id = str_pad($category->id, 4, '0', STR_PAD_LEFT);
-        // $subCategory_id = str_pad($subCategory->id, 4, '0', STR_PAD_LEFT);
-
-        // for ($i = 1; $i <= $quantity; $i++) {
-        //     $loop = str_pad($i, 4, '0', STR_PAD_LEFT);
-        //     $new_code = "$category_id$subCategory_id$loop";
-
-        //     Asset::firstOrCreate([
-        //         'id' => $new_code,
-        //         'old_id' => $old_code,
-        //         'serial_number' => null,
-        //         'status' => 'Good',
-        //         'description' => null,
-        //         'in_service' => 1,
-        //         'real_price' => null,
-        //         'expected_price' => null,
-        //         'acquisition_date' => Carbon::now(),
-        //         'acquisition_type' => 'Directed',
-        //         'funded_by' => null,
-        //         'note' => null,
-        //     ]);
-        // }
-
         // 👉 Category
         // Category::firstOrCreate([
-        //     'id' => $row[3],
-        //     'name' => $row[1],
+        //     'id' => $row['code'],
+        //     'name' => $row['name'],
         // ]);
 
         // 👉 SubCategory
         // SubCategory::firstOrCreate([
-        //     'id' => $row[3],
-        //     'name' => $row[1],
+        //     'id' => $row['sub_category_id'],
+        //     'name' => $row['sub_category'],
         // ]);
-        // $category = Category::find($row[2]);
+
+        // 👉 Category_Sub_Category
+        // $category = Category::find($row['category_id']);
         // if ($category) {
-        //     $category->subCategory()->syncWithoutDetaching([$row[3] => [
+        //     $category->subCategory()->syncWithoutDetaching([$row['sub_category_id'] => [
         //         'created_by' => Auth::user()->name,
         //         'updated_by' => Auth::user()->name,
         //         'created_at' => Carbon::now(),
@@ -96,6 +38,51 @@ class ImportAssets implements ToModel, WithHeadingRow
         // } else {
         //     dd($row);
         // }
+
+        // 👉 Assets
+        $quantity = 0;
+
+        $category_id = str_pad($row['category_id'], 4, '0', STR_PAD_LEFT);
+        $subCategory_id = str_pad($row['sub_category_id'], 4, '0', STR_PAD_LEFT);
+        $quantity = str_pad(1, 4, '0', STR_PAD_LEFT);
+
+        $lastRecord = Asset::where('id', $category_id.$subCategory_id.$quantity)->first();
+
+        if (! $lastRecord) {
+            Asset::firstOrCreate([
+                'id' => $category_id.$subCategory_id.$quantity,
+                'old_id' => $row['old_id'],
+                'serial_number' => $row['serial_number'],
+                'status' => $row['status'],
+                'description' => $row['description'],
+                'in_service' => $row['in_service'],
+                'real_price' => $row['real_price'],
+                'expected_price' => $row['expected_price'],
+                'acquisition_date' => $row['acquisition_date'],
+                'acquisition_type' => $row['acquisition_type'],
+                'funded_by' => $row['funded_by'],
+                'note' => $row['note'],
+            ]);
+        } else {
+            $quantity = Asset::where('id', 'like', $category_id.$subCategory_id.'%')->count();
+            $quantity++;
+            $quantity = str_pad($quantity, 4, '0', STR_PAD_LEFT);
+
+            Asset::firstOrCreate([
+                'id' => $category_id.$subCategory_id.$quantity,
+                'old_id' => $row['old_id'],
+                'serial_number' => $row['serial_number'],
+                'status' => $row['status'],
+                'description' => $row['description'],
+                'in_service' => $row['in_service'],
+                'real_price' => $row['real_price'],
+                'expected_price' => $row['expected_price'],
+                'acquisition_date' => $row['acquisition_date'],
+                'acquisition_type' => $row['acquisition_type'],
+                'funded_by' => $row['funded_by'],
+                'note' => $row['note'],
+            ]);
+        }
 
         return null;
     }
