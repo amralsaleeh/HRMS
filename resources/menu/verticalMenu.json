@@ -111,6 +111,12 @@
           "url": "settings/users",
           "name": "Users",
           "slug": "settings-users"
+        },
+        {
+          "url": "log-viewer",
+          "name": "Logs",
+          "slug": "settings-logs",
+          "target": "_blank"
         }
       ]
     },
