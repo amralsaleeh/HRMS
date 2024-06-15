@@ -74,9 +74,9 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
 
     Route::group(['middleware' => ['role:Admin']], function () {
         Route::prefix('settings')->group(function () {
-            Route::get('/rules', ComingSoon::class)->name('settings-rules');
-            Route::get('/roles&permissions', ComingSoon::class)->name('settings-roles&permissions');
             Route::get('/users', ComingSoon::class)->name('settings-users');
+            Route::get('/roles', ComingSoon::class)->name('settings-roles');
+            Route::get('/permissions', ComingSoon::class)->name('settings-permissions');
         });
     });
 
