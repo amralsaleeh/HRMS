@@ -28,8 +28,8 @@ class ExportLeaves implements FromCollection, ShouldAutoSize, WithHeadings, With
 
     protected function generateHeadings()
     {
-        if (empty($this->data)) {
-            return [];
+        if (count($this->data) === 0) {
+            return ['لا يوجد اجازات ضمن الفترة المحددة'];
         }
 
         return array_keys((array) $this->data[0]);
