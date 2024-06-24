@@ -98,19 +98,25 @@
       "role": ["Admin"],
       "submenu": [
         {
-          "url": "settings/rules",
-          "name": "Rules",
-          "slug": "settings-rules"
-        },
-        {
-          "url": "settings/roles&permissions",
-          "name": "Roles & Permissions",
-          "slug": "settings-roles&permissions"
-        },
-        {
           "url": "settings/users",
           "name": "Users",
           "slug": "settings-users"
+        },
+        {
+          "url": "settings/roles",
+          "name": "Roles",
+          "slug": "settings-roles"
+        },
+        {
+          "url": "settings/permissions",
+          "name": "Permissions",
+          "slug": "settings-permissions"
+        },
+        {
+          "url": "log-viewer",
+          "name": "Logs",
+          "slug": "settings-logs",
+          "target": "_blank"
         }
       ]
     },

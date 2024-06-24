@@ -44,10 +44,10 @@
   <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
       <li class="breadcrumb-item">
-        <a href="{{ route('dashboard') }}">Dashboard</a>
+        <a href="{{ route('dashboard') }}">{{ __('Dashboard') }}</a>
       </li>
-      <li class="breadcrumb-item active">Human Resource</li>
-      <li class="breadcrumb-item active">Discounts</li>
+      <li class="breadcrumb-item active">{{ __('Human Resource') }}</li>
+      <li class="breadcrumb-item active">{{ __('Discounts') }}</li>
     </ol>
   </nav>
 
@@ -63,7 +63,7 @@
                 <path d="M14 17v3a1 1 0 0 1 -1 1h-2a1 1 0 0 1 -1 -1v-3" />
               </svg>
             </span>
-            <span class="bs-stepper-label">Holidays</span>
+            <span class="bs-stepper-label">{{ __('Holidays') }}</span>
           </button>
         </div>
         <div class="line">
@@ -80,7 +80,7 @@
                 <path d="M17 11.5a1.5 1.5 0 0 1 3 0v4.5a6 6 0 0 1 -6 6h-2h.208a6 6 0 0 1 -5.012 -2.7a69.74 69.74 0 0 1 -.196 -.3c-.312 -.479 -1.407 -2.388 -3.286 -5.728a1.5 1.5 0 0 1 .536 -2.022a1.867 1.867 0 0 1 2.28 .28l1.47 1.47" />
               </svg>
             </span>
-            <span class="bs-stepper-label">Fingerprints</span>
+            <span class="bs-stepper-label">{{ __('Fingerprints') }}</span>
           </button>
         </div>
         <div class="line">
@@ -95,7 +95,7 @@
                 <path d="M3 21h18" />
               </svg>
             </span>
-            <span class="bs-stepper-label">Leaves</span>
+            <span class="bs-stepper-label">{{ __('Leaves') }}</span>
           </button>
         </div>
         <div class="line">
@@ -112,7 +112,7 @@
                 <path d="M12 17v1m0 -8v1" />
               </svg>
             </span>
-            <span class="bs-stepper-label">Review &amp; Submit</span>
+            <span class="bs-stepper-label">{{ __('Review') }} &amp; {{ __('Submit') }}</span>
           </button>
         </div>
       </div>
@@ -121,72 +121,72 @@
           <!-- Holidays Details -->
           <div id="holidays" class="content">
             <div class="content-header mb-3">
-              <h6 class="mb-0">Step 1</h6>
+              <h6 class="mb-0">{{ __('Step 1') }}</h6>
               <small>1 / 4</small>
             </div>
             <div class="row g-3">
               <div class="mt-2 mb-2" style="text-align: center">
-                  <h3 class="text-warning mb-1 mx-2">Work matters, but Holidays matter more!</h3>
+                  <h3 class="text-warning mb-1 mx-2">{{ __('Work matters, but Holidays matter more!') }}</h3>
                   <p class="mb-4 mx-2">
-                    Don't forget to add the <strong>Holidays</strong>. If you haven't added them yet!
+                    {{ __("Don't forget to add the") }} <strong>{{ __('Holidays') }}</strong>{{ __(". If you haven't added them yet!") }}
                   </p>
                   <a href="{{ route('holidays') }}" target="_blank" class="btn btn-label-secondary mb-4">
-                    Add New Holidays
+                    {{ __('Add New Holidays') }}
                   </a>
               </div>
               <div class="col-12 d-flex justify-content-between">
                 <button class="btn btn-label-secondary btn-prev waves-effect" style="visibility: hidden"> <i class="ti ti-arrow-left me-sm-1"></i>
-                  <span class="align-middle d-sm-inline-block d-none">Previous</span>
+                  <span class="align-middle d-sm-inline-block d-none">{{ __('Previous') }}</span>
                 </button>
-                <button class="btn btn-primary btn-next waves-effect waves-light"> <span class="align-middle d-sm-inline-block d-none me-sm-1">Next</span> <i class="ti ti-arrow-right"></i></button>
+                <button class="btn btn-primary btn-next waves-effect waves-light"> <span class="align-middle d-sm-inline-block d-none me-sm-1">{{ __('Next') }}</span> <i class="ti ti-arrow-right"></i></button>
               </div>
             </div>
           </div>
           <!-- Fingerprints Info -->
           <div id="fingerprints" class="content">
             <div class="content-header mb-3">
-              <h6 class="mb-0">Step 2</h6>
+              <h6 class="mb-0">{{ __('Step 2') }}</h6>
               <small>2 / 4</small>
             </div>
             <div class="row g-3">
               <div class="mt-2 mb-2" style="text-align: center">
-                  <h3 class="text-warning mb-1 mx-2">The magic lies in Fingerprints! Import them and set off.</h3>
+                  <h3 class="text-warning mb-1 mx-2">{{ __('The magic lies in Fingerprints! Import them and set off.') }}</h3>
                   <p class="mb-4 mx-2">
-                    Don't forget to import the <strong>Fingerprints</strong> file. If you haven't added them yet!
+                    {{ __("Don't forget to import the") }} <strong>{{ __('Fingerprints') }}</strong> {{ __("file. If you haven't added them yet!") }}
                   </p>
                   <a href="{{ route('attendance-fingerprints') }}" target="_blank" class="btn btn-label-secondary mb-4">
-                    Import Fingerprints File
+                   {{ __('Import Fingerprints File') }}
                   </a>
               </div>
               <div class="col-12 d-flex justify-content-between">
                 <button class="btn btn-label-secondary btn-prev waves-effect"> <i class="ti ti-arrow-left me-sm-1"></i>
-                  <span class="align-middle d-sm-inline-block d-none">Previous</span>
+                  <span class="align-middle d-sm-inline-block d-none">{{ __('Previous') }}</span>
                 </button>
-                <button class="btn btn-primary btn-next waves-effect waves-light"> <span class="align-middle d-sm-inline-block d-none me-sm-1">Next</span> <i class="ti ti-arrow-right"></i></button>
+                <button class="btn btn-primary btn-next waves-effect waves-light"> <span class="align-middle d-sm-inline-block d-none me-sm-1">{{ __('Next') }}</span> <i class="ti ti-arrow-right"></i></button>
               </div>
             </div>
           </div>
           <!-- Leaves -->
           <div id="leaves" class="content">
             <div class="content-header mb-3">
-              <h6 class="mb-0">Step 3</h6>
+              <h6 class="mb-0">{{ __('Step 3') }}</h6>
               <small>3 / 4</small>
             </div>
             <div class="row g-3">
               <div class="mt-2 mb-2" style="text-align: center">
-                  <h3 class="text-warning mb-1 mx-2">Employee Leaves is the crucial move! Import the Leaves file!</h3>
+                  <h3 class="text-warning mb-1 mx-2">{{ __('Employee Leaves is the crucial move! Import the Leaves file!') }}</h3>
                   <p class="mb-4 mx-2">
-                    Don't forget to import the <strong>Leaves</strong> file. If you haven't added them yet!
+                    {{ __("Don't forget to import the") }} <strong>{{ __('Leaves') }}</strong> {{ __("file. If you haven't added them yet!") }}
                   </p>
                   <a href="{{ route('attendance-leaves') }}" target="_blank" class="btn btn-label-secondary mb-4">
-                    Import Leaves File
+                   {{ __('Import Leaves File') }}
                   </a>
               </div>
               <div class="col-12 d-flex justify-content-between">
                 <button class="btn btn-label-secondary btn-prev waves-effect"> <i class="ti ti-arrow-left me-sm-1"></i>
-                  <span class="align-middle d-sm-inline-block d-none">Previous</span>
+                  <span class="align-middle d-sm-inline-block d-none">{{ __('Previous') }}</span>
                 </button>
-                <button class="btn btn-primary btn-next waves-effect waves-light"> <span class="align-middle d-sm-inline-block d-none me-sm-1">Next</span> <i class="ti ti-arrow-right"></i></button>
+                <button class="btn btn-primary btn-next waves-effect waves-light"> <span class="align-middle d-sm-inline-block d-none me-sm-1">{{ __('Next') }}</span> <i class="ti ti-arrow-right"></i></button>
               </div>
             </div>
           </div>
@@ -194,15 +194,15 @@
           <!-- Submit -->
           <div id="submit" class="content active dstepper-block">
             <div class="content-header mb-3">
-              <h6 class="mb-0">Step 4</h6>
+              <h6 class="mb-0">{{ __('Step 4') }}</h6>
               <small>4 / 4</small>
             </div>
             <div class="row g-3">
               @if (! $isProcessing)
               <div wire:transition class="mt-2 mb-2" style="text-align: center">
-                  <h3 class="text-primary mb-1 mx-2">Ready, set, launch!</h3>
+                  <h3 class="text-primary mb-1 mx-2">{{ __('Ready, set, launch!') }}</h3>
                   <p class="mb-4 mx-2">
-                    Choose the dates and take a sip of coffee while the rocket makes its touchdown.
+                    {{ __('Choose the dates and take a sip of coffee while the rocket makes its touchdown.') }}
                   </p>
                   <div class="row justify-content-center">
                     <div class="col-3 m-2">
@@ -232,9 +232,9 @@
                       <div class="nav-item mx-3 text-success">
                           {{ session('success') }}
                           <br><br>
-                          ⚠️ Make sure that all Employees Leaves are Checked Successfully ⚠️
+                          ⚠️ {{ __('Make sure that all Employees Leaves are Checked Successfully') }} ⚠️
                           <br><br>
-                          Get into the <a href="{{ route('statistics') }}">statistics</a> for a deep dive into the juicy details!
+                          {{ __('Get into the') }} <a href="{{ route('statistics') }}">{{ __('statistics') }}</a> {{ __('for a deep dive into the juicy details!') }}
                       </div>
                     @endif
                     @if (session()->has('error'))
@@ -248,9 +248,9 @@
               </div>
               <div class="col-12 d-flex justify-content-between">
                 <button class="btn btn-label-secondary btn-prev waves-effect"> <i class="ti ti-arrow-left me-sm-1"></i>
-                  <span class="align-middle d-sm-inline-block d-none">Previous</span>
+                  <span class="align-middle d-sm-inline-block d-none">{{ __('Previous') }}</span>
                 </button>
-                <button id="calculateDiscounts" wire:click.prevent='calculateDiscounts()' class="btn btn-success waves-effect waves-light">Submit</button>
+                <button id="calculateDiscounts" wire:click.prevent='calculateDiscounts()' class="btn btn-success waves-effect waves-light">{{ __('Submit') }}</button>
               </div>
             </div>
           </div>

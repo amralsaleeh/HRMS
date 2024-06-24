@@ -116,7 +116,7 @@
                 <li>
                   <a class="dropdown-item {{ App::getLocale() == 'ar' ? 'selected' : '' }}" href="{{ url('lang/ar') }}" data-language="ar" data-text-direction="rtl">
                     <i class="fi fi-sy fis rounded-circle me-1 fs-3"></i>
-                    <span class="align-middle">Arabic</span>
+                    <span class="align-middle">العربية</span>
                   </a>
                 </li>
                 <li>
@@ -140,7 +140,7 @@
               <ul wire:ignore.self class="dropdown-menu dropdown-menu-end py-0">
                 <li class="dropdown-menu-header border-bottom">
                   <div class="dropdown-header d-flex align-items-center py-3">
-                    <h5 class="text-body mb-0 me-auto">Notifications</h5>
+                    <h5 class="text-body mb-0 me-auto">{{ __('Notifications') }}</h5>
                     @if (count($unreadNotifications))
                       <a wire:click.prevent='markAllNotificationsAsRead()' href="" class="dropdown-notifications-all text-body mx-2"><i class="ti ti-mail-opened fs-4"></i></a>
                     @endif
@@ -173,17 +173,18 @@
                     @empty
                       <li class="border-top">
                         <p class="d-flex justify-content-center text-muted m-3 p-2 h-px-40 align-items-center" style="text-align: center">
-                          Time to relax!
+                          {{ __('Time to relax!') }}
                           <br>
-                          No new updates to worry about
+                          {{ __('No new updates to worry about') }}
                         </p>
                       </li>
                     @endforelse
                   </ul>
                 <div class="ps__rail-x" style="left: 0px; bottom: 0px;"><div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div></div><div class="ps__rail-y" style="top: 0px; right: 0px;"><div class="ps__thumb-y" tabindex="0" style="top: 0px; height: 0px;"></div></div></li>
                 <li class="dropdown-menu-footer border-top">
-                  <a href="#" class="dropdown-item d-flex justify-content-center text-primary p-2 h-px-40 mb-1 align-items-center">
-                    View all notifications
+                  <a href="#" class="dropdown-item d-flex justify-content-center text-primary p-2 h-px-40 mb-1 align-items-center"
+                    style="opacity: 0.5;pointer-events: none;">
+                    {{ __('View all notifications') }}
                   </a>
                 </li>
               </ul>
@@ -244,7 +245,7 @@
                   <li>
                     <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                       <i class='ti ti-logout me-2'></i>
-                      <span class="align-middle">Logout</span>
+                      <span class="align-middle">{{ __('Sign out') }}</span>
                     </a>
                   </li>
                   <form method="POST" id="logout-form" action="{{ route('logout') }}">

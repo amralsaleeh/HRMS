@@ -148,7 +148,7 @@
                               class="ti ti-trash text-danger"></i></a>
                           @if ($confirmedId === $fingerprint->id)
                             <button wire:click.prevent='deleteFingerprint({{ $fingerprint }})' type="button"
-                                    class="btn btn-xs btn-danger waves-effect waves-light">Sure?
+                                    class="btn btn-xs btn-danger waves-effect waves-light">{{ __('Sure?') }}
                             </button>
                           @endif
                         </div>

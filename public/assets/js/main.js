@@ -105,19 +105,19 @@ if (document.getElementById('layout-menu')) {
     if (window.Helpers.isLightStyle()) {
       if (styleSwitcherToggleEl) {
         styleSwitcherToggleEl.querySelector('i').classList.add('ti-moon-stars');
-        new bootstrap.Tooltip(styleSwitcherToggleEl, {
-          title: 'Dark mode',
-          fallbackPlacements: ['bottom']
-        });
+        // new bootstrap.Tooltip(styleSwitcherToggleEl, {
+        //   title: 'Dark mode',
+        //   fallbackPlacements: ['bottom']
+        // });
       }
       switchImage('light');
     } else {
       if (styleSwitcherToggleEl) {
         styleSwitcherToggleEl.querySelector('i').classList.add('ti-sun');
-        new bootstrap.Tooltip(styleSwitcherToggleEl, {
-          title: 'Light mode',
-          fallbackPlacements: ['bottom']
-        });
+        // new bootstrap.Tooltip(styleSwitcherToggleEl, {
+        //   title: 'Light mode',
+        //   fallbackPlacements: ['bottom']
+        // });
       }
       switchImage('dark');
     }

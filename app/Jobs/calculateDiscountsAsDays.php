@@ -4,6 +4,7 @@ namespace App\Jobs;
 
 use App\Models\Center;
 use App\Models\Employee;
+use App\Models\EmployeeLeave;
 use App\Notifications\DefaultNotification;
 use Carbon\Carbon;
 use Carbon\CarbonInterface;
@@ -78,13 +79,17 @@ class calculateDiscountsAsDays implements ShouldQueue
             foreach ($centerEmployees as $employee) {
                 $employeeContract = $employee->contract()->first();
                 [$employeeStartDate, $employeeEndDate] = $this->calculateTimelineHistory($employee);
-                $employeeLeaves = $employee->leaves()->where('to_date', '<=', $toDate)->where('is_checked', 0)->orderBy('from_date', 'asc')->get();
+                $employeeLeaves = $employee->leaves()->where('to_date', '>=', $fromDate)->where('is_checked', 0)->orderBy('from_date', 'asc')->get();
                 $employeeFingerprints = $this->getEmployeeFingerprints($workDays, $employee);
 
                 $employeeTotalWorkDaysInMinutes = intval($workDaysInMinutes * ($employeeContract->work_rate / 100));
                 $employeeWorkDayDuration = intval(($workDaysInMinutes * ($employeeContract->work_rate / 100)) / count($workDays));
                 $workedTime = 0;
                 $excusedTime = 0;
+
+                // Split leaves and update $employeeLeaves after that
+                $this->splitLeaves($employeeLeaves);
+                $employeeLeaves = $employee->leaves()->where('to_date', '<=', $toDate)->where('is_checked', 0)->orderBy('from_date', 'asc')->get();
 
                 foreach ($employeeLeaves as $leave) {
                     // اجازة - يومية - اداري
@@ -289,6 +294,48 @@ class calculateDiscountsAsDays implements ShouldQueue
         }, $workDays);
 
         return $employee->fingerprints()->whereIn('date', $workDates)->where('is_checked', 0)->orderBy('date', 'asc')->get();
+    }
+
+    public function splitLeaves($employeeLeaves)
+    {
+        $dates = explode(' to ', $this->batch);
+        $fromDate = Carbon::create($dates[0]);
+        $toDate = Carbon::create($dates[1]);
+
+        $splitDate = $toDate;
+
+        foreach ($employeeLeaves as $leave) {
+
+            $startDate = Carbon::parse($leave->pivot->from_date);
+            $endDate = Carbon::parse($leave->pivot->to_date);
+
+            if ($splitDate >= $startDate && $startDate != $endDate) {
+                $firstLeave = EmployeeLeave::create([
+                    'employee_id' => $leave->pivot->employee_id,
+                    'leave_id' => $leave->pivot->leave_id,
+                    'from_date' => $startDate,
+                    'to_date' => $splitDate->copy(),
+                    'note' => $leave->pivot->note,
+                    'is_authorized' => $leave->pivot->is_authorized,
+                    'is_checked' => $leave->pivot->is_checked,
+                ]);
+
+                $secondLeave = EmployeeLeave::create([
+                    'employee_id' => $leave->pivot->employee_id,
+                    'leave_id' => $leave->pivot->leave_id,
+                    'from_date' => $splitDate->copy()->addDay(),
+                    'to_date' => $endDate,
+                    'note' => $leave->pivot->note,
+                    'is_authorized' => $leave->pivot->is_authorized,
+                    'is_checked' => $leave->pivot->is_checked,
+                ]);
+
+                EmployeeLeave::find($leave->pivot->id)->update([
+                    'note' => 'Splitted into: '.$firstLeave->id.' & '.$secondLeave->id,
+                    'is_checked' => 1,
+                ]);
+            }
+        }
     }
 
     public function decrementMaxLeaveAllowed($employee, $date, $reason)

@@ -75,7 +75,7 @@ class Leaves extends Component
 
         $user = Employee::find(Auth::user()->employee_id);
         $center = Center::find($user->timelines()->where('end_date', null)->first()->center_id);
-        $this->activeEmployees = $center->activeEmployees()->get();
+        $this->activeEmployees = $center->activeEmployees();
 
         $currentDate = Carbon::now();
         $previousMonth = $currentDate->copy()->subMonth();
@@ -134,33 +134,33 @@ class Leaves extends Component
             ]);
 
         if (substr($this->newLeaveInfo['LeaveId'], 1, 1) == 1 && ($this->newLeaveInfo['startAt'] != null || $this->newLeaveInfo['endAt'] != null)) {
-            session()->flash('error', 'Cann\'t add daily leave with time!');
+            session()->flash('error', __('Can\'t add daily leave with time!'));
             $this->dispatch('closeModal', elementId: '#leaveModal');
-            $this->dispatch('toastr', type: 'error'/* , title: 'Done!' */ , message: 'Requires Attention!');
+            $this->dispatch('toastr', type: 'error'/* , title: 'Done!' */ , message: __('Requires Attention!'));
 
             return;
         }
 
         if (substr($this->newLeaveInfo['LeaveId'], 1, 1) == 2 && ($this->newLeaveInfo['startAt'] == null || $this->newLeaveInfo['endAt'] == null)) {
-            session()->flash('error', 'Cann\'t add hourly leave without time!');
+            session()->flash('error', __('Can\'t add hourly leave without time!'));
             $this->dispatch('closeModal', elementId: '#leaveModal');
-            $this->dispatch('toastr', type: 'error'/* , title: 'Done!' */ , message: 'Requires Attention!');
+            $this->dispatch('toastr', type: 'error'/* , title: 'Done!' */ , message: __('Requires Attention!'));
 
             return;
         }
 
         if ($this->newLeaveInfo['fromDate'] > $this->newLeaveInfo['toDate']) {
-            session()->flash('error', 'Check the dates entered. "From Date" cannot be greater than "To Date"');
+            session()->flash('error', __('Check the dates entered. "From Date" cannot be greater than "To Date"'));
             $this->dispatch('closeModal', elementId: '#leaveModal');
-            $this->dispatch('toastr', type: 'error'/* , title: 'Done!' */ , message: 'Requires Attention!');
+            $this->dispatch('toastr', type: 'error'/* , title: 'Done!' */ , message: __('Requires Attention!'));
 
             return;
         }
 
         if ($this->newLeaveInfo['startAt'] > $this->newLeaveInfo['endAt']) {
-            session()->flash('error', 'Check the times entered. "Start At" cannot be greater than "End To"');
+            session()->flash('error', __('Check the times entered. "Start At" cannot be greater than "End To"'));
             $this->dispatch('closeModal', elementId: '#leaveModal');
-            $this->dispatch('toastr', type: 'error'/* , title: 'Done!' */ , message: 'Requires Attention!');
+            $this->dispatch('toastr', type: 'error'/* , title: 'Done!' */ , message: __('Requires Attention!'));
 
             return;
         }
@@ -186,11 +186,11 @@ class Leaves extends Component
             'note' => $this->newLeaveInfo['note'],
         ]);
 
-        session()->flash('success', 'Success, record created successfully!');
+        session()->flash('success', __('Success, record created successfully!'));
         $this->dispatch('scrollToTop');
 
         $this->dispatch('closeModal', elementId: '#leaveModal');
-        $this->dispatch('toastr', type: 'success'/* , title: 'Done!' */ , message: 'Going Well!');
+        $this->dispatch('toastr', type: 'success'/* , title: 'Done!' */ , message: __('Going Well!'));
     }
 
     public function showUpdateLeaveModal($id)
@@ -227,11 +227,11 @@ class Leaves extends Component
             'note' => $this->newLeaveInfo['note'],
         ]);
 
-        session()->flash('success', 'Success, record updated successfully!');
+        session()->flash('success', __('Success, record updated successfully!'));
         $this->dispatch('scrollToTop');
 
         $this->dispatch('closeModal', elementId: '#leaveModal');
-        $this->dispatch('toastr', type: 'success'/* , title: 'Done!' */ , message: 'Going Well!');
+        $this->dispatch('toastr', type: 'success'/* , title: 'Done!' */ , message: __('Going Well!'));
 
         $this->reset('isEdit', 'newLeaveInfo');
     }
@@ -244,7 +244,7 @@ class Leaves extends Component
     public function destroyLeave()
     {
         $this->selectedEmployee->leaves()->wherePivot('id', $this->confirmedId)->detach();
-        $this->dispatch('toastr', type: 'success'/* , title: 'Done!' */ , message: 'Going Well!');
+        $this->dispatch('toastr', type: 'success'/* , title: 'Done!' */ , message: __('Going Well!'));
     }
 
     public function importFromExcel()
@@ -264,7 +264,7 @@ class Leaves extends Component
             ));
             $this->dispatch('refreshNotifications')->to(Navbar::class);
 
-            session()->flash('success', 'Well done! The file has been imported successfully.');
+            session()->flash('success', __('Well done! The file has been imported successfully.'));
         } catch (Exception $e) {
             session()->flash('error', 'Error occurred: '.$e->getMessage());
         }
@@ -274,9 +274,15 @@ class Leaves extends Component
 
     public function exportToExcel()
     {
+        $user = Employee::find(Auth::user()->employee_id);
+        $center = Center::find($user->timelines()->where('end_date', null)->first()->center_id);
+        $this->activeEmployees = $center->activeEmployees();
+
         $centerEmployees = array_map(function ($object) {
             return $object['id'];
         }, $this->activeEmployees->toArray());
+
+        $firstName = explode(' ', Auth::user()->name)[0];
 
         $leavesToExport = DB::table('employee_leave')
             ->select([
@@ -294,11 +300,14 @@ class Leaves extends Component
             ->leftJoin('employees', 'employee_leave.employee_id', '=', 'employees.id') // Left join for missing employee
             ->leftJoin('leaves', 'employee_leave.leave_id', '=', 'leaves.id') // Left join for missing leave type
             ->whereIn('employee_leave.employee_id', $centerEmployees)
-            ->where('employee_leave.created_at', '>', Carbon::now()->subDays(7)->format('Y-m-d'))
+            ->where('employee_leave.created_at', '>=', Carbon::now()->subDays(7)->format('Y-m-d'))
             ->where('is_checked', 0)
+            ->where(DB::raw('SUBSTRING_INDEX(employee_leave.created_by, " ", 1)'), '=', $firstName)
             ->get();
 
-        return Excel::download(new ExportLeaves($leavesToExport), 'Leaves - '.Auth::user()->name.' - '.Carbon::now()->subDays(7)->format('Y-m-d').' --> '.Carbon::now()->format('Y-m-d').'.xlsx');
+        session()->flash('success', __('Well done! The file has been exported successfully.'));
+
+        return Excel::download(new ExportLeaves($leavesToExport), 'Leaves - '.Auth::user()->name.' - '.Carbon::now()->subDays(7)->format('Y-m-d').' --- '.Carbon::now()->format('Y-m-d').'.xlsx');
 
     }
 }

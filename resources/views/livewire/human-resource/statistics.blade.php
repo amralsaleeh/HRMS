@@ -17,10 +17,10 @@
   <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
       <li class="breadcrumb-item">
-        <a href="{{ route('dashboard') }}">Dashboard</a>
+        <a href="{{ route('dashboard') }}">{{ __('Dashboard') }}</a>
       </li>
-      <li class="breadcrumb-item active">Human Resource</li>
-      <li class="breadcrumb-item active">Statistics</li>
+      <li class="breadcrumb-item active">{{ __('Human Resource') }}</li>
+      <li class="breadcrumb-item active">{{ __('Statistics') }}</li>
     </ol>
   </nav>
 
@@ -28,7 +28,7 @@
     <div class="nav-align-top mb-4">
       <ul class="nav nav-pills mb-3 nav-fill" role="tablist">
         <li class="nav-item" role="presentation">
-          <button type="button" class="nav-link active" role="tab" data-bs-toggle="tab" data-bs-target="#navs-pills-justified-home" aria-controls="navs-pills-justified-home" aria-selected="true" tabindex="-1"><i class="tf-icons ti ti-coin ti-xs me-1"></i> Discount {{-- <span class="badge rounded-pill badge-center h-px-20 w-px-20 bg-danger ms-1">3</span> --}}</button>
+          <button type="button" class="nav-link active" role="tab" data-bs-toggle="tab" data-bs-target="#navs-pills-justified-home" aria-controls="navs-pills-justified-home" aria-selected="true" tabindex="-1"><i class="tf-icons ti ti-coin ti-xs me-1"></i> {{ __('Discount') }} {{-- <span class="badge rounded-pill badge-center h-px-20 w-px-20 bg-danger ms-1">3</span> --}}</button>
         </li>
         {{-- <li class="nav-item" role="presentation">
           <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#navs-pills-justified-profile" aria-controls="navs-pills-justified-profile" aria-selected="false" tabindex="-1"><i class="tf-icons ti ti-user ti-xs me-1"></i> Profile</button>
@@ -42,7 +42,7 @@
           <div class="row">
             <form class="p-4">
               <div class="text-center">
-                <p class="text-muted">Please select the timeframe to display discounts:</p>
+                <p class="text-muted">{{ __('Please select the timeframe to display discounts:') }}</p>
               </div>
               <div wire:ignore class="mb-3" style="text-align: center">
                 {{-- <label class="form-label">batch</label> --}}
@@ -63,7 +63,7 @@
             <div class="card-body">
               <div class="dt-action-buttons d-flex justify-content-end flex-md-row flex-column mb-3">
                 <div class="dt-buttons">
-                  <button wire:click='exportDiscounts()' class="dt-button btn btn-label-primary" type="button"><span><i class="ti ti-logout rotate-n90 me-2"></i>Export</span></button>
+                  <button wire:click='exportDiscounts()' class="dt-button btn btn-label-primary" type="button"><span><i class="ti ti-logout rotate-n90 me-2"></i>{{ __('Export') }}</span></button>
                 </div>
               </div>
               @foreach ($employeeDiscounts as $employee)
@@ -124,9 +124,9 @@
                     <thead>
                       <tr style="font-weight:bold">
                         <th>#</th>
-                        <th>Date</th>
-                        <th class="text-center">Rate</th>
-                        <th>Reason</th>
+                        <th>{{ __('Date') }}</th>
+                        <th class="text-center">{{ __('Rate') }}</th>
+                        <th>{{ __('Reason') }}</th>
                       </tr>
                     </thead>
                     <tbody class="table-border-bottom-0">
@@ -140,7 +140,7 @@
                             </div>
                           </td>
                           <td>
-                            {{ $discount->reason }}
+                            {{ __($discount->reason) }}
                             @if ($discount->is_auto)
                               <span class="badge badge-center rounded-pill bg-label-secondary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="tooltip-primary" data-bs-original-title="Automatic"><i class="ti ti-settings"></i></span>
                             @endif

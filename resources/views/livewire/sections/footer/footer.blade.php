@@ -7,11 +7,10 @@
           © <script>
             document.write(new Date().getFullYear())
           </script>
-          , made with ❤️ by <a href="{{ route('contact-us') }}" target="_blank" class="fw-semibold">IT Department</a> for a better work environment.
+          , {{ __('made with') }} ❤️ <a href="{{ route('contact-us') }}" target="_blank" class="fw-semibold">{{ __('IT Department') }}</a> {{ __('for a better work environment.') }}
         </div>
         <div>
-          <a href="https://data.namaa.sy/" target="_blank" class="footer-link d-none d-sm-inline-block me-4">Data system</a>
-          <a href="http://www.namaa.sy/" target="_blank" class="footer-link d-none d-sm-inline-block">Namaa</a>
+          <a href="https://data.namaa.sy/" target="_blank" class="footer-link d-none d-sm-inline-block">{{ __('Data system') }}</a>
         </div>
       </div>
     </div>

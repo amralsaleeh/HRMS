@@ -10,16 +10,16 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         <div class="text-center mb-4">
           <h3 class="mb-2"></h3>
-          <h3 class="mb-2">{{ $isEdit ? 'Update Holiday' : 'New Holiday' }}</h3>
-          <p class="text-muted">Please fill out the following information</p>
+          <h3 class="mb-2">{{ $isEdit ? __('Update Holiday') : __('New Holiday') }}</h3>
+          <p class="text-muted">{{ __('Please fill out the following information') }}</p>
         </div>
         <form wire:submit="submitHoliday" class="row g-3">
           <div class="col-12 mb-4">
-            <label class="form-label w-100">Name</label>
+            <label class="form-label w-100">{{ __('Name') }}</label>
             <input wire:model='name' class="form-control @error('name') is-invalid @enderror" type="text" />
           </div>
           <div wire:ignore class="col-md-12">
-            <label class="form-label">Centers</label>
+            <label class="form-label">{{ __('Centers') }}</label>
             <select wire:model="centers" id="selectCenters" class="select2 form-select form-select-lg @error('centers') is-invalid @enderror" data-allow-clear="true" multiple>
                 @foreach($centers as $centerId => $centerName)
                     <option value="{{ $centerId }}">{{ $centerName }}</option>
@@ -27,22 +27,22 @@
             </select>
           </div>
           <div class="col-md-6 col-12 mb-4">
-            <label class="form-label">From Date</label>
+            <label class="form-label">{{ __('From Date') }}</label>
             <input wire:model='fromDate' type="text" class="form-control flatpickr-input active @error('fromDate') is-invalid @enderror" placeholder="YYYY/MM/DD" id="flatpickr-From-Date" readonly="readonly"/>
           </div>
           <div class="col-md-6 col-12 mb-4">
-            <label class="form-label">To Date</label>
+            <label class="form-label">{{ __('To Date') }}</label>
             <input wire:model='toDate' type="text" class="form-control flatpickr-input active @error('toDate') is-invalid @enderror" placeholder="YYYY/MM/DD" id="flatpickr-To-Date" readonly="readonly"/>
           </div>
 
           <div class="col-12 mb-4">
-            <label class="form-label w-100">Note</label>
+            <label class="form-label w-100">{{ __('Note') }}</label>
             <input wire:model='note' class="form-control @error('note') is-invalid @enderror" type="text" />
           </div>
 
           <div class="col-12 text-center">
-            <button type="submit" class="btn btn-primary me-sm-3 me-1">Submit</button>
-            <button type="reset" class="btn btn-label-secondary btn-reset" data-bs-dismiss="modal" aria-label="Close">Cancel</button>
+            <button type="submit" class="btn btn-primary me-sm-3 me-1">{{ __('Submit') }}</button>
+            <button type="reset" class="btn btn-label-secondary btn-reset" data-bs-dismiss="modal" aria-label="Close">{{ __('Cancel') }}</button>
           </div>
         </form>
       </div>
