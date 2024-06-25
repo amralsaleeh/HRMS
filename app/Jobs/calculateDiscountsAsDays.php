@@ -391,7 +391,7 @@ class calculateDiscountsAsDays implements ShouldQueue
             $startDate = Carbon::parse($leave->pivot->from_date);
             $endDate = Carbon::parse($leave->pivot->to_date);
 
-            if ($splitDate >= $startDate && $endDate >= $splitDate && $startDate != $endDate) {
+            if ($splitDate >= $startDate && $endDate > $splitDate && $startDate != $endDate) {
                 $firstLeave = EmployeeLeave::create([
                     'employee_id' => $leave->pivot->employee_id,
                     'leave_id' => $leave->pivot->leave_id,
