@@ -48,9 +48,10 @@ class calculateDiscountsAsDays implements ShouldQueue
 
         $this->calculateDiscounts();
 
-        Notification::send($this->user, new DefaultNotification($this->user->id,
-            'Successfully calculate the employees discounts'
-        ));
+        Notification::send(
+            $this->user,
+            new DefaultNotification($this->user->id, 'Successfully calculate the employees discounts')
+        );
     }
 
     public function calculateDiscounts()
@@ -63,33 +64,55 @@ class calculateDiscountsAsDays implements ShouldQueue
         $toDate = Carbon::create($dates[1]);
 
         foreach ($this->allCenters as $center) {
-            DB::table('jobs')->where('id', $this->jobId)->update([
-                'progress' => $progress += $progressStep,
-            ]);
+            DB::table('jobs')
+                ->where('id', $this->jobId)
+                ->update([
+                    'progress' => ($progress += $progressStep),
+                ]);
 
-            $startOfWork = carbon::parse($center->start_work_hour)->addMinutes(5)->format('H:i'); // TODO: Make 5 inserted variable on settings table
-            $delayThreshold = carbon::parse($center->start_work_hour)->addMinutes(29)->format('H:i'); // TODO: Make 29 inserted variable on settings table
-            $endOfWork = carbon::parse($center->end_work_hour)->subMinutes(5)->format('H:i'); // TODO: Make 5 inserted variable on settings table
+            $startOfWork = carbon::parse($center->start_work_hour)
+                ->addMinutes(5)
+                ->format('H:i'); // TODO: Make 5 inserted variable on settings table
+            $delayThreshold = carbon::parse($center->start_work_hour)
+                ->addMinutes(29)
+                ->format('H:i'); // TODO: Make 29 inserted variable on settings table
+            $endOfWork = carbon::parse($center->end_work_hour)
+                ->subMinutes(5)
+                ->format('H:i'); // TODO: Make 5 inserted variable on settings table
 
             $workDays = $this->calculateWorkDays($center, $fromDate, $toDate);
-            $workDaysInMinutes = count($workDays) * Carbon::parse($center->start_work_hour)->diffInMinutes(Carbon::parse($center->end_work_hour));
+            $workDaysInMinutes =
+              count($workDays) *
+              Carbon::parse($center->start_work_hour)->diffInMinutes(Carbon::parse($center->end_work_hour));
 
             $centerEmployees = $this->getCenterEmployees($center->id);
 
             foreach ($centerEmployees as $employee) {
                 $employeeContract = $employee->contract()->first();
                 [$employeeStartDate, $employeeEndDate] = $this->calculateTimelineHistory($employee);
-                $employeeLeaves = $employee->leaves()->where('to_date', '>=', $fromDate)->where('is_checked', 0)->orderBy('from_date', 'asc')->get();
+                $employeeLeaves = $employee
+                    ->leaves()
+                    ->where('to_date', '>=', $fromDate)
+                    ->where('is_checked', 0)
+                    ->orderBy('from_date', 'asc')
+                    ->get();
                 $employeeFingerprints = $this->getEmployeeFingerprints($workDays, $employee);
 
                 $employeeTotalWorkDaysInMinutes = intval($workDaysInMinutes * ($employeeContract->work_rate / 100));
-                $employeeWorkDayDuration = intval(($workDaysInMinutes * ($employeeContract->work_rate / 100)) / count($workDays));
+                $employeeWorkDayDuration = intval(
+                    ($workDaysInMinutes * ($employeeContract->work_rate / 100)) / count($workDays)
+                );
                 $workedTime = 0;
                 $excusedTime = 0;
 
                 // Split leaves and update $employeeLeaves after that
                 $this->splitLeaves($employeeLeaves);
-                $employeeLeaves = $employee->leaves()->where('to_date', '<=', $toDate)->where('is_checked', 0)->orderBy('from_date', 'asc')->get();
+                $employeeLeaves = $employee
+                    ->leaves()
+                    ->where('to_date', '<=', $toDate)
+                    ->where('is_checked', 0)
+                    ->orderBy('from_date', 'asc')
+                    ->get();
 
                 foreach ($employeeLeaves as $leave) {
                     // اجازة - يومية - اداري
@@ -133,32 +156,64 @@ class calculateDiscountsAsDays implements ShouldQueue
                     if ($leave->id == 1201) {
                         $fingerprint = $employeeFingerprints->where('date', $leave->pivot->from_date)->first();
                         if ($fingerprint) {
-
                             if ($fingerprint->check_in <= $startOfWork && $fingerprint->check_out >= $endOfWork) {
                                 $duration = Carbon::parse($leave->pivot->start_at)->diff(Carbon::parse($leave->pivot->end_at));
-                                $durationInSeconds = Carbon::parse($leave->pivot->start_at)->diffInSeconds(Carbon::parse($leave->pivot->end_at));
+                                $durationInSeconds = Carbon::parse($leave->pivot->start_at)->diffInSeconds(
+                                    Carbon::parse($leave->pivot->end_at)
+                                );
 
                                 if ($durationInSeconds > $this->absenceThreshold) {
                                     if ($employee->max_leave_allowed > 0) {
-                                        $this->decrementMaxLeaveAllowed($employee, $leave->pivot->from_date, 'Administrative leave - Exceeded the 3 hours limit');
+                                        $this->decrementMaxLeaveAllowed(
+                                            $employee,
+                                            $leave->pivot->from_date,
+                                            'Administrative leave - Exceeded the 3 hours limit'
+                                        );
                                     } else {
-                                        $this->createDiscountFromLeave($employee, $employeeFingerprints, $leave, 'Administrative leave - Exceeded the 3 hours limit', 1);
+                                        $this->createDiscountFromLeave(
+                                            $employee,
+                                            $employeeFingerprints,
+                                            $leave,
+                                            'Administrative leave - Exceeded the 3 hours limit',
+                                            1
+                                        );
                                     }
-                                    $this->setFingerprintIsChecked($employeeFingerprints, Carbon::parse($leave->pivot->from_date), 'Administrative leave - Exceeded the 3 hours limit');
+                                    $this->setFingerprintIsChecked(
+                                        $employeeFingerprints,
+                                        Carbon::parse($leave->pivot->from_date),
+                                        'Administrative leave - Exceeded the 3 hours limit'
+                                    );
                                 } else {
                                     $employee->update([
-                                        'hourly_counter' => Carbon::parse($employee->hourly_counter)->addHours($duration->h)->addMinutes($duration->i),
+                                        'hourly_counter' => Carbon::parse($employee->hourly_counter)
+                                            ->addHours($duration->h)
+                                            ->addMinutes($duration->i),
                                     ]);
-                                    if ($employee->hourly_counter >= '07:00:00') { // TODO: Make 07:00:00 inserted variable on settings table
+                                    if ($employee->hourly_counter >= '07:00:00') {
+                                        // TODO: Make 07:00:00 inserted variable on settings table
                                         if ($employee->max_leave_allowed > 0) {
-                                            $this->decrementMaxLeaveAllowed($employee, $leave->pivot->from_date, 'Administrative leave - Rounded');
+                                            $this->decrementMaxLeaveAllowed(
+                                                $employee,
+                                                $leave->pivot->from_date,
+                                                'Administrative leave - Rounded'
+                                            );
                                         } else {
-                                            $this->createDiscountFromLeave($employee, $employeeFingerprints, $leave, 'Administrative leave - Rounded', 1);
+                                            $this->createDiscountFromLeave(
+                                                $employee,
+                                                $employeeFingerprints,
+                                                $leave,
+                                                'Administrative leave - Rounded',
+                                                1
+                                            );
                                         }
                                         $employee->update([
                                             'hourly_counter' => Carbon::parse($employee->hourly_counter)->subHours(7), // TODO: Make 7 inserted variable on settings table
                                         ]);
-                                        $this->setFingerprintIsChecked($employeeFingerprints, Carbon::parse($leave->pivot->from_date), 'Administrative leave - Rounded');
+                                        $this->setFingerprintIsChecked(
+                                            $employeeFingerprints,
+                                            Carbon::parse($leave->pivot->from_date),
+                                            'Administrative leave - Rounded'
+                                        );
                                     }
                                 }
                             }
@@ -216,7 +271,14 @@ class calculateDiscountsAsDays implements ShouldQueue
                         // Two fingerprint
                         $isDelay = $this->checkIfDelay($center, $employee, $fingerprint, $startOfWork, $delayThreshold);
                         $isEarly = $this->checkIfEarly($center, $employee, $employeeLeaves, $fingerprint, $endOfWork);
-                        $isLate = $this->checkIfLate($center, $employee, $employeeLeaves, $fingerprint, $startOfWork, $delayThreshold);
+                        $isLate = $this->checkIfLate(
+                            $center,
+                            $employee,
+                            $employeeLeaves,
+                            $fingerprint,
+                            $startOfWork,
+                            $delayThreshold
+                        );
                         // if (! $isDelay && ! $isEarly) {
                         // }
                     }
@@ -234,19 +296,30 @@ class calculateDiscountsAsDays implements ShouldQueue
     {
         return Employee::whereHas('discounts', function ($query) {
             $query->whereBetween('date', explode(' to ', $this->batch));
-        })->with(['discounts' => function ($query) {
-            $query->whereBetween('date', explode(' to ', $this->batch));
-        }])->get()->each(function ($employee) {
-            $employee->discounts = $employee->discounts->sortBy('date');
-            $employee->cash_discounts_count = $employee->discounts->filter(function ($discount) {
-                return $discount->rate > 0;
-            })->count();
-        })->sortBy('first_name');
+        })
+            ->with([
+                'discounts' => function ($query) {
+                    $query->whereBetween('date', explode(' to ', $this->batch));
+                },
+            ])
+            ->get()
+            ->each(function ($employee) {
+                $employee->discounts = $employee->discounts->sortBy('date');
+                $employee->cash_discounts_count = $employee->discounts
+                    ->filter(function ($discount) {
+                        return $discount->rate > 0;
+                    })
+                    ->count();
+            })
+            ->sortBy('first_name');
     }
 
     public function calculateWorkDays($center, $fromDate, $toDate)
     {
-        $centerHolidays = $center->holidays()->where('to_date', '>=', $fromDate)->get();
+        $centerHolidays = $center
+            ->holidays()
+            ->where('to_date', '>=', $fromDate)
+            ->get();
         $workDaysWithoutHolidays = CarbonPeriod::create($fromDate, $toDate)->toArray();
 
         foreach ($centerHolidays as $holiday) {
@@ -266,9 +339,14 @@ class calculateDiscountsAsDays implements ShouldQueue
     public function getCenterEmployees($centerId)
     {
         return Employee::whereHas('timelines', function ($query) use ($centerId) {
-            $query->where('center_id', $centerId)
-                /* ->whereNull('end_date') */;
-        })->where('is_active', true)->get();
+            $query->where(
+                'center_id',
+                $centerId
+                /* ->whereNull('end_date') */
+            );
+        })
+            ->where('is_active', true)
+            ->get();
     }
 
     public function calculateTimelineHistory($employee)
@@ -293,7 +371,12 @@ class calculateDiscountsAsDays implements ShouldQueue
             return $carbonObject->format('Y-m-d');
         }, $workDays);
 
-        return $employee->fingerprints()->whereIn('date', $workDates)->where('is_checked', 0)->orderBy('date', 'asc')->get();
+        return $employee
+            ->fingerprints()
+            ->whereIn('date', $workDates)
+            ->where('is_checked', 0)
+            ->orderBy('date', 'asc')
+            ->get();
     }
 
     public function splitLeaves($employeeLeaves)
@@ -305,11 +388,10 @@ class calculateDiscountsAsDays implements ShouldQueue
         $splitDate = $toDate;
 
         foreach ($employeeLeaves as $leave) {
-
             $startDate = Carbon::parse($leave->pivot->from_date);
             $endDate = Carbon::parse($leave->pivot->to_date);
 
-            if ($splitDate >= $startDate && $startDate != $endDate) {
+            if ($splitDate >= $startDate && $endDate >= $splitDate && $startDate != $endDate) {
                 $firstLeave = EmployeeLeave::create([
                     'employee_id' => $leave->pivot->employee_id,
                     'leave_id' => $leave->pivot->leave_id,
@@ -391,10 +473,11 @@ class calculateDiscountsAsDays implements ShouldQueue
     public function checkIfDelay($center, $employee, $fingerprint, $startOfWork, $delayThreshold)
     {
         if ($fingerprint->check_in > $startOfWork && $fingerprint->check_in < $delayThreshold) {
-
             $duration = Carbon::parse($center->start_work_hour)->diff(Carbon::parse($fingerprint->check_in));
             $employee->update([
-                'delay_counter' => Carbon::parse($employee->delay_counter)->addHours($duration->h)->addMinutes($duration->i),
+                'delay_counter' => Carbon::parse($employee->delay_counter)
+                    ->addHours($duration->h)
+                    ->addMinutes($duration->i),
             ]);
 
             $delayCounter = Carbon::parse($employee->delay_counter);
@@ -413,35 +496,48 @@ class calculateDiscountsAsDays implements ShouldQueue
 
             return true;
         } else {
-
             return false;
         }
-
     }
 
     public function checkIfEarly($center, $employee, $employeeLeaves, $fingerprint, $endOfWork)
     {
         if ($fingerprint->check_out < $endOfWork) {
             $timeCovered = $this->isThereHourlyEarlyExcuse($fingerprint, $employeeLeaves);
-            $fingerprint->check_out = Carbon::parse($fingerprint->check_out)->addHours($timeCovered->hour)->addMinutes($timeCovered->minute);
+            $fingerprint->check_out = Carbon::parse($fingerprint->check_out)
+                ->addHours($timeCovered->hour)
+                ->addMinutes($timeCovered->minute);
 
             if ($fingerprint->check_out >= $endOfWork) {
                 return false;
             } else {
                 $duration = Carbon::parse($fingerprint->check_out)->diff(Carbon::parse($center->end_work_hour));
-                $durationInSeconds = Carbon::parse($fingerprint->check_out)->diffInSeconds(Carbon::parse($center->end_work_hour));
+                $durationInSeconds = Carbon::parse($fingerprint->check_out)->diffInSeconds(
+                    Carbon::parse($center->end_work_hour)
+                );
 
                 if ($durationInSeconds > $this->absenceThreshold) {
                     if ($employee->max_leave_allowed > 0) {
-                        $this->decrementMaxLeaveAllowed($employee, $fingerprint->date, 'Administrative leave - Exceeded the 3 hours limit');
+                        $this->decrementMaxLeaveAllowed(
+                            $employee,
+                            $fingerprint->date,
+                            'Administrative leave - Exceeded the 3 hours limit'
+                        );
                     } else {
-                        $this->createDiscountFromFingerprint($employee, $fingerprint, 'Administrative leave - Exceeded the 3 hours limit', 1);
+                        $this->createDiscountFromFingerprint(
+                            $employee,
+                            $fingerprint,
+                            'Administrative leave - Exceeded the 3 hours limit',
+                            1
+                        );
                     }
 
                     return true;
                 } else {
                     $employee->update([
-                        'hourly_counter' => Carbon::parse($employee->hourly_counter)->addHours($duration->h)->addMinutes($duration->i),
+                        'hourly_counter' => Carbon::parse($employee->hourly_counter)
+                            ->addHours($duration->h)
+                            ->addMinutes($duration->i),
                     ]);
 
                     $hourlyCounter = Carbon::parse($employee->hourly_counter);
@@ -462,7 +558,6 @@ class calculateDiscountsAsDays implements ShouldQueue
                 }
             }
         } else {
-
             return false;
         }
     }
@@ -471,7 +566,9 @@ class calculateDiscountsAsDays implements ShouldQueue
     {
         if ($fingerprint->check_in >= $delayThreshold) {
             $timeCovered = $this->isThereHourlyLateExcuse($fingerprint, $employeeLeaves);
-            $fingerprint->check_in = Carbon::parse($fingerprint->check_in)->subHours($timeCovered->hour)->subMinutes($timeCovered->minute);
+            $fingerprint->check_in = Carbon::parse($fingerprint->check_in)
+                ->subHours($timeCovered->hour)
+                ->subMinutes($timeCovered->minute);
 
             if ($fingerprint->check_in < $delayThreshold) {
                 $this->checkIfDelay($center, $employee, $fingerprint, $startOfWork, $delayThreshold);
@@ -479,19 +576,32 @@ class calculateDiscountsAsDays implements ShouldQueue
                 return false;
             } else {
                 $duration = Carbon::parse($center->start_work_hour)->diff(Carbon::parse($fingerprint->check_in));
-                $durationInSeconds = Carbon::parse($center->start_work_hour)->diffInSeconds(Carbon::parse($fingerprint->check_in));
+                $durationInSeconds = Carbon::parse($center->start_work_hour)->diffInSeconds(
+                    Carbon::parse($fingerprint->check_in)
+                );
 
                 if ($durationInSeconds > $this->absenceThreshold) {
                     if ($employee->max_leave_allowed > 0) {
-                        $this->decrementMaxLeaveAllowed($employee, $fingerprint->date, 'Administrative leave - Exceeded the 3 hours limit');
+                        $this->decrementMaxLeaveAllowed(
+                            $employee,
+                            $fingerprint->date,
+                            'Administrative leave - Exceeded the 3 hours limit'
+                        );
                     } else {
-                        $this->createDiscountFromFingerprint($employee, $fingerprint, 'Administrative leave - Exceeded the 3 hours limit', 1);
+                        $this->createDiscountFromFingerprint(
+                            $employee,
+                            $fingerprint,
+                            'Administrative leave - Exceeded the 3 hours limit',
+                            1
+                        );
                     }
 
                     return true;
                 } else {
                     $employee->update([
-                        'hourly_counter' => Carbon::parse($employee->hourly_counter)->addHours($duration->h)->addMinutes($duration->i),
+                        'hourly_counter' => Carbon::parse($employee->hourly_counter)
+                            ->addHours($duration->h)
+                            ->addMinutes($duration->i),
                     ]);
 
                     $hourlyCounter = Carbon::parse($employee->hourly_counter);
@@ -519,11 +629,16 @@ class calculateDiscountsAsDays implements ShouldQueue
     public function isThereDailyExcuse($fingerprint, $employeeLeaves)
     {
         foreach ($employeeLeaves as $leave) {
-            if ($fingerprint->date >= $leave->pivot->from_date && $fingerprint->date <= $leave->pivot->to_date && $leave->pivot->is_checked == 0 && substr($leave->id, 1, 1) == 1) {
+            if (
+                $fingerprint->date >= $leave->pivot->from_date &&
+                $fingerprint->date <= $leave->pivot->to_date &&
+                $leave->pivot->is_checked == 0 &&
+                substr($leave->id, 1, 1) == 1
+            ) {
                 $fingerprint->excuse = $leave->name;
                 $fingerprint->save();
 
-                if (($leave->pivot->from_date === $leave->pivot->to_date) || ($fingerprint->date >= $leave->pivot->to_date)) {
+                if ($leave->pivot->from_date === $leave->pivot->to_date || $fingerprint->date >= $leave->pivot->to_date) {
                     $leave->pivot->is_checked = 1;
                     $leave->pivot->save();
                 }
@@ -540,8 +655,13 @@ class calculateDiscountsAsDays implements ShouldQueue
         $timeCovered = Carbon::create(null);
 
         foreach ($employeeLeaves as $leave) {
-
-            if ($fingerprint->date >= $leave->pivot->from_date && $fingerprint->date <= $leave->pivot->to_date && $leave->pivot->start_at < $fingerprint->check_in && $leave->pivot->is_checked == 0 && substr($leave->id, 1, 1) == 2) {
+            if (
+                $fingerprint->date >= $leave->pivot->from_date &&
+                $fingerprint->date <= $leave->pivot->to_date &&
+                $leave->pivot->start_at < $fingerprint->check_in &&
+                $leave->pivot->is_checked == 0 &&
+                substr($leave->id, 1, 1) == 2
+            ) {
                 $duration = Carbon::parse($leave->pivot->start_at)->diff(Carbon::parse($leave->pivot->end_at));
 
                 $timeCovered = $timeCovered->add($duration);
@@ -559,7 +679,13 @@ class calculateDiscountsAsDays implements ShouldQueue
         $timeCovered = Carbon::create(null);
 
         foreach ($employeeLeaves as $leave) {
-            if ($fingerprint->date >= $leave->pivot->from_date && $fingerprint->date <= $leave->pivot->to_date && $leave->pivot->end_at > $fingerprint->check_out && $leave->pivot->is_checked == 0 && substr($leave->id, 1, 1) == 2) {
+            if (
+                $fingerprint->date >= $leave->pivot->from_date &&
+                $fingerprint->date <= $leave->pivot->to_date &&
+                $leave->pivot->end_at > $fingerprint->check_out &&
+                $leave->pivot->is_checked == 0 &&
+                substr($leave->id, 1, 1) == 2
+            ) {
                 $duration = Carbon::parse($leave->pivot->start_at)->diff(Carbon::parse($leave->pivot->end_at));
 
                 $timeCovered = $timeCovered->add($duration);
