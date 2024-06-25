@@ -8,26 +8,26 @@
 
 <div class="demo-inline-spacing">
   <button wire:click='showNewEmployeeModal' type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#employeeModal">
-    <span class="ti-xs ti ti-plus me-1"></span>Add New Employee
+    <span class="ti-xs ti ti-plus me-1"></span>{{ __('Add New Employee') }}
   </button>
 </div>
 <br>
 <div class="card">
   <div class="card-header d-flex justify-content-between">
-    <h5 class="card-title m-0 me-2">Employees</h5>
+    <h5 class="card-title m-0 me-2">{{ __('Employees') }}</h5>
     <div class="col-4">
-      <input wire:model.live="search_term" type="text" class="form-control" placeholder="Search (ID, Name...)">
+      <input wire:model.live="search_term" type="text" class="form-control" placeholder="{{ __('Search (ID, Name...)') }}">
     </div>
   </div>
   <div class="table-responsive text-nowrap">
     <table class="table">
       <thead>
         <tr>
-          <th class="col-1">ID</th>
-          <th class="col-5">Name</th>
-          <th class="col-2">Mobile</th>
-          <th class="col-2">Status</th>
-          <th class="col-2">Actions</th>
+          <th class="col-1">{{ __('ID') }}</th>
+          <th class="col-5">{{ __('Name') }}</th>
+          <th class="col-2">{{ __('Mobile') }}</th>
+          <th class="col-2">{{ __('Status') }}</th>
+          <th class="col-2">{{ __('Actions') }}</th>
         </tr>
       </thead>
       <tbody class="table-border-bottom-0">
@@ -47,17 +47,17 @@
           <td>{{ '0' . number_format($employee->mobile_number, 0, '', ' ') }}</td>
           <td>
             @if ($employee->is_active)
-              <span class="badge bg-label-success me-1">Active</span>
+              <span class="badge bg-label-success me-1">{{ __('Active') }}</span>
             @else
-              <span class="badge bg-label-danger me-1">Out of work</span>
+              <span class="badge bg-label-danger me-1">{{ __('Out of work') }}</span>
             @endif
           </td>
           <td>
             <div class="dropdown">
               <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown"><i class="ti ti-dots-vertical"></i></button>
               <div class="dropdown-menu">
-                <a wire:click='showEditEmployeeModal({{ $employee }})' class="dropdown-item" data-bs-toggle="modal" data-bs-target="#employeeModal"><i class="ti ti-pencil me-1"></i> Edit</a>
-                <a class="dropdown-item" href="#"><i class="ti ti-trash me-1"></i> Delete</a>
+                <a wire:click='showEditEmployeeModal({{ $employee }})' class="dropdown-item" data-bs-toggle="modal" data-bs-target="#employeeModal"><i class="ti ti-pencil me-1"></i> {{ __('Edit') }}</a>
+                <a class="dropdown-item" href="#"><i class="ti ti-trash me-1"></i> {{ __('Delete') }}</a>
               </div>
             </div>
           </td>
@@ -66,12 +66,12 @@
         <tr>
           <td colspan="5">
             <div class="mt-2 mb-2" style="text-align: center">
-                <h3 class="mb-1 mx-2">Oopsie-doodle!</h3>
+                <h3 class="mb-1 mx-2">{{ __('Oopsie-doodle!') }}</h3>
                 <p class="mb-4 mx-2">
-                  No data found, please sprinkle some data in my virtual bowl, and let the fun begin!
+                  {{ __('No data found, please sprinkle some data in my virtual bowl, and let the fun begin!') }}
                 </p>
                 <button class="btn btn-label-primary mb-4" data-bs-toggle="modal" data-bs-target="#employeeModal">
-                    Add New Employee
+                    {{ __('Add New Employee') }}
                   </button>
                 <div>
                   <img src="{{ asset('assets/img/illustrations/page-misc-under-maintenance.png') }}" width="200" class="img-fluid">

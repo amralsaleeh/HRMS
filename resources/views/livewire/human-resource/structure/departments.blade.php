@@ -9,21 +9,21 @@
 <div class="demo-inline-spacing">
   <button wire:click.prevent='showNewDepartmentModal' type="button" class="btn btn-primary"
     data-bs-toggle="modal" data-bs-target="#departmentModal">
-    <span class="ti-xs ti ti-plus me-1"></span>Add New Department
+    <span class="ti-xs ti ti-plus me-1"></span>{{ __('Add New Department') }}
   </button>
 </div>
 <br>
 <div class="card">
-  <h5 class="card-header"><i class="ti ti-building ti-lg text-info me-3"></i>Departments</h5>
+  <h5 class="card-header"><i class="ti ti-building ti-lg text-info me-3"></i>{{ __('Departments') }}</h5>
   <div class="table-responsive text-nowrap">
     <table class="table">
       <thead>
         <tr>
-          <th>ID</th>
-          <th>Name</th>
+          <th>{{ __('ID') }}</th>
+          <th>{{ __('Name') }}</th>
           {{-- <th>Coordinator</th> --}}
-          <th>Members Count</th>
-          <th>Actions</th>
+          <th>{{ __('Members Count') }}</th>
+          <th>{{ __('Actions') }}</th>
         </tr>
       </thead>
       <tbody class="table-border-bottom-0">
@@ -49,8 +49,8 @@
               <div class="dropdown">
                 <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown"><i class="ti ti-dots-vertical"></i></button>
                 <div class="dropdown-menu">
-                  <a wire:click.prevent='showEditDepartmentModal({{ $department }})' data-bs-toggle="modal" data-bs-target="#departmentModal" class="dropdown-item" href=""><i class="ti ti-pencil me-1"></i> Edit</a>
-                  <a wire:click.prevent='confirmDeleteDepartment({{ $department->id }})' class="dropdown-item" href=""><i class="ti ti-trash me-1"></i> Delete</a>
+                  <a wire:click.prevent='showEditDepartmentModal({{ $department }})' data-bs-toggle="modal" data-bs-target="#departmentModal" class="dropdown-item" href=""><i class="ti ti-pencil me-1"></i> {{ __('Edit') }}</a>
+                  <a wire:click.prevent='confirmDeleteDepartment({{ $department->id }})' class="dropdown-item" href=""><i class="ti ti-trash me-1"></i> {{ __('Delete') }}</a>
                 </div>
               </div>
               @if ($confirmedId === $department->id)
@@ -64,12 +64,12 @@
         <tr>
           <td colspan="4">
             <div class="mt-2 mb-2" style="text-align: center">
-                <h3 class="mb-1 mx-2">Oopsie-doodle!</h3>
+                <h3 class="mb-1 mx-2">{{ __('Oopsie-doodle!') }}</h3>
                 <p class="mb-4 mx-2">
-                  No data found, please sprinkle some data in my virtual bowl, and let the fun begin!
+                  {{ __('No data found, please sprinkle some data in my virtual bowl, and let the fun begin!') }}
                 </p>
                 <button class="btn btn-label-primary mb-4" data-bs-toggle="modal" data-bs-target="#departmentModal">
-                    Add New Department
+                    {{ __('Add New Department') }}
                   </button>
                 <div>
                   <img src="{{ asset('assets/img/illustrations/page-misc-under-maintenance.png') }}" width="200" class="img-fluid">

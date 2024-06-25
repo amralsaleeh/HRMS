@@ -9,8 +9,8 @@
       <div class="modal-body">
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         <div class="text-center mb-4">
-          <h3 class="mb-2">{{ $isEdit ? 'Update Center' : 'New Center' }}</h3>
-          <p class="text-muted">{{ __('Please fill out the Please fill out the following information') }}</p>
+          <h3 class="mb-2">{{ $isEdit ? __('Update Center') : __('New Center') }}</h3>
+          <p class="text-muted">{{ __('Please fill out the following information') }}</p>
         </div>
         <form wire:submit="submitCenter" class="row g-3">
           <div class="col-12">

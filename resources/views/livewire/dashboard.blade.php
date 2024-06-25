@@ -303,7 +303,7 @@
                     </button>
                     @if ($confirmedId === $leave->id)
                     <button wire:click.prevent="destroyLeave" type="button" class="btn btn-xs btn-danger waves-effect waves-light">
-                      Sure?
+                     {{ __('Sure?') }}
                     </button>
                     @endif
                   </td>

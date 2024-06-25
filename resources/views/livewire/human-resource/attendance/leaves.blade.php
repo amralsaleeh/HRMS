@@ -29,12 +29,12 @@
             <div class="sidebar-header">
               <div class="d-flex align-items-center me-3 me-lg-0">
                 <div wire:ignore class="col-12">
-                  <label class="form-label">Employee</label>
+                  <label class="form-label">{{ __('Employee') }}</label>
                   <select wire:model='selectedEmployeeId' class="select2 form-control" id="select2selectedEmployeeId">
                     @forelse ($activeEmployees as $employee)
                       <option value="{{ $employee->id }}">{{ $employee->id . ' - ' . $employee->first_name . ' ' . $employee->father_name . ' ' . $employee->last_name }}</option>
                     @empty
-                      <option value="0" disabled>No Employees Found!</option>
+                      <option value="0" disabled>{{ __('No Employees Found!') }}</option>
                     @endforelse
                   </select>
                 </div>
@@ -45,22 +45,22 @@
 
         <div class="border-bottom p-3 my-sm-0 mb-3">
           <div class="col-12">
-            <label class="form-label">Date Range</label>
+            <label class="form-label">{{ __('Date Range') }}</label>
             <input wire:model='dateRange' type="text" class="form-control flatpickr-input active"
-                   id="flatpickr-range" placeholder="YYYY-MM-DD to YYYY-MM-DD" readonly="readonly">
+                   id="flatpickr-range" placeholder="YYYY-MM-DD {{ __('to') }} YYYY-MM-DD" readonly="readonly">
           </div>
         </div>
 
         <div class="border-bottom p-3 my-sm-0 mb-3">
           <div class="col-12">
             <div wire:ignore class="col-12">
-              <label class="form-label">Type</label>
+              <label class="form-label">{{ __('Type') }}</label>
               <select wire:model='selectedLeaveId' class="select2 form-control" id="select2selectedLeaveId">
                 <option value=""></option>
                 @forelse ($leaveTypes as $leaveType)
                   <option value="{{ $leaveType->id }}">{{ $leaveType->name }}</option>
                 @empty
-                  <option value="0" disabled>No Leave Found!</option>
+                  <option value="0" disabled>{{ __('No Leave Found!') }}</option>
                 @endforelse
               </select>
             </div>
@@ -70,7 +70,7 @@
         <div class="row p-5">
           <div class="d-grid gap-2 col-12 mx-auto">
             <button wire:click='applyFilter' class="btn btn-label-primary btn-xl waves-effect waves-light"
-                    type="button">Apply
+                    type="button">{{ __('Apply') }}
             </button>
           </div>
         </div>
@@ -95,7 +95,7 @@
                 <div class="col-4 btn-group d-flex justify-content-end">
                   <button wire:click.prevent='showCreateLeaveModal' type="button" class="btn btn-primary"
                           data-bs-toggle="modal" data-bs-target="#leaveModal">
-                    <span class="ti-xs ti ti-plus me-1"></span>Add New Record
+                    <span class="ti-xs ti ti-plus me-1"></span>{{ __('Add New Record') }}
                   </button>
                   <button type="button"
                           class="btn btn-primary dropdown-toggle dropdown-toggle-split waves-effect waves-light"
@@ -104,18 +104,18 @@
                   </button>
                   <ul class="dropdown-menu">
                     <li>
-                      <h6 class="dropdown-header text-uppercase">Import & Export</h6>
+                      <h6 class="dropdown-header text-uppercase">{{ __('Import & Export') }}</h6>
                     </li>
                     <li>
                       @can('Import leaves')
                       <button class="dropdown-item" data-bs-toggle="modal" data-bs-target="#importModal">
-                        <i class="ti ti-table-import me-1"></i> Import From Excel
+                        <i class="ti ti-table-import me-1"></i> {{ __('Import From Excel') }}
                       </button>
                       @endcan
                     </li>
                     <li>
                       <button wire:click='exportToExcel()' class="dropdown-item">
-                        <i class="ti ti-table-export me-1"></i> Export To Excel
+                        <i class="ti ti-table-export me-1"></i> {{ __('Export To Excel') }}
                       </button>
                     </li>
                   </ul>
@@ -126,13 +126,13 @@
                 <table class="table">
                   <thead>
                   <tr>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>From Date</th>
-                    <th>To Date</th>
-                    <th>Start At</th>
-                    <th>End At</th>
-                    <th class="col-1">Actions</th>
+                    <th>{{ __('ID') }}</th>
+                    <th>{{ __('Name') }}</th>
+                    <th>{{ __('From Date') }}</th>
+                    <th>{{ __('To Date') }}</th>
+                    <th>{{ __('Start At') }}</th>
+                    <th>{{ __('End At') }}</th>
+                    <th class="col-1">{{ __('Actions') }}</th>
                   </tr>
                   </thead>
                   <tbody class="table-border-bottom-0">
@@ -152,7 +152,7 @@
                               class="ti ti-trash text-danger"></i></a>
                           @if ($confirmedId === $leave->pivot->id)
                             <button wire:click.prevent='destroyLeave({{ $leave }})' type="button"
-                                    class="btn btn-xs btn-danger waves-effect waves-light">Sure?
+                                    class="btn btn-xs btn-danger waves-effect waves-light">{{ __('Sure?') }}
                             </button>
                           @endif
                         </div>
@@ -162,13 +162,13 @@
                     <tr>
                       <td colspan="6">
                         <div class="mt-2 mb-2" style="text-align: center">
-                          <h3 class="mb-1 mx-2">Oopsie-doodle!</h3>
+                          <h3 class="mb-1 mx-2">{{ __('Oopsie-doodle!') }}</h3>
                           <p class="mb-4 mx-2">
-                            No data found, please sprinkle some data in my virtual bowl, and let the fun begin!
+                            {{ __('No data found, please sprinkle some data in my virtual bowl, and let the fun begin!') }}
                           </p>
                           <button class="btn btn-label-primary mb-4"
                             data-bs-toggle="modal" data-bs-target="#leaveModal">
-                            Add New Record
+                            {{ __('Add New Record') }}
                           </button>
                           <div>
                             <img src="{{ asset('assets/img/illustrations/page-misc-under-maintenance.png') }}"
