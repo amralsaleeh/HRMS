@@ -63,7 +63,7 @@
             <div class="card-body">
               <div class="dt-action-buttons d-flex justify-content-end flex-md-row flex-column mb-3">
                 <div class="dt-buttons">
-                  <button wire:click='exportDiscounts()' class="dt-button btn btn-label-primary" type="button"><span><i class="ti ti-logout rotate-n90 me-2"></i>{{ __('Export') }}</span></button>
+                  <button wire:click='exportDiscounts()' class="dt-button btn btn-label-primary" type="button"><span><i class="ti ti-file-export me-2"></i>{{ __('Export') }}</span></button>
                 </div>
               </div>
               @foreach ($employeeDiscounts as $employee)
