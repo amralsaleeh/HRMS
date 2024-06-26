@@ -39,7 +39,10 @@ class Messages extends Component
     public function mount()
     {
         $this->selectedEmployee = Employee::first();
-        $this->batches = Discount::where('is_sent', 0)->distinct()->pluck('batch')->toArray();
+        $this->batches = Discount::where('is_sent', 0)
+            ->distinct()
+            ->pluck('batch')
+            ->toArray();
 
         // try {
         //     $this->accountBalance = $this->CheckAccountBalance();
@@ -50,10 +53,18 @@ class Messages extends Component
 
     public function render()
     {
-        $this->messagesStatus = Message::selectRaw('SUM(CASE WHEN is_sent = 1 THEN 1 ELSE 0 END) AS sent, SUM(CASE WHEN is_sent = 0 THEN 1 ELSE 0 END) AS unsent')->first();
-        $this->messagesStatus = ['sent' => Number::format($this->messagesStatus['sent'] != null ? $this->messagesStatus['sent'] : 0), 'unsent' => Number::format($this->messagesStatus['unsent'] != null ? $this->messagesStatus['unsent'] : 0)];
+        $this->messagesStatus = Message::selectRaw(
+            'SUM(CASE WHEN is_sent = 1 THEN 1 ELSE 0 END) AS sent, SUM(CASE WHEN is_sent = 0 THEN 1 ELSE 0 END) AS unsent'
+        )->first();
+        $this->messagesStatus = [
+            'sent' => Number::format($this->messagesStatus['sent'] != null ? $this->messagesStatus['sent'] : 0),
+            'unsent' => Number::format($this->messagesStatus['unsent'] != null ? $this->messagesStatus['unsent'] : 0),
+        ];
 
-        $this->employees = Employee::where('first_name', 'like', '%'.$this->searchTerm.'%')->get();
+        $this->employees = Employee::where('id', 'like', '%'.$this->searchTerm.'%')
+            ->orWhere('first_name', 'like', '%'.$this->searchTerm.'%')
+            ->orWhere('last_name', 'like', '%'.$this->searchTerm.'%')
+            ->get();
         $this->messages = Message::where('employee_id', $this->selectedEmployee->id)->get();
 
         $this->dispatch('initialize');
@@ -90,11 +101,16 @@ class Messages extends Component
 
     public function generateMessages()
     {
-        $employeesDiscounts = Employee::with(['timelines', 'discounts' => function ($query) {
-            $query->where('is_sent', 0)->where('batch', $this->selectedBatch);
-        }])/* ->whereHas('timelines', function ($query) {
+        $employeesDiscounts = Employee::with([
+            'timelines',
+            'discounts' => function ($query) {
+                $query->where('is_sent', 0)->where('batch', $this->selectedBatch);
+            },
+        ]) /* ->whereHas('timelines', function ($query) {
             $query->where('department_id', 1)->where('end_date', null);
-        }) */ ->where('is_active', 1)->get();
+        }) */
+            ->where('is_active', 1)
+            ->get();
 
         $dates = explode(' to ', $this->selectedBatch);
 
@@ -109,13 +125,26 @@ class Messages extends Component
                     $discount->save();
                 }
 
-                $messageBody = 'عزيزي صاحب المعرف رقم ('.$employee->id.')، يرجى الاطلاع على التفاصيل التالية وذلك لغاية ('.$dates[1].'):
+                $messageBody =
+                  'عزيزي صاحب المعرف رقم ('.
+                  $employee->id.
+                  ')، يرجى الاطلاع على التفاصيل التالية وذلك لغاية ('.
+                  $dates[1].
+                  '):
 
-- الحسم المالي: '.$cashDiscountCount.'
+- الحسم المالي: '.
+                  $cashDiscountCount.
+                  '
 
-- رصيد الإجازات: '.$employee->max_leave_allowed.'
-- عداد الساعات: '.Carbon::parse($employee->hourly_counter)->format('H:i').'
-- عداد التأخير: '.Carbon::parse($employee->delay_counter)->format('H:i').'
+- رصيد الإجازات: '.
+                  $employee->max_leave_allowed.
+                  '
+- عداد الساعات: '.
+                  Carbon::parse($employee->hourly_counter)->format('H:i').
+                  '
+- عداد التأخير: '.
+                  Carbon::parse($employee->delay_counter)->format('H:i').
+                  '
 
 وجودك مهم،
 مشروع الحماية المجتمعية.';
@@ -130,7 +159,10 @@ class Messages extends Component
         }
 
         session()->flash('success', 'Generation complete! Your messages ready to fly!');
-        $this->batches = Discount::where('is_sent', 0)->distinct()->pluck('batch')->toArray();
+        $this->batches = Discount::where('is_sent', 0)
+            ->distinct()
+            ->pluck('batch')
+            ->toArray();
     }
 
     public function sendPendingMessages()
@@ -139,7 +171,7 @@ class Messages extends Component
             sendPendingMessages::dispatch();
             session()->flash('info', "Let's go! Messages on their way!");
         } else {
-            $this->dispatch('toastr', type: 'info'/* , title: 'Done!' */ , message: 'Everything has sent already!');
+            $this->dispatch('toastr', type: 'info' /* , title: 'Done!' */, message: 'Everything has sent already!');
         }
     }
 }

@@ -16,7 +16,7 @@
   <div class="card-header d-flex justify-content-between">
     <h5 class="card-title m-0 me-2">{{ __('Employees') }}</h5>
     <div class="col-4">
-      <input wire:model.live="search_term" type="text" class="form-control" placeholder="{{ __('Search (ID, Name...)') }}">
+      <input wire:model.live="searchTerm" type="text" class="form-control" placeholder="{{ __('Search (ID, Name...)') }}">
     </div>
   </div>
   <div class="table-responsive text-nowrap">
