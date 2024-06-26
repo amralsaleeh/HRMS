@@ -84,7 +84,7 @@
               <div class="row d-flex justify-content-between">
                 <div class="col-8 d-flex overflow-hidden align-items-center">
                   <div class="flex-shrink-0 avatar">
-                    <img src="{{ asset($selectedEmployee->getEmployeePhoto()) }}" class="rounded-circle" alt="Avatar">
+                    <img src="{{ Storage::disk("public")->exists($selectedEmployee->profile_photo_path) ? Storage::disk("public")->url($selectedEmployee->profile_photo_path) : Storage::disk("public")->url('profile-photos/.default-photo.jpg') }}" class="rounded-circle" alt="Avatar">
                   </div>
                   <div class="chat-contact-info flex-grow-1 ms-2">
                     <h6 class="m-0">{{ $selectedEmployee->full_name }}</h6>
