@@ -15,7 +15,7 @@ class Employees extends Component
 
     public $employee;
 
-    public $search_term = null;
+    public $searchTerm = null;
 
     public $isEdit = false;
 
@@ -58,14 +58,14 @@ class Employees extends Component
 
     public function render()
     {
-        $employees = Employee::where('id', 'like', '%'.$this->search_term.'%')
-            ->orWhere('first_name', 'like', '%'.$this->search_term.'%')
-            ->orWhere('last_name', 'like', '%'.$this->search_term.'%')
+        $employees = Employee::where('id', 'like', '%'.$this->searchTerm.'%')
+            ->orWhere('first_name', 'like', '%'.$this->searchTerm.'%')
+            ->orWhere('last_name', 'like', '%'.$this->searchTerm.'%')
             ->paginate(20);
 
         return view('livewire.human-resource.structure.employees', [
-            'employees' => $employees, ]
-        );
+            'employees' => $employees,
+        ]);
     }
 
     public function showNewEmployeeModal()
@@ -124,7 +124,7 @@ class Employees extends Component
         ]);
 
         $this->dispatch('closeModal', elementId: '#employeeModal');
-        $this->dispatch('toastr', type: 'success'/* , title: 'Done!' */ , message: 'Going Well!');
+        $this->dispatch('toastr', type: 'success' /* , title: 'Done!' */, message: 'Going Well!');
     }
 
     public function editEmployee()
@@ -150,7 +150,7 @@ class Employees extends Component
         ]);
 
         $this->dispatch('closeModal', elementId: '#employeeModal');
-        $this->dispatch('toastr', type: 'success'/* , title: 'Done!' */ , message: 'Going Well!');
+        $this->dispatch('toastr', type: 'success' /* , title: 'Done!' */, message: 'Going Well!');
 
         $this->reset();
     }
@@ -163,7 +163,7 @@ class Employees extends Component
     public function deleteEmployee(Employee $employee)
     {
         $employee->delete();
-        $this->dispatch('toastr', type: 'success'/* , title: 'Done!' */ , message: 'Going Well!');
+        $this->dispatch('toastr', type: 'success' /* , title: 'Done!' */, message: 'Going Well!');
     }
 
     public function getCoordinator($id)
@@ -173,6 +173,9 @@ class Employees extends Component
 
     public function getMembersCount($employee_id)
     {
-        return Timeline::where('Employee_id', $employee_id)->whereNull('end_date')->distinct('employee_id')->count();
+        return Timeline::where('Employee_id', $employee_id)
+            ->whereNull('end_date')
+            ->distinct('employee_id')
+            ->count();
     }
 }

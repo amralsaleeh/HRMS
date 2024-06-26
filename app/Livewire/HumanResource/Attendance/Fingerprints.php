@@ -29,7 +29,7 @@ class Fingerprints extends Component
 
     public $selectedEmployee;
 
-    public $selectedEmployeeId = 1;
+    public $selectedEmployeeId;
 
     public $dateRange;
 
@@ -60,7 +60,12 @@ class Fingerprints extends Component
     {
         $this->employees = Employee::all();
 
-        $this->selectedEmployee = Employee::find(1);
+        $this->selectedEmployeeId = Auth::user()->employee_id;
+        $this->selectedEmployee = Employee::find($this->selectedEmployeeId);
+
+        $currentDate = Carbon::now();
+        $previousMonth = $currentDate->copy()->subMonth();
+        $this->dateRange = $previousMonth->format('Y-n-1').' to '.$currentDate;
     }
 
     public function render()
@@ -91,7 +96,8 @@ class Fingerprints extends Component
             $this->fromDate,
             $this->toDate,
             $this->isAbsence,
-            $this->isOneFingerprint)->paginate(7);
+            $this->isOneFingerprint
+        )->paginate(7);
     }
 
     public function submitFingerprint()
@@ -133,7 +139,7 @@ class Fingerprints extends Component
         ]);
 
         $this->dispatch('closeCanvas', elementId: '#addRecordSidebar');
-        $this->dispatch('toastr', type: 'success'/* , title: 'Done!' */ , message: 'Going Well!');
+        $this->dispatch('toastr', type: 'success' /* , title: 'Done!' */, message: 'Going Well!');
     }
 
     public function editFingerprint()
@@ -151,7 +157,7 @@ class Fingerprints extends Component
         ]);
 
         $this->dispatch('closeCanvas', elementId: '#addRecordSidebar');
-        $this->dispatch('toastr', type: 'success'/* , title: 'Done!' */ , message: 'Going Well!');
+        $this->dispatch('toastr', type: 'success' /* , title: 'Done!' */, message: 'Going Well!');
 
         $this->reset('isEdit', 'date', 'checkIn', 'checkOut');
     }
@@ -164,17 +170,20 @@ class Fingerprints extends Component
     public function deleteFingerprint(Fingerprint $fingerprint)
     {
         $fingerprint->delete();
-        $this->dispatch('toastr', type: 'success'/* , title: 'Done!' */ , message: 'Going Well!');
+        $this->dispatch('toastr', type: 'success' /* , title: 'Done!' */, message: 'Going Well!');
     }
 
     public function importFromExcel()
     {
-        $this->validate([
-            'file' => 'required|mimes:xlsx',
-        ], [
-            'file.required' => 'Please select a file to upload',
-            'file.mimes' => 'Excel files is accepted only',
-        ]);
+        $this->validate(
+            [
+                'file' => 'required|mimes:xlsx',
+            ],
+            [
+                'file.required' => 'Please select a file to upload',
+                'file.mimes' => 'Excel files is accepted only',
+            ]
+        );
 
         try {
             $fileRecord = Import::create([
@@ -213,7 +222,8 @@ class Fingerprints extends Component
             $this->fromDate,
             $this->toDate,
             $this->isAbsence,
-            $this->isOneFingerprint)->get();
+            $this->isOneFingerprint
+        )->get();
 
         $fileName = 'Fingerprints - '.Carbon::now();
 
