@@ -40,6 +40,7 @@ class Center extends Model
         ) {
             $activeEmployees = Timeline::whereNull('end_date')
                 ->join('employees', 'timelines.employee_id', '=', 'employees.id')
+                ->where('employees.is_active', 1)
                 ->orderBy('employees.first_name', 'asc')
                 ->with('employee')
                 ->get();
@@ -47,6 +48,7 @@ class Center extends Model
             $centerEmployees = $this->timelines()
                 ->whereNull('end_date')
                 ->join('employees', 'timelines.employee_id', '=', 'employees.id')
+                ->where('employees.is_active', 1)
                 ->orderBy('employees.first_name', 'asc')
                 ->with('employee')
                 ->get();
@@ -55,6 +57,7 @@ class Center extends Model
                 ->timelines()
                 ->whereNull('end_date')
                 ->join('employees', 'timelines.employee_id', '=', 'employees.id')
+                ->where('employees.is_active', 1)
                 ->orderBy('employees.first_name', 'asc')
                 ->with('employee')
                 ->get();
