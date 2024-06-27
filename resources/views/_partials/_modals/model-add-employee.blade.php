@@ -15,32 +15,62 @@
         <form wire:submit="submitEmployee" class="row g-3">
           <div class="col-md-6 col-12 mb-4">
             <label class="form-label">{{ __('ID') }}</label>
-            <input wire:model='id' class="form-control @error('id') is-invalid @enderror" type="Number"/>
+            <input wire:model='employeeInfo.id' class="form-control @error('employeeInfo.id') is-invalid @enderror" type="Number"/>
+            @error('employeeInfo.id')
+            <div class="invalid-feedback">
+                {{ $message }}
+            </div>
+            @enderror
           </div>
           <div class="col-md-6 col-12 mb-4">
             <label class="form-label w-100">{{ __('Contract ID') }}</label>
-            <input wire:model='contract_id' class="form-control @error('contract_id ') is-invalid @enderror" type="Number" />
+            <input wire:model='employeeInfo.contract_id' class="form-control @error('employeeInfo.contract_id') is-invalid @enderror" type="Number" />
+            @error('employeeInfo.contract_id')
+            <div class="invalid-feedback">
+                {{ $message }}
+            </div>
+            @enderror
           </div>
           <div class="col-md-4 col-12 mb-4">
             <label class="form-label w-100">{{ __('First Name') }}</label>
-            <input wire:model='first_name' class="form-control @error('first name') is-invalid @enderror" type="text" />
+            <input wire:model='employeeInfo.first_name' class="form-control @error('employeeInfo.first_name') is-invalid @enderror" type="text" />
+            @error('employeeInfo.first_name')
+            <div class="invalid-feedback">
+                {{ $message }}
+            </div>
+            @enderror
           </div>
           <div class="col-md-4 col-12 mb-4">
             <label class="form-label w-100">{{ __('Father Name') }}</label>
-            <input wire:model='father_name' class="form-control @error('father name') is-invalid @enderror" type="text" />
+            <input wire:model='employeeInfo.father_name' class="form-control @error('employeeInfo.father_name') is-invalid @enderror" type="text" />
+            @error('employeeInfo.father_name')
+            <div class="invalid-feedback">
+                {{ $message }}
+            </div>
+            @enderror
           </div>
           <div class="col-md-4 col-12 mb-4">
             <label class="form-label w-100">{{ __('Last Name') }}</label>
-            <input wire:model='last_name' class="form-control @error('last name') is-invalid @enderror" type="text" />
+            <input wire:model='employeeInfo.last_name' class="form-control @error('employeeInfo.last_name') is-invalid @enderror" type="text" />
+            @error('employeeInfo.last_name')
+            <div class="invalid-feedback">
+                {{ $message }}
+            </div>
+            @enderror
           </div>
           <div class="col-md-4 col-12 mb-4">
             <label class="form-label w-100">{{ __('Mother Name') }}</label>
-            <input wire:model='mother_name' class="form-control @error('mother name') is-invalid @enderror" type="text" />
+            <input wire:model='employeeInfo.mother_name' class="form-control @error('employeeInfo.mother_name') is-invalid @enderror" type="text" />
+            @error('employeeInfo.mother_name')
+            <div class="invalid-feedback">
+                {{ $message }}
+            </div>
+            @enderror
           </div>
           <div class="col-md-3">
             <label class="form-label w-100" for="nationalNumber">{{ __('National Number') }}</label>
-            <input wire:model.defer="national_number" type="text" class="form-control @error('nationalNumber') is-invalid @enderror" id="nationalNumber" placeholder="02000000000">
-            @error('nationalNumber')
+            <input wire:model.defer="employeeInfo.national_number" type="text" class="form-control @error('employeeInfo.national_number') is-invalid @enderror" id="employeeInfo.nationalNumber" placeholder="02000000000">
+            @error('employeeInfo.national_number')
             <div class="invalid-feedback">
                 {{ $message }}
             </div>
@@ -48,8 +78,8 @@
           </div>
           <div class="col-md-3">
             <label class="form-label w-100" for="mobile">{{ __('Mobile') }}</label>
-            <input wire:model.defer="mobile_number" type="text" class="form-control @error('mobile') is-invalid @enderror" id="mobile" placeholder="0900000000">
-            @error('mobile')
+            <input wire:model.defer="employeeInfo.mobile_number" type="text" class="form-control @error('employeeInfo.mobile_number') is-invalid @enderror" id="employeeInfo.mobile" placeholder="0900000000">
+            @error('employeeInfo.mobile_number')
             <div class="invalid-feedback">
                 {{ $message }}
             </div>
@@ -57,36 +87,36 @@
           </div>
           <div class="col-md-3">
             <label class="form-label w-100" for="birthAndPlace">{{ __('Birth & Place') }}</label>
-            <input wire:model.defer="birth_and_place" type="text" class="form-control @error('birthAndPlace') is-invalid @enderror" id="birthAndPlace" placeholder="YYYY-Place">
-            @error('birthAndPlace')
+            <input wire:model.defer="employeeInfo.birth_and_place" type="text" class="form-control @error('employeeInfo.birth_and_place') is-invalid @enderror" id="employeeInfo.birthAndPlace" placeholder="YYYY-Place">
+            @error('employeeInfo.birth_and_place')
               <div class="invalid-feedback">
                   {{ $message }}
               </div>
             @enderror
           </div>
           <div class="col-md-3">
-            <label class="form-label w-100" for="gender" class="form-label">{{ __('Gender') }}</label>
-            <select  wire:model.defer="gender" @error('gender') is-invalid @enderror id="gender" class="form-select">
+            <label class="form-label w-100" for="employeeInfo.gender" class="form-label">{{ __('Gender') }}</label>
+            <select  wire:model.defer="employeeInfo.gender" @error('employeeInfo.gender') is-invalid @enderror id="employeeInfo.gender" class="form-select">
               <option>{{ __('Select Gender') }}</option>
               <option value="1">{{ __('Male') }}</option>
               <option value="0">{{ __('Female') }}</option>
             </select>
-            @error('gender')
+            @error('employeeInfo.gender')
               <div class="invalid-feedback">
                   {{ $message }}
               </div>
             @enderror
           </div>
           <div class="col-md-3">
-            <label class="form-label w-100" for="Degree">{{ __('Degree') }}</label>
-            <input wire:model.defer="degree" type="text" class="form-control @error('degree') is-invalid @enderror" id="degree" placeholder="Degree">
+            <label class="form-label w-100" for="employeeInfo.degree">{{ __('Degree') }}</label>
+            <input wire:model.defer="employeeInfo.degree" type="text" class="form-control @error('employeeInfo.degree') is-invalid @enderror" id="employeeInfo.degree" placeholder="Degree">
             @error('degree')
               <div class="invalid-feedback">
                   {{ $message }}
               </div>
             @enderror
           </div>
-          <div class="col-md-3">
+          {{-- <div class="col-md-3">
             <label class="form-label w-100" for="startDate">{{ __('Start date') }}</label>
             <input wire:model.defer="perInfo.startDate" type="date" class="form-control @error('startDate') is-invalid @enderror" id="startDate" placeholder="YYYY-MM-DD">
             @error('startDate')
@@ -103,27 +133,31 @@
                   {{ $message }}
               </div>
             @enderror
-          </div>
+          </div> --}}
           <div class="col-3">
             <label class="form-label w-100" for="address">{{ __('Address') }}</label>
-            <input wire:model.defer="address" type="text" class="form-control @error('address') is-invalid @enderror" id="address" placeholder="Martini">
-            @error('address')
+            <input wire:model.defer="employeeInfo.address" type="text" class="form-control @error('employeeInfo.address') is-invalid @enderror" id="employeeInfo.address" placeholder="Martini">
+            @error('employeeInfo.address')
               <div class="invalid-feedback">
                 {{ $message }}
               </div>
             @enderror
           </div>
           <div class="col-md-3">
-            <label class="form-label w-100" for="defaultSelect" class="form-label">{{ __('Is Active') }}</label>
-            <select wire:model.defer="is_active" id="is_active" class="form-select">
-              {{-- select  wire:model.defer="is_active" class="custom-select rounded-0 @error('is_active') is-invalid @enderror" id="gender" id="is_active" class="form-select" --}}
+            <label class="form-label w-100">{{ __('Is Active') }}</label>
+            <select wire:model.defer="employeeInfo.is_active" id="employeeInfo.is_active" class="form-select @error('employeeInfo.is_active') is-invalid @enderror">
               <option>{{ __('Is Active') }}</option>
               <option value="1">{{ __('Active') }}</option>
               <option value="0">{{ __('Inactive') }}</option>
-            </select>
-            @error('Active')
+          </select>
+          </div>
+
+          <div class="col-3 mb-4">
+            <label class="form-label w-100">Max Leave Allowed</label>
+            <input wire:model='employeeInfo.max_leave_allowed' class="form-control @error('employeeInfo.max_leave_allowed') is-invalid @enderror" type="Number"/>
+            @error('employeeInfo.max_leave_allowed')
               <div class="invalid-feedback">
-                  {{ $message }}
+                {{ $message }}
               </div>
             @enderror
           </div>
@@ -133,7 +167,7 @@
           </div>
           <div class="col-md-12 col-10 mb-4">
             <label class="form-label w-100">{{ __('Note') }}</label>
-            <input wire:model='notes' class="form-control @error('note') is-invalid @enderror" type="text" />
+            <input wire:model='employeeInfo.notes' class="form-control @error('employeeInfo.notes') is-invalid @enderror" type="text" />
           </div>
 
           <div class="col-12 text-center">

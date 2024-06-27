@@ -57,9 +57,12 @@
               <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown"><i class="ti ti-dots-vertical"></i></button>
               <div class="dropdown-menu">
                 <a wire:click='showEditEmployeeModal({{ $employee }})' class="dropdown-item" data-bs-toggle="modal" data-bs-target="#employeeModal"><i class="ti ti-pencil me-1"></i> {{ __('Edit') }}</a>
-                <a class="dropdown-item" href="#"><i class="ti ti-trash me-1"></i> {{ __('Delete') }}</a>
+                <a wire:click.prevent='confirmDeleteEmployee({{ $employee->id }})' class="dropdown-item" href=""><i class="ti ti-trash me-1"></i> {{ __('Delete') }}</a>
               </div>
             </div>
+            @if ($confirmedId === $employee->id)
+            <button wire:click.prevent='deleteEmployee({{ $employee }})' type="button" class="btn btn-sm btn-danger waves-effect waves-light">Sure?</button>
+          @endif
           </td>
         </tr>
         @empty

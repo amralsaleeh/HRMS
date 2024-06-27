@@ -16,7 +16,8 @@
           <div class="col-md-12 col-12 mb-4">
             <label class="form-label">Posation</label>
             {{-- <input wire:model='posation' class="form-select" @error('posation') is-invalid @enderror type="text"/> --}}
-            <select wire:model.defer="employeePosition" id="employeePosition" class="form-select">
+            <select wire:model.defer="employeeInfo.position" id="employeeInfo.position" class="form-select @error('employeeInfo.position') is-invalid @enderror">
+              <option >Posation:</option>
               @foreach ($positions as $position)
                 <option value="{{ $position->id }}">  {{ $position->name }}</option>
               @endforeach
@@ -24,7 +25,8 @@
           </div>
           <div class="col-md-6 col-12 mb-4">
             <label class="form-label">Department</label>
-            <select wire:model.defer="employeeDepartment" id="employeeDepartment" class="form-select">
+            <select wire:model.defer="employeeInfo.department"  id="employeeInfo.department" class="form-select @error('employeeInfo.department') is-invalid @enderror">
+              <option >Department:</option>
               @foreach ($departments as $department)
               <option value="{{ $department->id }}">  {{ $department->name }}</option>
             @endforeach
@@ -33,7 +35,8 @@
 
           <div class="col-md-6 col-12 mb-4">
             <label class="form-label">Center</label>
-            <select wire:model="employeeCenter" id="employeeCenter" class="form-select">
+            <select wire:model.defer="employeeInfo.center"  id="employeeInfo.center" class="form-select @error('employeeInfo.center') is-invalid @enderror">
+              <option >Center:</option>
               @foreach ($Centers as $Center)
                 <option value="{{ $Center->id }}">  {{ $Center->name }}</option>
               @endforeach
@@ -41,20 +44,29 @@
           </select>
           </div>
 
+          <div class="col-md-12 col-12 mb-4">
+            <label class="form-label">Sequential</label>
+            <select wire:model.defer="employeeInfo.is_sequent" id="employeeInfo.is_sequent" class="form-select @error('employeeInfo.is_sequent') is-invalid @enderror">
+              <option>Is Sequent?</option>
+              <option value="1">Squential</option>
+              <option value="0">Non-sequential</option>
+          </select>
+          </div>
+
 
     <div class="col-md-6">
-        <label class="form-label w-100" for="startDate">Start date</label>
-        <input wire:model.defer="startDate" type="date" class="form-control @error('startDate') is-invalid @enderror" id="startDate" placeholder="YYYY-MM-DD">
-        @error('startDate')
+        <label class="form-label w-100" for="start_date">Start date</label>
+        <input wire:model.defer="employeeInfo.start_date" type="date" class="form-control @error('employeeInfo.start_date') is-invalid @enderror"  id="employeeInfo.start_date" placeholder="YYYY-MM-DD ">
+        @error('employeeInfo.start_date')
         <div class="invalid-feedback">
             {{ $message }}
         </div>
         @enderror
     </div>
     <div class=" col-md-6">
-        <label class="form-label w-100" for="quitDate">Quit date</label>
-        <input wire:model.defer="quitDate" type="date" class="form-control @error('quitDate') is-invalid @enderror" id="quitDate" placeholder="YYYY-MM-DD">
-        @error('quitDate')
+        <label class="form-label w-100" for="end_date">Quit date</label>
+        <input wire:model.defer="employeeInfo.end_date" type="date" class="form-control @error('employeeInfo.end_date') is-invalid @enderror"  id="end_date" placeholder="YYYY-MM-DD">
+        @error('employeeInfo.end_date')
         <div class="invalid-feedback">
             {{ $message }}
         </div>
@@ -66,7 +78,7 @@
   </div>
   <div class="col-md-12 col-12 mb-4">
     <label class="form-label w-100">Note</label>
-    <input wire:model='notes' class="form-control @error('note') is-invalid @enderror" type="text" />
+    <input wire:model='employeeInfo.notes' class="form-control @error('employeeInfo.note') is-invalid @enderror"  type="text" />
   </div>
 
 

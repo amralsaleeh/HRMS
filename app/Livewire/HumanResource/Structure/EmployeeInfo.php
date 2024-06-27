@@ -36,6 +36,8 @@ class EmployeeInfo extends Component
 
     public $quitDate;
 
+    public $employeeInfo = [];
+
     public function mount($id)
     {
         $this->employee = Employee::find($id);
@@ -58,19 +60,27 @@ class EmployeeInfo extends Component
 
     public function submitTimeline()
     {
-        // $this->validate();
+        $this->validate([
+            'employeeInfo.position' => 'required',
+            'employeeInfo.department' => 'required',
+            'employeeInfo.center' => 'required',
+            'employeeInfo.start_date' => 'required',
+            'employeeInfo.end_date' => 'required',
+            'employeeInfo.is_sequent' => 'required',
+        ]);
 
         Timeline::create([
             'employee_id' => $this->employee->id,
-            'center_id' => $this->employeeCenter,
-            'department_id' => $this->employeeDepartment,
-            'position_id' => $this->employeePosition,
-            'start_date' => $this->startDate,
-            'end_date' => $this->quitDate,
-
+            'position_id' =>$this->employeeInfo['position'],
+            'department_id'=>$this->employeeInfo['department'],
+            'center_id' => $this->employeeInfo['center'],
+            'start_date' => $this->employeeInfo['start_date'],
+            'end_date' => $this->employeeInfo['end_date'],
+            'notes' => $this->employeeInfo['notes'],
+            'is_sequent' => $this->employeeInfo['is_sequent'],
         ]);
 
-        $this->dispatch('closeModal', elementId: '#centerModal');
+        $this->dispatch('closeModal', elementId: '#add-timeline');
         $this->dispatch('toastr', type: 'success'/* , title: 'Done!' */ , message: 'Going Well!');
     }
 }
