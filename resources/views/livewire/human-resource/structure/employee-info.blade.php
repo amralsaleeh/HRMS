@@ -1,20 +1,11 @@
 <div>
 
-  @php
-    $configData = Helper::appClasses();
-  @endphp
+@php
+  $configData = Helper::appClasses();
+@endphp
 
-  @section('title', 'Employee Info')
+@section('title', 'Employee Info - Structure')
 
-  @section('vendor-style')
-
-  @endsection
-
-  @section('page-style')
-
-  @endsection
-
-<!-- Header -->
 <div class="row">
   <div class="col-12">
     <div class="card mb-4">
@@ -23,7 +14,7 @@
       </div> --}}
       <div class="user-profile-header d-flex flex-column flex-sm-row text-sm-start text-center mb-4">
         <div class="flex-shrink-0 mt-n2 mx-sm-0 mx-auto">
-          <img src="{{ asset($employee->getEmployeePhoto()) }}" class="d-block h-auto ms-0 ms-sm-4 rounded user-profile-img" width="100px">
+          <img src="{{ Storage::disk("public")->exists($employee->profile_photo_path) ? Storage::disk("public")->url($employee->profile_photo_path) : Storage::disk("public")->url('profile-photos/.default-photo.jpg') }}" class="d-block h-auto ms-0 ms-sm-4 rounded user-profile-img" width="100px">
         </div>
         <div class="flex-grow-1 mt-3 mt-sm-5">
           <div class="d-flex align-items-md-end align-items-sm-start align-items-center justify-content-md-between justify-content-start mx-4 flex-md-row flex-column gap-4">
@@ -34,13 +25,13 @@
                     <i class="ti ti-id"></i> {{ $employee->id }}
                   </li>
                   <li class="list-inline-item">
-                    <i class="ti ti-map-pin"></i> {{ $employee->current_position }}
+                    <i class="ti ti-building-community"></i> {{ $employee->current_center }}
                   </li>
                   <li class="list-inline-item">
                     <i class="ti ti-building"></i> {{ $employee->current_department }}
                   </li>
                   <li class="list-inline-item">
-                    <i class="ti ti-building-community"></i> {{ $employee->current_center }}
+                    <i class="ti ti-map-pin"></i> {{ $employee->current_position }}
                   </li>
                   <li class="list-inline-item">
                     <i class="ti ti-calendar"></i> {{ $employee->join_at }}
@@ -81,9 +72,8 @@
         <ul class="list-unstyled mb-4 mt-3">
           <li class="d-flex align-items-center mb-3"><i class="ti ti-flag"></i><span class="fw-bold mx-2">Address:</span> <span>{{ $employee->address }}</span></li>
         </ul>
-        <small class="card-text text-uppercase">Contacts</small>
         <ul class="list-unstyled mb-4 mt-3">
-          <li class="d-flex align-items-center mb-3"><i class="ti ti-phone-call"></i><span class="fw-bold mx-2">Mobile:</span> <span>{{'+963 '. $employee->mobile_number }}</span></li>
+          <li class="d-flex align-items-center mb-3"><i class="ti ti-phone-call"></i><span class="fw-bold mx-2">Mobile:</span> <span style="direction: ltr">{{'+963 ' . number_format($employee->mobile_number, 0, '', ' ') }}</span></li>
         </ul>
       </div>
     </div>
@@ -93,8 +83,8 @@
       <div class="card-body">
         <h5 class="card-action-title mb-0">Counters</h5>
         <ul class="list-unstyled mb-0 mt-3">
-          <li class="d-flex align-items-center mb-3"><i class="ti ti-check"></i><span class="fw-bold mx-2">Hourly:</span> <span>{{ $employee->hourly_counter }}</span></li>
-          <li class="d-flex align-items-center mb-3"><i class="ti ti-layout-grid"></i><span class="fw-bold mx-2">Delay:</span> <span>{{ $employee->delay_counter }}</span></li>
+          <li class="d-flex align-items-center mb-3"><i class="ti ti-alarm"></i><span class="fw-bold mx-2">Hourly:</span> <span>{{ $employee->hourly_counter }}</span></li>
+          <li class="d-flex align-items-center mb-3"><i class="ti ti-hourglass"></i><span class="fw-bold mx-2">Delay:</span> <span>{{ $employee->delay_counter }}</span></li>
       </div>
     </div>
     <!--/ Profile Overview -->
@@ -109,7 +99,7 @@
             <button type="button" class="btn dropdown-toggle hide-arrow p-0" data-bs-toggle="dropdown" aria-expanded="false"><i class="ti ti-dots-vertical text-muted"></i></button>
             <ul class="dropdown-menu dropdown-menu-end">
               <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#add-timeline">Add timeline</a></li>
-              <li><a class="dropdown-item" href="javascript:void(0);">Edit history</a></li>
+              {{-- <li><a class="dropdown-item" href="javascript:void(0);">Edit timeline</a></li> --}}
             </ul>
           </div>
         </div>
@@ -121,10 +111,10 @@
               <span class="timeline-point timeline-point-primary"></span>
               <div class="timeline-event">
                 <div class="timeline-header">
-                  <h6 class="mb-0">{{ $timeline->position->name }}</h6>
-                  <small class="text-muted">10 day ago</small>
+                  <h6 class="m-0">{{ $timeline->position->name }}</h6>
+                  <small class="text-muted">{{ $timeline->start_date }} --> {{ $timeline->end_date }}</small>
                 </div>
-                <p class="mb-2">{{ $timeline->start_date }} --> {{ $timeline->end_date }}</p>
+                <p class="mb-2">{{ $timeline->center->name }}</p>
               </div>
             </li>
           @endforeach
@@ -146,8 +136,10 @@
 </div>
 <!--/ User Profile Content -->
 
-  @push('custom-scripts')
+{{-- Modal --}}
+@include('_partials\_modals\model-add-timeline')
 
-  @endpush
-  @include('_partials\_modals\model-add-timeline')
+@push('custom-scripts')
+
+@endpush
 </div>
