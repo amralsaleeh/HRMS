@@ -45,14 +45,13 @@
           <div class="col-md-4 col-12">
             <label class="form-label w-100" for="start_date">Start date</label>
             <input wire:model.defer="employeeInfo.start_date" type="date"
-              class="form-control @error('employeeInfo.start_date') is-invalid @enderror" id="employeeInfo.start_date"
-              placeholder="YYYY-MM-DD ">
+              class="form-control @error('employeeInfo.start_date') is-invalid @enderror" id="employeeInfo.start_date">
           </div>
           <div class="col-md-4 col-12">
             <label class="form-label w-100" for="end_date">End date</label>
             <input wire:model.defer="employeeInfo.end_date" type="date"
-              class="form-control @error('employeeInfo.end_date') is-invalid @enderror" id="end_date"
-              placeholder="YYYY-MM-DD">
+              @if(!$isEdit) disabled @endif
+              class="form-control @error('employeeInfo.end_date') is-invalid @enderror" id="end_date">
           </div>
           <div class="col-md-4 col-12">
             <label class="form-label">Sequential</label>
@@ -65,8 +64,7 @@
           </div>
           <div class="col-md-12 col-12 mb-4">
             <label class="form-label w-100">Note</label>
-            <input wire:model='employeeInfo.notes' class="form-control @error('employeeInfo.note') is-invalid @enderror"
-              type="text" />
+            <input wire:model.defer='employeeInfo.notes' class="form-control @error('employeeInfo.note') is-invalid @enderror" type="text" />
           </div>
 
           <div class="col-12 text-center">
