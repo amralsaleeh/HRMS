@@ -11,11 +11,11 @@
           <h3 class="mb-2">New Timeline</h3>
           <p class="text-muted">Please fill out the following information</p>
         </div>
-        <form wire:submit="storeTimeline" class="row g-3 mt-2">
+        <form wire:submit="submitTimeline" class="row g-3 mt-2">
           <div class="col-md-4 col-12">
             <label class="form-label">Center</label>
-            <select wire:model.defer="employeeInfo.center" id="employeeInfo.center"
-              class="form-select @error('employeeInfo.center') is-invalid @enderror">
+            <select wire:model.defer="employeeTimelineInfo.centerId" id="employeeTimelineInfo.centerId"
+              class="form-select @error('employeeTimelineInfo.centerId') is-invalid @enderror">
               <option>Center:</option>
               @foreach ($centers as $Center)
               <option value="{{ $Center->id }}"> {{ $Center->name }}</option>
@@ -24,8 +24,8 @@
           </div>
           <div class="col-md-4 col-12">
             <label class="form-label">Department</label>
-            <select wire:model.defer="employeeInfo.department" id="employeeInfo.department"
-              class="form-select @error('employeeInfo.department') is-invalid @enderror">
+            <select wire:model.defer="employeeTimelineInfo.departmentId" id="employeeTimelineInfo.departmentId"
+              class="form-select @error('employeeTimelineInfo.departmentId') is-invalid @enderror">
               <option>Department:</option>
               @foreach ($departments as $department)
               <option value="{{ $department->id }}"> {{ $department->name }}</option>
@@ -34,8 +34,8 @@
           </div>
           <div class="col-md-4 col-12">
             <label class="form-label">Posation</label>
-            <select wire:model.defer="employeeInfo.position" id="employeeInfo.position"
-              class="form-select @error('employeeInfo.position') is-invalid @enderror">
+            <select wire:model.defer="employeeTimelineInfo.positionId" id="employeeTimelineInfo.positionId"
+              class="form-select @error('employeeTimelineInfo.positionId') is-invalid @enderror">
               <option>Posation:</option>
               @foreach ($positions as $position)
               <option value="{{ $position->id }}"> {{ $position->name }}</option>
@@ -43,20 +43,20 @@
             </select>
           </div>
           <div class="col-md-4 col-12">
-            <label class="form-label w-100" for="start_date">Start date</label>
-            <input wire:model.defer="employeeInfo.start_date" type="date"
-              class="form-control @error('employeeInfo.start_date') is-invalid @enderror" id="employeeInfo.start_date">
+            <label class="form-label w-100" for="startDate">Start date</label>
+            <input wire:model.defer="employeeTimelineInfo.startDate" type="date"
+              class="form-control @error('employeeTimelineInfo.startDate') is-invalid @enderror" id="employeeTimelineInfo.startDate">
           </div>
           <div class="col-md-4 col-12">
-            <label class="form-label w-100" for="end_date">End date</label>
-            <input wire:model.defer="employeeInfo.end_date" type="date"
+            <label class="form-label w-100" for="endDate">End date</label>
+            <input wire:model.defer="employeeTimelineInfo.endDate" type="date"
               @if(!$isEdit) disabled @endif
-              class="form-control @error('employeeInfo.end_date') is-invalid @enderror" id="end_date">
+              class="form-control @error('employeeTimelineInfo.endDate') is-invalid @enderror" id="end_date">
           </div>
           <div class="col-md-4 col-12">
             <label class="form-label">Sequential</label>
-            <select wire:model.defer="employeeInfo.is_sequent" id="employeeInfo.is_sequent"
-              class="form-select @error('employeeInfo.is_sequent') is-invalid @enderror">
+            <select wire:model.defer="employeeTimelineInfo.isSequent" id="employeeTimelineInfo.isSequent"
+              class="form-select @error('employeeTimelineInfo.isSequent') is-invalid @enderror">
               <option>Is Sequent?</option>
               <option value="1">Squential</option>
               <option value="0">Non-sequential</option>
@@ -64,7 +64,7 @@
           </div>
           <div class="col-md-12 col-12 mb-4">
             <label class="form-label w-100">Note</label>
-            <input wire:model.defer='employeeInfo.notes' class="form-control @error('employeeInfo.note') is-invalid @enderror" type="text" />
+            <input wire:model.defer='employeeTimelineInfo.notes' class="form-control @error('employeeTimelineInfo.note') is-invalid @enderror" type="text" />
           </div>
 
           <div class="col-12 text-center">

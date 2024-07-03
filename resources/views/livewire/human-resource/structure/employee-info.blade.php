@@ -109,7 +109,9 @@
           <div class="dropdown">
             <button type="button" class="btn dropdown-toggle hide-arrow p-0" data-bs-toggle="dropdown" aria-expanded="false"><i class="ti ti-dots-vertical text-muted"></i></button>
             <ul class="dropdown-menu dropdown-menu-end">
-              <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#timelineModal">Add timeline</a></li>
+              <li>
+                <a wire:click='showStoreTimelineModal()' class="dropdown-item" data-bs-toggle="modal" data-bs-target="#timelineModal">Add timeline</a>
+              </li>
               {{-- <li><a class="dropdown-item" href="javascript:void(0);">Edit timeline</a></li> --}}
             </ul>
           </div>
@@ -124,7 +126,7 @@
                 <div class="timeline-header">
                   <div class="timeline-row d-flex">
                     <h6 class="m-0">{{ $timeline->position->name }}</h6>
-                    <i wire:click='updateTimeline' class="timeline-icon text-info ti ti-edit mx-2" data-bs-toggle="modal" data-bs-target="#timelineModal"></i>
+                    <i wire:click='showUpdateTimelineModal({{ $timeline }})' class="timeline-icon text-info ti ti-edit mx-2" data-bs-toggle="modal" data-bs-target="#timelineModal"></i>
                   </div>
                   <small class="text-muted">@if ($timeline->end_date == null) Present @else {{ $timeline->start_date }} --> {{ $timeline->end_date }} @endif</small>
                 </div>

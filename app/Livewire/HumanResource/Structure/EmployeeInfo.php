@@ -22,11 +22,13 @@ class EmployeeInfo extends Component
 
     public $employee;
 
+    public $timeline;
+
     public $employeeTimelines;
 
-    public $employeeInfo = [];
+    public $employeeTimelineInfo = [];
 
-    public $isEdit;
+    public $isEdit = false;
 
     // 👉 Mount
     public function mount($id)
@@ -75,17 +77,22 @@ class EmployeeInfo extends Component
     public function submitTimeline()
     {
         $this->validate([
-            'employeeInfo.position' => 'required',
-            'employeeInfo.department' => 'required',
-            'employeeInfo.center' => 'required',
-            'employeeInfo.start_date' => 'required',
-            'employeeInfo.is_sequent' => 'required',
+            'employeeTimelineInfo.centerId' => 'required',
+            'employeeTimelineInfo.departmentId' => 'required',
+            'employeeTimelineInfo.positionId' => 'required',
+            'employeeTimelineInfo.startDate' => 'required',
+            'employeeTimelineInfo.isSequent' => 'required',
         ]);
 
         $this->isEdit ? $this->updateTimeline() : $this->storeTimeline();
     }
 
     // 👉 Store timeline
+    public function showStoreTimelineModal()
+    {
+        $this->reset('isEdit', 'employeeTimelineInfo');
+    }
+
     public function storeTimeline()
     {
         DB::beginTransaction();
@@ -100,13 +107,13 @@ class EmployeeInfo extends Component
 
             Timeline::create([
                 'employee_id' => $this->employee->id,
-                'position_id' => $this->employeeInfo['position'],
-                'department_id' => $this->employeeInfo['department'],
-                'center_id' => $this->employeeInfo['center'],
-                'start_date' => $this->employeeInfo['start_date'],
-                'end_date' => isset($this->employeeInfo['end_date']) ? $this->employeeInfo['end_date'] : null,
-                'is_sequent' => $this->employeeInfo['is_sequent'],
-                'notes' => isset($this->employeeInfo['notes']) ? $this->employeeInfo['notes'] : null,
+                'position_id' => $this->employeeTimelineInfo['positionId'],
+                'department_id' => $this->employeeTimelineInfo['departmentId'],
+                'center_id' => $this->employeeTimelineInfo['centerId'],
+                'start_date' => $this->employeeTimelineInfo['startDate'],
+                'end_date' => isset($this->employeeTimelineInfo['endDate']) ? $this->employeeTimelineInfo['endDate'] : null,
+                'is_sequent' => $this->employeeTimelineInfo['isSequent'],
+                'notes' => isset($this->employeeTimelineInfo['notes']) ? $this->employeeTimelineInfo['notes'] : null,
             ]);
 
             $this->dispatch('closeModal', elementId: '#timelineModal');
@@ -125,8 +132,34 @@ class EmployeeInfo extends Component
     }
 
     // 👉 Update timeline
+    public function showUpdateTimelineModal(Timeline $timeline)
+    {
+        $this->isEdit = true;
+
+        $this->timeline = $timeline;
+
+        $this->employeeTimelineInfo['centerId'] = $timeline->center_id;
+        $this->employeeTimelineInfo['departmentId'] = $timeline->department_id;
+        $this->employeeTimelineInfo['positionId'] = $timeline->position_id;
+        $this->employeeTimelineInfo['startDate'] = $timeline->start_date;
+        $this->employeeTimelineInfo['endDate'] = $timeline->end_date;
+        $this->employeeTimelineInfo['isSequent'] = $timeline->is_sequent;
+        $this->employeeTimelineInfo['notes'] = $timeline->notes;
+    }
+
     public function updateTimeline()
     {
-        //
+        $this->timeline->update([
+            'center_id' => $this->employeeTimelineInfo['centerId'],
+            'department_id' => $this->employeeTimelineInfo['departmentId'],
+            'position_id' => $this->employeeTimelineInfo['positionId'],
+            'start_date' => $this->employeeTimelineInfo['startDate'],
+            'end_date' => $this->employeeTimelineInfo['endDate'],
+            'is_sequent' => $this->employeeTimelineInfo['isSequent'],
+            'notes' => $this->employeeTimelineInfo['notes'],
+        ]);
+
+        $this->dispatch('closeModal', elementId: '#timelineModal');
+        $this->dispatch('toastr', type: 'success' /* , title: 'Done!' */, message: 'Going Well!');
     }
 }
