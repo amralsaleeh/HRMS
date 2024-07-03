@@ -141,9 +141,5 @@
 </div>
 
 {{-- Modal --}}
-@include('_partials\_modals\model-timeline')
-
-@push('custom-scripts')
-
-@endpush
+@include('_partials\_modals\modal-timeline')
 </div>
