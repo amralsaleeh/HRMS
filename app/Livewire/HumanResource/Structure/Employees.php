@@ -2,8 +2,8 @@
 
 namespace App\Livewire\HumanResource\Structure;
 
+use App\Models\Contract;
 use App\Models\Employee;
-use App\Models\Timeline;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -12,17 +12,25 @@ class Employees extends Component
     use WithPagination;
 
     // 👉 Variables
+    public $searchTerm = null;
+
+    public $contracts;
 
     public $employee;
 
-    public $searchTerm = null;
+    public $employeeInfo = [];
 
     public $isEdit = false;
 
     public $confirmedId;
 
-    public $employeeInfo = [];
+    // 👉 Mount
+    public function mount()
+    {
+        $this->contracts = Contract::all();
+    }
 
+    // 👉 Render
     public function render()
     {
         $employees = Employee::where('id', 'like', '%'.$this->searchTerm.'%')
@@ -35,129 +43,100 @@ class Employees extends Component
         ]);
     }
 
-    public function showNewEmployeeModal()
-    {
-        $this->reset();
-    }
-
-    public function showEditEmployeeModal(Employee $employee)
-    {
-        $this->reset();
-        $this->isEdit = true;
-        $this->employeeInfo['id'] = $employee->id;
-        $this->employee = $employee;
-        $this->employeeInfo['contract_id'] = $employee->contract_id;
-        $this->employeeInfo['first_name'] = $employee->first_name;
-        $this->employeeInfo['father_name'] = $employee->father_name;
-        $this->employeeInfo['last_name'] = $employee->last_name;
-        $this->employeeInfo['mother_name'] = $employee->mother_name;
-        $this->employeeInfo['birth_and_place'] = $employee->birth_and_place;
-        $this->employeeInfo['national_number'] = $employee->national_number;
-        $this->employeeInfo['mobile_number'] = $employee->mobile_number;
-        $this->employeeInfo['mobile_number'] = $employee->mobile_number;
-        $this->employeeInfo['degree'] = $employee->degree;
-        $this->employeeInfo['gender'] = $employee->gender;
-        $this->employeeInfo['address'] = $employee->address;
-        // $this->employeeInfo['notes'] = $employee->notes;
-        $this->employeeInfo['max_leave_allowed'] = $employee->max_leave_allowed;
-        $this->employeeInfo['is_active'] = $employee->is_active;
-    }
-
+    // 👉 Submit employee
     public function submitEmployee()
     {
+        $this->validate([
+            'employeeInfo.id' => 'required',
+            'employeeInfo.contractId' => 'required',
+            'employeeInfo.firstName' => 'required',
+            'employeeInfo.fatherName' => 'required',
+            'employeeInfo.lastName' => 'required',
+            'employeeInfo.motherName' => 'required',
+            'employeeInfo.birthAndPlace' => 'required',
+            'employeeInfo.nationalNumber' => 'required|min:11|max:11',
+            'employeeInfo.mobileNumber' => 'required|min:9|max:9|regex:/^[1-9][0-9]*$/',
+            'employeeInfo.degree' => 'required',
+            'employeeInfo.gender' => 'required',
+            'employeeInfo.address' => 'required',
+        ]);
+
         $this->isEdit ? $this->editEmployee() : $this->addEmployee();
+    }
+
+    // 👉 Store employee
+    public function showCreateEmployeeModal()
+    {
+        $this->reset('isEdit', 'employeeInfo');
     }
 
     public function addEmployee()
     {
-        $this->validate([
-            'employeeInfo.id' => 'required',
-            'employeeInfo.contract_id' => 'required',
-            'employeeInfo.first_name' => 'required',
-            'employeeInfo.father_name' => 'required',
-            'employeeInfo.last_name' => 'required',
-            'employeeInfo.mother_name' => 'required',
-            'employeeInfo.birth_and_place' => 'required',
-            'employeeInfo.national_number' => 'required',
-            'employeeInfo.mobile_number' => 'required',
-            'employeeInfo.degree' => 'required',
-            'employeeInfo.gender' => 'required',
-            'employeeInfo.address' => 'required',
-            'employeeInfo.max_leave_allowed' => 'required',
-            'employeeInfo.is_active' => 'required',
-        ]);
-
         Employee::create([
             'id' => $this->employeeInfo['id'],
-            'contract_id' => $this->employeeInfo['contract_id'],
-            'first_name' => $this->employeeInfo['first_name'],
-            'father_name' => $this->employeeInfo['father_name'],
-            'last_name' => $this->employeeInfo['last_name'],
-            'mother_name' => $this->employeeInfo['mother_name'],
-            'birth_and_place' => $this->employeeInfo['birth_and_place'],
-            'national_number' => $this->employeeInfo['national_number'],
-            'mobile_number' => $this->employeeInfo['mobile_number'],
+            'contract_id' => $this->employeeInfo['contractId'],
+            'first_name' => $this->employeeInfo['firstName'],
+            'father_name' => $this->employeeInfo['fatherName'],
+            'last_name' => $this->employeeInfo['lastName'],
+            'mother_name' => $this->employeeInfo['motherName'],
+            'birth_and_place' => $this->employeeInfo['birthAndPlace'],
+            'national_number' => $this->employeeInfo['nationalNumber'],
+            'mobile_number' => $this->employeeInfo['mobileNumber'],
             'degree' => $this->employeeInfo['degree'],
             'gender' => $this->employeeInfo['gender'],
             'address' => $this->employeeInfo['address'],
-            // 'notes' => $this->employeeInfo['notes'],
-            'max_leave_allowed' => $this->employeeInfo['max_leave_allowed'],
-            // 'delay_counter' => $this->delay_counter,
-            // 'hourly_counter' => $this->hourly_counter,
-            'is_active' => $this->employeeInfo['is_active'],
+            'notes' => $this->employeeInfo['notes'],
         ]);
 
         $this->dispatch('closeModal', elementId: '#employeeModal');
         $this->dispatch('toastr', type: 'success' /* , title: 'Done!' */, message: 'Going Well!');
+    }
+
+    // 👉 Update employee
+    public function showEditEmployeeModal(Employee $employee)
+    {
+        $this->isEdit = true;
+
+        $this->employee = $employee;
+
+        $this->employeeInfo['id'] = $employee->id;
+        $this->employeeInfo['contractId'] = $employee->contract_id;
+        $this->employeeInfo['firstName'] = $employee->first_name;
+        $this->employeeInfo['fatherName'] = $employee->father_name;
+        $this->employeeInfo['lastName'] = $employee->last_name;
+        $this->employeeInfo['motherName'] = $employee->mother_name;
+        $this->employeeInfo['birthAndPlace'] = $employee->birth_and_place;
+        $this->employeeInfo['nationalNumber'] = $employee->national_number;
+        $this->employeeInfo['mobileNumber'] = $employee->mobile_number;
+        $this->employeeInfo['degree'] = $employee->degree;
+        $this->employeeInfo['gender'] = $employee->gender;
+        $this->employeeInfo['address'] = $employee->address;
+        $this->employeeInfo['notes'] = $employee->notes;
     }
 
     public function editEmployee()
     {
-        $this->isEdit = true;
-
-        $this->validate([
-            'employeeInfo.id' => 'required',
-            'employeeInfo.contract_id' => 'required',
-            'employeeInfo.first_name' => 'required',
-            'employeeInfo.father_name' => 'required',
-            'employeeInfo.last_name' => 'required',
-            'employeeInfo.mother_name' => 'required',
-            'employeeInfo.birth_and_place' => 'required',
-            'employeeInfo.national_number' => 'required',
-            'employeeInfo.mobile_number' => 'required',
-            'employeeInfo.degree' => 'required',
-            'employeeInfo.gender' => 'required',
-            'employeeInfo.address' => 'required',
-            'employeeInfo.max_leave_allowed' => 'required',
-            'employeeInfo.is_active' => 'required',
-        ]);
-
         $this->employee->update([
             'id' => $this->employeeInfo['id'],
-            'contract_id' => $this->employeeInfo['contract_id'],
-            'first_name' => $this->employeeInfo['first_name'],
-            'father_name' => $this->employeeInfo['father_name'],
-            'last_name' => $this->employeeInfo['last_name'],
-            'mother_name' => $this->employeeInfo['mother_name'],
-            'birth_and_place' => $this->employeeInfo['birth_and_place'],
-            'national_number' => $this->employeeInfo['national_number'],
-            'mobile_number' => $this->employeeInfo['mobile_number'],
+            'contract_id' => $this->employeeInfo['contractId'],
+            'first_name' => $this->employeeInfo['firstName'],
+            'father_name' => $this->employeeInfo['fatherName'],
+            'last_name' => $this->employeeInfo['lastName'],
+            'mother_name' => $this->employeeInfo['motherName'],
+            'birth_and_place' => $this->employeeInfo['birthAndPlace'],
+            'national_number' => $this->employeeInfo['nationalNumber'],
+            'mobile_number' => $this->employeeInfo['mobileNumber'],
             'degree' => $this->employeeInfo['degree'],
             'gender' => $this->employeeInfo['gender'],
             'address' => $this->employeeInfo['address'],
-            // 'notes' => $this->employeeInfo['notes'],
-            'max_leave_allowed' => $this->employeeInfo['max_leave_allowed'],
-            // 'delay_counter' => $this->delay_counter,
-            // 'hourly_counter' => $this->hourly_counter,
-            'is_active' => $this->employeeInfo['is_active'],
+            'notes' => $this->employeeInfo['notes'],
         ]);
 
         $this->dispatch('closeModal', elementId: '#employeeModal');
         $this->dispatch('toastr', type: 'success' /* , title: 'Done!' */, message: 'Going Well!');
-
-        $this->reset();
     }
 
+    // 👉 Delete employee
     public function confirmDeleteEmployee($id)
     {
         $this->confirmedId = $id;
@@ -167,18 +146,5 @@ class Employees extends Component
     {
         $employee->delete();
         $this->dispatch('toastr', type: 'success' /* , title: 'Done!' */, message: 'Going Well!');
-    }
-
-    public function getCoordinator($id)
-    {
-        //
-    }
-
-    public function getMembersCount($employee_id)
-    {
-        return Timeline::where('Employee_id', $employee_id)
-            ->whereNull('end_date')
-            ->distinct('employee_id')
-            ->count();
     }
 }

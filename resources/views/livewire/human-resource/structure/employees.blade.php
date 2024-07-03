@@ -24,7 +24,7 @@
 @endsection
 
 <div class="demo-inline-spacing">
-  <button wire:click='showNewEmployeeModal' type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#employeeModal">
+  <button wire:click='showCreateEmployeeModal' type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#employeeModal">
     <span class="ti-xs ti ti-plus me-1"></span>{{ __('Add New Employee') }}
   </button>
 </div>
