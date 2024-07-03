@@ -162,7 +162,7 @@
                           </div>
                           <div class="flex-grow-1">
                             <h6 class="mb-1">{{ $notification->data['user'] }}</h6>
-                            <p class="mb-0">{{ $notification->data['message'] }}</p>
+                            <p class="mb-0">{{ __($notification->data['message']) }}</p>
                             <small class="text-muted">{{ $notification->created_at->diffForHumans() }}</small>
                           </div>
                           <div class="flex-shrink-0 dropdown-notifications-actions">
