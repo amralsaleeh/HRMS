@@ -110,5 +110,5 @@
 </div>
 
 {{-- Modal --}}
-@include('_partials/_modals/model-add-employee')
+@include('_partials/_modals/model-employee')
 </div>

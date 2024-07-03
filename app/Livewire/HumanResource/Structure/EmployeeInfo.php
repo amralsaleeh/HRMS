@@ -7,58 +7,64 @@ use App\Models\Department;
 use App\Models\Employee;
 use App\Models\Position;
 use App\Models\Timeline;
+use Carbon\Carbon;
 use Livewire\Component;
 
 class EmployeeInfo extends Component
 {
-    public $employee;
-
-    // public $employee_id;
-    public $timelines;
-
-    public $position;
-
-    public $employeePosition;
-
-    public $positions;
-
-    public $Centers;
-
-    public $employeeCenter;
+    public $centers;
 
     public $departments;
 
-    public $employeeDepartment;
+    public $positions;
 
-    public $center;
+    public $employee;
 
-    public $startDate;
-
-    public $quitDate;
+    public $employeeTimelines;
 
     public $employeeInfo = [];
 
     public function mount($id)
     {
         $this->employee = Employee::find($id);
-        $this->timelines = Timeline::with(['center', 'department', 'position'])
-            ->where('employee_id', $id)
-            ->orderBy('id', 'desc')
-            ->get();
-        $this->position = Timeline::with('position')
-            ->where('employee_id', $id)
-            ->first();
-        $this->positions = Position::all();
-        $this->Centers = Center::all();
+
+        $this->centers = Center::all();
         $this->departments = department::all();
+        $this->positions = Position::all();
     }
 
     public function render()
     {
+        $this->employeeTimelines = Timeline::with(['center', 'department', 'position'])
+            ->where('employee_id', $this->employee->id)
+            ->orderBy('id', 'desc')
+            ->get();
+
         return view('livewire.human-resource.structure.employee-info');
     }
 
-    public function submitTimeline()
+    public function toggleActive()
+    {
+        $presentTimeline = $this->employee
+            ->timelines()
+            ->orderBy('timelines.id', 'desc')
+            ->first();
+
+        if ($this->employee->is_active == true) {
+            $this->employee->is_active = false;
+            $presentTimeline->end_date = Carbon::now();
+        } else {
+            $this->employee->is_active = true;
+            $presentTimeline->end_date = null;
+        }
+
+        $this->employee->save();
+        $presentTimeline->save();
+
+        $this->dispatch('toastr', type: 'success' /* , title: 'Done!' */, message: 'Going Well!');
+    }
+
+    public function storeTimeline()
     {
         $this->validate([
             'employeeInfo.position' => 'required',
@@ -82,5 +88,9 @@ class EmployeeInfo extends Component
 
         $this->dispatch('closeModal', elementId: '#add-timeline');
         $this->dispatch('toastr', type: 'success' /* , title: 'Done!' */, message: 'Going Well!');
+    }
+
+    public function updateTimeline()
+    {
     }
 }

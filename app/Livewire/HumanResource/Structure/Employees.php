@@ -6,7 +6,6 @@ use App\Models\Employee;
 use App\Models\Timeline;
 use Livewire\Component;
 use Livewire\WithPagination;
-use Symfony\Contracts\Service\Attribute\Required;
 
 class Employees extends Component
 {
@@ -71,23 +70,22 @@ class Employees extends Component
 
     public function addEmployee()
     {
-      $this->validate([
-        'employeeInfo.id' => 'required',
-        'employeeInfo.contract_id' => 'required',
-        'employeeInfo.first_name' => 'required',
-        'employeeInfo.father_name' => 'required',
-        'employeeInfo.last_name' => 'required',
-        'employeeInfo.mother_name' => 'required',
-        'employeeInfo.birth_and_place' => 'required',
-        'employeeInfo.national_number' => 'required',
-        'employeeInfo.mobile_number' => 'required',
-        'employeeInfo.degree' => 'required',
-        'employeeInfo.gender' => 'required',
-        'employeeInfo.address' => 'required',
-        'employeeInfo.max_leave_allowed' => 'required',
-        'employeeInfo.is_active' => 'required'
-
-      ]);
+        $this->validate([
+            'employeeInfo.id' => 'required',
+            'employeeInfo.contract_id' => 'required',
+            'employeeInfo.first_name' => 'required',
+            'employeeInfo.father_name' => 'required',
+            'employeeInfo.last_name' => 'required',
+            'employeeInfo.mother_name' => 'required',
+            'employeeInfo.birth_and_place' => 'required',
+            'employeeInfo.national_number' => 'required',
+            'employeeInfo.mobile_number' => 'required',
+            'employeeInfo.degree' => 'required',
+            'employeeInfo.gender' => 'required',
+            'employeeInfo.address' => 'required',
+            'employeeInfo.max_leave_allowed' => 'required',
+            'employeeInfo.is_active' => 'required',
+        ]);
 
         Employee::create([
             'id' => $this->employeeInfo['id'],
@@ -117,23 +115,22 @@ class Employees extends Component
     {
         $this->isEdit = true;
 
-      $this->validate([
-        'employeeInfo.id' => 'required',
-        'employeeInfo.contract_id' => 'required',
-        'employeeInfo.first_name' => 'required',
-        'employeeInfo.father_name' => 'required',
-        'employeeInfo.last_name' => 'required',
-        'employeeInfo.mother_name' => 'required',
-        'employeeInfo.birth_and_place' => 'required',
-        'employeeInfo.national_number' => 'required',
-        'employeeInfo.mobile_number' => 'required',
-        'employeeInfo.degree' => 'required',
-        'employeeInfo.gender' => 'required',
-        'employeeInfo.address' => 'required',
-        'employeeInfo.max_leave_allowed' => 'required',
-        'employeeInfo.is_active' => 'required'
-
-      ]);
+        $this->validate([
+            'employeeInfo.id' => 'required',
+            'employeeInfo.contract_id' => 'required',
+            'employeeInfo.first_name' => 'required',
+            'employeeInfo.father_name' => 'required',
+            'employeeInfo.last_name' => 'required',
+            'employeeInfo.mother_name' => 'required',
+            'employeeInfo.birth_and_place' => 'required',
+            'employeeInfo.national_number' => 'required',
+            'employeeInfo.mobile_number' => 'required',
+            'employeeInfo.degree' => 'required',
+            'employeeInfo.gender' => 'required',
+            'employeeInfo.address' => 'required',
+            'employeeInfo.max_leave_allowed' => 'required',
+            'employeeInfo.is_active' => 'required',
+        ]);
 
         $this->employee->update([
             'id' => $this->employeeInfo['id'],
