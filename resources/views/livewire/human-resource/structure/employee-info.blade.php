@@ -135,7 +135,6 @@
                   <small class="text-muted">@if ($timeline->end_date == null) {{ __('Present') }} @else {{ $timeline->start_date }} --> {{ $timeline->end_date }} @endif</small>
                 </div>
                 <p class="mb-2">{{ $timeline->center->name }}</p>
-
               </div>
             </li>
           @endforeach

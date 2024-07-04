@@ -15,7 +15,7 @@
         <form wire:submit="submitTimeline" class="row g-3 mt-2">
           <div wire:ignore class="col-md-4 col-12">
             <label class="form-label">{{ __('Center') }}</label>
-            <select wire:model.defer="employeeTimelineInfo.centerId" id="selectCenters"
+            <select wire:model="employeeTimelineInfo.centerId" id="selectCenters"
               class="select2 form-select @error('employeeTimelineInfo.centerId') is-invalid @enderror">
               <option value=""></option>
               @foreach ($centers as $Center)
@@ -25,7 +25,7 @@
           </div>
           <div wire:ignore class="col-md-4 col-12">
             <label class="form-label">{{ __('Department') }}</label>
-            <select wire:model.defer="employeeTimelineInfo.departmentId" id="selectDepartment"
+            <select wire:model="employeeTimelineInfo.departmentId" id="selectDepartment"
               class="select2 form-select @error('employeeTimelineInfo.departmentId') is-invalid @enderror">
               <option value=""></option>
               @foreach ($departments as $department)
@@ -35,7 +35,7 @@
           </div>
           <div wire:ignore class="col-md-4 col-12">
             <label class="form-label">{{ __('Position') }}</label>
-            <select wire:model.defer="employeeTimelineInfo.positionId" id="selectPosition"
+            <select wire:model="employeeTimelineInfo.positionId" id="selectPosition"
               class="select2 form-select @error('employeeTimelineInfo.positionId') is-invalid @enderror">
               <option value=""></option>
               @foreach ($positions as $position)
@@ -45,17 +45,17 @@
           </div>
           <div class="col-md-4 col-12">
             <label class="form-label w-100" for="startDate">{{ __('Start Date') }}</label>
-            <input wire:model.defer="employeeTimelineInfo.startDate" type="text" id="flatpickr-Start-Date"
+            <input wire:model="employeeTimelineInfo.startDate" type="text" id="flatpickr-Start-Date"
               class="form-control flatpickr-input active @error('employeeTimelineInfo.startDate') is-invalid @enderror" placeholder="YYYY/MM/DD" readonly="readonly"/>
           </div>
           <div class="col-md-4 col-12">
             <label class="form-label w-100" for="endDate">{{ __('End Date') }}</label>
-            <input wire:model.defer="employeeTimelineInfo.endDate" type="text" id="flatpickr-End-Date"
+            <input wire:model="employeeTimelineInfo.endDate" type="text" id="flatpickr-End-Date"
               class="form-control flatpickr-input active @error('employeeTimelineInfo.endDate') is-invalid @enderror" placeholder="YYYY/MM/DD" readonly="readonly"/>
           </div>
           <div class="col-md-4 col-12">
             <label class="form-label">{{ __('Sequential') }}</label>
-            <select wire:model.defer="employeeTimelineInfo.isSequent"
+            <select wire:model="employeeTimelineInfo.isSequent"
               class="form-select @error('employeeTimelineInfo.isSequent') is-invalid @enderror">
               <option value=""></option>
               <option value="1">{{ __('Squential') }}</option>
@@ -64,7 +64,7 @@
           </div>
           <div class="col-md-12 col-12 mb-4">
             <label class="form-label w-100">{{ __('Note') }}</label>
-            <input wire:model.defer='employeeTimelineInfo.notes' class="form-control @error('employeeTimelineInfo.note') is-invalid @enderror" type="text" />
+            <input wire:model='employeeTimelineInfo.notes' class="form-control @error('employeeTimelineInfo.note') is-invalid @enderror" type="text" />
           </div>
 
           <div class="col-12 text-center">
@@ -100,35 +100,49 @@
           });
         });
       }
-
-      $('#selectCenters').on('change', function (e) {
-          var data = $('#selectCenters').select2("val");
-      @this.set('selectedCenter', data);
-      });
-
-      $('#selectDepartment').on('change', function (e) {
-          var data = $('#selectDepartment').select2("val");
-      @this.set('selectedDepartment', data);
-      });
-
-      $('#selectPosition').on('change', function (e) {
-          var data = $('#selectPosition').select2("val");
-      @this.set('selectedPosition', data);
-      });
     });
   </script>
 
-<script>
-  'use strict';
-
-  window.addEventListener('clearSelect2Values', event => {
-    $(function () {
-      $('#selectCenters').select2('val', '0')
-      $('#selectDepartment').select2('val', '0')
-      $('#selectedPosition').select2('val', '0')
+  <script>
+    $('#selectCenters').on('change', function (e) {
+      var data = $('#selectCenters').select2("val");
+      @this.set('selectedCenter', data);
     });
-  })
-</script>
+
+    $('#selectDepartment').on('change', function (e) {
+      var data = $('#selectDepartment').select2("val");
+      @this.set('selectedDepartment', data);
+    });
+
+    $('#selectPosition').on('change', function (e) {
+      var data = $('#selectPosition').select2("val");
+      @this.set('selectedPosition', data);
+    });
+  </script>
+
+  <script>
+    'use strict';
+
+    window.addEventListener('setSelect2Values', event => {
+      $(function () {
+        $("#selectCenters").val(event.detail.centerId).trigger('change');
+        $("#selectDepartment").val(event.detail.departmentId).trigger('change');
+        $("#selectPosition").val(event.detail.positionId).trigger('change');
+      });
+    })
+  </script>
+
+  <script>
+    'use strict';
+
+    window.addEventListener('clearSelect2Values', event => {
+      $(function () {
+        $('#selectCenters').select2('val', 0)
+        $('#selectDepartment').select2('val', 0)
+        $('#selectPosition').select2('val', 0)
+      });
+    })
+  </script>
 
   <script>
     $(document).ready(function () {
