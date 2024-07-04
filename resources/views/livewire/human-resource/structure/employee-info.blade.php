@@ -54,7 +54,7 @@
             </div>
             <button wire:click='toggleActive' type="button" class="btn @if ($employee->is_active == 1)  btn-success @else btn-danger  @endif waves-effect waves-light">
               <span class="ti @if ($employee->is_active == 1) ti-user-check @else ti-user-x @endif me-1"></span>
-              @if ($employee->is_active == 1) Active @else Inactive  @endif
+              @if ($employee->is_active == 1) {{ __('Active') }} @else {{ __('Inactive') }}  @endif
             </button>
           </div>
         </div>
@@ -82,19 +82,19 @@
   <div class="col-xl-4 col-lg-5 col-md-5">
     <div class="card mb-4">
       <div class="card-body">
-        <h5 class="card-action-title mb-0">Details</h5>
+        <h5 class="card-action-title mb-0">{{ __('Details') }}</h5>
         <ul class="list-unstyled mb-4 mt-3">
-          <li class="d-flex align-items-center mb-3"><i class="ti ti-home"></i><span class="fw-bold mx-2">Address:</span> <span>{{ $employee->address }}</span></li>
+          <li class="d-flex align-items-center mb-3"><i class="ti ti-home"></i><span class="fw-bold mx-2">{{ __('Address') }}:</span> <span>{{ $employee->address }}</span></li>
         </ul>
         <ul class="list-unstyled mb-4 mt-3">
-          <li class="d-flex align-items-center mb-3"><i class="ti ti-phone-call"></i><span class="fw-bold mx-2">Mobile:</span> <span style="direction: ltr">{{'+963 ' . number_format($employee->mobile_number, 0, '', ' ') }}</span></li>
+          <li class="d-flex align-items-center mb-3"><i class="ti ti-phone-call"></i><span class="fw-bold mx-2">{{ __('Mobile') }}:</span> <span style="direction: ltr">{{'+963 ' . number_format($employee->mobile_number, 0, '', ' ') }}</span></li>
         </ul>
 
-        <h5 class="card-action-title mb-0">Counters</h5>
+        <h5 class="card-action-title mb-0">{{ __('Counters') }}</h5>
         <ul class="list-unstyled mb-0 mt-3">
           <li class="d-flex align-items-center mb-3"><i class="ti ti-calendar"></i><span class="fw-bold mx-2">Leaves Balance:</span> <span class="badge bg-label-secondary">{{ $employee->max_leave_allowed . " Day" }}</span></li>
-          <li class="d-flex align-items-center mb-3"><i class="ti ti-alarm"></i><span class="fw-bold mx-2">Hourly:</span> <span class="badge bg-label-secondary">{{ $employee->hourly_counter }}</span></li>
-          <li class="d-flex align-items-center mb-3"><i class="ti ti-hourglass"></i><span class="fw-bold mx-2">Delay:</span> <span class="badge bg-label-secondary">{{ $employee->delay_counter }}</span></li>
+          <li class="d-flex align-items-center mb-3"><i class="ti ti-alarm"></i><span class="fw-bold mx-2">{{ __('Hourly') }}:</span> <span class="badge bg-label-secondary">{{ $employee->hourly_counter }}</span></li>
+          <li class="d-flex align-items-center mb-3"><i class="ti ti-hourglass"></i><span class="fw-bold mx-2">{{ __('Delay') }}:</span> <span class="badge bg-label-secondary">{{ $employee->delay_counter }}</span></li>
         </ul>
       </div>
     </div>
@@ -105,13 +105,13 @@
   <div class="col-xl-8 col-lg-7 col-md-7">
     <div class="card card-action mb-4">
       <div class="card-header align-items-center">
-        <h5 class="card-action-title mb-0">Timelines</h5>
+        <h5 class="card-action-title mb-0">{{ __('Timelines') }}</h5>
         <div class="card-action-element">
           <div class="dropdown">
             <button type="button" class="btn dropdown-toggle hide-arrow p-0" data-bs-toggle="dropdown" aria-expanded="false"><i class="ti ti-dots-vertical text-muted"></i></button>
             <ul class="dropdown-menu dropdown-menu-end">
               <li>
-                <a wire:click='showStoreTimelineModal()' class="dropdown-item" data-bs-toggle="modal" data-bs-target="#timelineModal">Add timeline</a>
+                <a wire:click='showStoreTimelineModal()' class="dropdown-item" data-bs-toggle="modal" data-bs-target="#timelineModal">{{ __('Add timeline') }}</a>
               </li>
               {{-- <li><a class="dropdown-item" href="javascript:void(0);">Edit timeline</a></li> --}}
             </ul>
@@ -129,7 +129,7 @@
                     <h6 class="m-0">{{ $timeline->position->name }}</h6>
                     <i wire:click='showUpdateTimelineModal({{ $timeline }})' class="timeline-icon text-info ti ti-edit mx-2" data-bs-toggle="modal" data-bs-target="#timelineModal"></i>
                   </div>
-                  <small class="text-muted">@if ($timeline->end_date == null) Present @else {{ $timeline->start_date }} --> {{ $timeline->end_date }} @endif</small>
+                  <small class="text-muted">@if ($timeline->end_date == null) {{ __('Present') }} @else {{ $timeline->start_date }} --> {{ $timeline->end_date }} @endif</small>
                 </div>
                 <p class="mb-2">{{ $timeline->center->name }}</p>
 
