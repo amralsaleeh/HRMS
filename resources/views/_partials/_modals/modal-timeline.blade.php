@@ -1,5 +1,6 @@
 @push('custom-css')
-
+<link rel="stylesheet" href="{{asset('assets/vendor/libs/select2/select2.css')}}" />
+<link rel="stylesheet" href="{{asset('assets/vendor/libs/flatpickr/flatpickr.css')}}" />
 @endpush
 
 <div wire:ignore.self class="modal fade" id="timelineModal" tabindex="-1" aria-hidden="true">
@@ -14,8 +15,8 @@
         <form wire:submit="submitTimeline" class="row g-3 mt-2">
           <div class="col-md-4 col-12">
             <label class="form-label">{{ __('Center') }}</label>
-            <select wire:model.defer="employeeTimelineInfo.centerId" id="employeeTimelineInfo.centerId"
-              class="form-select @error('employeeTimelineInfo.centerId') is-invalid @enderror">
+            <select wire:model.defer="employeeTimelineInfo.centerId"
+              class="select2 form-select @error('employeeTimelineInfo.centerId') is-invalid @enderror">
               <option>{{ __('Center') }}:</option>
               @foreach ($centers as $Center)
               <option value="{{ $Center->id }}"> {{ $Center->name }}</option>
@@ -24,7 +25,7 @@
           </div>
           <div class="col-md-4 col-12">
             <label class="form-label">{{ __('Department') }}</label>
-            <select wire:model.defer="employeeTimelineInfo.departmentId" id="employeeTimelineInfo.departmentId"
+            <select wire:model.defer="employeeTimelineInfo.departmentId"
               class="form-select @error('employeeTimelineInfo.departmentId') is-invalid @enderror">
               <option>{{ __('Department') }}:</option>
               @foreach ($departments as $department)
@@ -34,7 +35,7 @@
           </div>
           <div class="col-md-4 col-12">
             <label class="form-label">{{ __('Position') }}</label>
-            <select wire:model.defer="employeeTimelineInfo.positionId" id="employeeTimelineInfo.positionId"
+            <select wire:model.defer="employeeTimelineInfo.positionId"
               class="form-select @error('employeeTimelineInfo.positionId') is-invalid @enderror">
               <option>{{ __('Position') }}:</option>
               @foreach ($positions as $position)
@@ -45,17 +46,17 @@
           <div class="col-md-4 col-12">
             <label class="form-label w-100" for="startDate">{{ __('Start Date') }}</label>
             <input wire:model.defer="employeeTimelineInfo.startDate" type="date"
-              class="form-control @error('employeeTimelineInfo.startDate') is-invalid @enderror" id="employeeTimelineInfo.startDate">
+              class="form-control @error('employeeTimelineInfo.startDate') is-invalid @enderror">
           </div>
           <div class="col-md-4 col-12">
             <label class="form-label w-100" for="endDate">{{ __('End Date') }}</label>
             <input wire:model.defer="employeeTimelineInfo.endDate" type="date"
               @if(!$isEdit) disabled @endif
-              class="form-control @error('employeeTimelineInfo.endDate') is-invalid @enderror" id="end_date">
+              class="form-control @error('employeeTimelineInfo.endDate') is-invalid @enderror">
           </div>
           <div class="col-md-4 col-12">
             <label class="form-label">{{ __('Sequential') }}</label>
-            <select wire:model.defer="employeeTimelineInfo.isSequent" id="employeeTimelineInfo.isSequent"
+            <select wire:model.defer="employeeTimelineInfo.isSequent"
               class="form-select @error('employeeTimelineInfo.isSequent') is-invalid @enderror">
               <option>{{ __('Is Sequent?') }}</option>
               <option value="1">{{ __('Squential') }}</option>
@@ -79,5 +80,33 @@
 </div>
 
 @push('custom-scripts')
+  <script src="{{asset('assets/vendor/libs/select2/select2.js')}}"></script>
+  <script src="{{asset('assets/vendor/libs/flatpickr/flatpickr.js')}}"></script>
 
+  <script>
+    'use strict';
+
+    $(function () {
+      const selectPicker = $('.selectpicker'),
+        select2 = $('.select2'),
+        select2Icons = $('.select2-icons');
+
+      // Default
+      if (select2.length) {
+        select2.each(function () {
+          var $this = $(this);
+          $this.wrap('<div class="position-relative"></div>').select2({
+            placeholder: 'Select value',
+            dropdownParent: $this.parent()
+          });
+        });
+      }
+
+      // $('#selectCenters').select2();
+      $('#selectCenters').on('change', function (e) {
+          var data = $('#selectCenters').select2("val");
+      @this.set('centers', data);
+      });
+    });
+  </script>
 @endpush
