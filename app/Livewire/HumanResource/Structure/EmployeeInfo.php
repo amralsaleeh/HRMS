@@ -30,6 +30,12 @@ class EmployeeInfo extends Component
 
     public $isEdit = false;
 
+    public $selectedCenter;
+
+    public $selectedDepartment;
+
+    public $selectedPosition;
+
     // 👉 Mount
     public function mount($id)
     {
@@ -76,6 +82,10 @@ class EmployeeInfo extends Component
     // 👉 Submit timeline
     public function submitTimeline()
     {
+        $this->employeeTimelineInfo['centerId'] = $this->selectedCenter;
+        $this->employeeTimelineInfo['departmentId'] = $this->selectedDepartment;
+        $this->employeeTimelineInfo['positionId'] = $this->selectedPosition;
+
         $this->validate([
             'employeeTimelineInfo.centerId' => 'required',
             'employeeTimelineInfo.departmentId' => 'required',
@@ -90,7 +100,8 @@ class EmployeeInfo extends Component
     // 👉 Store timeline
     public function showStoreTimelineModal()
     {
-        $this->reset('isEdit', 'employeeTimelineInfo');
+        $this->reset('isEdit', 'selectedCenter', 'selectedDepartment', 'selectedPosition', 'employeeTimelineInfo');
+        $this->dispatch('clearSelect2Values');
     }
 
     public function storeTimeline()
@@ -107,9 +118,9 @@ class EmployeeInfo extends Component
 
             Timeline::create([
                 'employee_id' => $this->employee->id,
-                'position_id' => $this->employeeTimelineInfo['positionId'],
-                'department_id' => $this->employeeTimelineInfo['departmentId'],
                 'center_id' => $this->employeeTimelineInfo['centerId'],
+                'department_id' => $this->employeeTimelineInfo['departmentId'],
+                'position_id' => $this->employeeTimelineInfo['positionId'],
                 'start_date' => $this->employeeTimelineInfo['startDate'],
                 'end_date' => isset($this->employeeTimelineInfo['endDate']) ? $this->employeeTimelineInfo['endDate'] : null,
                 'is_sequent' => $this->employeeTimelineInfo['isSequent'],
