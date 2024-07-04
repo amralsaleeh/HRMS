@@ -33,6 +33,7 @@ class DefaultNotification extends Notification
 
         return [
             'user' => $user->EmployeeFullName,
+            'employee_id' => $user->employee_id,
             'image' => $user->profile_photo_url,
             'message' => $this->message,
         ];

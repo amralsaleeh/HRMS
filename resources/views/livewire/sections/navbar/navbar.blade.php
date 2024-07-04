@@ -1,4 +1,10 @@
 <div>
+
+  @php
+    $configData = Helper::appClasses();
+    use App\Models\Employee;
+  @endphp
+
   @push('custom-css')
     <style>
       .animation-fade {
@@ -68,7 +74,7 @@
         @endif
 
         <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
-          <div class="navbar-nav align-items-center">
+          <div class="navbar-nav d-flex flex-row align-items-center">
             <!-- Style Switcher -->
             <a wire:ignore class="nav-link style-switcher-toggle hide-arrow" href="javascript:void(0);">
               <i class='ti ti-sm'></i>
@@ -78,7 +84,7 @@
             <!-- Offline Indicator -->
             <div wire:offline>
               <a class="nav-link dropdown-toggle hide-arrow">
-                <i class="animation-fade ti ti-wifi-off fs-3"></i>
+                <i class="animation-fade ti ti-wifi-off fs-3 mx-2"></i>
               </a>
             </div>
             <!-- Offline Indicator -->
@@ -156,13 +162,17 @@
                         <div class="d-flex">
                           <div class="flex-shrink-0 me-3">
                             <div class="avatar">
-                              <img src="{{ $notification->data['image'] }}" class="h-auto rounded-circle">
+                              @php
+                                  $employee = Employee::find($notification->data['employee_id']);
+                                  $imageSrc = Storage::disk("public")->exists($employee->profile_photo_path) ? Storage::disk("public")->url($employee->profile_photo_path) : Storage::disk("public")->url('profile-photos/.default-photo.jpg')
+                              @endphp
+                              <img src="{{ $imageSrc }}" class="h-auto rounded-circle">
                               {{-- <span class="avatar-initial rounded-circle bg-label-success"><i class="ti ti-chart-pie"></i></span> --}}
                             </div>
                           </div>
                           <div class="flex-grow-1">
                             <h6 class="mb-1">{{ $notification->data['user'] }}</h6>
-                            <p class="mb-0">{{ $notification->data['message'] }}</p>
+                            <p class="mb-0">{{ __($notification->data['message']) }}</p>
                             <small class="text-muted">{{ $notification->created_at->diffForHumans() }}</small>
                           </div>
                           <div class="flex-shrink-0 dropdown-notifications-actions">

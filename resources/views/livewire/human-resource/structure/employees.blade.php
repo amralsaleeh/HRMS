@@ -6,8 +6,25 @@
 
 @section('title', 'Employees - Structure')
 
+@section('page-style')
+  <style>
+    .btn-tr {
+      opacity: 0;
+    }
+
+    tr:hover .btn-tr {
+      display: inline-block;
+      opacity: 1;
+    }
+
+    tr:hover .td {
+      color: #7367f0 !important;
+    }
+  </style>
+@endsection
+
 <div class="demo-inline-spacing">
-  <button wire:click='showNewEmployeeModal' type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#employeeModal">
+  <button wire:click='showCreateEmployeeModal' type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#employeeModal">
     <span class="ti-xs ti ti-plus me-1"></span>{{ __('Add New Employee') }}
   </button>
 </div>
@@ -44,7 +61,7 @@
               </li>
             </ul>
           </td>
-          <td>{{ '0' . number_format($employee->mobile_number, 0, '', ' ') }}</td>
+          <td style="direction: ltr">{{ '+963 ' . number_format($employee->mobile_number, 0, '', ' ') }}</td>
           <td>
             @if ($employee->is_active)
               <span class="badge bg-label-success me-1">{{ __('Active') }}</span>
@@ -53,13 +70,15 @@
             @endif
           </td>
           <td>
-            <div class="dropdown">
-              <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown"><i class="ti ti-dots-vertical"></i></button>
-              <div class="dropdown-menu">
-                <a wire:click='showEditEmployeeModal({{ $employee }})' class="dropdown-item" data-bs-toggle="modal" data-bs-target="#employeeModal"><i class="ti ti-pencil me-1"></i> {{ __('Edit') }}</a>
-                <a class="dropdown-item" href="#"><i class="ti ti-trash me-1"></i> {{ __('Delete') }}</a>
-              </div>
-            </div>
+            <button type="button" class="btn btn-sm btn-tr rounded-pill btn-icon btn-outline-secondary waves-effect">
+              <span wire:click='showEditEmployeeModal({{ $employee }})' data-bs-toggle="modal" data-bs-target="#employeeModal" class="ti ti-pencil"></span>
+            </button>
+            <button type="button" class="btn btn-sm btn-tr rounded-pill btn-icon btn-outline-danger waves-effect">
+              <span wire:click.prevent='confirmDeleteEmployee({{ $employee->id }})' class="ti ti-trash"></span>
+            </button>
+            @if ($confirmedId === $employee->id)
+            <button wire:click.prevent='deleteEmployee({{ $employee }})' type="button" class="btn btn-sm btn-danger waves-effect waves-light">{{ __('Sure?') }}</button>
+          @endif
           </td>
         </tr>
         @empty
@@ -91,5 +110,5 @@
 </div>
 
 {{-- Modal --}}
-@include('_partials/_modals/model-add-employee')
+@include('_partials/_modals/modal-employee')
 </div>

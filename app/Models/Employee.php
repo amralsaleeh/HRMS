@@ -66,9 +66,22 @@ class Employee extends Model
 
     public function leaves(): BelongsToMany
     {
-        return $this->belongsToMany(Leave::class)
-            ->withPivot('id', 'from_date', 'to_date', 'start_at', 'end_at', 'note', 'is_authorized', 'is_checked',
-                'created_by', 'updated_by', 'deleted_by', 'created_at', 'updated_at', 'deleted_at');
+        return $this->belongsToMany(Leave::class)->withPivot(
+            'id',
+            'from_date',
+            'to_date',
+            'start_at',
+            'end_at',
+            'note',
+            'is_authorized',
+            'is_checked',
+            'created_by',
+            'updated_by',
+            'deleted_by',
+            'created_at',
+            'updated_at',
+            'deleted_at'
+        );
     }
 
     public function messages(): HasMany
@@ -78,16 +91,12 @@ class Employee extends Model
 
     protected function hourlyCounter(): Attribute
     {
-        return Attribute::make(
-            get: fn (?string $value) => $value !== null ? Carbon::parse($value)->format('H:i') : '',
-        );
+        return Attribute::make(get: fn (?string $value) => $value !== null ? Carbon::parse($value)->format('H:i') : '');
     }
 
     protected function delayCounter(): Attribute
     {
-        return Attribute::make(
-            get: fn (?string $value) => $value !== null ? Carbon::parse($value)->format('H:i') : '',
-        );
+        return Attribute::make(get: fn (?string $value) => $value !== null ? Carbon::parse($value)->format('H:i') : '');
     }
 
     // Computed Attribute - Start
@@ -105,14 +114,20 @@ class Employee extends Model
     // Functions - Start
     public function getWorkedYearsAttribute()
     {
-        $data = Timeline::where('employee_id', $this->id)->where('is_sequent', 1)->latest()->value('start_date');
+        $data = Timeline::where('employee_id', $this->id)
+            ->where('is_sequent', 1)
+            ->latest()
+            ->value('start_date');
 
         return Carbon::now()->diffInYears(Carbon::parse($data)) + 1; // The reason for " + 1 " is to calculate the started year too.
     }
 
     public function getCurrentPositionAttribute()
     {
-        $data = Timeline::with('position')->where('employee_id', $this->id)->whereNull('end_date')->first();
+        $data = Timeline::with('position')
+            ->where('employee_id', $this->id)
+            ->whereNull('end_date')
+            ->first();
         if ($data) {
             return $data->position->name;
         } else {
@@ -122,7 +137,10 @@ class Employee extends Model
 
     public function getCurrentDepartmentAttribute()
     {
-        $data = Timeline::with('department')->where('employee_id', $this->id)->whereNull('end_date')->first();
+        $data = Timeline::with('department')
+            ->where('employee_id', $this->id)
+            ->whereNull('end_date')
+            ->first();
         if ($data) {
             return $data->department->name;
         } else {
@@ -132,9 +150,22 @@ class Employee extends Model
 
     public function getCurrentCenterAttribute()
     {
-        $data = Timeline::with('center')->where('employee_id', $this->id)->whereNull('end_date')->first();
+        $data = Timeline::with('center')
+            ->where('employee_id', $this->id)
+            ->whereNull('end_date')
+            ->first();
         if ($data) {
             return $data->center->name;
+        } else {
+            return 'N/A';
+        }
+    }
+
+    public function getJoinAtShortFormAttribute()
+    {
+        $data = Timeline::where('employee_id', $this->id)->first();
+        if ($data) {
+            return __('Joined').' '.Carbon::parse($data->start_date)->diffForHumans();
         } else {
             return 'N/A';
         }
@@ -144,7 +175,7 @@ class Employee extends Model
     {
         $data = Timeline::where('employee_id', $this->id)->first();
         if ($data) {
-            return 'Joined '.Carbon::parse($data->start_date)->format('j F Y');
+            return Carbon::parse($data->start_date)->translatedFormat('j F Y');
         } else {
             return 'N/A';
         }
@@ -164,10 +195,25 @@ class Employee extends Model
     // Functions - End
 
     // Scope - Start
-    public function scopeCheckLeave(Builder $query, $employee_id, $leave_id, $from_date, $to_date, $start_at, $end_at): void
-    {
-        $query->whereHas('leaves', function ($query) use ($employee_id, $leave_id, $from_date, $to_date, $start_at, $end_at) {
-            $query->where('employee_id', $employee_id)
+    public function scopeCheckLeave(
+        Builder $query,
+        $employee_id,
+        $leave_id,
+        $from_date,
+        $to_date,
+        $start_at,
+        $end_at
+    ): void {
+        $query->whereHas('leaves', function ($query) use (
+            $employee_id,
+            $leave_id,
+            $from_date,
+            $to_date,
+            $start_at,
+            $end_at
+        ) {
+            $query
+                ->where('employee_id', $employee_id)
                 ->where('leave_id', $leave_id)
                 ->where('from_date', $from_date)
                 ->where('to_date', $to_date)

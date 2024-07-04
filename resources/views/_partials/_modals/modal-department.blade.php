@@ -4,7 +4,7 @@
 
 <div wire:ignore.self class="modal fade" id="departmentModal" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-simple">
-    <div class="modal-content p-3 p-md-5">
+    <div class="modal-content p-0 p-md-5">
       <div class="modal-body">
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         <div class="text-center mb-4">

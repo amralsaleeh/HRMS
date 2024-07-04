@@ -226,7 +226,7 @@
           select2selectedLeaveId.each(function () {
             var $this = $(this);
             $this.wrap('<div class="position-relative"></div>').select2({
-              placeholder: 'Select..',
+              placeholder: "{{ __('Select..') }}",
               allowClear: true,
               dropdownParent: $this.parent()
             });
