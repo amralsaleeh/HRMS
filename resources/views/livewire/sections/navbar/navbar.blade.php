@@ -1,4 +1,10 @@
 <div>
+
+  @php
+    $configData = Helper::appClasses();
+    use App\Models\Employee;
+  @endphp
+
   @push('custom-css')
     <style>
       .animation-fade {
@@ -156,7 +162,11 @@
                         <div class="d-flex">
                           <div class="flex-shrink-0 me-3">
                             <div class="avatar">
-                              <img src="{{ $notification->data['image'] }}" class="h-auto rounded-circle">
+                              @php
+                                  $employee = Employee::find($notification->data['employee_id']);
+                                  $imageSrc = Storage::disk("public")->exists($employee->profile_photo_path) ? Storage::disk("public")->url($employee->profile_photo_path) : Storage::disk("public")->url('profile-photos/.default-photo.jpg')
+                              @endphp
+                              <img src="{{ $imageSrc }}" class="h-auto rounded-circle">
                               {{-- <span class="avatar-initial rounded-circle bg-label-success"><i class="ti ti-chart-pie"></i></span> --}}
                             </div>
                           </div>

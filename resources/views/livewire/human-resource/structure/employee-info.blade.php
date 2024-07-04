@@ -48,7 +48,7 @@
                   <i class="ti ti-map-pin"></i> {{ $employee->current_position }}
                 </li>
                 <li class="list-inline-item">
-                  <i class="ti ti-calendar"></i> {{ $employee->join_at }}
+                  <i class="ti ti-rocket"></i> {{ $employee->join_at_short_form }}
                 </li>
               </ul>
             </div>
@@ -87,7 +87,10 @@
           <li class="d-flex align-items-center mb-3"><i class="ti ti-home"></i><span class="fw-bold mx-2">{{ __('Address') }}:</span> <span>{{ $employee->address }}</span></li>
         </ul>
         <ul class="list-unstyled mb-4 mt-3">
-          <li class="d-flex align-items-center mb-3"><i class="ti ti-phone-call"></i><span class="fw-bold mx-2">{{ __('Mobile') }}:</span> <span style="direction: ltr">{{'+963 ' . number_format($employee->mobile_number, 0, '', ' ') }}</span></li>
+          <li class="d-flex align-items-center mb-3"><i class="ti ti-phone-call"></i><span class="fw-bold mx-2">{{ __('Mobile') }}:</span> <span style="direction: ltr">{{ '+963 ' . number_format($employee->mobile_number, 0, '', ' ') }}</span></li>
+        </ul>
+        <ul class="list-unstyled mb-4 mt-3">
+          <li class="d-flex align-items-center mb-3"><i class="ti ti-rocket"></i><span class="fw-bold mx-2">{{ __('Started') }}:</span> <span>{{ $employee->join_at }}</span></li>
         </ul>
 
         <h5 class="card-action-title mb-0">{{ __('Counters') }}</h5>
@@ -125,7 +128,7 @@
               <span class="timeline-point @if ($loop->first) timeline-point-primary @else timeline-point-info @endif"></span>
               <div class="timeline-event">
                 <div class="timeline-header">
-                  <div class="timeline-row d-flex">
+                  <div class="timeline-row d-flex m-0">
                     <h6 class="m-0">{{ $timeline->position->name }}</h6>
                     <i wire:click='showUpdateTimelineModal({{ $timeline }})' class="timeline-icon text-info ti ti-edit mx-2" data-bs-toggle="modal" data-bs-target="#timelineModal"></i>
                   </div>
