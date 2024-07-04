@@ -55,7 +55,7 @@
             <label class="form-label">{{ __('Sequential') }}</label>
             <select wire:model.defer="employeeTimelineInfo.isSequent"
               class="form-select @error('employeeTimelineInfo.isSequent') is-invalid @enderror">
-              <option>{{ __('Is Sequent?') }}</option>
+              <option value=""></option>
               <option value="1">{{ __('Squential') }}</option>
               <option value="0">{{ __('Non-Sequential') }}</option>
             </select>

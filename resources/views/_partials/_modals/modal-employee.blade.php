@@ -72,7 +72,7 @@
           </div>
           <div class="col-md-4 col-12 mb-4">
             <label class="form-label w-100" for="birthAndPlace">{{ __('Birth & Place') }}</label>
-            <input wire:model.defer="employeeInfo.birthAndPlace" type="text" class="form-control @error('employeeInfo.birthAndPlace') is-invalid @enderror" id="employeeInfo.birthAndPlace" placeholder="YYYY-Place">
+            <input wire:model.defer="employeeInfo.birthAndPlace" type="text" class="form-control @error('employeeInfo.birthAndPlace') is-invalid @enderror" id="employeeInfo.birthAndPlace">
           </div>
           <div class="col-md-2 col-12 mb-4">
             <label class="form-label w-100" for="employeeInfo.gender" class="form-label">{{ __('Gender') }}</label>
