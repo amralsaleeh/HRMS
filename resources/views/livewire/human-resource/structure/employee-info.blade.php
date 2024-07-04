@@ -36,20 +36,20 @@
               <h4>{{ $employee->fullName }}</h4>
               <ul class="list-inline mb-0 d-flex align-items-center flex-wrap justify-content-sm-start justify-content-center gap-2">
                 <li class="list-inline-item">
-                    <i class="ti ti-id"></i> {{ $employee->id }}
-                  </li>
-                  <li class="list-inline-item">
-                    <i class="ti ti-building-community"></i> {{ $employee->current_center }}
-                  </li>
-                  <li class="list-inline-item">
-                    <i class="ti ti-building"></i> {{ $employee->current_department }}
-                  </li>
-                  <li class="list-inline-item">
-                    <i class="ti ti-map-pin"></i> {{ $employee->current_position }}
-                  </li>
-                  <li class="list-inline-item">
-                    <i class="ti ti-calendar"></i> {{ $employee->join_at }}
-                  </li>
+                  <span class="badge rounded-pill bg-label-primary"><i class="ti ti-id"></i> {{ $employee->id }}</span>
+                </li>
+                <li class="list-inline-item">
+                  <i class="ti ti-building-community"></i> {{ $employee->current_center }}
+                </li>
+                <li class="list-inline-item">
+                  <i class="ti ti-building"></i> {{ $employee->current_department }}
+                </li>
+                <li class="list-inline-item">
+                  <i class="ti ti-map-pin"></i> {{ $employee->current_position }}
+                </li>
+                <li class="list-inline-item">
+                  <i class="ti ti-calendar"></i> {{ $employee->join_at }}
+                </li>
               </ul>
             </div>
             <button wire:click='toggleActive' type="button" class="btn @if ($employee->is_active == 1)  btn-success @else btn-danger  @endif waves-effect waves-light">
@@ -84,7 +84,7 @@
       <div class="card-body">
         <h5 class="card-action-title mb-0">Details</h5>
         <ul class="list-unstyled mb-4 mt-3">
-          <li class="d-flex align-items-center mb-3"><i class="ti ti-flag"></i><span class="fw-bold mx-2">Address:</span> <span>{{ $employee->address }}</span></li>
+          <li class="d-flex align-items-center mb-3"><i class="ti ti-home"></i><span class="fw-bold mx-2">Address:</span> <span>{{ $employee->address }}</span></li>
         </ul>
         <ul class="list-unstyled mb-4 mt-3">
           <li class="d-flex align-items-center mb-3"><i class="ti ti-phone-call"></i><span class="fw-bold mx-2">Mobile:</span> <span style="direction: ltr">{{'+963 ' . number_format($employee->mobile_number, 0, '', ' ') }}</span></li>
@@ -92,8 +92,9 @@
 
         <h5 class="card-action-title mb-0">Counters</h5>
         <ul class="list-unstyled mb-0 mt-3">
-          <li class="d-flex align-items-center mb-3"><i class="ti ti-alarm"></i><span class="fw-bold mx-2">Hourly:</span> <span>{{ $employee->hourly_counter }}</span></li>
-          <li class="d-flex align-items-center mb-3"><i class="ti ti-hourglass"></i><span class="fw-bold mx-2">Delay:</span> <span>{{ $employee->delay_counter }}</span></li>
+          <li class="d-flex align-items-center mb-3"><i class="ti ti-calendar"></i><span class="fw-bold mx-2">Leaves Balance:</span> <span class="badge bg-label-secondary">{{ $employee->max_leave_allowed . " Day" }}</span></li>
+          <li class="d-flex align-items-center mb-3"><i class="ti ti-alarm"></i><span class="fw-bold mx-2">Hourly:</span> <span class="badge bg-label-secondary">{{ $employee->hourly_counter }}</span></li>
+          <li class="d-flex align-items-center mb-3"><i class="ti ti-hourglass"></i><span class="fw-bold mx-2">Delay:</span> <span class="badge bg-label-secondary">{{ $employee->delay_counter }}</span></li>
         </ul>
       </div>
     </div>
