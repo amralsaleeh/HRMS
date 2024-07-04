@@ -68,7 +68,7 @@
         @endif
 
         <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
-          <div class="navbar-nav align-items-center">
+          <div class="navbar-nav d-flex flex-row align-items-center">
             <!-- Style Switcher -->
             <a wire:ignore class="nav-link style-switcher-toggle hide-arrow" href="javascript:void(0);">
               <i class='ti ti-sm'></i>
@@ -78,7 +78,7 @@
             <!-- Offline Indicator -->
             <div wire:offline>
               <a class="nav-link dropdown-toggle hide-arrow">
-                <i class="animation-fade ti ti-wifi-off fs-3"></i>
+                <i class="animation-fade ti ti-wifi-off fs-3 mx-2"></i>
               </a>
             </div>
             <!-- Offline Indicator -->
