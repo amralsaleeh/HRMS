@@ -61,7 +61,7 @@
               </li>
             </ul>
           </td>
-          <td style="direction: ltr">{{ '0' . number_format($employee->mobile_number, 0, '', ' ') }}</td>
+          <td style="direction: ltr">{{ '+963 ' . number_format($employee->mobile_number, 0, '', ' ') }}</td>
           <td>
             @if ($employee->is_active)
               <span class="badge bg-label-success me-1">{{ __('Active') }}</span>
