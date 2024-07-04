@@ -1,6 +1,6 @@
 @push('custom-css')
-<link rel="stylesheet" href="{{asset('assets/vendor/libs/select2/select2.css')}}" />
-<link rel="stylesheet" href="{{asset('assets/vendor/libs/flatpickr/flatpickr.css')}}" />
+  <link rel="stylesheet" href="{{ asset('assets/vendor/libs/select2/select2.css') }}" />
+  <link rel="stylesheet" href="{{ asset('assets/vendor/libs/flatpickr/flatpickr.css') }}" />
 @endpush
 
 <div wire:ignore.self class="modal fade" id="timelineModal" tabindex="-1" aria-hidden="true">
@@ -13,33 +13,30 @@
           <p class="text-muted">{{ __('Please fill out the following information') }}</p>
         </div>
         <form wire:submit="submitTimeline" class="row g-3 mt-2">
-          <div class="col-md-4 col-12">
+          <div wire:ignore class="col-md-4 col-12">
             <label class="form-label">{{ __('Center') }}</label>
             <select wire:model.defer="employeeTimelineInfo.centerId"
               class="select2 form-select @error('employeeTimelineInfo.centerId') is-invalid @enderror">
-              <option>{{ __('Center') }}:</option>
               @foreach ($centers as $Center)
-              <option value="{{ $Center->id }}"> {{ $Center->name }}</option>
+                <option value="{{ $Center->id }}"> {{ $Center->name }}</option>
               @endforeach
             </select>
           </div>
-          <div class="col-md-4 col-12">
+          <div wire:ignore class="col-md-4 col-12">
             <label class="form-label">{{ __('Department') }}</label>
             <select wire:model.defer="employeeTimelineInfo.departmentId"
-              class="form-select @error('employeeTimelineInfo.departmentId') is-invalid @enderror">
-              <option>{{ __('Department') }}:</option>
+              class="select2 form-select @error('employeeTimelineInfo.departmentId') is-invalid @enderror">
               @foreach ($departments as $department)
-              <option value="{{ $department->id }}"> {{ $department->name }}</option>
+                <option value="{{ $department->id }}"> {{ $department->name }}</option>
               @endforeach
             </select>
           </div>
-          <div class="col-md-4 col-12">
+          <div wire:ignore class="col-md-4 col-12">
             <label class="form-label">{{ __('Position') }}</label>
             <select wire:model.defer="employeeTimelineInfo.positionId"
-              class="form-select @error('employeeTimelineInfo.positionId') is-invalid @enderror">
-              <option>{{ __('Position') }}:</option>
+              class="select2 form-select @error('employeeTimelineInfo.positionId') is-invalid @enderror">
               @foreach ($positions as $position)
-              <option value="{{ $position->id }}"> {{ $position->name }}</option>
+                <option value="{{ $position->id }}"> {{ $position->name }}</option>
               @endforeach
             </select>
           </div>
@@ -80,8 +77,8 @@
 </div>
 
 @push('custom-scripts')
-  <script src="{{asset('assets/vendor/libs/select2/select2.js')}}"></script>
-  <script src="{{asset('assets/vendor/libs/flatpickr/flatpickr.js')}}"></script>
+  <script src="{{ asset('assets/vendor/libs/select2/select2.js') }}"></script>
+  <script src="{{ asset('assets/vendor/libs/flatpickr/flatpickr.js') }}"></script>
 
   <script>
     'use strict';
