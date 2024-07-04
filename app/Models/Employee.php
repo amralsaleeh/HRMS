@@ -161,11 +161,21 @@ class Employee extends Model
         }
     }
 
-    public function getJoinAtAttribute()
+    public function getJoinAtShortFormAttribute()
     {
         $data = Timeline::where('employee_id', $this->id)->first();
         if ($data) {
             return __('Joined').' '.Carbon::parse($data->start_date)->diffForHumans();
+        } else {
+            return 'N/A';
+        }
+    }
+
+    public function getJoinAtAttribute()
+    {
+        $data = Timeline::where('employee_id', $this->id)->first();
+        if ($data) {
+            return Carbon::parse($data->start_date)->translatedFormat('j F Y');
         } else {
             return 'N/A';
         }

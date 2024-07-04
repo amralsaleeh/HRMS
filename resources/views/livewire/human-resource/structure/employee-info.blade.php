@@ -48,7 +48,7 @@
                   <i class="ti ti-map-pin"></i> {{ $employee->current_position }}
                 </li>
                 <li class="list-inline-item">
-                  <i class="ti ti-rocket"></i> {{ $employee->join_at }}
+                  <i class="ti ti-rocket"></i> {{ $employee->join_at_short_form }}
                 </li>
               </ul>
             </div>
@@ -90,7 +90,7 @@
           <li class="d-flex align-items-center mb-3"><i class="ti ti-phone-call"></i><span class="fw-bold mx-2">{{ __('Mobile') }}:</span> <span style="direction: ltr">{{ '+963 ' . number_format($employee->mobile_number, 0, '', ' ') }}</span></li>
         </ul>
         <ul class="list-unstyled mb-4 mt-3">
-          <li class="d-flex align-items-center mb-3"><i class="ti ti-rocket"></i><span class="fw-bold mx-2">{{ __('Created') }}:</span> <span style="direction: ltr">{{ $employee->created_at }}</span></li>
+          <li class="d-flex align-items-center mb-3"><i class="ti ti-rocket"></i><span class="fw-bold mx-2">{{ __('Started') }}:</span> <span>{{ $employee->join_at }}</span></li>
         </ul>
 
         <h5 class="card-action-title mb-0">{{ __('Counters') }}</h5>
