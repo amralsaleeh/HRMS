@@ -125,7 +125,7 @@
               <span class="timeline-point @if ($loop->first) timeline-point-primary @else timeline-point-info @endif"></span>
               <div class="timeline-event">
                 <div class="timeline-header">
-                  <div class="timeline-row d-flex">
+                  <div class="timeline-row d-flex m-0">
                     <h6 class="m-0">{{ $timeline->position->name }}</h6>
                     <i wire:click='showUpdateTimelineModal({{ $timeline }})' class="timeline-icon text-info ti ti-edit mx-2" data-bs-toggle="modal" data-bs-target="#timelineModal"></i>
                   </div>
