@@ -113,8 +113,10 @@ class EmployeeInfo extends Component
                 ->orderBy('timelines.id', 'desc')
                 ->first();
 
-            $presentTimeline->end_date = Carbon::now();
-            $presentTimeline->save();
+            if ($presentTimeline) {
+                $presentTimeline->end_date = Carbon::now();
+                $presentTimeline->save();
+            }
 
             Timeline::create([
                 'employee_id' => $this->employee->id,
@@ -156,6 +158,13 @@ class EmployeeInfo extends Component
         $this->employeeTimelineInfo['endDate'] = $timeline->end_date;
         $this->employeeTimelineInfo['isSequent'] = $timeline->is_sequent;
         $this->employeeTimelineInfo['notes'] = $timeline->notes;
+
+        $this->dispatch(
+            'setSelect2Values',
+            centerId: $timeline->center_id,
+            departmentId: $timeline->department_id,
+            positionId: $timeline->position_id
+        );
     }
 
     public function updateTimeline()
