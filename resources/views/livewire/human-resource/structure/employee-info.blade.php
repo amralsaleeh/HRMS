@@ -95,7 +95,7 @@
 
         <h5 class="card-action-title mb-0">{{ __('Counters') }}</h5>
         <ul class="list-unstyled mb-0 mt-3">
-          <li class="d-flex align-items-center mb-3"><i class="ti ti-calendar"></i><span class="fw-bold mx-2">{{ __('Leaves Balance') }}:</span> <span class="badge bg-label-secondary">{{ $employee->max_leave_allowed . " Day" }}</span></li>
+          <li class="d-flex align-items-center mb-3"><i class="ti ti-calendar"></i><span class="fw-bold mx-2">{{ __('Leaves Balance') }}:</span> <span class="badge bg-label-secondary">{{ $employee->max_leave_allowed . " ".__('Day') }}</span></li>
           <li class="d-flex align-items-center mb-3"><i class="ti ti-alarm"></i><span class="fw-bold mx-2">{{ __('Hourly') }}:</span> <span class="badge bg-label-secondary">{{ $employee->hourly_counter }}</span></li>
           <li class="d-flex align-items-center mb-3"><i class="ti ti-hourglass"></i><span class="fw-bold mx-2">{{ __('Delay') }}:</span> <span class="badge bg-label-secondary">{{ $employee->delay_counter }}</span></li>
         </ul>
@@ -114,7 +114,7 @@
             <button type="button" class="btn dropdown-toggle hide-arrow p-0" data-bs-toggle="dropdown" aria-expanded="false"><i class="ti ti-dots-vertical text-muted"></i></button>
             <ul class="dropdown-menu dropdown-menu-end">
               <li>
-                <a wire:click='showStoreTimelineModal()' class="dropdown-item" data-bs-toggle="modal" data-bs-target="#timelineModal">{{ __('Add timeline') }}</a>
+                <a wire:click='showStoreTimelineModal()' class="dropdown-item" data-bs-toggle="modal" data-bs-target="#timelineModal">{{ __('Add New Position') }}</a>
               </li>
               {{-- <li><a class="dropdown-item" href="javascript:void(0);">Edit timeline</a></li> --}}
             </ul>
