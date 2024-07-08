@@ -147,4 +147,15 @@
 
 {{-- Modal --}}
 @include('_partials\_modals\modal-timeline')
+
+{{-- Scripts --}}
+@push('custom-scripts')
+  @if(session('openTimelineModal'))
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+          $('#timelineModal').modal('show');
+      });
+    </script>
+  @endif
+@endpush
 </div>
