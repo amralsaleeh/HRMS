@@ -72,7 +72,7 @@ class Employees extends Component
 
     public function addEmployee()
     {
-        Employee::create([
+        $createdEmployee = Employee::create([
             'id' => $this->employeeInfo['id'],
             'contract_id' => $this->employeeInfo['contractId'],
             'first_name' => $this->employeeInfo['firstName'],
@@ -85,11 +85,15 @@ class Employees extends Component
             'degree' => $this->employeeInfo['degree'],
             'gender' => $this->employeeInfo['gender'],
             'address' => $this->employeeInfo['address'],
-            'notes' => $this->employeeInfo['notes'],
+            'notes' => isset($this->employeeInfo['notes']) ? $this->employeeInfo['notes'] : null,
         ]);
 
         $this->dispatch('closeModal', elementId: '#employeeModal');
         $this->dispatch('toastr', type: 'success' /* , title: 'Done!' */, message: 'Going Well!');
+
+        session()->flash('openTimelineModal', true);
+
+        return redirect()->route('structure-employees-info', ['id' => $createdEmployee->id]);
     }
 
     // 👉 Update employee
@@ -129,7 +133,7 @@ class Employees extends Component
             'degree' => $this->employeeInfo['degree'],
             'gender' => $this->employeeInfo['gender'],
             'address' => $this->employeeInfo['address'],
-            'notes' => $this->employeeInfo['notes'],
+            'notes' => isset($this->employeeInfo['notes']) ? $this->employeeInfo['notes'] : null,
         ]);
 
         $this->dispatch('closeModal', elementId: '#employeeModal');

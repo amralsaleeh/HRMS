@@ -30,6 +30,8 @@ class EmployeeInfo extends Component
 
     public $isEdit = false;
 
+    public $confirmedId;
+
     public $selectedCenter;
 
     public $selectedDepartment;
@@ -76,7 +78,7 @@ class EmployeeInfo extends Component
         $this->employee->save();
         $presentTimeline->save();
 
-        $this->dispatch('toastr', type: 'success' /* , title: 'Done!' */, message: 'Going Well!');
+        $this->dispatch('toastr', type: 'success' /* , title: 'Done!' */, message: __('Going Well!'));
     }
 
     // 👉 Submit timeline
@@ -130,7 +132,7 @@ class EmployeeInfo extends Component
             ]);
 
             $this->dispatch('closeModal', elementId: '#timelineModal');
-            $this->dispatch('toastr', type: 'success' /* , title: 'Done!' */, message: 'Going Well!');
+            $this->dispatch('toastr', type: 'success' /* , title: 'Done!' */, message: __('Going Well!'));
 
             DB::commit();
         } catch (Exception $e) {
@@ -180,6 +182,28 @@ class EmployeeInfo extends Component
         ]);
 
         $this->dispatch('closeModal', elementId: '#timelineModal');
-        $this->dispatch('toastr', type: 'success' /* , title: 'Done!' */, message: 'Going Well!');
+        $this->dispatch('toastr', type: 'success' /* , title: 'Done!' */, message: __('Going Well!'));
+    }
+
+    // 👉 Delete timeline
+    public function confirmDeleteTimeline(Timeline $timeline)
+    {
+        $this->confirmedId = $timeline->id;
+    }
+
+    public function deleteTimeline(Timeline $timeline)
+    {
+        $timeline->delete();
+
+        $this->dispatch('toastr', type: 'success' /* , title: 'Done!' */, message: __('Going Well!'));
+    }
+
+    // 👉 Set present timeline
+    public function setPresentTimeline(Timeline $timeline)
+    {
+        $timeline->end_date = null;
+        $timeline->save();
+
+        session()->flash('success', __('The current position assigned successfully.'));
     }
 }

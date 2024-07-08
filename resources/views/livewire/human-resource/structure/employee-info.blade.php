@@ -20,6 +20,9 @@
   </style>
 @endsection
 
+{{-- Alerts --}}
+@include('_partials/_alerts/alert-general')
+
 <div class="row">
   <div class="col-12">
     <div class="card mb-4">
@@ -130,7 +133,14 @@
                 <div class="timeline-header">
                   <div class="timeline-row d-flex m-0">
                     <h6 class="m-0">{{ $timeline->position->name }}</h6>
-                    <i wire:click='showUpdateTimelineModal({{ $timeline }})' class="timeline-icon text-info ti ti-edit mx-2" data-bs-toggle="modal" data-bs-target="#timelineModal"></i>
+                    <i wire:click='setPresentTimeline({{ $timeline }})' class="timeline-icon text-success ti ti-refresh mx-1"></i>
+                    <i wire:click='showUpdateTimelineModal({{ $timeline }})' class="timeline-icon text-info ti ti-edit" data-bs-toggle="modal" data-bs-target="#timelineModal"></i>
+                    <i wire:click='confirmDeleteTimeline({{ $timeline }})' class="timeline-icon text-danger ti ti-trash mx-1"></i>
+                    @if ($confirmedId === $timeline->id)
+                      <button wire:click.prevent='deleteTimeline({{ $timeline }})' type="button"
+                        class="btn btn-xs btn-danger waves-effect waves-light mx-1">{{ __('Sure?') }}
+                      </button>
+                    @endif
                   </div>
                   <small class="text-muted">@if ($timeline->end_date == null) {{ __('Present') }} @else {{ $timeline->start_date }} --> {{ $timeline->end_date }} @endif</small>
                 </div>
@@ -147,4 +157,15 @@
 
 {{-- Modal --}}
 @include('_partials\_modals\modal-timeline')
+
+{{-- Scripts --}}
+@push('custom-scripts')
+  @if(session('openTimelineModal'))
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+          $('#timelineModal').modal('show');
+      });
+    </script>
+  @endif
+@endpush
 </div>

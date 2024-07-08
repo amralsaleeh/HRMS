@@ -58,7 +58,7 @@
   "Data system": "Data system",
   "Date": "Date",
   "Date Range": "Date Range",
-  "Day": "يوم",
+  "Day": "Day",
   "Degree": "Degree",
   "Delay": "Delay",
   "Delay leave - Rounded": "Delay leave - Rounded",
@@ -256,5 +256,6 @@
   "Work end at": "Work end at",
   "Work matters, but Holidays matter more!": "Work matters, but Holidays matter more!",
   "Work start at": "Work start at",
-  "Working Hours": "Working Hours"
+  "Working Hours": "Working Hours",
+  "The current position assigned successfully.": "The current position assigned successfully."
 }

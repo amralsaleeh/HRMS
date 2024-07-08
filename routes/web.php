@@ -17,6 +17,7 @@ use App\Livewire\HumanResource\Structure\EmployeeInfo;
 use App\Livewire\HumanResource\Structure\Employees;
 use App\Livewire\HumanResource\Structure\Positions;
 use App\Livewire\Misc\ComingSoon;
+use App\Livewire\Settings\Users;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -74,7 +75,7 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
 
     Route::group(['middleware' => ['role:Admin']], function () {
         Route::prefix('settings')->group(function () {
-            Route::get('/users', ComingSoon::class)->name('settings-users');
+            Route::get('/users', Users::class)->name('settings-users');
             Route::get('/roles', ComingSoon::class)->name('settings-roles');
             Route::get('/permissions', ComingSoon::class)->name('settings-permissions');
         });
