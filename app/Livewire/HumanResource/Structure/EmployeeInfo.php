@@ -198,7 +198,7 @@ class EmployeeInfo extends Component
         $this->dispatch('toastr', type: 'success' /* , title: 'Done!' */, message: __('Going Well!'));
     }
 
-    //
+    // 👉 Set present timeline
     public function setPresentTimeline(Timeline $timeline)
     {
         $timeline->end_date = null;
