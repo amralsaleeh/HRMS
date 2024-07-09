@@ -25,10 +25,14 @@ return new class extends Migration
             $table->boolean('gender');
             $table->string('address');
             $table->longText('notes')->nullable();
-            $table->integer('max_leave_allowed')->length(2)->default(0);
+            $table
+                ->integer('max_leave_allowed')
+                ->length(2)
+                ->default(0);
             $table->time('delay_counter')->default('00:00:00.00');
             $table->time('hourly_counter')->default('00:00:00.00');
             $table->boolean('is_active')->default(1);
+            $table->string('profile_photo_path');
             $table->string('created_by');
             $table->string('updated_by');
             $table->string('deleted_by')->nullable();
