@@ -11,18 +11,10 @@ class AdminUserSeeder extends Seeder
     {
         User::create([
             'name' => 'Administrator',
-            'email' => 'admin@namaa.sy',
-            'password' => bcrypt('12345678'),
-        ]);
-        User::create([
-            'name' => 'Test',
-            'email' => 'test@namaa.sy',
-            'password' => bcrypt('12345678'),
-        ]);
-        User::create([
-            'name' => 'Info',
-            'email' => 'info@namaa.sy',
-            'password' => bcrypt('12345678'),
+            'employee_id' => '1',
+            'email' => 'admin@demo.com',
+            'password' => bcrypt('admin'),
+            'profile_photo_path' => 'profile-photos/.default-photo.jpg',
         ]);
     }
 }
