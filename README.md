@@ -108,8 +108,8 @@ This concise solution promotes effective workforce management and informed decis
 10. Login:
     
     ```bash
-    email: admin@namaa.sy
-    password: 12345678
+    email: admin@demo.com
+    password: admin
 
 ## Contribution
 We welcome contributions from developers and users. If you have ideas for improving the system or discover issues, feel free to create an Issue or submit a Pull Request.
