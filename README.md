@@ -70,23 +70,34 @@ This concise solution promotes effective workforce management and informed decis
     ```bash
     cd HRMS
 
-4. Install dependencies using Composer:
+3. Install dependencies using Composer:
    
     ```bash
     composer install
-6. Set up the database and necessary configurations:
+4. Set up the database and necessary configurations:
 
     - Copy the `.env.example` to `.env` file in the root of your project.
       
     - Open the `.env` file in the root of your project.
 
     - Set the database connection details, including `DB_CONNECTION`, `DB_HOST`, `DB_PORT`, `DB_DATABASE`, `DB_USERNAME`, `DB_PASSWORD`.
+      
+    - Set the `APP_TIMEZONE` to 'Asia/Istanbul' or whatever timezone you like.
 
-5. Run the migration command with the seed flag to add some fake data:
+5. Run the key generate command:
+   
+    ```bash
+    php artisan key:generate
+
+6. Run the storage link command:
+   
+    ```bash
+    php artisan storage:link
+7. Run the migration command with the seed flag to add some fake data:
    
     ```bash
     php artisan migrate --seed
-7. Run the development server:
+8. Run the development server:
    
     ```bash
     php artisan serve
@@ -94,10 +105,10 @@ This concise solution promotes effective workforce management and informed decis
 
     
 ### Usage
-8. Login:
+10. Login:
     
     ```bash
-    email: test@namaa.sy
+    email: admin@namaa.sy
     password: 12345678
 
 ## Contribution
