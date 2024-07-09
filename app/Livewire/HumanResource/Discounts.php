@@ -26,7 +26,7 @@ class Discounts extends Component
 
     public function mount()
     {
-        $this->disableDateLimit = substr(Discount::latest()->first()->batch, -10);
+        $this->disableDateLimit = substr(Discount::latest()->first()?->batch, -10);
     }
 
     public function render()
@@ -39,11 +39,14 @@ class Discounts extends Component
 
     public function calculateDiscounts()
     {
-        $this->validate([
-            'batch' => 'required',
-        ], [
-            'batch.required' => 'Please select the period you want to apply the discount on',
-        ]);
+        $this->validate(
+            [
+                'batch' => 'required',
+            ],
+            [
+                'batch.required' => 'Please select the period you want to apply the discount on',
+            ]
+        );
 
         calculateDiscountsAsDays::dispatch(Auth::user(), $this->batch);
 
@@ -52,7 +55,9 @@ class Discounts extends Component
 
     public function updateProgressBar()
     {
-        $job = DB::table('jobs')->orderBy('id', 'desc')->first();
+        $job = DB::table('jobs')
+            ->orderBy('id', 'desc')
+            ->first();
 
         if ($job) {
             $this->percentage = $job->progress;
@@ -72,13 +77,21 @@ class Discounts extends Component
     {
         return Employee::whereHas('discounts', function ($query) {
             $query->whereBetween('date', explode(' to ', $this->batch));
-        })->with(['discounts' => function ($query) {
-            $query->whereBetween('date', explode(' to ', $this->batch));
-        }])->get()->each(function ($employee) {
-            $employee->discounts = $employee->discounts->sortBy('date');
-            $employee->cash_discounts_count = $employee->discounts->filter(function ($discount) {
-                return $discount->rate > 0;
-            })->count();
-        })->sortBy('first_name');
+        })
+            ->with([
+                'discounts' => function ($query) {
+                    $query->whereBetween('date', explode(' to ', $this->batch));
+                },
+            ])
+            ->get()
+            ->each(function ($employee) {
+                $employee->discounts = $employee->discounts->sortBy('date');
+                $employee->cash_discounts_count = $employee->discounts
+                    ->filter(function ($discount) {
+                        return $discount->rate > 0;
+                    })
+                    ->count();
+            })
+            ->sortBy('first_name');
     }
 }
