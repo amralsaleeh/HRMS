@@ -58,8 +58,8 @@
             <select wire:model="employeeTimelineInfo.isSequent"
               class="form-select @error('employeeTimelineInfo.isSequent') is-invalid @enderror">
               <option value=""></option>
-              <option value="1">{{ __('Squential') }}</option>
-              <option value="0">{{ __('Non-Sequential') }}</option>
+              <option value="1">{{ __('Sequent') }}</option>
+              <option value="0">{{ __('Non-Sequent') }}</option>
             </select>
           </div>
           <div class="col-md-12 col-12 mb-4">
