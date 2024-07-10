@@ -12,7 +12,7 @@ class EmployeesSeeder extends Seeder
     {
         $faker = Factory::create();
 
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 5; $i++) {
             Employee::create([
                 'contract_id' => rand(1, 2),
                 'first_name' => $faker->firstName,
@@ -30,6 +30,7 @@ class EmployeesSeeder extends Seeder
                 'delay_counter' => '00:00:00',
                 'hourly_counter' => '00:00:00',
                 'is_active' => rand(0, 1),
+                'profile_photo_path' => 'profile-photos/.default-photo.jpg',
                 'created_by' => $faker->name,
                 'updated_by' => $faker->name,
                 'deleted_by' => null,
