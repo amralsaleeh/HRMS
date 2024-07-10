@@ -45,7 +45,7 @@
           <div class="col-md-6 col-12 mb-4">
             <label class="form-label w-100">{{ __('Status') }}</label>
             <select wire:model='status' class="form-control @error('status') is-invalid @enderror" data-allow-clear="true">
-              <option value="" selected>{{ __('Select value') }}</option>
+              <option value=""></option>
               <option value="Good">{{ __('Good') }}</option>
               <option value="Fine">{{ __('Fine') }}</option>
               <option value="Bad">{{ __('Bad') }}</option>
@@ -55,7 +55,7 @@
           <div class="col-md-6 col-12 mb-4">
             <label class="form-label w-100">{{ __('In Service') }}</label>
             <select wire:model='inService'  class="form-control @error('inService') is-invalid @enderror" data-allow-clear="true">
-              <option value="" selected>{{ __('Select value') }}</option>
+              <option value=""></option>
               <option value="1">{{ __('Active') }}</option>
               <option value="0">{{ __('Inactive') }}</option>
             </select>
@@ -70,12 +70,12 @@
           </div>
           <div class="col-md-6 col-12 mb-4">
             <label class="form-label w-100">{{ __('Acquisition Date') }}</label>
-            <input wire:model='acquisitionDate' class="form-control flatpickr-input active @error('acquisitionDate') is-invalid @enderror" type="text" placeholder="YYYY/MM/DD" id="flatpickr-Acquisition-Date" readonly="readonly"/>
+            <input wire:model='acquisitionDate' class="form-control flatpickr-input active @error('acquisitionDate') is-invalid @enderror" type="text" id="flatpickr-Acquisition-Date" readonly="readonly"/>
           </div>
           <div class="col-md-6 col-12 mb-4">
             <label class="form-label w-100">{{ __('Acquisition Type') }}</label>
             <select wire:model='acquisitionType' class="form-control @error('acquisitionType') is-invalid @enderror" data-allow-clear="true">
-              <option value="" selected>{{ __('Select value') }}</option>
+              <option value=""></option>
               <option value="Transferred">{{ __('Transferred') }}</option>
               <option value="Directed">{{ __('Directed') }}</option>
               <option value="Founded">{{ __('Founded') }}</option>
@@ -84,7 +84,7 @@
           <div class="col-md-6 col-12 mb-4">
             <label class="form-label w-100">{{ __('Founded By') }}</label>
             <select wire:model='fundedBy' class="form-control @error('fundedBy') is-invalid @enderror" data-allow-clear="true">
-              <option value="" selected >{{ __('Select value') }}</option>
+              <option value=""></option>
               <option value="By Namaa">{{ __('By Namaa') }}</option>
               <option value="By UNHCR">{{ __('By UNHCR') }}</option>
               <option value="By Taalouf">{{ __('By Taalouf') }}</option>
