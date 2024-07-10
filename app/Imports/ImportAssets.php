@@ -29,12 +29,14 @@ class ImportAssets implements ToModel, WithHeadingRow
         // 👉 Category_Sub_Category
         // $category = Category::find($row['category_id']);
         // if ($category) {
-        //     $category->subCategory()->syncWithoutDetaching([$row['sub_category_id'] => [
-        //         'created_by' => Auth::user()->name,
-        //         'updated_by' => Auth::user()->name,
-        //         'created_at' => Carbon::now(),
-        //         'updated_at' => Carbon::now(),
-        //     ]]);
+        //     $category->subCategory()->syncWithoutDetaching([
+        //         $row['sub_category_id'] => [
+        //             'created_by' => Auth::user()->name,
+        //             'updated_by' => Auth::user()->name,
+        //             'created_at' => Carbon::now(),
+        //             'updated_at' => Carbon::now(),
+        //         ],
+        //     ]);
         // } else {
         //     dd($row);
         // }
