@@ -51,6 +51,38 @@ This concise solution promotes effective workforce management and informed decis
 
 - **Asset and Device Management:** Efficiently manage and track organizational assets and assigned devices for each employee.
 
+- **Support localization:** Enable multilingual support and adapt the system to various regional and cultural settings, ensuring usability and compliance with local practices. Supports both left-to-right (LTR) and right-to-left (RTL) text directions.
+
+## Screenshots 
+
+![Login](https://github.com/amralsaleeh/HRMS/assets/9991208/ea5a3024-3ecd-43c4-8350-1cbb79396bb1)
+<h3 align="center">Login</h3>
+<br/>
+
+![Dashboard](https://github.com/amralsaleeh/HRMS/assets/9991208/a23907bf-0229-479b-aa53-71d1fd6ae6fa)
+<h3 align="center">Dashboard</h3>
+<br/>
+
+![Employee Info](https://github.com/amralsaleeh/HRMS/assets/9991208/e52d38de-f68d-4aa5-a126-16af75ce1faa)
+<h3 align="center">Employee Info</h3>
+<br/>
+
+![SMS](https://github.com/amralsaleeh/HRMS/assets/9991208/b1a66e9d-7b2c-4897-9313-630a5a88acab)
+<h3 align="center">SMS</h3>
+<br/>
+
+![Fingerprints](https://github.com/amralsaleeh/HRMS/assets/9991208/5a25f002-065d-445d-ae17-ed1e5035bf48)
+<h3 align="center">Fingerprints</h3>
+<br/>
+
+![Discounts](https://github.com/amralsaleeh/HRMS/assets/9991208/edb3fb25-4ec3-4bd7-b232-348ee66466b7)
+<h3 align="center">Discounts</h3>
+<br/>
+
+![User](https://github.com/amralsaleeh/HRMS/assets/9991208/8d522284-a835-4be3-91fb-2076f77e4fb6)
+<h3 align="center">User</h3>
+<br/>
+
 ## Getting Started
 
 ### Requirements
@@ -70,23 +102,34 @@ This concise solution promotes effective workforce management and informed decis
     ```bash
     cd HRMS
 
-4. Install dependencies using Composer:
+3. Install dependencies using Composer:
    
     ```bash
     composer install
-6. Set up the database and necessary configurations:
+4. Set up the database and necessary configurations:
 
     - Copy the `.env.example` to `.env` file in the root of your project.
       
     - Open the `.env` file in the root of your project.
 
     - Set the database connection details, including `DB_CONNECTION`, `DB_HOST`, `DB_PORT`, `DB_DATABASE`, `DB_USERNAME`, `DB_PASSWORD`.
+      
+    - Set the `APP_TIMEZONE` to 'Asia/Istanbul' or whatever timezone you like.
 
-5. Run the migration command with the seed flag to add some fake data:
+5. Run the key generate command:
+   
+    ```bash
+    php artisan key:generate
+
+6. Run the storage link command:
+   
+    ```bash
+    php artisan storage:link
+7. Run the migration command with the seed flag to add some fake data:
    
     ```bash
     php artisan migrate --seed
-7. Run the development server:
+8. Run the development server:
    
     ```bash
     php artisan serve
@@ -94,11 +137,11 @@ This concise solution promotes effective workforce management and informed decis
 
     
 ### Usage
-8. Login:
+10. Login:
     
     ```bash
-    email: test@namaa.sy
-    password: 12345678
+    email: admin@demo.com
+    password: admin
 
 ## Contribution
 We welcome contributions from developers and users. If you have ideas for improving the system or discover issues, feel free to create an Issue or submit a Pull Request.
