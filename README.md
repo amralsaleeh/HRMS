@@ -51,15 +51,37 @@ This concise solution promotes effective workforce management and informed decis
 
 - **Asset and Device Management:** Efficiently manage and track organizational assets and assigned devices for each employee.
 
+- **Support localization:** Enable multilingual support and adapt the system to various regional and cultural settings, ensuring usability and compliance with local practices. Supports both left-to-right (LTR) and right-to-left (RTL) text directions.
+
 ## Screenshots 
 
 ![Login](https://github.com/amralsaleeh/HRMS/assets/9991208/ea5a3024-3ecd-43c4-8350-1cbb79396bb1)
+<h3 align="center">Login</h3>
+<br/>
+
 ![Dashboard](https://github.com/amralsaleeh/HRMS/assets/9991208/a23907bf-0229-479b-aa53-71d1fd6ae6fa)
+<h3 align="center">Dashboard</h3>
+<br/>
+
 ![Employee Info](https://github.com/amralsaleeh/HRMS/assets/9991208/e52d38de-f68d-4aa5-a126-16af75ce1faa)
+<h3 align="center">Employee Info</h3>
+<br/>
+
 ![SMS](https://github.com/amralsaleeh/HRMS/assets/9991208/b1a66e9d-7b2c-4897-9313-630a5a88acab)
+<h3 align="center">SMS</h3>
+<br/>
+
 ![Fingerprints](https://github.com/amralsaleeh/HRMS/assets/9991208/5a25f002-065d-445d-ae17-ed1e5035bf48)
-![Discount](https://github.com/amralsaleeh/HRMS/assets/9991208/edb3fb25-4ec3-4bd7-b232-348ee66466b7)
+<h3 align="center">Fingerprints</h3>
+<br/>
+
+![Discounts](https://github.com/amralsaleeh/HRMS/assets/9991208/edb3fb25-4ec3-4bd7-b232-348ee66466b7)
+<h3 align="center">Discounts</h3>
+<br/>
+
 ![User](https://github.com/amralsaleeh/HRMS/assets/9991208/8d522284-a835-4be3-91fb-2076f77e4fb6)
+<h3 align="center">User</h3>
+<br/>
 
 ## Getting Started
 
