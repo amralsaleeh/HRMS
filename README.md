@@ -51,6 +51,16 @@ This concise solution promotes effective workforce management and informed decis
 
 - **Asset and Device Management:** Efficiently manage and track organizational assets and assigned devices for each employee.
 
+## Screenshots 
+
+![Login](https://github.com/amralsaleeh/HRMS/assets/9991208/ea5a3024-3ecd-43c4-8350-1cbb79396bb1)
+![Dashboard](https://github.com/amralsaleeh/HRMS/assets/9991208/a23907bf-0229-479b-aa53-71d1fd6ae6fa)
+![Employee Info](https://github.com/amralsaleeh/HRMS/assets/9991208/e52d38de-f68d-4aa5-a126-16af75ce1faa)
+![SMS](https://github.com/amralsaleeh/HRMS/assets/9991208/b1a66e9d-7b2c-4897-9313-630a5a88acab)
+![Fingerprints](https://github.com/amralsaleeh/HRMS/assets/9991208/5a25f002-065d-445d-ae17-ed1e5035bf48)
+![Discount](https://github.com/amralsaleeh/HRMS/assets/9991208/edb3fb25-4ec3-4bd7-b232-348ee66466b7)
+![User](https://github.com/amralsaleeh/HRMS/assets/9991208/8d522284-a835-4be3-91fb-2076f77e4fb6)
+
 ## Getting Started
 
 ### Requirements
