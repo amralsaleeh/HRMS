@@ -12,8 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('assets', function (Blueprint $table) {
-            $table->string('id');
-            $table->primary('id');
+            $table->id();
             $table->string('old_id')->nullable();
             $table->string('serial_number')->nullable();
             $table->enum('class', ['Electronic', 'Furniture', 'Gear']);
