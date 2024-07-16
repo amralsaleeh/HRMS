@@ -35,8 +35,8 @@ $configData = Helper::appClasses();
           </a>
         </div>
         <!-- /Logo -->
-        <h3 class="mb-1">Welcome to {{ env('APP_NAME', 'null'), }}! 👋</h3>
-        <p class="mb-4">Please sign-in to your account</p>
+        <h3 class="mb-1">{{ __('Welcome to') . " " . __(env('APP_NAME', 'HRMS')), }}! 👋</h3>
+        <p class="mb-4">{{ __('Please sign-in to your account') }}</p>
 
         @if (session('status'))
         <div class="alert alert-success mb-1 rounded-0" role="alert">
@@ -49,8 +49,8 @@ $configData = Helper::appClasses();
         <form id="formAuthentication" class="mb-3" action="{{ route('login') }}" method="POST">
           @csrf
           <div class="mb-3">
-            <label for="login-email" class="form-label">Email</label>
-            <input type="text" class="form-control @error('email') is-invalid @enderror" id="login-email" name="email" placeholder="john@example.com" autofocus value="{{ old('email') }}">
+            <label for="login-email" class="form-label">{{ __('Email') }}</label>
+            <input type="text" class="form-control @error('email') is-invalid @enderror" id="login-email" name="email" placeholder="example@namaa.sy" autofocus value="{{ old('email') }}">
             @error('email')
             <span class="invalid-feedback" role="alert">
               <span class="fw-medium">{{ $message }}</span>
@@ -59,7 +59,7 @@ $configData = Helper::appClasses();
           </div>
           <div class="mb-3 form-password-toggle">
             <div class="d-flex justify-content-between">
-              <label class="form-label" for="login-password">Password</label>
+              <label class="form-label" for="login-password">{{ __('Password') }}</label>
               {{-- @if (Route::has('password.request'))
               <a href="{{ route('password.request') }}">
                 <small>Forgot Password?</small>
@@ -80,11 +80,11 @@ $configData = Helper::appClasses();
             <div class="form-check">
               <input class="form-check-input" type="checkbox" id="remember-me" name="remember" {{ old('remember') ? 'checked' : '' }} checked>
               <label class="form-check-label" for="remember-me">
-                Remember Me
+                {{ __('Remember Me') }}
               </label>
             </div>
           </div>
-          <button class="btn btn-primary d-grid w-100" type="submit">Sign in</button>
+          <button class="btn btn-primary d-grid w-100" type="submit">{{ __('Sign in') }}</button>
         </form>
       </div>
     </div>
