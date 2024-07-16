@@ -126,7 +126,7 @@ return [
     'prohibited_unless' => 'الحقل :attribute محظور إلا إذا كان :other في :values.',
     'prohibits' => 'الحقل :attribute يحظر وجود :other.',
     'regex' => 'صيغة الحقل :attribute غير صحيحة.',
-    'required' => 'الحقل :attribute مطلوب.',
+    'required' => 'حقل :attribute مطلوب.',
     'required_array_keys' => 'الحقل :attribute يجب أن يحتوي على إدخالات لـ: :values.',
     'required_if' => 'الحقل :attribute مطلوب عندما يكون :other هو :value.',
     'required_if_accepted' => 'الحقل :attribute مطلوب عندما يتم قبول :other.',
@@ -180,5 +180,8 @@ return [
     |
     */
 
-    'attributes' => [],
+    'attributes' => [
+        'email' => 'البريد الإلكتورني',
+        'password' => 'كلمة السر',
+    ],
 ];
