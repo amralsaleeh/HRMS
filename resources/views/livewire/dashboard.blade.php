@@ -2,6 +2,7 @@
 
   @php
     $configData = Helper::appClasses();
+    use App\Models\Employee;
     use Carbon\Carbon;
   @endphp
 
@@ -45,7 +46,7 @@
         <div class="d-flex align-items-end row">
           <div class="col-7">
             <div class="card-body text-nowrap">
-              <h5 class="card-title mb-0">{{ __('Hi,') }} {{ Auth::user()->name }}! 👋</h5>
+              <h5 class="card-title mb-0">{{ __('Hi,') }} {{ Employee::find(Auth::user()->employee_id)->first_name }}! 👋</h5>
               <p class="mb-2">{{ __('Start your day with a smile') }}</p>
               {{-- <h5 wire:poll.60s class="text-primary mt-3 mb-2">{{ now()->format('Y/m/d - H:i') }}</h5> --}}
               <h5 id="date" class="text-primary mt-3 mb-1"></h5>
