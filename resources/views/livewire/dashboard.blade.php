@@ -1,9 +1,9 @@
 <div>
 
   @php
-    $configData = Helper::appClasses();
-    use App\Models\Employee;
-    use Carbon\Carbon;
+  $configData = Helper::appClasses();
+  use App\Models\Employee;
+  use Carbon\Carbon;
   @endphp
 
   @section('title', 'Dashboard')
@@ -13,20 +13,29 @@
   @endsection
 
   @section('page-style')
-    <style>
-      .btn-tr {
-        opacity: 0;
-      }
+  <style>
+    .match-height>[class*='col'] {
+      display: flex;
+      flex-flow: column;
+    }
 
-      tr:hover .btn-tr {
-        display: inline-block;
-        opacity: 1;
-      }
+    .match-height>[class*='col']>.card {
+      flex: 1 1 auto;
+    }
 
-      tr:hover .td {
-        color: #7367f0 !important;
-      }
-    </style>
+    .btn-tr {
+      opacity: 0;
+    }
+
+    tr:hover .btn-tr {
+      display: inline-block;
+      opacity: 1;
+    }
+
+    tr:hover .td {
+      color: #7367f0 !important;
+    }
+  </style>
   @endsection
 
   {{-- Alerts --}}
@@ -40,37 +49,57 @@
     </ol>
   </nav> --}}
 
-  <div class="row">
+  <div class="row match-height">
     <div class="col-xl-4 mb-4 col-lg-5 col-12">
-      <div class="card">
-        <div class="d-flex align-items-end row">
+      <div class="card h-100">
+        <div class="card-header pb-0">
+          <div class="d-flex justify-content-between">
+            <div class="card-title mb-0">
+              <h4 class="card-title mb-1">{{ __('Hi,') }} {{ Employee::find(Auth::user()->employee_id)->first_name }}! 👋</h4>
+              <small class="text-muted">{{ __('Start your day with a smile') }}</small>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="d-flex align-items-end row h-100">
           <div class="col-7">
             <div class="card-body text-nowrap">
-              <h5 class="card-title mb-0">{{ __('Hi,') }} {{ Employee::find(Auth::user()->employee_id)->first_name }}! 👋</h5>
-              <p class="mb-2">{{ __('Start your day with a smile') }}</p>
+              {{-- <h5 class="card-title mb-0">{{ __('Hi,') }} {{ Employee::find(Auth::user()->employee_id)->first_name
+                }}! 👋</h5>
+              <p class="mb-2">{{ __('Start your day with a smile') }}</p> --}}
               {{-- <h5 wire:poll.60s class="text-primary mt-3 mb-2">{{ now()->format('Y/m/d - H:i') }}</h5> --}}
               <h5 id="date" class="text-primary mt-3 mb-1"></h5>
               <h5 id="time" class="text-primary mb-2"></h5>
               <div class="btn-group dropend">
-                <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="ti ti-menu-2 ti-xs me-1"></i>{{ __('Add New') }}</button>
+                <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown"
+                  aria-haspopup="true" aria-expanded="false"><i class="ti ti-menu-2 ti-xs me-1"></i>{{ __('Add New')
+                  }}</button>
                 <ul class="dropdown-menu">
                   @can('create employees')
-                    <li><a class="dropdown-item" href="{{ route('structure-employees') }}"><i class="ti ti-menu-2 ti-xs me-1"></i> {{ __('Employee') }}</a></li>
-                    <li><hr class="dropdown-divider"></li>
+                  <li><a class="dropdown-item" href="{{ route('structure-employees') }}"><i
+                        class="ti ti-menu-2 ti-xs me-1"></i> {{ __('Employee') }}</a></li>
+                  <li>
+                    <hr class="dropdown-divider">
+                  </li>
                   @endcan
                   @can('create fingerprints')
-                    <li><a class="dropdown-item" href="{{ route('attendance-fingerprints') }}"><i class="ti ti-menu-2 ti-xs me-1"></i>{{ __('Fingerprint') }}</a></li>
+                  <li><a class="dropdown-item" href="{{ route('attendance-fingerprints') }}"><i
+                        class="ti ti-menu-2 ti-xs me-1"></i>{{ __('Fingerprint') }}</a></li>
                   @endcan
                   @can('create leaves')
-                    <li><a wire:click='showCreateLeaveModal' class="dropdown-item" data-bs-toggle="modal" data-bs-target="#leaveModal" href=""><i class="ti ti-menu-2 ti-xs me-1"></i>{{ __('Leave') }}</a></li>
+                  <li><a wire:click='showCreateLeaveModal' class="dropdown-item" data-bs-toggle="modal"
+                      data-bs-target="#leaveModal" href=""><i class="ti ti-menu-2 ti-xs me-1"></i>{{ __('Leave') }}</a>
+                  </li>
                   @endcan
                 </ul>
               </div>
             </div>
           </div>
-          <div class="col-5 text-center text-sm-left">
-            <div class="card-body pb-0 px-0 px-md-4">
-              <img src="{{asset('assets/img/illustrations/card-advance-sale.png')}}" height="140" alt="view sales">
+          <div class="col-5 text-center text-sm-left h-100 d-flex align-items-end">
+            <div class="card-body pb-0 px-0 px-md-4 w-100">
+              <img src="{{asset('assets/img/illustrations/card-advance-sale.png')}}" class="img-fluid" alt="view sales"
+                style="object-fit: contain; width: 100%; height: auto;">
             </div>
           </div>
         </div>
@@ -83,75 +112,76 @@
           <div class="d-flex justify-content-between mb-3">
             <h5 class="card-title mb-0">{{ __('Statistics') }}</h5>
             @can('read sms')
-              <small class="text-muted">{{ $accountBalance['status'] == 200 ? 'Updated recently' : 'Error, Update unavailable' }}</small>
+            <small class="text-muted">{{ $accountBalance['status'] == 200 ? __('Updated recently') : __('Error, Update unavailable') }}</small>
             @endcan
           </div>
         </div>
         @can('read sms')
-          <div class="card-body">
-            <div class="row gy-3">
-              <div class="col-md-3 col-6">
-                <div class="d-flex align-items-center">
-                  <div class="badge rounded-pill bg-label-primary me-3 p-2"><i class="ti ti-activity ti-sm"></i></div>
-                  <div class="card-info">
-                    <h5 class="mb-0">{{ $accountBalance['is_active'] }}</h5>
-                    <small>{{ __('Status') }}</small>
-                  </div>
+        <div class="card-body">
+          <div class="row gy-3">
+            <div class="col-md-3 col-6">
+              <div class="d-flex align-items-center">
+                <div class="badge rounded-pill bg-label-primary me-3 p-2"><i class="ti ti-activity ti-sm"></i></div>
+                <div class="card-info">
+                  <h5 class="mb-0">{{ $accountBalance['is_active'] }}</h5>
+                  <small>{{ __('Status') }}</small>
                 </div>
               </div>
-              <div class="col-md-3 col-6">
-                <div class="d-flex align-items-center">
-                  <div class="badge rounded-pill bg-label-info me-3 p-2"><i class="ti ti-calculator ti-sm"></i></div>
-                  <div class="card-info">
-                    <h5 class="mb-0">{{ $accountBalance['balance'] }}</h5>
-                    <small>{{ __('Balance') }}</small>
-                  </div>
+            </div>
+            <div class="col-md-3 col-6">
+              <div class="d-flex align-items-center">
+                <div class="badge rounded-pill bg-label-primary me-3 p-2"><i class="ti ti-calculator ti-sm"></i></div>
+                <div class="card-info">
+                  <h5 class="mb-0">{{ $accountBalance['balance'] }}</h5>
+                  <small>{{ __('Balance') }}</small>
                 </div>
               </div>
-              <div class="col-md-3 col-6">
-                <div class="d-flex align-items-center">
-                  <div class="badge rounded-pill bg-label-success me-3 p-2"><i class="ti ti-speakerphone ti-sm"></i></div>
-                  <div class="card-info">
-                    <h5 class="mb-0">{{ $messagesStatus['sent'] }}</h5>
-                    <small>{{ __('Successful') }}</small>
-                  </div>
+            </div>
+            <div class="col-md-3 col-6">
+              <div class="d-flex align-items-center">
+                <div class="badge rounded-pill bg-label-success me-3 p-2"><i class="ti ti-speakerphone ti-sm"></i></div>
+                <div class="card-info">
+                  <h5 class="mb-0">{{ $messagesStatus['sent'] }}</h5>
+                  <small>{{ __('Successful') }}</small>
                 </div>
               </div>
-              <div class="col-md-3 col-6">
-                <div class="d-flex align-items-center">
-                  <div wire:click='sendPendingMessages' class="badge rounded-pill bg-label-danger me-3 p-2" style="cursor: pointer"><i class="ti ti-send ti-sm"></i></div>
-                  <div class="card-info">
-                    <h5 class="mb-0">{{ $messagesStatus['unsent'] }}</h5>
-                    <small>{{ __('Pending') }}</small>
-                  </div>
+            </div>
+            <div class="col-md-3 col-6">
+              <div class="d-flex align-items-center">
+                <div wire:click='sendPendingMessages' class="badge rounded-pill bg-label-danger me-3 p-2"
+                  style="cursor: pointer"><i class="ti ti-send ti-sm"></i></div>
+                <div class="card-info">
+                  <h5 class="mb-0">{{ $messagesStatus['unsent'] }}</h5>
+                  <small>{{ __('Pending') }}</small>
                 </div>
               </div>
             </div>
           </div>
+        </div>
         @endcan
         @can('create leaves')
-          <div class="card-body">
-            <div class="row gy-3">
-              <div class="col-md-6 col-6">
-                <div class="d-flex align-items-center">
-                  <div class="badge rounded-pill bg-label-primary me-3 p-2"><i class="ti ti-users ti-sm"></i></div>
-                  <div class="card-info">
-                    <h5 class="mb-0">{{ count($activeEmployees) }}</h5>
-                    <small>{{ __('Active Employees') }}</small>
-                  </div>
+        <div class="card-body">
+          <div class="row gy-3">
+            <div class="col-md-3 col-6">
+              <div class="d-flex align-items-center">
+                <div class="badge rounded-pill bg-label-secondary me-3 p-2"><i class="ti ti-users ti-sm"></i></div>
+                <div class="card-info">
+                  <h5 class="mb-0">{{ count($activeEmployees) }}</h5>
+                  <small>{{ __('Active Employees') }}</small>
                 </div>
               </div>
-              <div class="col-md-6 col-6">
-                <div class="d-flex align-items-center">
-                  <div class="badge rounded-pill bg-label-success me-3 p-2"><i class="ti ti-calendar ti-sm"></i></div>
-                  <div class="card-info">
-                    <h5 class="mb-0">{{ count($leaveRecords) }}</h5>
-                    <small>{{ __('Today Records') }}</small>
-                  </div>
+            </div>
+            <div class="col-md-3 col-6">
+              <div class="d-flex align-items-center">
+                <div class="badge rounded-pill bg-label-secondary me-3 p-2"><i class="ti ti-calendar ti-sm"></i></div>
+                <div class="card-info">
+                  <h5 class="mb-0">{{ count($leaveRecords) }}</h5>
+                  <small>{{ __('Today Records') }}</small>
                 </div>
               </div>
             </div>
           </div>
+        </div>
         @endcan
       </div>
     </div>
@@ -200,7 +230,8 @@
                   </div>
                   <div class="chart-statistics">
                     <h3 class="card-title mb-1">4,350</h3>
-                    <small class="text-success text-nowrap fw-semibold"><i class='ti ti-chevron-up me-1'></i> 15.8%</small>
+                    <small class="text-success text-nowrap fw-semibold"><i class='ti ti-chevron-up me-1'></i>
+                      15.8%</small>
                   </div>
                 </div>
                 <div id="generatedLeadsChart"></div>
@@ -224,7 +255,8 @@
             <div class="col-md-4">
               <div class="text-center mt-4">
                 <div class="dropdown">
-                  <button class="btn btn-sm btn-outline-primary dropdown-toggle" type="button" id="budgetId" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <button class="btn btn-sm btn-outline-primary dropdown-toggle" type="button" id="budgetId"
+                    data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <script>
                       document.write(new Date().getFullYear())
 
@@ -284,48 +316,54 @@
             </thead>
             <tbody class="table-border-bottom-0">
               @forelse($leaveRecords as $leave)
-                <tr>
-                  <td><strong>{{ $leave->id }}</strong></td>
-                  <td class="td">{{ $this->getEmployeeName($leave->employee_id) }}</td>
-                  <td>{{ $this->getLeaveType($leave->leave_id) }}</td>
-                  <td style="text-align: center">
-                    <span class="badge bg-label-primary mb-2 me-1" style="font-size: 14px">{{ $leave->from_date . ' --> ' . $leave->to_date }}</span>
-                    <br>
-                    @if ($leave->start_at !== null)
-                      <span class="badge bg-label-secondary me-1">{{ Carbon::parse($leave->start_at)->format('H:i') . ' --> ' . Carbon::parse($leave->end_at)->format('H:i') }}</span>
-                    @endif
-                  </td>
-                  <td style="text-align: center">
-                    <button type="button" class="btn btn-sm btn-tr rounded-pill btn-icon btn-outline-secondary waves-effect">
-                      <span wire:click.prevent="showEditLeaveModal({{ $leave->id }})"  data-bs-toggle="modal" data-bs-target="#leaveModal" class="ti ti-pencil"></span>
-                    </button>
-                    <button type="button" class="btn btn-sm btn-tr rounded-pill btn-icon btn-outline-danger waves-effect">
-                      <span wire:click.prevent="confirmDestroyLeave({{ $leave->id }})" class="ti ti-trash"></span>
-                    </button>
-                    @if ($confirmedId === $leave->id)
-                    <button wire:click.prevent="destroyLeave" type="button" class="btn btn-xs btn-danger waves-effect waves-light">
-                     {{ __('Sure?') }}
-                    </button>
-                    @endif
-                  </td>
-                </tr>
+              <tr>
+                <td><strong>{{ $leave->id }}</strong></td>
+                <td class="td">{{ $this->getEmployeeName($leave->employee_id) }}</td>
+                <td>{{ $this->getLeaveType($leave->leave_id) }}</td>
+                <td style="text-align: center">
+                  <span class="badge bg-label-primary mb-2 me-1" style="font-size: 14px">{{ $leave->from_date . ' --> '
+                    . $leave->to_date }}</span>
+                  <br>
+                  @if ($leave->start_at !== null)
+                  <span class="badge bg-label-secondary me-1">{{ Carbon::parse($leave->start_at)->format('H:i') . ' -->
+                    ' . Carbon::parse($leave->end_at)->format('H:i') }}</span>
+                  @endif
+                </td>
+                <td style="text-align: center">
+                  <button type="button"
+                    class="btn btn-sm btn-tr rounded-pill btn-icon btn-outline-secondary waves-effect">
+                    <span wire:click.prevent="showEditLeaveModal({{ $leave->id }})" data-bs-toggle="modal"
+                      data-bs-target="#leaveModal" class="ti ti-pencil"></span>
+                  </button>
+                  <button type="button" class="btn btn-sm btn-tr rounded-pill btn-icon btn-outline-danger waves-effect">
+                    <span wire:click.prevent="confirmDestroyLeave({{ $leave->id }})" class="ti ti-trash"></span>
+                  </button>
+                  @if ($confirmedId === $leave->id)
+                  <button wire:click.prevent="destroyLeave" type="button"
+                    class="btn btn-xs btn-danger waves-effect waves-light">
+                    {{ __('Sure?') }}
+                  </button>
+                  @endif
+                </td>
+              </tr>
               @empty
-                <tr>
-                  <td colspan="6">
-                    <div class="mt-2 mb-2" style="text-align: center">
-                        <h3 class="mb-1 mx-2">{{ __('Oopsie-doodle!') }}</h3>
-                        <p class="mb-4 mx-2">
-                          {{ __('No data found, please sprinkle some data in my virtual bowl, and let the fun begin!') }}
-                        </p>
-                        <button class="btn btn-label-primary mb-4" data-bs-toggle="modal" data-bs-target="#leaveModal">
-                            {{ __('Add New Leave') }}
-                          </button>
-                        <div>
-                          <img src="{{ asset('assets/img/illustrations/page-misc-under-maintenance.png') }}" width="200" class="img-fluid">
-                        </div>
+              <tr>
+                <td colspan="6">
+                  <div class="mt-2 mb-2" style="text-align: center">
+                    <h3 class="mb-1 mx-2">{{ __('Oopsie-doodle!') }}</h3>
+                    <p class="mb-4 mx-2">
+                      {{ __('No data found, please sprinkle some data in my virtual bowl, and let the fun begin!') }}
+                    </p>
+                    <button class="btn btn-label-primary mb-4" data-bs-toggle="modal" data-bs-target="#leaveModal">
+                      {{ __('Add New Leave') }}
+                    </button>
+                    <div>
+                      <img src="{{ asset('assets/img/illustrations/page-misc-under-maintenance.png') }}" width="200"
+                        class="img-fluid">
                     </div>
-                  </td>
-                </tr>
+                  </div>
+                </td>
+              </tr>
               @endforelse
             </tbody>
           </table>
@@ -340,11 +378,11 @@
         <h5 class="card-header">{{ __('Changelog') }}</h5>
         <div class="card-body">
           @foreach ($changelogs as $changelog)
-            <small all class="text-light fw-semibold">{{ $changelog->version }}</small>
-            <dl class="row mt-2">
-              <dt class="col-sm-3">{{ $changelog->title }}</dt>
-              <dd class="col-sm-9">{{ $changelog->description }}</dd>
-            </dl>
+          <small all class="text-light fw-semibold">{{ $changelog->version }}</small>
+          <dl class="row mt-2">
+            <dt class="col-sm-3">{{ $changelog->title }}</dt>
+            <dd class="col-sm-9">{{ $changelog->description }}</dd>
+          </dl>
           @endforeach
         </div>
       </div>
@@ -355,8 +393,8 @@
   @include('_partials/_modals/modal-leaveWithEmployee')
 
   @push('custom-scripts')
-    <script>
-        function updateClock() {
+  <script>
+    function updateClock() {
             const now = new Date();
             const dateOptions = {
                 weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
@@ -374,6 +412,6 @@
 
         setInterval(updateClock, 1000); // Update every second
         updateClock(); // Initial call to display clock immediately
-    </script>
+  </script>
   @endpush
 </div>
