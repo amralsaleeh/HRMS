@@ -28,6 +28,7 @@
 
 <link rel="stylesheet" href="{{ asset('assets/vendor/libs/toastr/toastr.css') }}" />
 
+<link rel="stylesheet" href="{{ asset('assets/css/custom.css') }}" />
 <!-- Vendor Styles -->
 @yield('vendor-style')
 
