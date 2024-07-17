@@ -83,7 +83,7 @@
           <div class="d-flex justify-content-between mb-3">
             <h5 class="card-title mb-0">{{ __('Statistics') }}</h5>
             @can('read sms')
-              <small class="text-muted">{{ $accountBalance['status'] == 200 ? 'Updated recently' : 'Error, Update unavailable' }}</small>
+              <small class="text-muted">{{ $accountBalance['status'] == 200 ? __('Updated recently') : __('Error, Update unavailable') }}</small>
             @endcan
           </div>
         </div>
