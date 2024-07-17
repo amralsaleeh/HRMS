@@ -82,7 +82,7 @@
       <div class="card">
         <div class="card-header d-flex justify-content-between">
           <h5 class="card-title mb-0">{{ __('Statistics') }}</h5>
-          <small class="text-muted">{{ $accountBalance['status'] == 200 ? 'Updated recently' : 'Error, Update unavailable' }}</small>
+          <small class="text-muted">{{ $accountBalance['status'] == 200 ? __('Updated recently') : __('Error, Update unavailable') }}</small>
         </div>
         <div class="card-body pt-2">
           <div class="row gy-3">
