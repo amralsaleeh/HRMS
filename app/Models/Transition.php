@@ -23,14 +23,14 @@ class Transition extends Model
     ];
 
     // 👉 Links
-    public function asset(): BelongsTo
-    {
-        return $this->belongsTo(Asset::class);
-    }
-
     public function employee(): BelongsTo
     {
         return $this->belongsTo(Employee::class);
+    }
+
+    public function asset(): BelongsTo
+    {
+        return $this->belongsTo(Asset::class);
     }
 
     // 👉 Functions

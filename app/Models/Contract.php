@@ -12,12 +12,9 @@ class Contract extends Model
 {
     use CreatedUpdatedDeletedBy, HasFactory, SoftDeletes;
 
-    protected $fillable = [
-        'name',
-        'work_rate',
-        'notes',
-    ];
+    protected $fillable = ['name', 'work_rate', 'notes'];
 
+    // 👉 Links
     public function employees(): HasMany
     {
         return $this->hasMany(Employee::class);

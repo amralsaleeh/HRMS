@@ -31,6 +31,7 @@ class Asset extends Model
         'id' => 'string',
     ];
 
+    // 👉 Links
     public function transitions(): HasMany
     {
         return $this->hasMany(Transition::class);

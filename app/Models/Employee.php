@@ -39,6 +39,7 @@ class Employee extends Model
         'profile_photo_path',
     ];
 
+    // 👉 Links
     public function user(): HasOne
     {
         return $this->hasOne(User::class);
@@ -94,6 +95,7 @@ class Employee extends Model
         return $this->hasMany(Transition::class);
     }
 
+    // 👉 Attributes
     protected function hourlyCounter(): Attribute
     {
         return Attribute::make(get: fn (?string $value) => $value !== null ? Carbon::parse($value)->format('H:i') : '');
@@ -104,7 +106,6 @@ class Employee extends Model
         return Attribute::make(get: fn (?string $value) => $value !== null ? Carbon::parse($value)->format('H:i') : '');
     }
 
-    // Computed Attribute - Start
     public function getFullNameAttribute()
     {
         return $this->first_name.' '.$this->father_name.' '.$this->last_name;
@@ -114,9 +115,36 @@ class Employee extends Model
     {
         return $this->first_name.' '.$this->last_name;
     }
-    // Computed Attribute - End
 
-    // Functions - Start
+    // 👉 Scopes
+    public function scopeCheckLeave(
+        Builder $query,
+        $employee_id,
+        $leave_id,
+        $from_date,
+        $to_date,
+        $start_at,
+        $end_at
+    ): void {
+        $query->whereHas('leaves', function ($query) use (
+            $employee_id,
+            $leave_id,
+            $from_date,
+            $to_date,
+            $start_at,
+            $end_at
+        ) {
+            $query
+                ->where('employee_id', $employee_id)
+                ->where('leave_id', $leave_id)
+                ->where('from_date', $from_date)
+                ->where('to_date', $to_date)
+                ->where('start_at', $start_at)
+                ->where('end_at', $end_at);
+        });
+    }
+
+    // 👉 Functions
     public function getWorkedYearsAttribute()
     {
         $data = Timeline::where('employee_id', $this->id)
@@ -197,34 +225,4 @@ class Employee extends Model
 
         return 'storage/'.$defaultPhotoName;
     }
-    // Functions - End
-
-    // Scope - Start
-    public function scopeCheckLeave(
-        Builder $query,
-        $employee_id,
-        $leave_id,
-        $from_date,
-        $to_date,
-        $start_at,
-        $end_at
-    ): void {
-        $query->whereHas('leaves', function ($query) use (
-            $employee_id,
-            $leave_id,
-            $from_date,
-            $to_date,
-            $start_at,
-            $end_at
-        ) {
-            $query
-                ->where('employee_id', $employee_id)
-                ->where('leave_id', $leave_id)
-                ->where('from_date', $from_date)
-                ->where('to_date', $to_date)
-                ->where('start_at', $start_at)
-                ->where('end_at', $end_at);
-        });
-    }
-    // Scope - End
 }

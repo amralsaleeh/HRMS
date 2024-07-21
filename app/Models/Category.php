@@ -12,11 +12,9 @@ class Category extends Model
 {
     use CreatedUpdatedDeletedBy, HasFactory, SoftDeletes;
 
-    protected $fillable = [
-        'id',
-        'name',
-    ];
+    protected $fillable = ['id', 'name'];
 
+    // 👉 Links
     public function subCategory(): BelongsToMany
     {
         return $this->belongsToMany(subCategory::class);

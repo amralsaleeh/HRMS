@@ -11,10 +11,5 @@ class Changelog extends Model
 {
     use CreatedUpdatedDeletedBy, HasFactory, SoftDeletes;
 
-    protected $fillable = [
-        'id',
-        'version',
-        'title',
-        'description',
-    ];
+    protected $fillable = ['id', 'version', 'title', 'description'];
 }

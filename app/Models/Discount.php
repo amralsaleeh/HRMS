@@ -14,25 +14,17 @@ class Discount extends Model
 {
     use CreatedUpdatedDeletedBy, HasFactory, SoftDeletes;
 
-    protected $fillable = [
-        'employee_id',
-        'rate',
-        'date',
-        'reason',
-        'is_auto',
-        'is_sent',
-        'batch',
-    ];
+    protected $fillable = ['employee_id', 'rate', 'date', 'reason', 'is_auto', 'is_sent', 'batch'];
 
+    // 👉 Links
     public function employee(): BelongsTo
     {
         return $this->belongsTo(Employee::class);
     }
 
+    // 👉 Attributes
     protected function date(): Attribute
     {
-        return Attribute::make(
-            get: fn (string $value) => Carbon::parse($value)->format('Y-m-d'),
-        );
+        return Attribute::make(get: fn (string $value) => Carbon::parse($value)->format('Y-m-d'));
     }
 }
