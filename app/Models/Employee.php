@@ -89,6 +89,11 @@ class Employee extends Model
         return $this->hasMany(Message::class);
     }
 
+    public function transitions(): HasMany
+    {
+        return $this->hasMany(Transition::class);
+    }
+
     protected function hourlyCounter(): Attribute
     {
         return Attribute::make(get: fn (?string $value) => $value !== null ? Carbon::parse($value)->format('H:i') : '');

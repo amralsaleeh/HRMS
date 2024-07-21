@@ -15,10 +15,14 @@ return new class extends Migration
             $table->id();
             $table->foreignId('asset_id')->constrained();
             $table->foreignId('employee_id')->constrained();
-            $table->date('transfer_date');
+            $table->date('handed_date')->nullable();
             $table->date('return_date')->nullable();
+            $table
+                ->string('center_document_number')
+                ->unique()
+                ->nullable();
+            $table->string('reason')->nullable();
             $table->longText('note')->nullable();
-
             $table->string('created_by');
             $table->string('updated_by');
             $table->string('deleted_by')->nullable();
