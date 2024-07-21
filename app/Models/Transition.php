@@ -22,6 +22,7 @@ class Transition extends Model
         'note',
     ];
 
+    // 👉 Links
     public function asset(): BelongsTo
     {
         return $this->belongsTo(Asset::class);
@@ -30,5 +31,26 @@ class Transition extends Model
     public function employee(): BelongsTo
     {
         return $this->belongsTo(Employee::class);
+    }
+
+    // 👉 Functions
+    public function getCategory($asset_id)
+    {
+        $assetId = substr($asset_id, 1);
+        $categoryId = ltrim(substr($assetId, 0, 4), '0');
+
+        $category = Category::find($categoryId);
+
+        return $category;
+    }
+
+    public function getSubCategory($asset_id)
+    {
+        $assetId = substr($asset_id, 1);
+        $subCategoryId = ltrim(substr($assetId, 4, 4), '0');
+
+        $subCategory = SubCategory::find($subCategoryId);
+
+        return $subCategory;
     }
 }

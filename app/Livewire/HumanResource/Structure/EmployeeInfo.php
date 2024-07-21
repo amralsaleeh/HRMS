@@ -28,6 +28,8 @@ class EmployeeInfo extends Component
 
     public $employeeTimelineInfo = [];
 
+    public $employeeAssets;
+
     public $isEdit = false;
 
     public $confirmedId;
@@ -42,7 +44,12 @@ class EmployeeInfo extends Component
     public function mount($id)
     {
         $this->employee = Employee::find($id);
-
+        $this->employeeAssets = $this->employee
+            ->transitions()
+            ->with('asset')
+            ->orderBy('handed_date', 'desc')
+            ->get();
+        // dd($this->employeeAssets);
         $this->centers = Center::all();
         $this->departments = department::all();
         $this->positions = Position::all();

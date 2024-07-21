@@ -18,6 +18,21 @@
       opacity: 1;
     }
   </style>
+
+  <style>
+    .btn-tr {
+      opacity: 0;
+    }
+
+    tr:hover .btn-tr {
+      display: inline-block;
+      opacity: 1;
+    }
+
+    tr:hover .td {
+      color: #7367f0 !important;
+    }
+  </style>
 @endsection
 
 {{-- Alerts --}}
@@ -81,6 +96,68 @@
 <!--/ Navbar pills -->
 
 <div class="row">
+    <!-- Assets -->
+  <div class="col-12">
+    <div class="card mb-4">
+      <div class="card-header">
+        <h5 class="card-title mb-0">{{ __('Assets') }}</h5>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive text-nowrap">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th class="col-1">{{ __('ID') }}</th>
+              <th class="col-1">{{ __('Category') }}</th>
+              <th class="col-1">{{ __('Sub-Category') }}</th>
+              <th>{{ __('Serial Number')}}</th>
+              <th>{{ __('Handed Date')}}</th>
+              <th>{{ __('Actions')}}</th>
+            </tr>
+          </thead>
+          <tbody class="table-border-bottom-0">
+            @forelse ($employeeAssets as $asset)
+              <tr>
+                <td wire:click='showAsset' class="td" style="cursor: pointer;"><i class="ti ti-tag ti-sm text-danger me-3"></i> <strong>{{ $asset->asset_id }}</strong></td>
+                <td>{{ $asset->getCategory($asset->asset_id)->name }}</td>
+                <td>{{ $asset->getSubCategory($asset->asset_id)->name }}</td>
+                <td>{{ $asset->asset->serial_number }}</td>
+                <td><span class="badge rounded-pill bg-label-secondary">{{ $asset->handed_date }}</span></td>
+                <td>
+                  <button type="button" class="btn btn-sm btn-tr rounded-pill btn-icon btn-outline-secondary waves-effect">
+                    <span class="ti ti-arrow-guide"></span>
+                  </button>
+                  <button type="button" class="btn btn-sm btn-tr rounded-pill btn-icon btn-outline-secondary waves-effect">
+                    <span wire:click.prevent='showEditAssetModal({{ $asset }})' data-bs-toggle="modal" data-bs-target="#assetModal" class="ti ti-pencil"></span>
+                  </button>
+                </td>
+              </tr>
+            @empty
+              <tr>
+                <td colspan="6">
+                  <div class="mt-2 mb-2" style="text-align: center">
+                    <h3 class="mb-1 mx-2">{{ __('Oopsie-doodle!') }}</h3>
+                    <p class="mb-4 mx-2">
+                    {{ __('No data found, please sprinkle some data in my virtual bowl, and let the fun begin!') }}
+                    </p>
+                    <button class="btn btn-label-primary mb-4" data-bs-toggle="modal" data-bs-target="#assetModal">
+                      {{ __('Add New Asset') }}
+                      </button>
+                    <div>
+                      <img src="{{ asset('assets/img/illustrations/page-misc-under-maintenance.png') }}" width="200" class="img-fluid">
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            @endforelse
+          </tbody>
+        </table>
+      </div>
+      </div>
+    </div>
+  </div>
+  <!--/ Assets -->
+
   <!-- Details -->
   <div class="col-xl-4 col-lg-5 col-md-5">
     <div class="card mb-4">
