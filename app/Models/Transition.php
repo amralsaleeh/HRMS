@@ -12,7 +12,15 @@ class Transition extends Model
 {
     use CreatedUpdatedDeletedBy, HasFactory, SoftDeletes;
 
-    protected $fillable = ['asset_id', 'employee_id', 'transfer_date', 'return_date', 'note'];
+    protected $fillable = [
+        'asset_id',
+        'employee_id',
+        'handed_date',
+        'return_date',
+        'center_document_number',
+        'reason',
+        'note',
+    ];
 
     public function asset(): BelongsTo
     {
