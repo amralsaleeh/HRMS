@@ -164,7 +164,7 @@ class Employee extends Model
         if ($data) {
             return $data->position->name;
         } else {
-            return 'N/A';
+            return '---';
         }
     }
 
@@ -177,7 +177,7 @@ class Employee extends Model
         if ($data) {
             return $data->department->name;
         } else {
-            return 'N/A';
+            return '---';
         }
     }
 
@@ -190,7 +190,7 @@ class Employee extends Model
         if ($data) {
             return $data->center->name;
         } else {
-            return 'N/A';
+            return '---';
         }
     }
 
@@ -200,7 +200,7 @@ class Employee extends Model
         if ($data) {
             return __('Joined').' '.Carbon::parse($data->start_date)->diffForHumans();
         } else {
-            return 'N/A';
+            return '---';
         }
     }
 
@@ -210,7 +210,7 @@ class Employee extends Model
         if ($data) {
             return Carbon::parse($data->start_date)->translatedFormat('j F Y');
         } else {
-            return 'N/A';
+            return '---';
         }
     }
 

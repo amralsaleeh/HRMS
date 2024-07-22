@@ -17,7 +17,7 @@ class Messages extends Component
     use MessageProvider;
 
     // Variables - Start //
-    public $accountBalance = ['status' => 400, 'balance' => 'N/A', 'is_active' => 'N/A'];
+    public $accountBalance = ['status' => 400, 'balance' => '---', 'is_active' => '---'];
 
     public $messagesStatus = ['sent' => 0, 'unsent' => 0];
 

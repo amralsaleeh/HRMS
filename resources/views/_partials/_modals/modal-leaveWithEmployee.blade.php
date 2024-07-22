@@ -54,7 +54,7 @@
               </div>
             </div>
             <div class="row mb-5">
-              <div class="col-6">
+              <div class="col-md-6 col-12">
                 <div class="row">
                   <div class="col-md-3 col-12">
                   <label class="form-label">{{ __('From Date') }}</label>
@@ -74,7 +74,7 @@
                 </div>
                 </div>
               </div>
-              <div class="col-6">
+              <div class="col-md-6 col-12">
                 <label class="form-label">{{ __('Note') }}</label>
                 <input wire:model='newLeaveInfo.note' type="text" class="form-control">
               </div>
@@ -171,7 +171,7 @@
           select2selectedEmployeeId.each(function () {
             var $this = $(this);
             $this.wrap('<div class="position-relative"></div>').select2({
-              placeholder: 'Search (ID, Name..)',
+              placeholder: "{{ __('Search (ID, Name...)') }}",
               dropdownParent: $this.parent()
             });
           });

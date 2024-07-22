@@ -124,7 +124,7 @@
                 <div class="badge rounded-pill bg-label-primary me-3 p-2"><i class="ti ti-activity ti-sm"></i></div>
                 <div class="card-info">
                   <h5 class="mb-0">{{ $accountBalance['is_active'] }}</h5>
-                  <small>{{ __('Status') }}</small>
+                  <small>{{ __('API Status') }}</small>
                 </div>
               </div>
             </div>
@@ -133,7 +133,7 @@
                 <div class="badge rounded-pill bg-label-primary me-3 p-2"><i class="ti ti-calculator ti-sm"></i></div>
                 <div class="card-info">
                   <h5 class="mb-0">{{ $accountBalance['balance'] }}</h5>
-                  <small>{{ __('Balance') }}</small>
+                  <small>{{ __('API Balance') }}</small>
                 </div>
               </div>
             </div>
@@ -142,7 +142,7 @@
                 <div class="badge rounded-pill bg-label-success me-3 p-2"><i class="ti ti-speakerphone ti-sm"></i></div>
                 <div class="card-info">
                   <h5 class="mb-0">{{ $messagesStatus['sent'] }}</h5>
-                  <small>{{ __('Successful') }}</small>
+                  <small>{{ __('Successful SMS') }}</small>
                 </div>
               </div>
             </div>
@@ -152,7 +152,7 @@
                   style="cursor: pointer"><i class="ti ti-send ti-sm"></i></div>
                 <div class="card-info">
                   <h5 class="mb-0">{{ $messagesStatus['unsent'] }}</h5>
-                  <small>{{ __('Pending') }}</small>
+                  <small>{{ __('Pending SMS') }}</small>
                 </div>
               </div>
             </div>
@@ -160,7 +160,7 @@
         </div>
         @endcan
         @can('create leaves')
-        <div class="card-body">
+        <div class="card-body pt-0">
           <div class="row gy-3">
             <div class="col-md-3 col-6">
               <div class="d-flex align-items-center">
