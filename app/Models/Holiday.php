@@ -13,23 +13,23 @@ class Holiday extends Model
 {
     use CreatedUpdatedDeletedBy, HasFactory, SoftDeletes;
 
-    protected $fillable = [
-        'name',
-        'from_date',
-        'to_date',
-        'note',
-    ];
+    protected $fillable = ['name', 'from_date', 'to_date', 'note'];
 
+    // 👉 Links
     public function centers(): BelongsToMany
     {
-        return $this->belongsToMany(Center::class)
-            ->withPivot('created_by', 'updated_by', 'deleted_by', 'created_at', 'updated_at', 'deleted_at');
+        return $this->belongsToMany(Center::class)->withPivot(
+            'created_by',
+            'updated_by',
+            'deleted_by',
+            'created_at',
+            'updated_at',
+            'deleted_at'
+        );
     }
 
     protected function name(): Attribute
     {
-        return Attribute::make(
-            set: fn (string $value) => ucfirst($value),
-        );
+        return Attribute::make(set: fn (string $value) => ucfirst($value));
     }
 }

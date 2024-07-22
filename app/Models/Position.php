@@ -13,20 +13,17 @@ class Position extends Model
 {
     use CreatedUpdatedDeletedBy, HasFactory, SoftDeletes;
 
-    protected $fillable = [
-        'name',
-        'vacancies_count',
-    ];
+    protected $fillable = ['name', 'vacancies_count'];
 
+    // 👉 Links
     public function timelines(): HasMany
     {
         return $this->hasMany(Timeline::class);
     }
 
+    // 👉 Attributes
     protected function name(): Attribute
     {
-        return Attribute::make(
-            set: fn (string $value) => ucfirst($value),
-        );
+        return Attribute::make(set: fn (string $value) => ucfirst($value));
     }
 }

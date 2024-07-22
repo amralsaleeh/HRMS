@@ -39,6 +39,7 @@ class Employee extends Model
         'profile_photo_path',
     ];
 
+    // 👉 Links
     public function user(): HasOne
     {
         return $this->hasOne(User::class);
@@ -94,6 +95,7 @@ class Employee extends Model
         return $this->hasMany(Transition::class);
     }
 
+    // 👉 Attributes
     protected function hourlyCounter(): Attribute
     {
         return Attribute::make(get: fn (?string $value) => $value !== null ? Carbon::parse($value)->format('H:i') : '');
@@ -104,7 +106,6 @@ class Employee extends Model
         return Attribute::make(get: fn (?string $value) => $value !== null ? Carbon::parse($value)->format('H:i') : '');
     }
 
-    // Computed Attribute - Start
     public function getFullNameAttribute()
     {
         return $this->first_name.' '.$this->father_name.' '.$this->last_name;
@@ -114,92 +115,8 @@ class Employee extends Model
     {
         return $this->first_name.' '.$this->last_name;
     }
-    // Computed Attribute - End
 
-    // Functions - Start
-    public function getWorkedYearsAttribute()
-    {
-        $data = Timeline::where('employee_id', $this->id)
-            ->where('is_sequent', 1)
-            ->latest()
-            ->value('start_date');
-
-        return Carbon::now()->diffInYears(Carbon::parse($data)) + 1; // The reason for " + 1 " is to calculate the started year too.
-    }
-
-    public function getCurrentPositionAttribute()
-    {
-        $data = Timeline::with('position')
-            ->where('employee_id', $this->id)
-            ->whereNull('end_date')
-            ->first();
-        if ($data) {
-            return $data->position->name;
-        } else {
-            return 'N/A';
-        }
-    }
-
-    public function getCurrentDepartmentAttribute()
-    {
-        $data = Timeline::with('department')
-            ->where('employee_id', $this->id)
-            ->whereNull('end_date')
-            ->first();
-        if ($data) {
-            return $data->department->name;
-        } else {
-            return 'N/A';
-        }
-    }
-
-    public function getCurrentCenterAttribute()
-    {
-        $data = Timeline::with('center')
-            ->where('employee_id', $this->id)
-            ->whereNull('end_date')
-            ->first();
-        if ($data) {
-            return $data->center->name;
-        } else {
-            return 'N/A';
-        }
-    }
-
-    public function getJoinAtShortFormAttribute()
-    {
-        $data = Timeline::where('employee_id', $this->id)->first();
-        if ($data) {
-            return __('Joined').' '.Carbon::parse($data->start_date)->diffForHumans();
-        } else {
-            return 'N/A';
-        }
-    }
-
-    public function getJoinAtAttribute()
-    {
-        $data = Timeline::where('employee_id', $this->id)->first();
-        if ($data) {
-            return Carbon::parse($data->start_date)->translatedFormat('j F Y');
-        } else {
-            return 'N/A';
-        }
-    }
-
-    public function getEmployeePhoto()
-    {
-        $defaultPhotoName = 'profile-photos/.default-photo.jpg';
-        $user = User::where('employee_id', $this->id)->first();
-
-        if ($user) {
-            return 'storage/'.$user->profile_photo_path;
-        }
-
-        return 'storage/'.$defaultPhotoName;
-    }
-    // Functions - End
-
-    // Scope - Start
+    // 👉 Scopes
     public function scopeCheckLeave(
         Builder $query,
         $employee_id,
@@ -226,5 +143,86 @@ class Employee extends Model
                 ->where('end_at', $end_at);
         });
     }
-    // Scope - End
+
+    // 👉 Functions
+    public function getWorkedYearsAttribute()
+    {
+        $data = Timeline::where('employee_id', $this->id)
+            ->where('is_sequent', 1)
+            ->latest()
+            ->value('start_date');
+
+        return Carbon::now()->diffInYears(Carbon::parse($data)) + 1; // The reason for " + 1 " is to calculate the started year too.
+    }
+
+    public function getCurrentPositionAttribute()
+    {
+        $data = Timeline::with('position')
+            ->where('employee_id', $this->id)
+            ->whereNull('end_date')
+            ->first();
+        if ($data) {
+            return $data->position->name;
+        } else {
+            return '---';
+        }
+    }
+
+    public function getCurrentDepartmentAttribute()
+    {
+        $data = Timeline::with('department')
+            ->where('employee_id', $this->id)
+            ->whereNull('end_date')
+            ->first();
+        if ($data) {
+            return $data->department->name;
+        } else {
+            return '---';
+        }
+    }
+
+    public function getCurrentCenterAttribute()
+    {
+        $data = Timeline::with('center')
+            ->where('employee_id', $this->id)
+            ->whereNull('end_date')
+            ->first();
+        if ($data) {
+            return $data->center->name;
+        } else {
+            return '---';
+        }
+    }
+
+    public function getJoinAtShortFormAttribute()
+    {
+        $data = Timeline::where('employee_id', $this->id)->first();
+        if ($data) {
+            return __('Joined').' '.Carbon::parse($data->start_date)->diffForHumans();
+        } else {
+            return '---';
+        }
+    }
+
+    public function getJoinAtAttribute()
+    {
+        $data = Timeline::where('employee_id', $this->id)->first();
+        if ($data) {
+            return Carbon::parse($data->start_date)->translatedFormat('j F Y');
+        } else {
+            return '---';
+        }
+    }
+
+    public function getEmployeePhoto()
+    {
+        $defaultPhotoName = 'profile-photos/.default-photo.jpg';
+        $user = User::where('employee_id', $this->id)->first();
+
+        if ($user) {
+            return 'storage/'.$user->profile_photo_path;
+        }
+
+        return 'storage/'.$defaultPhotoName;
+    }
 }

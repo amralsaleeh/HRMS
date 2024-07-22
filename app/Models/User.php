@@ -16,7 +16,14 @@ use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    use CreatedUpdatedDeletedBy, HasApiTokens, HasFactory, HasProfilePhoto, HasRoles, Notifiable, SoftDeletes, TwoFactorAuthenticatable;
+    use CreatedUpdatedDeletedBy,
+        HasApiTokens,
+        HasFactory,
+        HasProfilePhoto,
+        HasRoles,
+        Notifiable,
+        SoftDeletes,
+        TwoFactorAuthenticatable;
 
     protected $fillable = [
         'name',
@@ -29,12 +36,7 @@ class User extends Authenticatable
         'profile_photo_path',
     ];
 
-    protected $hidden = [
-        'password',
-        'remember_token',
-        'two_factor_recovery_codes',
-        'two_factor_secret',
-    ];
+    protected $hidden = ['password', 'remember_token', 'two_factor_recovery_codes', 'two_factor_secret'];
 
     protected $casts = [
         'email_verified_at' => 'datetime',
@@ -42,11 +44,13 @@ class User extends Authenticatable
 
     protected $appends = ['profile_photo_url'];
 
+    // 👉 Links
     public function employee(): BelongsTo
     {
         return $this->belongsTo(Employee::class);
     }
 
+    // 👉 Attributes
     public function getEmployeeFullNameAttribute()
     {
         if ($this->employee) {

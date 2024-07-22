@@ -18,6 +18,7 @@ class Center extends Model
 
     protected $fillable = ['name', 'start_work_hour', 'end_work_hour', 'weekends'];
 
+    // 👉 Links
     public function timelines(): HasMany
     {
         return $this->hasMany(Timeline::class);
@@ -28,6 +29,31 @@ class Center extends Model
         return $this->belongsToMany(Holiday::class);
     }
 
+    // 👉 Attributes
+    protected function name(): Attribute
+    {
+        return Attribute::make(set: fn (string $value) => ucfirst($value));
+    }
+
+    protected function startWorkHour(): Attribute
+    {
+        return Attribute::make(get: fn (string $value) => Carbon::parse($value)->format('H:i'));
+    }
+
+    protected function endWorkHour(): Attribute
+    {
+        return Attribute::make(get: fn (string $value) => Carbon::parse($value)->format('H:i'));
+    }
+
+    protected function weekends(): Attribute
+    {
+        return Attribute::make(
+            get: fn (string $value) => explode(',', $value),
+            set: fn (array $value) => implode(',', $value)
+        );
+    }
+
+    // 👉 Functions
     public function activeEmployees()
     {
         if (
@@ -69,28 +95,5 @@ class Center extends Model
         }
 
         return $activeEmployees;
-    }
-
-    protected function name(): Attribute
-    {
-        return Attribute::make(set: fn (string $value) => ucfirst($value));
-    }
-
-    protected function startWorkHour(): Attribute
-    {
-        return Attribute::make(get: fn (string $value) => Carbon::parse($value)->format('H:i'));
-    }
-
-    protected function endWorkHour(): Attribute
-    {
-        return Attribute::make(get: fn (string $value) => Carbon::parse($value)->format('H:i'));
-    }
-
-    protected function weekends(): Attribute
-    {
-        return Attribute::make(
-            get: fn (string $value) => explode(',', $value),
-            set: fn (array $value) => implode(',', $value)
-        );
     }
 }

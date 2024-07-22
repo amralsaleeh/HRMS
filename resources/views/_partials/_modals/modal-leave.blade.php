@@ -37,19 +37,19 @@
             </div>
             <div class="col-md-3 col-12">
               <label class="form-label">{{ __('From Date') }}</label>
-              <input  wire:model='newLeaveInfo.fromDate' type="text" class="form-control flatpickr-input active  @error('newLeaveInfo.fromDate') is-invalid @enderror" placeholder="YYYY-MM-DD" id="flatpickr-date-from" readonly="readonly">
+              <input  wire:model='newLeaveInfo.fromDate' type="text" class="form-control flatpickr-input active  @error('newLeaveInfo.fromDate') is-invalid @enderror" id="flatpickr-date-from" readonly="readonly">
             </div>
             <div class="col-md-3 col-12">
               <label class="form-label w-100">{{ __('To Date') }}</label>
-              <input wire:model='newLeaveInfo.toDate'  class="form-control flatpickr-input active @error('newLeaveInfo.toDate') is-invalid @enderror" type="text" placeholder="YYYY-MM-DD" id="flatpickr-date-to" readonly="readonly" />
+              <input wire:model='newLeaveInfo.toDate'  class="form-control flatpickr-input active @error('newLeaveInfo.toDate') is-invalid @enderror" type="text" id="flatpickr-date-to" readonly="readonly" />
             </div>
             <div class="col-md-3 col-12">
               <label class="form-label w-100">{{ __('Start At') }}</label>
-              <input wire:model='newLeaveInfo.startAt' class="form-control @error('newLeaveInfo.startAt') is-invalid @enderror" type="text" placeholder="HH:MM" id="startAt" autocomplete="off" />
+              <input wire:model='newLeaveInfo.startAt' class="form-control @error('newLeaveInfo.startAt') is-invalid @enderror" type="text" id="startAt" autocomplete="off" />
             </div>
             <div class="col-md-3 col-12">
               <label class="form-label w-100">{{ __('End At') }}</label>
-              <input wire:model='newLeaveInfo.endAt' class="form-control @error('newLeaveInfo.endAt') is-invalid @enderror" type="text" placeholder="HH:MM" id="endAt" autocomplete="off" />
+              <input wire:model='newLeaveInfo.endAt' class="form-control @error('newLeaveInfo.endAt') is-invalid @enderror" type="text" id="endAt" autocomplete="off" />
             </div>
             <div class="col-12 mb-4">
               <label class="form-label w-100">{{ __('Note') }}</label>
@@ -130,7 +130,7 @@
           select2LeaveId.each(function () {
             var $this = $(this);
             $this.wrap('<div class="position-relative"></div>').select2({
-              placeholder: 'Select..',
+              placeholder: "{{ __('Search...') }}",
               dropdownParent: $this.parent()
             });
           });

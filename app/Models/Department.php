@@ -13,19 +13,17 @@ class Department extends Model
 {
     use CreatedUpdatedDeletedBy, HasFactory, SoftDeletes;
 
-    protected $fillable = [
-        'name',
-    ];
+    protected $fillable = ['name'];
 
+    // 👉 Links
     public function timelines(): HasMany
     {
         return $this->hasMany(Timeline::class);
     }
 
+    // 👉 Attributes
     protected function name(): Attribute
     {
-        return Attribute::make(
-            set: fn (string $value) => ucfirst($value),
-        );
+        return Attribute::make(set: fn (string $value) => ucfirst($value));
     }
 }

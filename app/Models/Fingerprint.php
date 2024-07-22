@@ -15,39 +15,36 @@ class Fingerprint extends Model
 {
     use CreatedUpdatedDeletedBy, HasFactory, SoftDeletes;
 
-    protected $fillable = [
-        'employee_id',
-        'date',
-        'log',
-        'check_in',
-        'check_out',
-        'is_checked',
-        'excuse',
-    ];
+    protected $fillable = ['employee_id', 'date', 'log', 'check_in', 'check_out', 'is_checked', 'excuse'];
 
+    // 👉 Links
     public function employee(): BelongsTo
     {
         return $this->belongsTo(Employee::class);
     }
 
+    // 👉 Attributes
     protected function checkIn(): Attribute
     {
-        return Attribute::make(
-            get: fn (?string $value) => $value !== null ? Carbon::parse($value)->format('H:i') : '',
-        );
+        return Attribute::make(get: fn (?string $value) => $value !== null ? Carbon::parse($value)->format('H:i') : '');
     }
 
     protected function checkOut(): Attribute
     {
-        return Attribute::make(
-            get: fn (?string $value) => $value !== null ? Carbon::parse($value)->format('H:i') : '',
-        );
+        return Attribute::make(get: fn (?string $value) => $value !== null ? Carbon::parse($value)->format('H:i') : '');
     }
 
-    // Scope - Start
-    public function scopeFilteredFingerprints(Builder $query, $selectedEmployeeId, $fromDate, $toDate, $isAbsence, $isOneFingerprint): void
-    {
-        $query->where('employee_id', $selectedEmployeeId)
+    // 👉 Scopes
+    public function scopeFilteredFingerprints(
+        Builder $query,
+        $selectedEmployeeId,
+        $fromDate,
+        $toDate,
+        $isAbsence,
+        $isOneFingerprint
+    ): void {
+        $query
+            ->where('employee_id', $selectedEmployeeId)
             ->whereBetween('date', [$fromDate, $toDate])
             ->when($isAbsence, function ($query) {
                 return $query->whereNull('log');
@@ -57,5 +54,4 @@ class Fingerprint extends Model
             })
             ->orderBy('date');
     }
-    // Scope - End
 }

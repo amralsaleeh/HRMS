@@ -12,19 +12,15 @@ class Message extends Model
 {
     use CreatedUpdatedDeletedBy, HasFactory, SoftDeletes;
 
-    protected $fillable = [
-        'employee_id',
-        'text',
-        'recipient',
-        'is_sent',
-        'error',
-    ];
+    protected $fillable = ['employee_id', 'text', 'recipient', 'is_sent', 'error'];
 
+    // 👉 Links
     public function employee(): BelongsTo
     {
         return $this->belongsTo(Employee::class);
     }
 
+    // 👉 Functions
     public function getMessageSenderPhoto()
     {
         // return User::where('name', $this->updated_by)->first()->profile_photo_path ?? 'storage/profile-photos/.administrator.jpg';

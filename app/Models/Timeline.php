@@ -23,6 +23,7 @@ class Timeline extends Model
         'notes',
     ];
 
+    // 👉 Links
     public function center(): BelongsTo
     {
         return $this->belongsTo(Center::class);
