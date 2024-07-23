@@ -102,8 +102,7 @@
       <div class="card-header">
         <h5 class="card-title mb-0">{{ __('Assets') }}</h5>
       </div>
-      <div class="card-body">
-        <div class="table-responsive text-nowrap">
+      <div class="table-responsive text-nowrap">
         <table class="table table-hover">
           <thead>
             <tr>
@@ -142,7 +141,7 @@
                     </p>
                     <button class="btn btn-label-primary mb-4" data-bs-toggle="modal" data-bs-target="#assetModal">
                       {{ __('Add New Asset') }}
-                      </button>
+                    </button>
                     <div>
                       <img src="{{ asset('assets/img/illustrations/page-misc-under-maintenance.png') }}" width="200" class="img-fluid">
                     </div>
@@ -152,7 +151,6 @@
             @endforelse
           </tbody>
         </table>
-      </div>
       </div>
     </div>
   </div>
