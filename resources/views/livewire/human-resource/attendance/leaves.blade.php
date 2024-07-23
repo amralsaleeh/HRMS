@@ -80,10 +80,13 @@
       <!-- Calendar -->
       <div class="col app-calendar-content">
         <div class="card shadow-none border-0">
-          <div class="card-body pb-0">
+          <div class="card-body pb-0" style="height: 464px;">
             <div>
               <div class="row d-flex justify-content-between">
-                <div class="col-8 d-flex overflow-hidden align-items-center">
+                <div class="col-7 p-0 d-flex overflow-hidden align-items-center">
+                  <a class="nav-item d-xl-none nav-link px-0 mx-2" href="javascript:void(0)" data-bs-toggle="sidebar" data-overlay="" data-target="#app-calendar-sidebar">
+                    <i class="ti ti-menu-2 ti-sm"></i>
+                  </a>
                   <div class="flex-shrink-0 avatar">
                     <img src="{{ Storage::disk("public")->url($selectedEmployee->profile_photo_path) }}" class="rounded-circle" alt="Avatar">
                   </div>
@@ -92,10 +95,10 @@
                     <small class="user-status text-muted">{{ $selectedEmployee->current_position }}</small>
                   </div>
                 </div>
-                <div class="col-4 btn-group d-flex justify-content-end">
+                <div class="col-5 btn-group d-flex justify-content-end">
                   <button wire:click.prevent='showCreateLeaveModal' type="button" class="btn btn-primary"
                           data-bs-toggle="modal" data-bs-target="#leaveModal">
-                    <span class="ti-xs ti ti-plus me-1"></span>{{ __('Add New Record') }}
+                    <span class="ti ti-plus me-1"></span>{{ __('Add New Record') }}
                   </button>
                   <button type="button"
                           class="btn btn-primary dropdown-toggle dropdown-toggle-split waves-effect waves-light"
