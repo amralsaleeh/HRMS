@@ -142,7 +142,7 @@
                           <td>
                             {{ __($discount->reason) }}
                             @if ($discount->is_auto)
-                              <span class="badge badge-center rounded-pill bg-label-secondary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="tooltip-primary" data-bs-original-title="Automatic"><i class="ti ti-settings"></i></span>
+                              <span class="badge badge-center rounded-pill bg-label-secondary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="tooltip-primary" data-bs-original-title="{{ __('Automatic') }}"><i class="ti ti-settings"></i></span>
                             @endif
                           </td>
                         </tr>
