@@ -78,7 +78,7 @@ class Categories extends Component
         ]);
 
         $this->dispatch('closeModal', elementId: '#categoryModal');
-        $this->dispatch('toastr', type: 'success'/* , title: 'Done!' */ , message: 'Going Well!');
+        $this->dispatch('toastr', type: 'success' /* , title: 'Done!' */, message: __('Going Well!'));
     }
 
     public function showEditCategoryModal(Category $category)
@@ -97,7 +97,7 @@ class Categories extends Component
         ]);
 
         $this->dispatch('closeModal', elementId: '#categoryModal');
-        $this->dispatch('toastr', type: 'success'/* , title: 'Done!' */ , message: 'Going Well!');
+        $this->dispatch('toastr', type: 'success' /* , title: 'Done!' */, message: __('Going Well!'));
 
         $this->reset('isEdit', 'categoryName');
     }
@@ -110,7 +110,7 @@ class Categories extends Component
     public function deleteCategory(Category $category)
     {
         $category->delete();
-        $this->dispatch('toastr', type: 'success'/* , title: 'Done!' */ , message: 'Going Well!');
+        $this->dispatch('toastr', type: 'success' /* , title: 'Done!' */, message: __('Going Well!'));
     }
 
     public function submitSubCategory()
@@ -131,7 +131,7 @@ class Categories extends Component
         ]);
 
         $this->dispatch('closeModal', elementId: '#subCategoryModal');
-        $this->dispatch('toastr', type: 'success'/* , title: 'Done!' */ , message: 'Going Well!');
+        $this->dispatch('toastr', type: 'success' /* , title: 'Done!' */, message: __('Going Well!'));
     }
 
     public function showEditSubCategoryModal(SubCategory $subCategory)
@@ -150,7 +150,7 @@ class Categories extends Component
         ]);
 
         $this->dispatch('closeModal', elementId: '#subCategoryModal');
-        $this->dispatch('toastr', type: 'success'/* , title: 'Done!' */ , message: 'Going Well!');
+        $this->dispatch('toastr', type: 'success' /* , title: 'Done!' */, message: __('Going Well!'));
 
         $this->reset('isEdit', 'subCategoryName');
     }
@@ -163,6 +163,6 @@ class Categories extends Component
     public function deleteSubCategory(SubCategory $subCategory)
     {
         $subCategory->delete();
-        $this->dispatch('toastr', type: 'success'/* , title: 'Done!' */ , message: 'Going Well!');
+        $this->dispatch('toastr', type: 'success' /* , title: 'Done!' */, message: __('Going Well!'));
     }
 }

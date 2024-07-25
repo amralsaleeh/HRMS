@@ -43,11 +43,10 @@ class Positions extends Component
         Position::create([
             'name' => $this->name,
             'vacancies_count' => $this->vacanciesCount,
-
         ]);
 
         $this->dispatch('closeModal', elementId: '#positionModal');
-        $this->dispatch('toastr', type: 'success'/* , title: 'Done!' */ , message: 'Going Well!');
+        $this->dispatch('toastr', type: 'success' /* , title: 'Done!' */, message: __('Going Well!'));
     }
 
     public function editPosition()
@@ -57,11 +56,10 @@ class Positions extends Component
         $this->position->update([
             'name' => $this->name,
             'vacancies_count' => $this->vacanciesCount,
-
         ]);
 
         $this->dispatch('closeModal', elementId: '#positionModal');
-        $this->dispatch('toastr', type: 'success'/* , title: 'Done!' */ , message: 'Going Well!');
+        $this->dispatch('toastr', type: 'success' /* , title: 'Done!' */, message: __('Going Well!'));
 
         $this->reset();
     }
@@ -74,7 +72,7 @@ class Positions extends Component
     public function deletePosition(Position $position)
     {
         $position->delete();
-        $this->dispatch('toastr', type: 'success'/* , title: 'Done!' */ , message: 'Going Well!');
+        $this->dispatch('toastr', type: 'success' /* , title: 'Done!' */, message: __('Going Well!'));
     }
 
     public function showNewPositionModal()
@@ -91,6 +89,5 @@ class Positions extends Component
 
         $this->name = $position->name;
         $this->vacanciesCount = $position->vacancies_count;
-
     }
 }
