@@ -73,7 +73,7 @@ class Holidays extends Component
         ]);
 
         $this->dispatch('closeModal', elementId: '#holidayModal');
-        $this->dispatch('toastr', type: 'success'/* , title: 'Done!' */ , message: 'Going Well!');
+        $this->dispatch('toastr', type: 'success' /* , title: 'Done!' */, message: __('Going Well!'));
     }
 
     public function editHoliday()
@@ -93,7 +93,7 @@ class Holidays extends Component
         ]);
 
         $this->dispatch('closeModal', elementId: '#holidayModal');
-        $this->dispatch('toastr', type: 'success'/* , title: 'Done!' */ , message: 'Going Well!');
+        $this->dispatch('toastr', type: 'success' /* , title: 'Done!' */, message: __('Going Well!'));
 
         $this->reset('isEdit', 'name', 'centers', 'fromDate', 'toDate', 'note');
     }
@@ -106,7 +106,7 @@ class Holidays extends Component
     public function deleteHoliday(Holiday $holiday)
     {
         $holiday->delete();
-        $this->dispatch('toastr', type: 'success'/* , title: 'Done!' */ , message: 'Going Well!');
+        $this->dispatch('toastr', type: 'success' /* , title: 'Done!' */, message: __('Going Well!'));
     }
 
     public function showNewHolidayModal()
@@ -126,6 +126,5 @@ class Holidays extends Component
         $this->toDate = $holiday->to_date;
         $this->note = $holiday->note;
         // $this->dispatchBrowserEvent('openEditHolidayModal');
-
     }
 }

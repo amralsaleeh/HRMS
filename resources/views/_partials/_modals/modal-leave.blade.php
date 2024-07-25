@@ -101,7 +101,9 @@
             noCalendar: true,
             time_24hr: true,
             defaultHour: 9,
-            minuteIncrement:1
+            minuteIncrement:1,
+            minTime: "9:00",
+            maxTime: "15:30"
           });
         }
 
@@ -114,7 +116,9 @@
             time_24hr: true,
             defaultHour: 15,
             defaultMinute: 30,
-            minuteIncrement:1
+            minuteIncrement:1,
+            minTime: "9:00",
+            maxTime: "15:30"
           });
         }
       });

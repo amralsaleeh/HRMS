@@ -60,7 +60,7 @@ class Centers extends Component
         ]);
 
         $this->dispatch('closeModal', elementId: '#centerModal');
-        $this->dispatch('toastr', type: 'success'/* , title: 'Done!' */ , message: 'Going Well!');
+        $this->dispatch('toastr', type: 'success' /* , title: 'Done!' */, message: __('Going Well!'));
     }
 
     public function editCenter()
@@ -75,7 +75,7 @@ class Centers extends Component
         ]);
 
         $this->dispatch('closeModal', elementId: '#centerModal');
-        $this->dispatch('toastr', type: 'success'/* , title: 'Done!' */ , message: 'Going Well!');
+        $this->dispatch('toastr', type: 'success' /* , title: 'Done!' */, message: __('Going Well!'));
 
         $this->reset();
     }
@@ -88,7 +88,7 @@ class Centers extends Component
     public function deleteCenter(Center $center)
     {
         $center->delete();
-        $this->dispatch('toastr', type: 'success'/* , title: 'Done!' */ , message: 'Going Well!');
+        $this->dispatch('toastr', type: 'success' /* , title: 'Done!' */, message: __('Going Well!'));
     }
 
     public function showNewCenterModal()
@@ -116,14 +116,27 @@ class Centers extends Component
 
     public function getMembersCount($center_id)
     {
-        return Timeline::where('center_id', $center_id)->whereNull('end_date')->distinct('employee_id')->count();
+        return Timeline::where('center_id', $center_id)
+            ->whereNull('end_date')
+            ->distinct('employee_id')
+            ->count();
     }
 
     public function getDaysName($weekends)
     {
         $daysName = [];
         foreach ($weekends as $day) {
-            array_push($daysName, mb_substr(Carbon::now()->startOfWeek()->addDays($day)->format('l'), 0, 3));
+            array_push(
+                $daysName,
+                mb_substr(
+                    Carbon::now()
+                        ->startOfWeek()
+                        ->addDays($day)
+                        ->format('l'),
+                    0,
+                    3
+                )
+            );
         }
 
         return implode(', ', $daysName);

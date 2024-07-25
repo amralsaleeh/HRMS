@@ -43,7 +43,7 @@ class Departments extends Component
         ]);
 
         $this->dispatch('closeModal', elementId: '#departmentModal');
-        $this->dispatch('toastr', type: 'success'/* , title: 'Done!' */ , message: 'Going Well!');
+        $this->dispatch('toastr', type: 'success' /* , title: 'Done!' */, message: __('Going Well!'));
     }
 
     public function editDepartment()
@@ -55,7 +55,7 @@ class Departments extends Component
         ]);
 
         $this->dispatch('closeModal', elementId: '#departmentModal');
-        $this->dispatch('toastr', type: 'success'/* , title: 'Done!' */ , message: 'Going Well!');
+        $this->dispatch('toastr', type: 'success' /* , title: 'Done!' */, message: __('Going Well!'));
 
         $this->reset();
     }
@@ -68,7 +68,7 @@ class Departments extends Component
     public function deleteDepartment(Department $department)
     {
         $department->delete();
-        $this->dispatch('toastr', type: 'success'/* , title: 'Done!' */ , message: 'Going Well!');
+        $this->dispatch('toastr', type: 'success' /* , title: 'Done!' */, message: __('Going Well!'));
     }
 
     public function showNewDepartmentModal()
@@ -93,6 +93,9 @@ class Departments extends Component
 
     public function getMembersCount($department_id)
     {
-        return Timeline::where('department_id', $department_id)->whereNull('end_date')->distinct('employee_id')->count();
+        return Timeline::where('department_id', $department_id)
+            ->whereNull('end_date')
+            ->distinct('employee_id')
+            ->count();
     }
 }

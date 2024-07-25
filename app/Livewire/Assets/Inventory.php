@@ -66,7 +66,8 @@ class Inventory extends Component
             ->paginate(6);
 
         return view('livewire.assets.inventory', [
-            'assets' => $assets, ]);
+            'assets' => $assets,
+        ]);
     }
 
     public function submitAsset()
@@ -76,7 +77,20 @@ class Inventory extends Component
 
     public function showNewAssetModal()
     {
-        $this->reset('isEdit', 'assetId', 'oldId', 'description', 'status', 'inService', 'realPrice', 'expectedPrice', 'acquisitionDate', 'acquisitionType', 'fundedBy', 'note');
+        $this->reset(
+            'isEdit',
+            'assetId',
+            'oldId',
+            'description',
+            'status',
+            'inService',
+            'realPrice',
+            'expectedPrice',
+            'acquisitionDate',
+            'acquisitionType',
+            'fundedBy',
+            'note'
+        );
     }
 
     public function addAsset()
@@ -97,12 +111,25 @@ class Inventory extends Component
         ]);
 
         $this->dispatch('closeModal', elementId: '#assetModal');
-        $this->dispatch('toastr', type: 'success'/* , title: 'Done!' */ , message: 'Going Well!');
+        $this->dispatch('toastr', type: 'success' /* , title: 'Done!' */, message: __('Going Well!'));
     }
 
     public function showEditAssetModal(Asset $asset)
     {
-        $this->reset('isEdit', 'assetId', 'oldId', 'description', 'status', 'inService', 'realPrice', 'expectedPrice', 'acquisitionDate', 'acquisitionType', 'fundedBy', 'note');
+        $this->reset(
+            'isEdit',
+            'assetId',
+            'oldId',
+            'description',
+            'status',
+            'inService',
+            'realPrice',
+            'expectedPrice',
+            'acquisitionDate',
+            'acquisitionType',
+            'fundedBy',
+            'note'
+        );
         $this->isEdit = true;
         $this->asset = $asset;
         $this->assetId = $asset->id;
@@ -136,9 +163,22 @@ class Inventory extends Component
         ]);
 
         $this->dispatch('closeModal', elementId: '#assetModal');
-        $this->dispatch('toastr', type: 'success'/* , title: 'Done!' */ , message: 'Going Well!');
+        $this->dispatch('toastr', type: 'success' /* , title: 'Done!' */, message: __('Going Well!'));
 
-        $this->reset('isEdit', 'assetId', 'oldId', 'description', 'status', 'inService', 'realPrice', 'expectedPrice', 'acquisitionDate', 'acquisitionType', 'fundedBy', 'note');
+        $this->reset(
+            'isEdit',
+            'assetId',
+            'oldId',
+            'description',
+            'status',
+            'inService',
+            'realPrice',
+            'expectedPrice',
+            'acquisitionDate',
+            'acquisitionType',
+            'fundedBy',
+            'note'
+        );
     }
 
     public function confirmDeleteAsset($asset)
@@ -149,6 +189,6 @@ class Inventory extends Component
     public function deleteAsset(Asset $asset)
     {
         $asset->delete();
-        $this->dispatch('toastr', type: 'success'/* , title: 'Done!' */ , message: 'Going Well!');
+        $this->dispatch('toastr', type: 'success' /* , title: 'Done!' */, message: __('Going Well!'));
     }
 }

@@ -89,7 +89,7 @@ class Employees extends Component
         ]);
 
         $this->dispatch('closeModal', elementId: '#employeeModal');
-        $this->dispatch('toastr', type: 'success' /* , title: 'Done!' */, message: 'Going Well!');
+        $this->dispatch('toastr', type: 'success' /* , title: 'Done!' */, message: __('Going Well!'));
 
         session()->flash('openTimelineModal', true);
 
@@ -137,7 +137,7 @@ class Employees extends Component
         ]);
 
         $this->dispatch('closeModal', elementId: '#employeeModal');
-        $this->dispatch('toastr', type: 'success' /* , title: 'Done!' */, message: 'Going Well!');
+        $this->dispatch('toastr', type: 'success' /* , title: 'Done!' */, message: __('Going Well!'));
     }
 
     // 👉 Delete employee
@@ -149,6 +149,6 @@ class Employees extends Component
     public function deleteEmployee(Employee $employee)
     {
         $employee->delete();
-        $this->dispatch('toastr', type: 'success' /* , title: 'Done!' */, message: 'Going Well!');
+        $this->dispatch('toastr', type: 'success' /* , title: 'Done!' */, message: __('Going Well!'));
     }
 }

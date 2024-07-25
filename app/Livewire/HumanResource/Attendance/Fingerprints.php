@@ -139,7 +139,7 @@ class Fingerprints extends Component
         ]);
 
         $this->dispatch('closeCanvas', elementId: '#addRecordSidebar');
-        $this->dispatch('toastr', type: 'success' /* , title: 'Done!' */, message: 'Going Well!');
+        $this->dispatch('toastr', type: 'success' /* , title: 'Done!' */, message: __('Going Well!'));
     }
 
     public function editFingerprint()
@@ -157,7 +157,7 @@ class Fingerprints extends Component
         ]);
 
         $this->dispatch('closeCanvas', elementId: '#addRecordSidebar');
-        $this->dispatch('toastr', type: 'success' /* , title: 'Done!' */, message: 'Going Well!');
+        $this->dispatch('toastr', type: 'success' /* , title: 'Done!' */, message: __('Going Well!'));
 
         $this->reset('isEdit', 'date', 'checkIn', 'checkOut');
     }
@@ -170,7 +170,7 @@ class Fingerprints extends Component
     public function deleteFingerprint(Fingerprint $fingerprint)
     {
         $fingerprint->delete();
-        $this->dispatch('toastr', type: 'success' /* , title: 'Done!' */, message: 'Going Well!');
+        $this->dispatch('toastr', type: 'success' /* , title: 'Done!' */, message: __('Going Well!'));
     }
 
     public function importFromExcel()
