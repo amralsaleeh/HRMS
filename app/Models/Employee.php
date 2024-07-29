@@ -147,12 +147,16 @@ class Employee extends Model
     // 👉 Functions
     public function getWorkedYearsAttribute()
     {
-        $data = Timeline::where('employee_id', $this->id)
-            ->where('is_sequent', 1)
-            ->latest()
-            ->value('start_date');
+        $workedYear =
+          Carbon::now()->year -
+          Carbon::parse(
+              Timeline::where('employee_id', $this->id)
+                  ->where('is_sequent', 1)
+                  ->latest()
+                  ->value('start_date')
+          )->year;
 
-        return Carbon::now()->diffInYears(Carbon::parse($data)) + 1; // The reason for " + 1 " is to calculate the started year too.
+        return $workedYear == 0 ? 1 : $workedYear;
     }
 
     public function getCurrentPositionAttribute()
