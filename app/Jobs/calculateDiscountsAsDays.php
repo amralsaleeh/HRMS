@@ -5,6 +5,7 @@ namespace App\Jobs;
 use App\Models\Center;
 use App\Models\Employee;
 use App\Models\EmployeeLeave;
+use App\Models\Holiday;
 use App\Notifications\DefaultNotification;
 use Carbon\Carbon;
 use Carbon\CarbonInterface;
@@ -115,12 +116,16 @@ class calculateDiscountsAsDays implements ShouldQueue
                     ->get();
 
                 foreach ($employeeLeaves as $leave) {
-                    // اجازة - يومية - اداري
+                    // 👉 اجازة - يومية - اداري
                     if ($leave->id == 1101) {
                         $startDate = Carbon::create($leave->pivot->from_date);
                         $dates = $startDate->range($leave->pivot->to_date);
 
                         foreach ($dates as $date) {
+                            if ($this->checkIfHoliday($date)) {
+                                continue;
+                            }
+
                             if ($employee->max_leave_allowed > 0) {
                                 $this->decrementMaxLeaveAllowed($employee, $date, 'Administrative leave');
                             } else {
@@ -138,22 +143,26 @@ class calculateDiscountsAsDays implements ShouldQueue
                         $leave->pivot->save();
                     }
 
-                    // اجازة - يومية - بلا راتب
+                    // 👉 اجازة - يومية - بلا راتب
                     if ($leave->id == 1103) {
                         $this->createDiscountFromLeave($employee, $employeeFingerprints, $leave, 'Unpaid leave');
                         $leave->pivot->is_checked = 1;
                         $leave->pivot->save();
                     }
 
-                    // اجازة - يومية - صحي (تقرير)
+                    // 👉 اجازة - يومية - صحي (تقرير)
                     if ($leave->id == 1104) {
                         $this->createDiscountFromLeave($employee, $employeeFingerprints, $leave, 'Health (report) leave');
                         $leave->pivot->is_checked = 1;
                         $leave->pivot->save();
                     }
 
-                    // اجازة - ساعية - اداري
+                    // 👉 اجازة - ساعية - اداري
                     if ($leave->id == 1201) {
+                        if ($this->checkIfHoliday($leave->pivot->from_date)) {
+                            continue;
+                        }
+
                         $fingerprint = $employeeFingerprints->where('date', $leave->pivot->from_date)->first();
                         if ($fingerprint) {
                             if ($fingerprint->check_in <= $startOfWork && $fingerprint->check_out >= $endOfWork) {
@@ -498,6 +507,15 @@ class calculateDiscountsAsDays implements ShouldQueue
         } else {
             return false;
         }
+    }
+
+    public function checkIfHoliday($date)
+    {
+        return Holiday::where('from_date', '<=', $date)
+            ->where('to_date', '>=', $date)
+            ->exists()
+          ? true
+          : false;
     }
 
     public function checkIfEarly($center, $employee, $employeeLeaves, $fingerprint, $endOfWork)
