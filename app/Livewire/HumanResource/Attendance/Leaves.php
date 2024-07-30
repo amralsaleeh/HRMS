@@ -25,10 +25,10 @@ class Leaves extends Component
     use WithFileUploads, WithPagination;
 
     /*
-      Leave ID Structure:
-      1 Leave - 1 Daily  - LeaveID
-      2 Task  - 2 Hourly - LeaveID
-      */
+        Leave ID Structure:
+        1 Leave - 1 Daily  - LeaveID
+        2 Task  - 2 Hourly - LeaveID
+        */
 
     // 👉 Variables
     public $activeEmployees = [];
@@ -107,6 +107,22 @@ class Leaves extends Component
 
             $this->fromDate = $dates[0];
             $this->toDate = $dates[1];
+        }
+
+        if (
+            auth()
+                ->user()
+                ->hasAnyRole(['Admin', 'HR'])
+        ) {
+            // Return filtered leaves
+            return Employee::find($this->selectedEmployeeId)
+                ->leaves()
+                ->when($this->selectedLeaveId, function ($query) {
+                    return $query->where('leaves.id', $this->selectedLeaveId);
+                })
+                ->whereBetween('from_date', [$this->fromDate, $this->toDate])
+                ->orderBy('from_date')
+                ->paginate(7);
         }
 
         // Return filtered leaves
