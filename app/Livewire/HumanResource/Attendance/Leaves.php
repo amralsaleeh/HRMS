@@ -25,10 +25,10 @@ class Leaves extends Component
     use WithFileUploads, WithPagination;
 
     /*
-    Leave ID Structure:
-    1 Leave - 1 Daily  - LeaveID
-    2 Task  - 2 Hourly - LeaveID
-    */
+      Leave ID Structure:
+      1 Leave - 1 Daily  - LeaveID
+      2 Task  - 2 Hourly - LeaveID
+      */
 
     // 👉 Variables
     public $activeEmployees = [];
@@ -74,7 +74,12 @@ class Leaves extends Component
         $this->leaveTypes = Leave::all();
 
         $user = Employee::find(Auth::user()->employee_id);
-        $center = Center::find($user->timelines()->where('end_date', null)->first()->center_id);
+        $center = Center::find(
+            $user
+                ->timelines()
+                ->where('end_date', null)
+                ->first()->center_id
+        );
         $this->activeEmployees = $center->activeEmployees();
 
         $currentDate = Carbon::now();
@@ -131,20 +136,27 @@ class Leaves extends Component
                 'newLeaveInfo.LeaveId' => 'Type',
                 'newLeaveInfo.fromDate' => 'From Date',
                 'newLeaveInfo.toDate' => 'To Date',
-            ]);
+            ]
+        );
 
-        if (substr($this->newLeaveInfo['LeaveId'], 1, 1) == 1 && ($this->newLeaveInfo['startAt'] != null || $this->newLeaveInfo['endAt'] != null)) {
+        if (
+            substr($this->newLeaveInfo['LeaveId'], 1, 1) == 1 &&
+            ($this->newLeaveInfo['startAt'] != null || $this->newLeaveInfo['endAt'] != null)
+        ) {
             session()->flash('error', __('Can\'t add daily leave with time!'));
             $this->dispatch('closeModal', elementId: '#leaveModal');
-            $this->dispatch('toastr', type: 'error'/* , title: 'Done!' */ , message: __('Requires Attention!'));
+            $this->dispatch('toastr', type: 'error' /* , title: 'Done!' */, message: __('Requires Attention!'));
 
             return;
         }
 
-        if (substr($this->newLeaveInfo['LeaveId'], 1, 1) == 2 && ($this->newLeaveInfo['startAt'] == null || $this->newLeaveInfo['endAt'] == null)) {
+        if (
+            substr($this->newLeaveInfo['LeaveId'], 1, 1) == 2 &&
+            ($this->newLeaveInfo['startAt'] == null || $this->newLeaveInfo['endAt'] == null)
+        ) {
             session()->flash('error', __('Can\'t add hourly leave without time!'));
             $this->dispatch('closeModal', elementId: '#leaveModal');
-            $this->dispatch('toastr', type: 'error'/* , title: 'Done!' */ , message: __('Requires Attention!'));
+            $this->dispatch('toastr', type: 'error' /* , title: 'Done!' */, message: __('Requires Attention!'));
 
             return;
         }
@@ -152,7 +164,7 @@ class Leaves extends Component
         if ($this->newLeaveInfo['fromDate'] > $this->newLeaveInfo['toDate']) {
             session()->flash('error', __('Check the dates entered. "From Date" cannot be greater than "To Date"'));
             $this->dispatch('closeModal', elementId: '#leaveModal');
-            $this->dispatch('toastr', type: 'error'/* , title: 'Done!' */ , message: __('Requires Attention!'));
+            $this->dispatch('toastr', type: 'error' /* , title: 'Done!' */, message: __('Requires Attention!'));
 
             return;
         }
@@ -160,7 +172,7 @@ class Leaves extends Component
         if ($this->newLeaveInfo['startAt'] > $this->newLeaveInfo['endAt']) {
             session()->flash('error', __('Check the times entered. "Start At" cannot be greater than "End To"'));
             $this->dispatch('closeModal', elementId: '#leaveModal');
-            $this->dispatch('toastr', type: 'error'/* , title: 'Done!' */ , message: __('Requires Attention!'));
+            $this->dispatch('toastr', type: 'error' /* , title: 'Done!' */, message: __('Requires Attention!'));
 
             return;
         }
@@ -190,7 +202,7 @@ class Leaves extends Component
         $this->dispatch('scrollToTop');
 
         $this->dispatch('closeModal', elementId: '#leaveModal');
-        $this->dispatch('toastr', type: 'success'/* , title: 'Done!' */ , message: __('Going Well!'));
+        $this->dispatch('toastr', type: 'success' /* , title: 'Done!' */, message: __('Going Well!'));
     }
 
     public function showUpdateLeaveModal($id)
@@ -200,7 +212,9 @@ class Leaves extends Component
         $this->isEdit = true;
         $this->employeeLeaveId = $id;
 
-        $record = DB::table('employee_leave')->where('id', $this->employeeLeaveId)->first();
+        $record = DB::table('employee_leave')
+            ->where('id', $this->employeeLeaveId)
+            ->first();
 
         $this->selectedEmployeeId = $record->employee_id;
         $this->newLeaveInfo = [
@@ -231,7 +245,7 @@ class Leaves extends Component
         $this->dispatch('scrollToTop');
 
         $this->dispatch('closeModal', elementId: '#leaveModal');
-        $this->dispatch('toastr', type: 'success'/* , title: 'Done!' */ , message: __('Going Well!'));
+        $this->dispatch('toastr', type: 'success' /* , title: 'Done!' */, message: __('Going Well!'));
 
         $this->reset('isEdit', 'newLeaveInfo');
     }
@@ -243,25 +257,32 @@ class Leaves extends Component
 
     public function destroyLeave()
     {
-        $this->selectedEmployee->leaves()->wherePivot('id', $this->confirmedId)->detach();
-        $this->dispatch('toastr', type: 'success'/* , title: 'Done!' */ , message: __('Going Well!'));
+        $this->selectedEmployee
+            ->leaves()
+            ->wherePivot('id', $this->confirmedId)
+            ->detach();
+        $this->dispatch('toastr', type: 'success' /* , title: 'Done!' */, message: __('Going Well!'));
     }
 
     public function importFromExcel()
     {
-        $this->validate([
-            'file' => 'required|mimes:xlsx',
-        ], [
-            'file.required' => 'Please select a file to upload',
-            'file.mimes' => 'Excel files is accepted only',
-        ]);
+        $this->validate(
+            [
+                'file' => 'required|mimes:xlsx',
+            ],
+            [
+                'file.required' => 'Please select a file to upload',
+                'file.mimes' => 'Excel files is accepted only',
+            ]
+        );
 
         try {
             Excel::import(new ImportLeaves(), $this->file);
 
-            Notification::send(Auth::user(), new DefaultNotification(
-                Auth::user()->id, 'Successfully imported the leaves file'
-            ));
+            Notification::send(
+                Auth::user(),
+                new DefaultNotification(Auth::user()->id, 'Successfully imported the leaves file')
+            );
             $this->dispatch('refreshNotifications')->to(Navbar::class);
 
             session()->flash('success', __('Well done! The file has been imported successfully.'));
@@ -275,7 +296,12 @@ class Leaves extends Component
     public function exportToExcel()
     {
         $user = Employee::find(Auth::user()->employee_id);
-        $center = Center::find($user->timelines()->where('end_date', null)->first()->center_id);
+        $center = Center::find(
+            $user
+                ->timelines()
+                ->where('end_date', null)
+                ->first()->center_id
+        );
         $this->activeEmployees = $center->activeEmployees();
 
         $centerEmployees = array_map(function ($object) {
@@ -300,14 +326,30 @@ class Leaves extends Component
             ->leftJoin('employees', 'employee_leave.employee_id', '=', 'employees.id') // Left join for missing employee
             ->leftJoin('leaves', 'employee_leave.leave_id', '=', 'leaves.id') // Left join for missing leave type
             ->whereIn('employee_leave.employee_id', $centerEmployees)
-            ->where('employee_leave.created_at', '>=', Carbon::now()->subDays(7)->format('Y-m-d'))
+            ->where(
+                'employee_leave.created_at',
+                '>=',
+                Carbon::now()
+                    ->subDays(7)
+                    ->format('Y-m-d')
+            )
             ->where('is_checked', 0)
             ->where(DB::raw('SUBSTRING_INDEX(employee_leave.created_by, " ", 1)'), '=', $firstName)
             ->get();
 
         session()->flash('success', __('Well done! The file has been exported successfully.'));
 
-        return Excel::download(new ExportLeaves($leavesToExport), 'Leaves - '.Auth::user()->name.' - '.Carbon::now()->subDays(7)->format('Y-m-d').' --- '.Carbon::now()->format('Y-m-d').'.xlsx');
-
+        return Excel::download(
+            new ExportLeaves($leavesToExport),
+            'Leaves - '.
+              Auth::user()->name.
+              ' - '.
+              Carbon::now()
+                  ->subDays(7)
+                  ->format('Y-m-d').
+              ' --- '.
+              Carbon::now()->format('Y-m-d').
+              '.xlsx'
+        );
     }
 }
