@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Models\Employee;
+use App\Models\Timeline;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 
@@ -30,7 +31,9 @@ class LeavesCalculator extends Command
     public function handle()
     {
         $activeEmployees = Employee::where('is_active', true)->get();
+
         foreach ($activeEmployees as $employee) {
+            // 👉 10 Years
             if ($employee->workedYears >= 10) {
                 if (Carbon::now()->month == 1) {
                     $employee->max_leave_allowed += 5;
@@ -39,13 +42,17 @@ class LeavesCalculator extends Command
                 } else {
                     $employee->max_leave_allowed += 2;
                 }
-            } elseif ($employee->workedYears >= 6 && $employee->workedYears <= 9) {
+            }
+            // 👉 6 - 9 Years
+            elseif ($employee->workedYears >= 6 && $employee->workedYears <= 9) {
                 if (Carbon::now()->month == 7) {
                     $employee->max_leave_allowed += 4;
                 } else {
                     $employee->max_leave_allowed += 2;
                 }
-            } elseif ($employee->workedYears == 5) {
+            }
+            // 👉 5 Years
+            elseif ($employee->workedYears == 5) {
                 if (Carbon::now()->month == 7) {
                     $employee->max_leave_allowed += 4;
                 } elseif (Carbon::now()->month >= 8) {
@@ -53,9 +60,15 @@ class LeavesCalculator extends Command
                 } else {
                     $employee->max_leave_allowed += 2;
                 }
-            } elseif ($employee->workedYears <= 4) {
+            }
+            // 👉 4 Years
+            elseif ($employee->workedYears <= 4) {
                 if (Carbon::now()->month == 7) {
-                    $employee->max_leave_allowed += 3;
+                    if ($this->checkIsJokerValid($employee)) {
+                        $employee->max_leave_allowed += 3;
+                    } else {
+                        $employee->max_leave_allowed += 1;
+                    }
                 } else {
                     $employee->max_leave_allowed += 1;
                 }
@@ -65,5 +78,21 @@ class LeavesCalculator extends Command
         }
 
         return 1;
+    }
+
+    public function checkIsJokerValid($employee)
+    {
+        $startDate = Carbon::parse(
+            Timeline::where('employee_id', $employee->id)
+                ->where('is_sequent', 1)
+                ->orderBy('start_date')
+                ->first()?->start_date
+        );
+
+        if ($startDate->year == Carbon::now()->year && $startDate->month == 7) {
+            return false;
+        }
+
+        return true;
     }
 }

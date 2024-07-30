@@ -14,6 +14,17 @@
 
   @section('page-style')
     <link rel="stylesheet" href="{{asset('assets/vendor/css/pages/app-calendar.css')}}"/>
+
+    <style>
+      tr.disabled {
+        opacity: 0.5;
+        pointer-events: none;
+        text-decoration: line-through;
+      }
+      tr.disabled i {
+          display: none;
+      }
+    </style>
   @endsection
 
   {{-- Alerts --}}
@@ -140,14 +151,15 @@
                   </thead>
                   <tbody class="table-border-bottom-0">
                   @forelse($leaves as $leave)
-                    <tr>
+                    <tr class="@if ($leave->pivot->is_checked) disabled @endif">
                       <td>{{ $leave->pivot->id }}</td>
                       <td>{{ $leave->name }}</td>
                       <td>{{ $leave->pivot->from_date }}</td>
                       <td>{{ $leave->pivot->to_date }}</td>
                       <td>{{ $leave->pivot->start_at ? Carbon::parse($leave->pivot->start_at)->format('H:i') : '-' }}</td>
                       <td>{{ $leave->pivot->end_at ? Carbon::parse($leave->pivot->end_at)->format('H:i') : '-' }}</td>
-                      <td>
+                      <td
+                        >
                         <div>
                           <a wire:click.prevent="showUpdateLeaveModal({{ $leave->pivot->id }})"  data-bs-toggle="modal" data-bs-target="#leaveModal" href=""><i
                               class="ti ti-edit text-info"></i></a>
@@ -214,7 +226,7 @@
           select2selectedEmployeeId.each(function () {
             var $this = $(this);
             $this.wrap('<div class="position-relative"></div>').select2({
-              placeholder: 'Select..',
+              placeholder: "{{ __('Select..') }}",
               dropdownParent: $this.parent()
             });
           });
