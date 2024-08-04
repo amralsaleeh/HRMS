@@ -3,6 +3,7 @@
 namespace App\Livewire\HumanResource;
 
 use App\Exports\ExportDiscounts;
+use App\Exports\ExportSummary;
 use App\Models\Discount;
 use App\Models\Employee;
 use Livewire\Component;
@@ -16,7 +17,10 @@ class Statistics extends Component
 
     public function mount()
     {
-        $this->batches = Discount::where('is_sent', 0)->distinct()->pluck('batch')->toArray();
+        $this->batches = Discount::where('is_sent', 0)
+            ->distinct()
+            ->pluck('batch')
+            ->toArray();
         $this->selectedBatch = end($this->batches);
     }
 
@@ -31,18 +35,38 @@ class Statistics extends Component
     {
         return Employee::whereHas('discounts', function ($query) {
             $query->where('batch', $this->selectedBatch);
-        })->with(['discounts' => function ($query) {
-            $query->where('batch', $this->selectedBatch);
-        }])->get()->each(function ($employee) {
-            $employee->discounts = $employee->discounts->sortBy('date');
-            $employee->cash_discounts_count = $employee->discounts->filter(function ($discount) {
-                return $discount->rate > 0;
-            })->count();
-        })->sortBy('first_name')->sortByDesc('cash_discounts_count');
+        })
+            ->with([
+                'discounts' => function ($query) {
+                    $query->where('batch', $this->selectedBatch);
+                },
+            ])
+            ->get()
+            ->each(function ($employee) {
+                $employee->discounts = $employee->discounts->sortBy('date');
+                $employee->cash_discounts_count = $employee->discounts
+                    ->filter(function ($discount) {
+                        return $discount->rate > 0;
+                    })
+                    ->count();
+            })
+            ->sortBy('first_name')
+            ->sortByDesc('cash_discounts_count');
     }
 
     public function exportDiscounts()
     {
-        return Excel::download(new ExportDiscounts($this->getEmployeeDiscounts()), 'Discounts - '.$this->selectedBatch.'.xlsx');
+        return Excel::download(
+            new ExportDiscounts($this->getEmployeeDiscounts()),
+            'Discounts - '.$this->selectedBatch.'.xlsx'
+        );
+    }
+
+    public function exportSummary()
+    {
+        return Excel::download(
+            new ExportSummary($this->getEmployeeDiscounts()),
+            'Summary - '.$this->selectedBatch.'.xlsx'
+        );
     }
 }
