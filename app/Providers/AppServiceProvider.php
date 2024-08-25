@@ -25,9 +25,10 @@ class AppServiceProvider extends ServiceProvider
         /* preventLazyLoading
          * preventAccessingMissingAttributes
          * preventSilentlyDiscardingAttributes
-         * all at once using the 'Model::shouldBeStrict()'
+         * you can enable all of them at once by using the 'Model::shouldBeStrict()'
          */
-        Model::shouldBeStrict();
+        Model::preventAccessingMissingAttributes();
+        Model::preventSilentlyDiscardingAttributes();
 
         Lang::handleMissingKeysUsing(function (string $key, array $replacements, string $locale) {
             info("Missing translation key [$key] detected.");
