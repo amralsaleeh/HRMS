@@ -232,6 +232,17 @@ class Dashboard extends Component
             return;
         }
 
+        if (
+            substr($this->newLeaveInfo['LeaveId'], 1, 1) == 2 &&
+            $this->newLeaveInfo['fromDate'] != $this->newLeaveInfo['toDate']
+        ) {
+            session()->flash('error', __('Hourly leave must be on the same day'));
+            $this->dispatch('closeModal', elementId: '#leaveModal');
+            $this->dispatch('toastr', type: 'error' /* , title: 'Done!' */, message: __('Requires Attention!'));
+
+            return;
+        }
+
         if ($this->newLeaveInfo['fromDate'] > $this->newLeaveInfo['toDate']) {
             session()->flash('error', __('Check the dates entered. "From Date" can not be greater than "To Date"'));
             $this->dispatch('closeModal', elementId: '#leaveModal');
