@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\ServiceProvider;
@@ -21,6 +22,14 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        /* preventLazyLoading
+         * preventAccessingMissingAttributes
+         * preventSilentlyDiscardingAttributes
+         * you can enable all of them at once by using the 'Model::shouldBeStrict()'
+         */
+        // Model::preventAccessingMissingAttributes();
+        // Model::preventSilentlyDiscardingAttributes();
+
         Lang::handleMissingKeysUsing(function (string $key, array $replacements, string $locale) {
             info("Missing translation key [$key] detected.");
 
@@ -29,9 +38,6 @@ class AppServiceProvider extends ServiceProvider
 
         Carbon::setWeekStartsAt(Carbon::SUNDAY);
 
-        Carbon::setWeekendDays([
-            Carbon::FRIDAY,
-            Carbon::SATURDAY,
-        ]);
+        Carbon::setWeekendDays([Carbon::FRIDAY, Carbon::SATURDAY]);
     }
 }

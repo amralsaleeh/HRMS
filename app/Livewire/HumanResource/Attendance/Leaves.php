@@ -25,10 +25,10 @@ class Leaves extends Component
     use WithFileUploads, WithPagination;
 
     /*
-        Leave ID Structure:
-        1 Leave - 1 Daily  - LeaveID
-        2 Task  - 2 Hourly - LeaveID
-        */
+            Leave ID Structure:
+            1 Leave - 1 Daily  - LeaveID
+            2 Task  - 2 Hourly - LeaveID
+            */
 
     // 👉 Variables
     public $activeEmployees = [];
@@ -171,6 +171,17 @@ class Leaves extends Component
             ($this->newLeaveInfo['startAt'] == null || $this->newLeaveInfo['endAt'] == null)
         ) {
             session()->flash('error', __('Can\'t add hourly leave without time!'));
+            $this->dispatch('closeModal', elementId: '#leaveModal');
+            $this->dispatch('toastr', type: 'error' /* , title: 'Done!' */, message: __('Requires Attention!'));
+
+            return;
+        }
+
+        if (
+            substr($this->newLeaveInfo['LeaveId'], 1, 1) == 2 &&
+            $this->newLeaveInfo['fromDate'] != $this->newLeaveInfo['toDate']
+        ) {
+            session()->flash('error', __('Hourly leave must be on the same day!'));
             $this->dispatch('closeModal', elementId: '#leaveModal');
             $this->dispatch('toastr', type: 'error' /* , title: 'Done!' */, message: __('Requires Attention!'));
 

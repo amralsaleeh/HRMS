@@ -5,7 +5,7 @@
         <th align=center style="font-size: 16px">Full Name</th>
         <th align=center style="font-size: 16px">W/R</th>
         <th align=center style="font-size: 16px">Discounts</th>
-        <th align=center style="font-size: 16px">Cash discounts</th>
+        <th align=center style="font-size: 16px">Cash Discounts</th>
         <th align=center style="font-size: 16px">-</th>
         <th align=center style="font-size: 16px">Date</th>
         <th align=center style="font-size: 16px">Rate</th>
@@ -39,11 +39,6 @@
             </td>
           </tr>
         @endforeach
-        <tr>
-          <td colspan=9>
-
-          </td>
-        </tr>
     @endforeach
     </tbody>
 </table>
