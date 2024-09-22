@@ -17,7 +17,7 @@
             <td bgcolor=green align=center style="border: 3px solid #CCC;">{{ $employee->id }}</td>
             <td bgcolor=green align=center style="border: 3px solid #CCC;">{{ $employee->full_name }}</td>
             <td bgcolor=green align=center style="border: 3px solid #CCC;">{{ $employee->contract->work_rate }}</td>
-            <td bgcolor=green align=center style="border: 3px solid #CCC;">{{ $employee->max_leave_allowed }}</td>
+            <td bgcolor=green align=center style="border: 3px solid #CCC;">{{ $employee->balance_leave_allowed . "/" . $employee->max_leave_allowed }}</td>
             <td bgcolor=green align=center style="border: 3px solid #CCC;">{{ $employee->delay_counter }}</td>
             <td bgcolor=green align=center style="border: 3px solid #CCC;">{{ $employee->hourly_counter }}</td>
             <td bgcolor=gray align=center style="border: 3px solid #CCC;">{{ count($employee->discounts) }}</td>
