@@ -30,34 +30,45 @@ class LeavesCalculator extends Command
      */
     public function handle()
     {
+        // balance_leave_allowed: The cumulative leave balance (non-deductible) is reset at the beginning of each year only.
+        // max_leave_allowed: Cumulative leave balance (deducted) every time the employee takes leave.
+
         $activeEmployees = Employee::where('is_active', true)->get();
 
         foreach ($activeEmployees as $employee) {
             // 👉 10 Years
             if ($employee->workedYears >= 10) {
                 if (Carbon::now()->month == 1) {
+                    $employee->balance_leave_allowed += 5;
                     $employee->max_leave_allowed += 5;
                 } elseif (Carbon::now()->month == 7) {
+                    $employee->balance_leave_allowed += 5;
                     $employee->max_leave_allowed += 5;
                 } else {
+                    $employee->balance_leave_allowed += 2;
                     $employee->max_leave_allowed += 2;
                 }
             }
             // 👉 6 - 9 Years
             elseif ($employee->workedYears >= 6 && $employee->workedYears <= 9) {
                 if (Carbon::now()->month == 7) {
+                    $employee->balance_leave_allowed += 4;
                     $employee->max_leave_allowed += 4;
                 } else {
+                    $employee->balance_leave_allowed += 2;
                     $employee->max_leave_allowed += 2;
                 }
             }
             // 👉 5 Years
             elseif ($employee->workedYears == 5) {
                 if (Carbon::now()->month == 7) {
+                    $employee->balance_leave_allowed += 4;
                     $employee->max_leave_allowed += 4;
                 } elseif (Carbon::now()->month >= 8) {
+                    $employee->balance_leave_allowed += 1;
                     $employee->max_leave_allowed += 1;
                 } else {
+                    $employee->balance_leave_allowed += 2;
                     $employee->max_leave_allowed += 2;
                 }
             }
@@ -65,11 +76,14 @@ class LeavesCalculator extends Command
             elseif ($employee->workedYears <= 4) {
                 if (Carbon::now()->month == 7) {
                     if ($this->checkIsJokerValid($employee)) {
+                        $employee->balance_leave_allowed += 3;
                         $employee->max_leave_allowed += 3;
                     } else {
+                        $employee->balance_leave_allowed += 1;
                         $employee->max_leave_allowed += 1;
                     }
                 } else {
+                    $employee->balance_leave_allowed += 1;
                     $employee->max_leave_allowed += 1;
                 }
             }
