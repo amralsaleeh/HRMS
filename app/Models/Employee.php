@@ -32,6 +32,7 @@ class Employee extends Model
         'gender',
         'address',
         'notes',
+        'balance_leave_allowed',
         'max_leave_allowed',
         'delay_counter',
         'hourly_counter',
