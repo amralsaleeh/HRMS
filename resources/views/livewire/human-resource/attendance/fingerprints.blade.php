@@ -96,7 +96,7 @@
                 </div>
 
                 <div class="col-5 btn-group d-flex justify-content-end">
-                  <button wire:click.prevent='showNewFingerprintModal' type="button" class="btn btn-primary waves-effect waves-light"
+                  <button {{ Auth::user()->hasRole('Admin') ? "" : "disabled" }}  wire:click.prevent='showNewFingerprintModal' type="button" class="btn btn-primary waves-effect waves-light"
                           data-bs-toggle="offcanvas" data-bs-target="#addRecordSidebar" aria-controls="addRecordSidebar"><i
                           class="ti ti-plus me-1"></i> {{ __('Add New Record') }}
                   </button>
