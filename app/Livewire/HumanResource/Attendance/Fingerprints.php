@@ -134,6 +134,7 @@ class Fingerprints extends Component
         Fingerprint::create([
             'employee_id' => $this->selectedEmployeeId,
             'date' => $this->date,
+            'log' => $this->checkIn.' '.$this->checkOut,
             'check_in' => $this->checkIn,
             'check_out' => $this->checkOut,
         ]);
@@ -152,6 +153,7 @@ class Fingerprints extends Component
 
         $this->fingerprint->update([
             'date' => $this->date,
+            'log' => $this->checkIn.' '.$this->checkOut,
             'check_in' => $this->checkIn,
             'check_out' => $this->checkOut,
         ]);
