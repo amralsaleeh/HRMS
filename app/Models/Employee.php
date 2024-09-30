@@ -148,14 +148,25 @@ class Employee extends Model
     // 👉 Functions
     public function getWorkedYearsAttribute()
     {
-        $workedYear =
-          Carbon::now()->year -
-          Carbon::parse(
-              Timeline::where('employee_id', $this->id)
-                  ->where('is_sequent', 1)
-                  ->latest()
-                  ->value('start_date')
-          )->year;
+        $lastIsSequentRange = Timeline::where('employee_id', $this->id)
+            ->where('is_sequent', 0)
+            ->orderBy('id', 'desc')
+            ->first();
+
+        if ($lastIsSequentRange) {
+            $startDateRow = Timeline::where('is_sequent', 1)
+                ->where('employee_id', $this->id)
+                ->where('id', '>', $lastIsSequentRange->id)
+                ->orderBy('start_date')
+                ->first();
+        } else {
+            $startDateRow = Timeline::where('is_sequent', 1)
+                ->where('employee_id', $this->id)
+                ->orderBy('start_date')
+                ->first();
+        }
+
+        $workedYear = Carbon::now()->year - Carbon::parse($startDateRow->start_date)->year;
 
         return $workedYear == 0 ? 1 : $workedYear;
     }
