@@ -88,6 +88,7 @@ class LeavesCalculator extends Command
                 }
             }
 
+            info('LeavesCalculator: Emp_Id: '.$employee->id.' - MLA: '.$employee->max_leave_allowed);
             $employee->save();
         }
 

@@ -166,6 +166,12 @@ class Employee extends Model
                 ->first();
         }
 
+        if (! $startDateRow) {
+            $startDateRow = Timeline::where('employee_id', $this->id)
+                ->latest()
+                ->first();
+        }
+
         $workedYear = Carbon::now()->year - Carbon::parse($startDateRow->start_date)->year;
 
         return $workedYear == 0 ? 1 : $workedYear;
