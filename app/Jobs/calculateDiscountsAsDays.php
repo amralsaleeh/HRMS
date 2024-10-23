@@ -406,6 +406,8 @@ class calculateDiscountsAsDays implements ShouldQueue
                     'leave_id' => $leave->pivot->leave_id,
                     'from_date' => $startDate,
                     'to_date' => $splitDate->copy(),
+                    'start_at' => $leave->pivot->start_at,
+                    'end_at' => $leave->pivot->end_at,
                     'note' => $leave->pivot->note,
                     'is_authorized' => $leave->pivot->is_authorized,
                     'is_checked' => $leave->pivot->is_checked,
@@ -416,6 +418,8 @@ class calculateDiscountsAsDays implements ShouldQueue
                     'leave_id' => $leave->pivot->leave_id,
                     'from_date' => $splitDate->copy()->addDay(),
                     'to_date' => $endDate,
+                    'start_at' => $leave->pivot->start_at,
+                    'end_at' => $leave->pivot->end_at,
                     'note' => $leave->pivot->note,
                     'is_authorized' => $leave->pivot->is_authorized,
                     'is_checked' => $leave->pivot->is_checked,
@@ -429,6 +433,7 @@ class calculateDiscountsAsDays implements ShouldQueue
         }
     }
 
+    // test
     public function decrementMaxLeaveAllowed($employee, $date, $reason)
     {
         $employee->decrement('max_leave_allowed');
