@@ -689,7 +689,9 @@ class calculateDiscountsAsDays implements ShouldQueue
 
                 $timeCovered = $timeCovered->add($duration);
 
-                $leave->pivot->is_checked = 1;
+                if ($leave->pivot->leave_id != 1210) {
+                    $leave->pivot->is_checked = 1;
+                }
                 $leave->pivot->save();
             }
         }
@@ -713,7 +715,9 @@ class calculateDiscountsAsDays implements ShouldQueue
 
                 $timeCovered = $timeCovered->add($duration);
 
-                $leave->pivot->is_checked = 1;
+                if ($leave->pivot->leave_id != 1210) {
+                    $leave->pivot->is_checked = 1;
+                }
                 $leave->pivot->save();
             }
         }
