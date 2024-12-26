@@ -60,13 +60,18 @@
                     @endforeach
                   </select>
                 </div>
-                <button wire:click.prvent='generateMessages' wire:loading.attr="disabled" class="btn btn-primary waves-effect waves-light" type="button">
-                  <span wire:loading.remove>{{ __('Generate') }}</span>
-                  <div wire:loading wire:target="generateMessages">
-                    <span class="spinner-border me-1" role="status" aria-hidden="true"></span>
-                    <span>{{ __('Generating...') }}</span>
-                  </div>
-                </button>
+                <div>
+                  <button wire:click.prvent='generateMessages' wire:loading.attr="disabled" class="btn btn-primary waves-effect waves-light mb-2" type="button">
+                    <span wire:loading.remove>{{ __('Generate') }}</span>
+                    <div wire:loading wire:target="generateMessages">
+                      <span class="spinner-border me-1" role="status" aria-hidden="true"></span>
+                      <span>{{ __('Generating...') }}</span>
+                    </div>
+                  </button>
+                  <button wire:click='sendPendingMessagesByWhatsapp' wire:loading.attr="disabled" class="btn btn-primary waves-effect waves-light mb-2" type="button">
+                    <span>{{ __('Send by WhatsApp') }}</span>
+                  </button>
+                </div>
               </form>
             </div>
         </div>
