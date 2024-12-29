@@ -25,11 +25,13 @@ class sendPendingMessagesByWhatsapp implements ShouldQueue
 
         foreach ($pendingMessages as $messages) {
             $response = $this->sendText($messages->text, $messages->recipient);
-            if ($response === true) {
+            // info($messages->recipient);
+            if ($response == true) {
                 $messages->update(['is_sent' => true, 'error' => 'Sent by WhatsApp API']);
             } else {
-                $messages->update(['is_sent' => false, 'error' => $response]);
+                $messages->update(['is_sent' => false, 'error' => '!! NOT SENT !!']);
             }
+            sleep(1);
         }
     }
 
@@ -48,5 +50,18 @@ class sendPendingMessagesByWhatsapp implements ShouldQueue
         } else {
             return (string) $response;
         }
+    }
+
+    // https://waha.devlike.pro/docs/how-to/contacts/#check-phone-number-exists
+    public function checkExists($recipientNumbers)
+    {
+        $response = Http::withHeaders([
+            'Content-Type' => 'application/json',
+        ])->get('http://localhost:3000/api/contacts/check-exists', [
+            'session' => 'default',
+            'phone' => $recipientNumbers,
+        ]);
+
+        dd($response);
     }
 }
