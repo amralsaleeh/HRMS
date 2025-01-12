@@ -3,6 +3,7 @@
 namespace App\Livewire\HumanResource;
 
 use App\Jobs\sendPendingMessages;
+use App\Jobs\sendPendingMessagesByWhatsapp;
 use App\Models\Discount;
 use App\Models\Employee;
 use App\Models\Message;
@@ -169,6 +170,16 @@ class Messages extends Component
     {
         if ($this->messagesStatus['unsent'] != 0) {
             sendPendingMessages::dispatch();
+            session()->flash('info', "Let's go! Messages on their way!");
+        } else {
+            $this->dispatch('toastr', type: 'info' /* , title: 'Done!' */, message: 'Everything has sent already!');
+        }
+    }
+
+    public function sendPendingMessagesByWhatsapp()
+    {
+        if ($this->messagesStatus['unsent'] != 0) {
+            sendPendingMessagesByWhatsapp::dispatch();
             session()->flash('info', "Let's go! Messages on their way!");
         } else {
             $this->dispatch('toastr', type: 'info' /* , title: 'Done!' */, message: 'Everything has sent already!');

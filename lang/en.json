@@ -117,6 +117,7 @@
   "Hi,": "Hi,",
   "Holidays": "Holidays",
   "Hourly": "Hourly",
+  "Hourly leave must be on the same day!": "Hourly leave must be on the same day!",
   "HRMS": "HRMS",
   "Human resource": "Human resource",
   "Human Resource": "Human Resource",
@@ -212,6 +213,7 @@
   "Select Gender": "Select Gender",
   "Select..": "Select..",
   "Send": "Send",
+  "Send by WhatsApp": "Send by WhatsApp",
   "Sending...": "Sending...",
   "Sequent": "Sequent",
   "Sequential": "Sequential",
@@ -284,6 +286,5 @@
   "Work end at": "Work end at",
   "Work matters, but Holidays matter more!": "Work matters, but Holidays matter more!",
   "Work start at": "Work start at",
-  "Working Hours": "Working Hours",
-  "Hourly leave must be on the same day!": "Hourly leave must be on the same day!"
+  "Working Hours": "Working Hours"
 }

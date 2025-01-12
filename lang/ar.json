@@ -117,6 +117,7 @@
   "Hi,": "مرحباً،",
   "Holidays": "العطل الرسمية",
   "Hourly": "الساعيات",
+  "Hourly leave must be on the same day!": "الإجازة الساعية يجب أن تكون في ذات اليوم!",
   "HRMS": "نظام إدارة الموارد البشرية",
   "Human resource": "الموارد البشرية",
   "Human Resource": "الموارد البشرية",
@@ -212,6 +213,7 @@
   "Select Gender": "اختر الجنس",
   "Select..": "اختر..",
   "Send": "إرسال",
+  "Send by WhatsApp": "إرسال عن طريق الواتساب",
   "Sending...": "جاري الإرسال",
   "Sequent": "متسلسل",
   "Sequential": "التسلسل",
@@ -284,6 +286,5 @@
   "Work end at": "نهاية الدوام",
   "Work matters, but Holidays matter more!": "العمل مهم، ولكن العطل أهم",
   "Work start at": "بداية الدوام",
-  "Working Hours": "ساعات العمل",
-  "Hourly leave must be on the same day!": "الإجازة الساعية يجب أن تكون في ذات اليوم!"
+  "Working Hours": "ساعات العمل"
 }
