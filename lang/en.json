@@ -55,6 +55,7 @@
   "Check the times entered. \"Start At\" cannot be greater than \"End To\"": "Check the times entered. \"Start At\" cannot be greater than \"End To\"",
   "Choose the dates and take a sip of coffee while the rocket makes its touchdown.": "Choose the dates and take a sip of coffee while the rocket makes its touchdown.",
   "Clear Chat": "Clear Chat",
+  "Continuity": "Continuity",
   "Contract ID": "Contract ID",
   "Counters": "Counters",
   "Create messages summarizing discount details and balances for each employee.": "Create messages summarizing discount details and balances for each employee.",
@@ -286,5 +287,6 @@
   "Work end at": "Work end at",
   "Work matters, but Holidays matter more!": "Work matters, but Holidays matter more!",
   "Work start at": "Work start at",
-  "Working Hours": "Working Hours"
+  "Working Hours": "Working Hours",
+  "years": "years"
 }
