@@ -55,6 +55,7 @@
   "Check the times entered. \"Start At\" cannot be greater than \"End To\"": "الرجاء التحقق من الأوقات المدخلة، لا يمكن ان يكون \"تبدأ من\" أكبر من \"تنتهي بـ\"",
   "Choose the dates and take a sip of coffee while the rocket makes its touchdown.": "اختر التاريخ المطلوب وانتظر ريثما يتم تحميل النتائج",
   "Clear Chat": "مسح الرسالة",
+  "Continuity": "الاستمرارية",
   "Contract ID": "معرف العقد",
   "Counters": "العدادات",
   "Create messages summarizing discount details and balances for each employee.": "توليد رسائل تلخص تفاصيل الحسم ورصيد الإجازات لكل موظف",
@@ -286,5 +287,6 @@
   "Work end at": "نهاية الدوام",
   "Work matters, but Holidays matter more!": "العمل مهم، ولكن العطل أهم",
   "Work start at": "بداية الدوام",
-  "Working Hours": "ساعات العمل"
+  "Working Hours": "ساعات العمل",
+  "years": "سنوات"
 }

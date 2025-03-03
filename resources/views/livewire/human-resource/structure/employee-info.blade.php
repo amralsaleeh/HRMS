@@ -68,6 +68,9 @@
                 <li class="list-inline-item">
                   <i class="ti ti-rocket"></i> {{ $employee->join_at_short_form }}
                 </li>
+                <li class="list-inline-item">
+                  <i class="ti ti-player-track-next"></i> {{ __('Continuity') . ": " . $employee->worked_years . " " . __('years') }}
+                </li>
               </ul>
             </div>
             <button wire:click='toggleActive' type="button" class="btn @if ($employee->is_active == 1)  btn-success @else btn-danger  @endif waves-effect waves-light">
