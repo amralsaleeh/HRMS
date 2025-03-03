@@ -61,7 +61,7 @@ class Center extends Model
                 User::find(Auth::id())
                     ?->getRoleNames()
                     ->first(),
-                ['Admin', 'HR']
+                ['Admin', 'HR', 'CR-S']
             )
         ) {
             $activeEmployees = Timeline::whereNull('end_date')
