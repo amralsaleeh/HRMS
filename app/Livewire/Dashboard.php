@@ -78,7 +78,7 @@ class Dashboard extends Component
         }
 
         $this->fromDateLimit = Carbon::now()
-            ->subDays(90) //TODO: Change it back to 30 day only
+            ->subDays(30)
             ->format('Y-m-d');
         $this->changelogs = Changelog::latest()->get();
     }
