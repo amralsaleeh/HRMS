@@ -96,4 +96,12 @@ class Center extends Model
 
         return $activeEmployees;
     }
+
+    public function getHoliday($date)
+    {
+        return $this->holidays()
+            ->where('from_date', '<=', $date)
+            ->where('to_date', '>=', $date)
+            ->first();
+    }
 }
