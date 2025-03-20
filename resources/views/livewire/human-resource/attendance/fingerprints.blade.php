@@ -130,6 +130,7 @@
                     <th>{{ __('Date') }}</th>
                     <th>{{ __('Check In') }}</th>
                     <th>{{ __('Check Out') }}</th>
+                    <th>{{ __('Excuse') }}</th>
                     <th class="col-1">{{ __('Actions') }}</th>
                   </tr>
                   </thead>
@@ -142,6 +143,9 @@
                       </td>
                       <td>
                         <div class="badge rounded-pill bg-label-secondary">{{ $fingerprint->check_out }}</div>
+                      </td>
+                      <td>
+                        <div class="badge rounded-pill bg-label-secondary">{{ $fingerprint->excuse }}</div>
                       </td>
                       <td>
                         <div>
