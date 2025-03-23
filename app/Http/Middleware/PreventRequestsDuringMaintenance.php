@@ -12,9 +12,9 @@ class PreventRequestsDuringMaintenance extends Middleware
      *
      * @var array<int, string>
      */
-    protected $except = ['/', 'login', 'logout'];
+    protected $except = ['/', 'login', 'logout', '/lang/ar', '/lang/en'];
 
-    public function __construct()
+    public function handle($request, \Closure $next)
     {
         $routes = collect(Route::getRoutes()->getRoutes())
             ->map(function ($route) {
@@ -22,7 +22,9 @@ class PreventRequestsDuringMaintenance extends Middleware
             })
             ->unique()
             ->toArray();
-
+        // dd($routes);
         $this->except = array_merge($this->except, $routes);
+
+        return parent::handle($request, $next);
     }
 }
