@@ -5,7 +5,7 @@ namespace App\Jobs;
 use App\Models\Center;
 use App\Models\Employee;
 use App\Models\EmployeeLeave;
-use App\Models\Holiday;
+use App\Models\Fingerprint;
 use App\Notifications\DefaultNotification;
 use Carbon\Carbon;
 use Carbon\CarbonInterface;
@@ -97,6 +97,7 @@ class calculateDiscountsAsDays implements ShouldQueue
                     ->where('is_checked', 0)
                     ->orderBy('from_date', 'asc')
                     ->get();
+
                 $employeeFingerprints = $this->getEmployeeFingerprints($workDays, $employee);
 
                 $employeeTotalWorkDaysInMinutes = intval($workDaysInMinutes * ($employeeContract->work_rate / 100));
@@ -120,9 +121,12 @@ class calculateDiscountsAsDays implements ShouldQueue
                     if ($leave->id == 1101) {
                         $startDate = Carbon::create($leave->pivot->from_date);
                         $dates = $startDate->range($leave->pivot->to_date);
-
                         foreach ($dates as $date) {
-                            if ($this->checkIfHoliday($date)) {
+                            $holidayExcuse = $this->checkIfHoliday($date, $center);
+
+                            if ($holidayExcuse) {
+                                $this->setFingerprintIsChecked($employee->id, $date, 'Holiday: '.$holidayExcuse);
+
                                 continue;
                             }
 
@@ -136,9 +140,8 @@ class calculateDiscountsAsDays implements ShouldQueue
                                     'batch' => $this->batch,
                                 ]);
                             }
-                            $this->setFingerprintIsChecked($employeeFingerprints, $date, 'Administrative leave');
+                            $this->setFingerprintIsChecked($employee->id, $date, 'Administrative leave');
                         }
-
                         $leave->pivot->is_checked = 1;
                         $leave->pivot->save();
                     }
@@ -153,13 +156,22 @@ class calculateDiscountsAsDays implements ShouldQueue
                     // 👉 اجازة - يومية - صحي (تقرير)
                     if ($leave->id == 1104) {
                         $this->createDiscountFromLeave($employee, $employeeFingerprints, $leave, 'Health (report) leave');
+
+                        $startDate = Carbon::create($leave->pivot->from_date);
+                        $dates = $startDate->range($leave->pivot->to_date);
+
+                        foreach ($dates as $date) {
+                            $this->setFingerprintIsChecked($employee->id, $date, 'Health (report) leave');
+                        }
+
                         $leave->pivot->is_checked = 1;
                         $leave->pivot->save();
                     }
 
                     // 👉 اجازة - ساعية - اداري
                     if ($leave->id == 1201) {
-                        if ($this->checkIfHoliday($leave->pivot->from_date)) {
+                        $holidayExcuse = $this->checkIfHoliday($leave->pivot->from_date, $center);
+                        if ($holidayExcuse) {
                             continue;
                         }
 
@@ -188,7 +200,7 @@ class calculateDiscountsAsDays implements ShouldQueue
                                         );
                                     }
                                     $this->setFingerprintIsChecked(
-                                        $employeeFingerprints,
+                                        $employee->id,
                                         Carbon::parse($leave->pivot->from_date),
                                         'Administrative leave - Exceeded the 3 hours limit'
                                     );
@@ -219,7 +231,7 @@ class calculateDiscountsAsDays implements ShouldQueue
                                             'hourly_counter' => Carbon::parse($employee->hourly_counter)->subHours(7), // TODO: Make 7 inserted variable on settings table
                                         ]);
                                         $this->setFingerprintIsChecked(
-                                            $employeeFingerprints,
+                                            $employee->id,
                                             Carbon::parse($leave->pivot->from_date),
                                             'Administrative leave - Rounded'
                                         );
@@ -237,7 +249,7 @@ class calculateDiscountsAsDays implements ShouldQueue
                         $dates = $startDate->range($leave->pivot->to_date);
 
                         foreach ($dates as $date) {
-                            $this->setFingerprintIsChecked($employeeFingerprints, $date, 'Daily Task');
+                            $this->setFingerprintIsChecked($employee->id, $date, 'Daily Task');
                         }
 
                         $leave->pivot->is_checked = 1;
@@ -348,11 +360,7 @@ class calculateDiscountsAsDays implements ShouldQueue
     public function getCenterEmployees($centerId)
     {
         return Employee::whereHas('timelines', function ($query) use ($centerId) {
-            $query->where(
-                'center_id',
-                $centerId
-                /* ->whereNull('end_date') */
-            );
+            $query->where('center_id', $centerId)->whereNull('end_date');
         })
             ->where('is_active', true)
             ->get();
@@ -459,7 +467,7 @@ class calculateDiscountsAsDays implements ShouldQueue
                 'is_auto' => $isAuto,
                 'batch' => $this->batch,
             ]);
-            $this->setFingerprintIsChecked($employeeFingerprints, $date, $reason);
+            $this->setFingerprintIsChecked($employee->id, $date, $reason);
         }
     }
 
@@ -474,9 +482,12 @@ class calculateDiscountsAsDays implements ShouldQueue
         ]);
     }
 
-    public function setFingerprintIsChecked($employeeFingerprints, $date, $excuse)
+    public function setFingerprintIsChecked($id, $date, $excuse)
     {
-        $fingerprint = $employeeFingerprints->where('date', $date->format('Y-m-d'))->first();
+        $fingerprint = Fingerprint::where('employee_id', $id)
+            ->where('date', $date->format('Y-m-d'))
+            ->first();
+
         if ($fingerprint) {
             $fingerprint->excuse = $excuse;
             $fingerprint->is_checked = 1;
@@ -514,13 +525,15 @@ class calculateDiscountsAsDays implements ShouldQueue
         }
     }
 
-    public function checkIfHoliday($date)
+    public function checkIfHoliday($date, $center)
     {
-        return Holiday::where('from_date', '<=', $date)
-            ->where('to_date', '>=', $date)
-            ->exists()
-          ? true
-          : false;
+        $holiday = $center->getHoliday($date);
+
+        if ($holiday) {
+            return $holiday->name;
+        } else {
+            return null;
+        }
     }
 
     public function checkIfEarly($center, $employee, $employeeLeaves, $fingerprint, $endOfWork)

@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Illuminate\Foundation\Http\Middleware\PreventRequestsDuringMaintenance as Middleware;
+use Illuminate\Support\Facades\Route;
 
 class PreventRequestsDuringMaintenance extends Middleware
 {
@@ -11,7 +12,17 @@ class PreventRequestsDuringMaintenance extends Middleware
      *
      * @var array<int, string>
      */
-    protected $except = [
-        //
-    ];
+    protected $except = ['/', 'login', 'logout'];
+
+    public function __construct()
+    {
+        $routes = collect(Route::getRoutes()->getRoutes())
+            ->map(function ($route) {
+                return '/'.ltrim($route->uri(), '/'); // للتأكد من وجود / في البداية
+            })
+            ->unique()
+            ->toArray();
+
+        $this->except = array_merge($this->except, $routes);
+    }
 }
