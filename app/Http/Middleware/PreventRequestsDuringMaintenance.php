@@ -16,11 +16,13 @@ class PreventRequestsDuringMaintenance extends Middleware
 
     public function __construct()
     {
-        $this->except = array_merge(
-            $this->except,
-            collect(Route::getRoutes()->getRoutesByMethod()['GET'] ?? [])
-                ->map(fn ($route) => $route->uri())
-                ->toArray()
-        );
+        $routes = collect(Route::getRoutes()->getRoutes())
+            ->map(function ($route) {
+                return '/'.ltrim($route->uri(), '/'); // للتأكد من وجود / في البداية
+            })
+            ->unique()
+            ->toArray();
+
+        $this->except = array_merge($this->except, $routes);
     }
 }
