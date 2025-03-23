@@ -19,6 +19,15 @@
     <p class="mb-4 mx-2">
       Sorry for the inconvenience but we're performing some maintenance at the moment
     </p>
+    <button class="btn btn-label-secondary btn-sm">
+      <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+        <i class='ti ti-logout me-2'></i>
+        <span class="align-middle">Logout</span>
+      </a>
+    </button>
+    <form method="POST" id="logout-form" action="{{ route('logout') }}">
+      @csrf
+    </form>
     {{-- <a href="{{url('/')}}" class="btn btn-primary mb-4">Back to home</a> --}}
     <div class="mt-4">
       <img src="{{ asset('assets/img/illustrations/page-misc-under-maintenance.png') }}" alt="page-misc-under-maintenance" width="400" class="img-fluid">
