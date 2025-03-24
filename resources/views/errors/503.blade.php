@@ -15,12 +15,12 @@
 <!--Under Maintenance -->
 <div class="container-xxl">
   <div class="misc-wrapper">
-    <h2 class="mb-1 mx-2">Under Maintenance!</h2>
+    <h2 class="mb-1 mx-2">{{ __('Under Maintenance!') }}</h2>
     <p class="mb-4 mx-2">
-      Sorry for the inconvenience but we're performing some maintenance at the moment
+      {{ __('Sorry for the inconvenience but we\'re performing some maintenance at the moment') }}
     </p>
-    <button class="btn btn-label-secondary" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-      Logout
+    <button class="btn btn-label-secondary mt-3" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+      {{ __('Logout') }}
     </button>
     <form method="POST" id="logout-form" action="{{ route('logout') }}">
       @csrf
