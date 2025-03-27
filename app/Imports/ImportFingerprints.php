@@ -39,7 +39,9 @@ class ImportFingerprints implements ShouldQueue, ToModel, WithChunkReading, With
     {
         return [
             BeforeImport::class => function (BeforeImport $event) {
-                $total_rows = collect($event->reader->getTotalRows())->flatten()->values();
+                $total_rows = collect($event->reader->getTotalRows())
+                    ->flatten()
+                    ->values();
                 $tmp_total_rows = isset($total_rows[0]) ? $total_rows[0] - 1 : 0;
                 $this->import->update([
                     'status' => 'processing',
@@ -52,8 +54,9 @@ class ImportFingerprints implements ShouldQueue, ToModel, WithChunkReading, With
                     'status' => 'finished',
                 ]);
 
-                User::find($this->user_id)
-                    ->notify(new DefaultNotification($this->user_id, 'Successfully imported the fingerprint file'));
+                User::find($this->user_id)->notify(
+                    new DefaultNotification($this->user_id, 'Successfully imported the fingerprint file')
+                );
 
                 session()->flash('success', 'Imported Successfully!');
             },
@@ -67,7 +70,6 @@ class ImportFingerprints implements ShouldQueue, ToModel, WithChunkReading, With
                 Log::alert('Excel Import Failed (Fingerprints): '.$event->e->getMessage());
                 session()->flash('error', 'Error Occurred, Check Log File!');
             },
-
         ];
     }
 
@@ -79,7 +81,7 @@ class ImportFingerprints implements ShouldQueue, ToModel, WithChunkReading, With
     public function model(array $row)
     {
         $employee_id = $row['ac_no'];
-        $date = Carbon::parse($row['date'])->format('Y-m-d');
+        $date = Carbon::createFromFormat('d/m/Y', $row['date'])->format('Y-m-d');
         $log = $row['time'];
         $check_in = null;
         $check_out = null;
