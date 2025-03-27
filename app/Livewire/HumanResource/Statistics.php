@@ -17,11 +17,12 @@ class Statistics extends Component
 
     public function mount()
     {
-        $this->batches = Discount::where('is_sent', 0)
+        $this->batches = Discount::orderBy('batch', 'desc')
             ->distinct()
+            ->limit(3)
             ->pluck('batch')
             ->toArray();
-        $this->selectedBatch = end($this->batches);
+        $this->selectedBatch = reset($this->batches);
     }
 
     public function render()

@@ -15,10 +15,11 @@
 <!--Under Maintenance -->
 <div class="container-xxl">
   <div class="misc-wrapper">
-    <h2 class="mb-1 mx-2">{{ __('Under Maintenance!') }}</h2>
-    <p class="mb-4 mx-2">
-      {{ __('Sorry for the inconvenience but we\'re performing some maintenance at the moment') }}
+    <h2 class="mb-1">{{ __('Under Maintenance!') }}</h2>
+    <p>
+      {{ __('Attention! The page is scheduled for a refined refresh in:') }}
     </p>
+    <h3 id="timer">00:15:00:0</h3>
     <button class="btn btn-label-secondary mt-3" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
       {{ __('Logout') }}
     </button>
@@ -36,3 +37,32 @@
 </div>
 <!-- /Under Maintenance -->
 @endsection
+
+@push('custom-scripts')
+  <script>
+    let totalMilliseconds = 900000;
+    const timerElement = document.getElementById('timer');
+
+    const countdown = setInterval(() => {
+        let hours = Math.floor(totalMilliseconds / (1000 * 3600));
+        let minutes = Math.floor((totalMilliseconds % (1000 * 3600)) / (1000 * 60));
+        let seconds = Math.floor((totalMilliseconds % (1000 * 60)) / 1000);
+        let milliseconds = totalMilliseconds % 1000;
+
+        hours = hours < 10 ? "0" + hours : hours;
+        minutes = minutes < 10 ? "0" + minutes : minutes;
+        seconds = seconds < 10 ? "0" + seconds : seconds;
+
+        let milliDisplay = Math.floor(milliseconds / 100);
+
+        timerElement.textContent = `${hours}:${minutes}:${seconds}.${milliDisplay}`;
+
+        if (totalMilliseconds <= 0) {
+            clearInterval(countdown);
+            window.location.reload();
+        }
+
+        totalMilliseconds -= 100;
+    }, 100);
+</script>
+@endpush
