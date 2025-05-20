@@ -111,6 +111,9 @@ class Personal extends Component
             $query->where('department_id', 1)->where('end_date', null);
         }) */
             ->where('is_active', 1)
+            ->whereHas('contract', function ($query) {
+                $query->where('work_rate', 100);
+            })
             ->get();
 
         $dates = explode(' to ', $this->selectedBatch);
