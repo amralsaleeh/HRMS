@@ -11,14 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('messages', function (Blueprint $table) {
+        Schema::create('bulk_messages', function (Blueprint $table) {
             $table->id();
-            $table
-                ->foreignId('employee_id')
-                ->nullable()
-                ->constrained();
-            $table->longText('text');
-            $table->string('recipient');
+            $table->text('text');
+            $table->text('numbers');
             $table->boolean('is_sent')->default(0);
             $table->string('error')->nullable();
             $table->string('created_by');
@@ -34,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('messages');
+        Schema::dropIfExists('bulk_messages');
     }
 };

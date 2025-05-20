@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\HumanResource;
+namespace App\Livewire\HumanResource\Messages;
 
 use App\Jobs\sendPendingMessages;
 use App\Jobs\sendPendingMessagesByWhatsapp;
@@ -13,7 +13,7 @@ use Illuminate\Support\Number;
 use Livewire\Component;
 use Throwable;
 
-class Messages extends Component
+class Personal extends Component
 {
     use MessageProvider;
 
@@ -70,7 +70,7 @@ class Messages extends Component
 
         $this->dispatch('initialize');
 
-        return view('livewire.human-resource.messages');
+        return view('livewire.human-resource.messages.personal');
     }
 
     public function selectEmployee(Employee $employee)
@@ -172,7 +172,7 @@ class Messages extends Component
             sendPendingMessages::dispatch();
             session()->flash('info', "Let's go! Messages on their way!");
         } else {
-            $this->dispatch('toastr', type: 'info' /* , title: 'Done!' */, message: 'Everything has sent already!');
+            $this->dispatch('toastr', type: 'info' /* , title: 'Done!' */, message: __('Everything has sent already!'));
         }
     }
 
@@ -180,7 +180,7 @@ class Messages extends Component
     {
         if ($this->messagesStatus['unsent'] != 0) {
             sendPendingMessagesByWhatsapp::dispatch();
-            session()->flash('info', "Let's go! Messages on their way!");
+            session()->flash('info', "Let's go! Personal on their way!");
         } else {
             $this->dispatch('toastr', type: 'info' /* , title: 'Done!' */, message: 'Everything has sent already!');
         }

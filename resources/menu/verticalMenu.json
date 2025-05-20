@@ -64,11 +64,24 @@
       ]
     },
     {
-      "url": "/messages",
       "name": "Messages",
       "icon": "menu-icon tf-icons ti ti-message-dots",
       "slug": "messages",
-      "role": ["HR"]
+      "role": ["HR", "CC"],
+      "submenu": [
+        {
+          "url": "messages/bulk",
+          "name": "Bulk",
+          "slug": "messages-bulk",
+          "role": ["HR", "CC"]
+        },
+        {
+          "url": "messages/personal",
+          "name": "Personal",
+          "slug": "messages-personal",
+          "role": ["HR"]
+        }
+      ]
     },
     {
       "url": "/discounts",

@@ -9,7 +9,8 @@ use App\Livewire\HumanResource\Attendance\Fingerprints;
 use App\Livewire\HumanResource\Attendance\Leaves;
 use App\Livewire\HumanResource\Discounts;
 use App\Livewire\HumanResource\Holidays;
-use App\Livewire\HumanResource\Messages;
+use App\Livewire\HumanResource\Messages\Bulk;
+use App\Livewire\HumanResource\Messages\Personal;
 use App\Livewire\HumanResource\Statistics;
 use App\Livewire\HumanResource\Structure\Centers;
 use App\Livewire\HumanResource\Structure\Departments;
@@ -68,8 +69,16 @@ Route::middleware([
         });
     });
 
+    Route::prefix('messages')->group(function () {
+        Route::get('/bulk', Bulk::class)
+            ->middleware('role:Admin|HR|CC')
+            ->name('messages-bulk');
+        Route::get('/personal', Personal::class)
+            ->middleware('role:Admin|HR')
+            ->name('messages-personal');
+    });
+
     Route::group(['middleware' => ['role:Admin|HR']], function () {
-        Route::get('/messages', Messages::class)->name('messages');
         Route::get('/discounts', Discounts::class)->name('discounts');
         Route::get('/holidays', Holidays::class)->name('holidays');
     });
