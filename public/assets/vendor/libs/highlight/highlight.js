@@ -28827,7 +28827,7 @@ function less(hljs) {
       MIXIN_GUARD_MODE,
       IDENT_MODE('keyword', 'all\\b'),
       IDENT_MODE('variable', '@\\{' + IDENT_RE + '\\}'), // otherwise it’s identified as tag
-      
+
       {
         begin: '\\b(' + TAGS.join('|') + ')\\b',
         className: 'selector-tag'
@@ -34253,7 +34253,7 @@ const SYSTEM_SYMBOLS = [
   "MessageObject",
   "MessageOptions",
   "MessagePacket",
-  "Messages",
+  "Personal",
   "MessagesNotebook",
   "MetaCharacters",
   "MetaInformation",
@@ -37379,7 +37379,7 @@ const SYSTEM_SYMBOLS = [
   "$MessageGroups",
   "$MessageList",
   "$MessagePrePrint",
-  "$Messages",
+  "$Personal",
   "$MinMachineNumber",
   "$MinNumber",
   "$MinorReleaseNumber",
@@ -49270,11 +49270,11 @@ Last update: 07.01.2023, Arma 3 v2.11
 /*
 ////////////////////////////////////////////////////////////////////////////////////////////
   * Author: Leopard20
-  
+
   * Description:
   This script can be used to dump all commands to the clipboard.
   Make sure you're using the Diag EXE to dump all of the commands.
-  
+
   * How to use:
   Simply replace the _KEYWORDS and _LITERAL arrays with the one from this sqf.js file.
   Execute the script from the debug console.
@@ -51861,7 +51861,7 @@ function sqf(hljs) {
     'worldToModelVisual',
     'worldToScreen'
   ];
-  
+
   // list of keywords from:
   // https://community.bistudio.com/wiki/PreProcessor_Commands
   const PREPROCESSOR = {
@@ -51884,7 +51884,7 @@ function sqf(hljs) {
       hljs.C_BLOCK_COMMENT_MODE
     ]
   };
-  
+
   return {
     name: 'SQF',
     case_insensitive: true,
@@ -51904,7 +51904,7 @@ function sqf(hljs) {
     ],
     illegal: [
       //$ is only valid when used with Hex numbers (e.g. $FF)
-      /\$[^a-fA-F0-9]/, 
+      /\$[^a-fA-F0-9]/,
       /\w\$/,
       /\?/,      //There's no ? in SQF
       /@/,       //There's no @ in SQF
@@ -59977,7 +59977,7 @@ __webpack_require__.r(__webpack_exports__);
 /************************************************************************/
 /******/ 	// The module cache
 /******/ 	var __webpack_module_cache__ = {};
-/******/ 	
+/******/
 /******/ 	// The require function
 /******/ 	function __webpack_require__(moduleId) {
 /******/ 		// Check if module is in cache
@@ -59991,14 +59991,14 @@ __webpack_require__.r(__webpack_exports__);
 /******/ 			// no module.loaded needed
 /******/ 			exports: {}
 /******/ 		};
-/******/ 	
+/******/
 /******/ 		// Execute the module function
 /******/ 		__webpack_modules__[moduleId](module, module.exports, __webpack_require__);
-/******/ 	
+/******/
 /******/ 		// Return the exports of the module
 /******/ 		return module.exports;
 /******/ 	}
-/******/ 	
+/******/
 /************************************************************************/
 /******/ 	/* webpack/runtime/define property getters */
 /******/ 	!function() {
@@ -60011,12 +60011,12 @@ __webpack_require__.r(__webpack_exports__);
 /******/ 			}
 /******/ 		};
 /******/ 	}();
-/******/ 	
+/******/
 /******/ 	/* webpack/runtime/hasOwnProperty shorthand */
 /******/ 	!function() {
 /******/ 		__webpack_require__.o = function(obj, prop) { return Object.prototype.hasOwnProperty.call(obj, prop); }
 /******/ 	}();
-/******/ 	
+/******/
 /******/ 	/* webpack/runtime/make namespace object */
 /******/ 	!function() {
 /******/ 		// define __esModule on exports
@@ -60027,7 +60027,7 @@ __webpack_require__.r(__webpack_exports__);
 /******/ 			Object.defineProperty(exports, '__esModule', { value: true });
 /******/ 		};
 /******/ 	}();
-/******/ 	
+/******/
 /************************************************************************/
 var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be in strict mode.

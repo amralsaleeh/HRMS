@@ -116,7 +116,7 @@ class Dashboard extends Component
     {
         if ($this->messagesStatus['unsent'] != 0) {
             sendPendingMessages::dispatch();
-            session()->flash('info', __('Let\'s go! Messages on their way!'));
+            session()->flash('info', __('Let\'s go! Personal on their way!'));
         } else {
             $this->dispatch('toastr', type: 'info' /* , title: 'Done!' */, message: __('Everything has sent already!'));
         }

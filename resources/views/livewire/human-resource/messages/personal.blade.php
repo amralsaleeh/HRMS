@@ -4,7 +4,7 @@
   $configData = Helper::appClasses();
 @endphp
 
-@section('title', 'Personal - Messages')
+@section('title', 'Messages - Personal')
 
 @section('vendor-style')
 
@@ -30,6 +30,7 @@
     </li>
     <li class="breadcrumb-item active">{{ __('Human Resource') }}</li>
     <li class="breadcrumb-item active">{{ __('Messages') }}</li>
+    <li class="breadcrumb-item active">{{ __('Personal') }}</li>
   </ol>
 </nav>
 
@@ -228,7 +229,7 @@
               </li>
             @empty
               <div style="text-align: center">
-                <h6 class="text-muted mb-4">{{ __('No Messages Yet!') }}</h6>
+                <h6 class="text-muted mb-4">{{ __('No Personal Yet!') }}</h6>
                 <img src="{{ asset('assets/img/illustrations/girl-doing-yoga-dark.png') }}" width="14%">
               </div>
             @endforelse

@@ -14,6 +14,8 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')->hourly();
         $schedule->command('LeavesCalculator')->monthlyOn(1, '10:30');
+        $schedule->command('messages:send-unsent-bulk-messages')->everyMinute();
+        // $schedule->command('messages:send-unsent-bulk-messages')->everyThirtyMinutes();
     }
 
     /**
