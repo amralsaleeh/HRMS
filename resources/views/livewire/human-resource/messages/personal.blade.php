@@ -62,7 +62,7 @@
                   </select>
                 </div>
                 <div>
-                  <button wire:click.prvent='generateMessages' wire:loading.attr="disabled" class="btn btn-primary waves-effect waves-light mb-2" type="button">
+                  <button wire:click='generateMessages' wire:loading.attr="disabled" class="btn btn-primary waves-effect waves-light mb-2" type="button">
                     <span wire:loading.remove>{{ __('Generate') }}</span>
                     <div wire:loading wire:target="generateMessages">
                       <span class="spinner-border me-1" role="status" aria-hidden="true"></span>
