@@ -87,12 +87,26 @@
       <div class="card-body">
         <div>
           <label class="form-label">{{ __('Text') }}</label>
-          <textarea wire:model="messageText" class="form-control" rows="2" spellcheck="false"></textarea>
-        </div>
-        <div class="mt-3 mb-3">
+          <textarea
+              wire:model="messageText"
+              class="form-control"
+              rows="2"
+              spellcheck="false"
+              @if($validated) disabled @endif
+          ></textarea>
+      </div>
+
+      <div class="mt-3 mb-3">
           <label class="form-label">{{ __('Numbers') }}</label>
-          <textarea wire:model.debounce.500ms="numbersInput" class="form-control" rows="3" spellcheck="false"></textarea>
-        </div>
+          <textarea
+              wire:model.debounce.500ms="numbersInput"
+              class="form-control"
+              rows="3"
+              spellcheck="false"
+              @if($validated) disabled @endif
+              oninput="this.value = this.value.replace(/[^0-9\n]/g, '')"
+          ></textarea>
+      </div>
       @if (!$validated)
         <button wire:click="validateNumbers" wire:loading.attr="disabled" wire:target="validateNumbers" type="button" class="btn btn-primary waves-effect waves-light">
           <span wire:loading.remove wire:target="validateNumbers">{{ __('Validate') }}</span>
