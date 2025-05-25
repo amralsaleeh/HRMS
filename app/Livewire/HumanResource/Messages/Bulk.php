@@ -33,24 +33,55 @@ class Bulk extends Component
 
     public function validateNumbers()
     {
+        if (trim($this->messageText) === '') {
+            session()->flash('error', 'حقل الرسالة لا يمكن أن يكون فارغًا.');
+            $this->dispatch('scroll-to-top');
+            $this->validated = false;
+
+            return;
+        }
+
         $lines = explode("\n", $this->numbersInput);
         $cleaned = [];
+        $seenNumbers = [];
+        $filteredInput = [];
 
         foreach ($lines as $line) {
-            $number = preg_replace('/[^0-9]/', '', trim($line));
+            $trimmedLine = trim($line);
 
-            if (strlen($number) !== 9) {
-                session()->flash('error', " الرقم التالي: $number غير صحيح.");
+            if ($trimmedLine === '') {
+                continue;
+            }
+
+            $number = preg_replace('/\D/', '', $trimmedLine);
+
+            if (! preg_match('/^9\d{8}$/', $number)) {
+                session()->flash(
+                    'error',
+                    "الرقم التالي غير صحيح: $number. يشترط أن يبدأ بالرقم '9' وأن يكون طوله 9 أرقام بالضبط."
+                );
                 $this->dispatch('scroll-to-top');
                 $this->validated = false;
 
                 return;
             }
 
+            if (in_array($number, $seenNumbers)) {
+                session()->flash('error', "تم تكرار الرقم التالي: $number");
+                $this->dispatch('scroll-to-top');
+                $this->validated = false;
+
+                return;
+            }
+
+            $seenNumbers[] = $number;
             $cleaned[] = '963'.$number.';';
+            $filteredInput[] = $number;
         }
 
-        $this->numbers = array_unique($cleaned);
+        $this->numbersInput = implode("\n", $filteredInput);
+
+        $this->numbers = $cleaned;
         $this->validated = true;
     }
 
