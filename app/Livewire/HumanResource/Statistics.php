@@ -17,9 +17,9 @@ class Statistics extends Component
 
     public function mount()
     {
-        $this->batches = Discount::orderBy('batch', 'desc')
+        $this->batches = Discount::where('batch', 'like', now()->year.'%')
+            ->orderBy('batch', 'desc')
             ->distinct()
-            ->limit(3)
             ->pluck('batch')
             ->toArray();
         $this->selectedBatch = reset($this->batches);
