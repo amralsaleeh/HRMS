@@ -607,9 +607,34 @@ class calculateDiscountsAsDays implements ShouldQueue
                 ->subMinutes($timeCovered->minute);
 
             if ($fingerprint->check_in < $delayThreshold) {
-                $this->checkIfDelay($center, $employee, $fingerprint, $startOfWork, $delayThreshold);
+                // $this->checkIfDelay($center, $employee, $fingerprint, $startOfWork, $delayThreshold);
+                $duration = Carbon::parse($center->start_work_hour)->diff(Carbon::parse($fingerprint->check_in));
+                $durationInSeconds = Carbon::parse($center->start_work_hour)->diffInSeconds(
+                    Carbon::parse($fingerprint->check_in)
+                );
 
-                return false;
+                $employee->update([
+                    'hourly_counter' => Carbon::parse($employee->hourly_counter)
+                        ->addHours($duration->h)
+                        ->addMinutes($duration->i),
+                ]);
+
+                $hourlyCounter = Carbon::parse($employee->hourly_counter);
+                $hourlyCounterLimit = Carbon::parse('07:00:00'); // TODO: Make 07:00:00 inserted variable on settings table
+
+                if ($hourlyCounter->gt($hourlyCounterLimit)) {
+                    if ($employee->max_leave_allowed > 0) {
+                        $this->decrementMaxLeaveAllowed($employee, $fingerprint->date, 'Administrative leave - Rounded');
+                    } else {
+                        $this->createDiscountFromFingerprint($employee, $fingerprint, 'Administrative leave - Rounded', 1);
+                    }
+                    $employee->update([
+                        'hourly_counter' => Carbon::parse($employee->hourly_counter)->subHours(7), // TODO: Make 7 inserted variable on settings table
+                    ]);
+                }
+
+                return true;
+                // return false;
             } else {
                 $duration = Carbon::parse($center->start_work_hour)->diff(Carbon::parse($fingerprint->check_in));
                 $durationInSeconds = Carbon::parse($center->start_work_hour)->diffInSeconds(
