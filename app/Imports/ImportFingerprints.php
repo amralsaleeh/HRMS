@@ -58,7 +58,7 @@ class ImportFingerprints implements ShouldQueue, ToModel, WithChunkReading, With
                     new DefaultNotification($this->user_id, 'Successfully imported the fingerprint file')
                 );
 
-                session()->flash('success', 'Imported Successfully!');
+                session()->flash('success', __('Imported Successfully!'));
             },
 
             ImportFailed::class => function (ImportFailed $event) {
@@ -68,7 +68,7 @@ class ImportFingerprints implements ShouldQueue, ToModel, WithChunkReading, With
                 ]);
 
                 Log::alert('Excel Import Failed (Fingerprints): '.$event->e->getMessage());
-                session()->flash('error', 'Error Occurred, Check Log File!');
+                session()->flash('error', __('Error Occurred, Check Log File!'));
             },
         ];
     }

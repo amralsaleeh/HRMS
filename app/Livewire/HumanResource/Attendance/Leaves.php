@@ -25,10 +25,10 @@ class Leaves extends Component
     use WithFileUploads, WithPagination;
 
     /*
-              Leave ID Structure:
-              1 Leave - 1 Daily  - LeaveID
-              2 Task  - 2 Hourly - LeaveID
-              */
+                Leave ID Structure:
+                1 Leave - 1 Daily  - LeaveID
+                2 Task  - 2 Hourly - LeaveID
+                */
 
     // 👉 Variables
     public $activeEmployees = [];
@@ -315,7 +315,7 @@ class Leaves extends Component
 
             session()->flash('success', __('Well done! The file has been imported successfully.'));
         } catch (Exception $e) {
-            session()->flash('error', 'Error occurred: '.$e->getMessage());
+            session()->flash('error', __('Error occurred: ').$e->getMessage());
         }
 
         $this->dispatch('closeModal', elementId: '#importModal');

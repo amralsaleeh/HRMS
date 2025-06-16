@@ -64,7 +64,7 @@ class Discounts extends Component
         } else {
             $this->isProcessing = false;
             $this->percentage = 0;
-            session()->flash('success', 'Boom! Discounts calculations done and dusted — easy peasy!');
+            session()->flash('success', __('Boom! Discounts calculations done and dusted — easy peasy!'));
 
             $this->showDiscounts = true;
 
