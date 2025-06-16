@@ -234,7 +234,8 @@ class Dashboard extends Component
 
         if (
             substr($this->newLeaveInfo['LeaveId'], 1, 1) == 2 &&
-            $this->newLeaveInfo['fromDate'] != $this->newLeaveInfo['toDate']
+            $this->newLeaveInfo['fromDate'] != $this->newLeaveInfo['toDate'] &&
+            $this->newLeaveInfo['LeaveId'] != '1210'
         ) {
             session()->flash('error', __('Hourly leave must be on the same day'));
             $this->dispatch('closeModal', elementId: '#leaveModal');
