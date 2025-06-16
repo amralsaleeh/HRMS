@@ -25,7 +25,9 @@ class Navbar extends Component
     public function render()
     {
         DB::table('failed_jobs')->truncate();
-        auth()->user() ? $this->unreadNotifications = auth()->user()->unreadNotifications : $this->unreadNotifications = [];
+        auth()->user()
+          ? ($this->unreadNotifications = auth()->user()->unreadNotifications)
+          : ($this->unreadNotifications = []);
 
         return view('livewire.sections.navbar.navbar');
     }
@@ -50,7 +52,7 @@ class Navbar extends Component
                     $this->percentage = round($import_data->current / ($import_data->total / 100));
                 }
             } else {
-                session()->flash('success', 'Imported Successfully!');
+                session()->flash('success', __('Imported Successfully!'));
                 $this->percentage = 100;
                 $this->activeProgressBar = false;
             }
@@ -62,7 +64,9 @@ class Navbar extends Component
 
     public function markNotificationAsRead($notificationId)
     {
-        $notification = Auth::user()->unreadNotifications->where('id', $notificationId)->first();
+        $notification = Auth::user()
+            ->unreadNotifications->where('id', $notificationId)
+            ->first();
         if ($notification) {
             $notification->markAsRead();
         }

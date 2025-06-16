@@ -162,7 +162,7 @@ class Personal extends Component
             }
         }
 
-        session()->flash('success', 'Generation complete! Your messages ready to fly!');
+        session()->flash('success', __('Generation complete! Your messages ready to fly!'));
         $this->batches = Discount::where('is_sent', 0)
             ->distinct()
             ->pluck('batch')
@@ -173,7 +173,7 @@ class Personal extends Component
     {
         if ($this->messagesStatus['unsent'] != 0) {
             sendPendingMessages::dispatch();
-            session()->flash('info', "Let's go! Messages on their way!");
+            session()->flash('info', __("Let's go! Messages on their way!"));
         } else {
             $this->dispatch('toastr', type: 'info' /* , title: 'Done!' */, message: __('Everything has sent already!'));
         }
@@ -183,7 +183,7 @@ class Personal extends Component
     {
         if ($this->messagesStatus['unsent'] != 0) {
             sendPendingMessagesByWhatsapp::dispatch();
-            session()->flash('info', "Let's go! Personal on their way!");
+            session()->flash('info', __("Let's go! Messages on their way!"));
         } else {
             $this->dispatch('toastr', type: 'info' /* , title: 'Done!' */, message: 'Everything has sent already!');
         }

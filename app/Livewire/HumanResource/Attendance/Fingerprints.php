@@ -209,9 +209,9 @@ class Fingerprints extends Component
             // ));
             // $this->dispatch('refreshNotifications')->to(Navbar::class);
 
-            session()->flash('info', 'Stay tuned! The file is doing a little dance as we speak.');
+            session()->flash('info', __('Stay tuned! The file is doing a little dance as we speak.'));
         } catch (Exception $e) {
-            session()->flash('error', 'Error occurred: '.$e->getMessage());
+            session()->flash('error', __('Error occurred: ').$e->getMessage());
         }
 
         $this->dispatch('closeModal', elementId: '#importModal');
