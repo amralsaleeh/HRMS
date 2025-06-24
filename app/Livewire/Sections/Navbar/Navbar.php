@@ -5,8 +5,11 @@ namespace App\Livewire\Sections\Navbar;
 use App\Models\Import;
 use App\Models\User;
 use Illuminate\Queue\Failed\FailedJobProviderInterface;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Livewire\Attributes\On;
 use Livewire\Component;
 
@@ -20,10 +23,14 @@ class Navbar extends Component
     public $percentage = 0;
 
     public $imports;
+
+    public $isMaintenance = 0;
     // Variables - End //
 
     public function render()
     {
+        $this->isMaintenance = App::isDownForMaintenance();
+
         DB::table('failed_jobs')->truncate();
         auth()->user()
           ? ($this->unreadNotifications = auth()->user()->unreadNotifications)
@@ -79,6 +86,16 @@ class Navbar extends Component
 
         foreach ($user->unreadNotifications as $notification) {
             $notification->markAsRead();
+        }
+    }
+
+    public function turnMaintenanceModeOff()
+    {
+        if (App::isDownForMaintenance() == 1) {
+            Artisan::call('up');
+            Log::info('Maintenance mode has been suspended.');
+
+            return redirect()->to('/');
         }
     }
 }

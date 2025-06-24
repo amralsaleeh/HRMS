@@ -9,6 +9,9 @@ use App\Models\Employee;
 use App\Models\Message;
 use App\Traits\MessageProvider;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Number;
 use Livewire\Component;
 use Throwable;
@@ -171,6 +174,11 @@ class Personal extends Component
 
     public function sendPendingMessages()
     {
+        if (App::isDownForMaintenance() == 1) {
+            Artisan::call('up');
+            Log::info('Maintenance mode has been suspended.');
+        }
+
         if ($this->messagesStatus['unsent'] != 0) {
             sendPendingMessages::dispatch();
             session()->flash('info', __("Let's go! Messages on their way!"));
