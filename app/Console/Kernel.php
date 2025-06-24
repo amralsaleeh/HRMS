@@ -12,7 +12,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-        // $schedule->command('LeavesCalculator')->monthlyOn(1, '10:30');
+        $schedule->command('LeavesCalculator')->monthlyOn(1, '10:30');
         $schedule->command('messages:send-unsent-bulk-messages')->everyFiveMinutes();
     }
 
