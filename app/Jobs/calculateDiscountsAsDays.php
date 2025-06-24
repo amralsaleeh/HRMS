@@ -16,7 +16,9 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Notification;
 
 class calculateDiscountsAsDays implements ShouldQueue
@@ -47,6 +49,19 @@ class calculateDiscountsAsDays implements ShouldQueue
     {
         $this->jobId = $this->job->getJobId();
 
+        // 👉 Backup Database
+        Artisan::call('backup:run', [
+            '--only-db' => true,
+        ]);
+        Log::info('Database backup successfully.');
+
+        // 👉 Turn on maintenance mode
+        Artisan::call('down', [
+            '--secret' => 'NamaaAdminOnly',
+        ]);
+        Log::info('Maintenance mode activated.');
+
+        // 👉 Calculate discounts
         $this->calculateDiscounts();
 
         Notification::send(
