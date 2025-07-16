@@ -172,9 +172,11 @@ class Employee extends Model
                 ->first();
         }
 
-        $workedYear = Carbon::now()->year - Carbon::parse($startDateRow->start_date)->year;
+        $startDate = optional($startDateRow)->start_date;
 
-        return $workedYear == 0 ? 1 : $workedYear;
+        $workedYear = $startDate ? Carbon::now()->diffInYears(Carbon::parse($startDate)) : 0;
+
+        return $workedYear ?: 1;
     }
 
     public function getCurrentPositionAttribute()
