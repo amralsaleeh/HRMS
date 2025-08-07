@@ -174,7 +174,7 @@ class Employee extends Model
 
         $startDate = optional($startDateRow)->start_date;
 
-        $workedYear = $startDate ? Carbon::now()->diffInYears(Carbon::parse($startDate)) : 0;
+        $workedYear = $startDate ? Carbon::now()->year - Carbon::parse($startDate)->year : 0;
 
         return $workedYear ?: 1;
     }
