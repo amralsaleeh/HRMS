@@ -157,7 +157,7 @@
         </div>
         <div class="tab-pane fade" id="navs-pills-justified-summary" role="tabpanel">
           <p>
-            Export employees leaves and discounts summary.
+            {{ __('Export employees leaves and discounts summary.') }}
           </p>
           <button wire:click='exportSummary()' class="btn btn-primary btn-lg waves-effect waves-light" type="button">{{ __('Export') }}</button>
         </div>
