@@ -77,6 +77,14 @@ class Bulk extends Component
             $seenNumbers[] = $number;
             $cleaned[] = '963'.$number.';';
             $filteredInput[] = $number;
+
+            if (count($cleaned) > 50) {
+                session()->flash('error', 'الرجاء الالتزام بإدخال 50 رقم فقط لا أكثر.');
+                $this->dispatch('scroll-to-top');
+                $this->validated = false;
+
+                return;
+            }
         }
 
         $this->numbersInput = implode("\n", $filteredInput);
