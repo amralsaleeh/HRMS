@@ -9,6 +9,8 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
+use Throwable;
 
 class sendPendingBulkMessages implements ShouldQueue
 {
@@ -24,11 +26,25 @@ class sendPendingBulkMessages implements ShouldQueue
         $pendingMessages = BulkMessage::where('is_sent', 0)->get();
 
         foreach ($pendingMessages as $messages) {
-            $response = $this->sendSms($messages->text, $messages->numbers);
-            if ($response === true) {
-                $messages->update(['is_sent' => true, 'error' => null]);
-            } else {
-                $messages->update(['is_sent' => false, 'error' => $response]);
+            try {
+                $response = $this->sendSms($messages->text, $messages->numbers);
+
+                if ($response === true) {
+                    $messages->update(['is_sent' => true, 'error' => null]);
+                } else {
+                    $messages->update(['is_sent' => false, 'error' => $response]);
+                }
+            } catch (Throwable $e) {
+                Log::error("Failed to send SMS for message ID {$messages->id}: ".$e->getMessage());
+
+                try {
+                    $messages->update([
+                        'is_sent' => false,
+                        'error' => $e->getMessage(),
+                    ]);
+                } catch (Throwable $e2) {
+                    Log::error("Failed to update DB for message ID {$messages->id}: ".$e2->getMessage());
+                }
             }
         }
     }
