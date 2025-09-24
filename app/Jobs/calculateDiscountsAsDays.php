@@ -62,7 +62,15 @@ class calculateDiscountsAsDays implements ShouldQueue
         Log::info('Maintenance mode activated.');
 
         // 👉 Calculate discounts
-        $this->calculateDiscounts();
+        try {
+            $this->calculateDiscounts();
+        } catch (\Throwable $e) {
+            Log::error('calculateDiscountsAsDays failed', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+            ]);
+            throw $e;
+        }
 
         Notification::send(
             $this->user,
