@@ -520,7 +520,7 @@ class calculateDiscountsAsDays implements ShouldQueue
 
     public function checkIfDelay($center, $employee, $fingerprint, $startOfWork, $delayThreshold)
     {
-        if ($fingerprint->check_in > $startOfWork && $fingerprint->check_in < $delayThreshold) {
+        if ($fingerprint->check_in > $startOfWork && $fingerprint->check_in <= $delayThreshold) {
             $duration = Carbon::parse($center->start_work_hour)->diff(Carbon::parse($fingerprint->check_in));
             $employee->update([
                 'delay_counter' => Carbon::parse($employee->delay_counter)
@@ -623,7 +623,7 @@ class calculateDiscountsAsDays implements ShouldQueue
 
     public function checkIfLate($center, $employee, $employeeLeaves, $fingerprint, $startOfWork, $delayThreshold)
     {
-        if ($fingerprint->check_in >= $delayThreshold) {
+        if ($fingerprint->check_in > $delayThreshold) {
             $timeCovered = $this->isThereHourlyLateExcuse($fingerprint, $employeeLeaves);
             $fingerprint->check_in = Carbon::parse($fingerprint->check_in)
                 ->subHours($timeCovered->hour)
@@ -637,7 +637,7 @@ class calculateDiscountsAsDays implements ShouldQueue
                 );
 
                 $employee->update([
-                    'hourly_counter' => Carbon::parse($employee->hourly_counter)
+                    'delay_counter' => Carbon::parse($employee->delay_counter)
                         ->addHours($duration->h)
                         ->addMinutes($duration->i),
                 ]);
