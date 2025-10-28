@@ -160,28 +160,57 @@
         </div>
         @endcan
         @can('create leaves')
-        <div class="card-body pt-0">
-          <div class="row gy-3">
-            <div class="col-md-3 col-6">
-              <div class="d-flex align-items-center">
-                <div class="badge rounded-pill bg-label-secondary me-3 p-2"><i class="ti ti-users ti-sm"></i></div>
-                <div class="card-info">
-                  <h5 class="mb-0">{{ count($activeEmployees) }}</h5>
-                  <small>{{ __('Active Employees') }}</small>
+          <div class="card-body pt-0">
+            <div class="row gy-3">
+              @if(!Auth::user()->hasRole('Employee'))
+              <div class="col-md-3 col-6">
+                <div class="d-flex align-items-center">
+                  <div class="badge rounded-pill bg-label-primary me-3 p-2"><i class="ti ti-users ti-sm"></i></div>
+                  <div class="card-info">
+                    <h5 class="mb-0">{{ count($activeEmployees) }}</h5>
+                    <small>{{ __('Active Employees') }}</small>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div class="col-md-3 col-6">
-              <div class="d-flex align-items-center">
-                <div class="badge rounded-pill bg-label-secondary me-3 p-2"><i class="ti ti-calendar ti-sm"></i></div>
-                <div class="card-info">
-                  <h5 class="mb-0">{{ count($leaveRecords) }}</h5>
-                  <small>{{ __('Today Records') }}</small>
+              @endif
+              {{-- <div class="col-md-3 col-6">
+                <div class="d-flex align-items-center">
+                  <div class="badge rounded-pill bg-label-secondary me-3 p-2"><i class="ti ti-calendar ti-sm"></i></div>
+                  <div class="card-info">
+                    <h5 class="mb-0">{{ count($leaveRecords) }}</h5>
+                    <small>{{ __('Today Records') }}</small>
+                  </div>
+                </div>
+              </div> --}}
+              <div class="col-md-3 col-6">
+                <div class="d-flex align-items-center">
+                  <div class="badge rounded-pill bg-label-success me-3 p-2"><i class="ti ti-zzz ti-sm"></i></div>
+                  <div class="card-info">
+                    <h5 class="mb-0">{{ $employee->max_leave_allowed }}</h5>
+                    <small>{{ __('Leaves Balance') }}</small>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3 col-6">
+                <div class="d-flex align-items-center">
+                  <div class="badge rounded-pill bg-label-danger me-3 p-2"><i class="ti ti-alarm ti-sm"></i></div>
+                  <div class="card-info">
+                    <h5 class="mb-0">{{ $employee->hourly_counter }}</h5>
+                    <small>{{ __('Hourly Counter') }}</small>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3 col-6">
+                <div class="d-flex align-items-center">
+                  <div class="badge rounded-pill bg-label-danger me-3 p-2"><i class="ti ti-hourglass ti-sm"></i></div>
+                  <div class="card-info">
+                    <h5 class="mb-0">{{ $employee->delay_counter }}</h5>
+                    <small>{{ __('Delay Counter') }}</small>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
         @endcan
       </div>
     </div>
@@ -372,22 +401,24 @@
     </div>
   </div>
 
-  <div class="row mt-4">
-    <div class="col">
-      <div class="card">
-        <h5 class="card-header">{{ __('Changelog') }}</h5>
-        <div class="card-body">
-          @foreach ($changelogs as $changelog)
-          <small all class="text-light fw-semibold">{{ $changelog->version }}</small>
-          <dl class="row mt-2">
-            <dt class="col-sm-3">{{ $changelog->title }}</dt>
-            <dd class="col-sm-9">{{ $changelog->description }}</dd>
-          </dl>
-          @endforeach
+  @if(!Auth::user()->hasRole('Employee'))
+    <div class="row mt-4">
+      <div class="col">
+        <div class="card">
+          <h5 class="card-header">{{ __('Changelog') }}</h5>
+          <div class="card-body">
+            @foreach ($changelogs as $changelog)
+            <small all class="text-light fw-semibold">{{ $changelog->version }}</small>
+            <dl class="row mt-2">
+              <dt class="col-sm-3">{{ $changelog->title }}</dt>
+              <dd class="col-sm-9">{{ $changelog->description }}</dd>
+            </dl>
+            @endforeach
+          </div>
         </div>
       </div>
     </div>
-  </div>
+  @endif
 
   {{-- Modals --}}
   @include('_partials/_modals/modal-leaveWithEmployee')

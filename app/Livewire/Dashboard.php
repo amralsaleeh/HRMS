@@ -9,6 +9,7 @@ use App\Models\Employee;
 use App\Models\EmployeeLeave;
 use App\Models\Leave;
 use App\Models\Message;
+use App\Models\Timeline;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -18,6 +19,8 @@ use Throwable;
 
 class Dashboard extends Component
 {
+    public $employee;
+
     public $accountBalance = ['status' => 400, 'balance' => '---', 'is_active' => '---'];
 
     public $messagesStatus = ['sent' => 0, 'unsent' => 0];
@@ -58,13 +61,25 @@ class Dashboard extends Component
     public function mount()
     {
         $user = Employee::find(Auth::user()->employee_id);
+
+        $this->employee = $user;
+
         $center = Center::find(
             $user
                 ->timelines()
                 ->where('end_date', null)
                 ->first()->center_id
         );
-        $this->activeEmployees = $center->activeEmployees();
+        // If the current user is an Employee, limit activeEmployees to only their timeline
+        if (Auth::user()->hasRole('Employee')) {
+            // Return only the current employee's active timeline(s)
+            $this->activeEmployees = Timeline::where('employee_id', $user->id)
+                ->whereNull('end_date')
+                ->with('employee')
+                ->get();
+        } else {
+            $this->activeEmployees = $center->activeEmployees();
+        }
 
         $this->selectedEmployeeId = Auth::user()->employee_id;
         $this->employeePhoto = $user->profile_photo_path;

@@ -32,10 +32,10 @@
             <div class="row mb-4">
               <div wire:ignore class="col-lg-6 col-12">
                 <label class="form-label">{{ __('Employee') }}</label>
-                <select wire:model='selectedEmployeeId' class="select2 form-control" id="select2selectedEmployeeId">
+                <select wire:model='selectedEmployeeId' class="select2 form-control" id="select2selectedEmployeeId" @if(Auth::user()->hasRole('Employee')) disabled @endif>
                   <option value=""></option>
                   @forelse ($activeEmployees as $timeline)
-                    <option value="{{ $timeline->employee->id }}">{{ $timeline->employee->id . ' - ' . $timeline->employee->full_name }}</option>
+                    <option value="{{ $timeline->employee->id }}" @if(Auth::user()->hasRole('Employee') && Auth::user()->employee_id == $timeline->employee->id) selected @endif>{{ $timeline->employee->id . ' - ' . $timeline->employee->full_name }}</option>
                   @empty
                     <option value="0" disabled>{{__('No Employees Found!') }}</option>
                   @endforelse
