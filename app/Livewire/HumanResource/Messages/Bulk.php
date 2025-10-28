@@ -122,20 +122,20 @@ class Bulk extends Component
 
     public function render()
     {
-        $this->messagesStatus = BulkMessage::where('created_by', Auth::user()->name)
-            ->selectRaw(
-                '
-          SUM(CASE WHEN is_sent = 1 THEN 1 ELSE 0 END) AS sent,
-          SUM(CASE WHEN is_sent = 0 THEN 1 ELSE 0 END) AS unsent,
-          COUNT(*) AS `all`
-          '
-            )
-            ->first();
+        $createdBy = Auth::user()->name;
+
+        $sent = BulkMessage::where('created_by', $createdBy)
+            ->where('is_sent', 1)
+            ->count();
+        $unsent = BulkMessage::where('created_by', $createdBy)
+            ->where('is_sent', 0)
+            ->count();
+        $all = BulkMessage::where('created_by', $createdBy)->count();
 
         $this->messagesStatus = [
-            'sent' => Number::format($this->messagesStatus->sent ?? 0),
-            'unsent' => Number::format($this->messagesStatus->unsent ?? 0),
-            'all' => Number::format($this->messagesStatus->all ?? 0),
+            'sent' => Number::format($sent ?? 0),
+            'unsent' => Number::format($unsent ?? 0),
+            'all' => Number::format($all ?? 0),
         ];
 
         return view('livewire.human-resource.messages.bulk');
