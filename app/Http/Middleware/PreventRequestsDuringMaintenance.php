@@ -12,7 +12,7 @@ class PreventRequestsDuringMaintenance extends Middleware
      *
      * @var array<int, string>
      */
-    protected $except = ['/', 'login', 'logout', '/lang/ar', '/lang/en'];
+    protected $except = ['/', 'login', 'logout', '/lang/ar', '/lang/en', '/log-viewer', 'discounts'];
 
     public function handle($request, \Closure $next)
     {

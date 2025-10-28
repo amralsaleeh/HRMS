@@ -6,6 +6,7 @@ use App\Models\Employee;
 use App\Models\Timeline;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Log;
 
 class LeavesCalculator extends Command
 {
@@ -30,6 +31,8 @@ class LeavesCalculator extends Command
      */
     public function handle()
     {
+        Log::info('Employees Leave balance calculated and increase successfully.');
+
         // balance_leave_allowed: The cumulative leave balance (non-deductible) is reset at the beginning of each year only.
         // max_leave_allowed: Cumulative leave balance (deducted) every time the employee takes leave.
 

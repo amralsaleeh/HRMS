@@ -75,6 +75,7 @@
 
         <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
           <div class="navbar-nav d-flex flex-row align-items-center">
+
             <!-- Style Switcher -->
             <a wire:ignore class="nav-link style-switcher-toggle hide-arrow" href="javascript:void(0);">
               <i class='ti ti-sm'></i>
@@ -88,6 +89,18 @@
               </a>
             </div>
             <!-- Offline Indicator -->
+
+            @if ($isMaintenance == 1)
+            <a wire:click.prevent='turnMaintenanceModeOff()' href=''>
+              <div class="alert alert-warning d-flex align-items-center mb-0 mt-0" role="alert" style="width: 100%;">
+                <i class="ti ti-alert-triangle me-2"></i>
+                <div>
+                  {{ __('System is currently in lock mode!') }}
+                </div>
+              </div>
+            </a>
+            @endif
+
           </div>
 
           <ul class="navbar-nav flex-row align-items-center ms-auto">
