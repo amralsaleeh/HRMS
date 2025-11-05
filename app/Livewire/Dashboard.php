@@ -5,6 +5,7 @@ namespace App\Livewire;
 use App\Jobs\sendPendingMessages;
 use App\Models\Center;
 use App\Models\Changelog;
+use App\Models\Discount;
 use App\Models\Employee;
 use App\Models\EmployeeLeave;
 use App\Models\Leave;
@@ -58,6 +59,14 @@ class Dashboard extends Component
 
     public $employeePhoto = 'profile-photos/.default-photo.jpg';
 
+    public $latestBatch;
+
+    public $employeeDiscounts;
+
+    public $batchDates;
+
+    public $showStatictics = 1;
+
     public function mount()
     {
         $user = Employee::find(Auth::user()->employee_id);
@@ -71,7 +80,7 @@ class Dashboard extends Component
                 ->first()->center_id
         );
         // If the current user is an Employee, limit activeEmployees to only their timeline
-        if (Auth::user()->hasRole('Employee')) {
+        if (Auth::user()->hasAnyRole(['Employee', 'Viewer'])) {
             // Return only the current employee's active timeline(s)
             $this->activeEmployees = Timeline::where('employee_id', $user->id)
                 ->whereNull('end_date')
@@ -92,10 +101,48 @@ class Dashboard extends Component
             //
         }
 
+        if (Auth::user()->hasAnyRole(['Employee', 'Viewer'])) {
+            $this->leaveRecords = EmployeeLeave::where('employee_id', Auth::user()->employee_id)
+                ->whereBetween('created_at', [
+                    Carbon::now()
+                        ->subDays(7)
+                        ->startOfDay(),
+                    Carbon::now()->endOfDay(),
+                ])
+                ->orderBy('created_at')
+                ->get();
+        } else {
+            $this->leaveRecords = EmployeeLeave::where('created_by', Auth::user()->name)
+                ->whereDate('created_at', Carbon::today()->toDate())
+                ->orderBy('created_at')
+                ->get();
+        }
+
+        $this->employeeDiscounts = $this->getEmployeeDiscounts();
+
         $this->fromDateLimit = Carbon::now()
             ->subDays(30)
             ->format('Y-m-d');
         $this->changelogs = Changelog::latest()->get();
+
+        $this->applyContractRestrictions();
+    }
+
+    private function applyContractRestrictions(): void
+    {
+        try {
+            $employee = $this->employee;
+            if (! $employee) {
+                return;
+            }
+
+            $contract = $employee->contract;
+            if (! $contract || (int) $contract->work_rate !== 100) {
+                $this->showStatictics = 0;
+            }
+        } catch (\Throwable $e) {
+            //
+        }
     }
 
     public function render()
@@ -107,11 +154,6 @@ class Dashboard extends Component
             'sent' => Number::format($sent ?? 0),
             'unsent' => Number::format($unsent ?? 0),
         ];
-
-        $this->leaveRecords = EmployeeLeave::where('created_by', Auth::user()->name)
-            ->whereDate('created_at', Carbon::today()->toDate())
-            ->orderBy('created_at')
-            ->get();
 
         return view('livewire.dashboard');
     }
@@ -129,6 +171,8 @@ class Dashboard extends Component
 
     public function sendPendingMessages()
     {
+        $this->authorizeAccess();
+
         if ($this->messagesStatus['unsent'] != 0) {
             sendPendingMessages::dispatch();
             session()->flash('info', __('Let\'s go! Personal on their way!'));
@@ -139,12 +183,16 @@ class Dashboard extends Component
 
     public function showCreateLeaveModal()
     {
+        $this->authorizeAccess();
+
         $this->dispatch('clearSelect2Values');
         $this->reset('newLeaveInfo', 'isEdit');
     }
 
     public function createLeave()
     {
+        $this->authorizeAccess();
+
         EmployeeLeave::firstOrCreate([
             'employee_id' => $this->selectedEmployeeId,
             'leave_id' => $this->newLeaveInfo['LeaveId'],
@@ -164,6 +212,8 @@ class Dashboard extends Component
 
     public function showEditLeaveModal($id)
     {
+        $this->authorizeAccess();
+
         $this->reset('newLeaveInfo');
 
         $this->isEdit = true;
@@ -188,6 +238,8 @@ class Dashboard extends Component
 
     public function updateLeave()
     {
+        $this->authorizeAccess();
+
         EmployeeLeave::find($this->employeeLeaveId)->update([
             'employee_id' => $this->selectedEmployeeId,
             'leave_id' => $this->newLeaveInfo['LeaveId'],
@@ -209,6 +261,8 @@ class Dashboard extends Component
 
     public function submitLeave()
     {
+        $this->authorizeAccess();
+
         $this->validate(
             [
                 'selectedEmployeeId' => 'required',
@@ -280,11 +334,15 @@ class Dashboard extends Component
 
     public function confirmDestroyLeave($id)
     {
+        $this->authorizeAccess();
+
         $this->confirmedId = $id;
     }
 
     public function destroyLeave()
     {
+        $this->authorizeAccess();
+
         EmployeeLeave::find($this->confirmedId)->delete();
 
         $this->dispatch('toastr', type: 'success' /* , title: 'Done!' */, message: __('Going Well!'));
@@ -299,5 +357,34 @@ class Dashboard extends Component
     public function getLeaveType($id)
     {
         return Leave::find($id)->name;
+    }
+
+    public function getEmployeeDiscounts()
+    {
+        $employeeId = auth()->user()->employee_id;
+
+        $this->latestBatch = Discount::select('batch')
+            ->orderByRaw("STR_TO_DATE(SUBSTRING_INDEX(batch, ' to ', 1), '%Y-%m-%d') DESC")
+            ->limit(1)
+            ->value('batch');
+
+        $discounts = Discount::where('employee_id', $employeeId)
+            ->where('batch', $this->latestBatch)
+            ->get();
+
+        $this->batchDates = explode(' to ', $this->latestBatch);
+
+        return $discounts;
+    }
+
+    private function authorizeAccess()
+    {
+        if (
+            ! auth()
+                ->user()
+                ->hasAnyRole(['Admin', 'HR', 'CC', 'CR', 'CR-S'])
+        ) {
+            abort(403, 'Unauthorized action.');
+        }
     }
 }

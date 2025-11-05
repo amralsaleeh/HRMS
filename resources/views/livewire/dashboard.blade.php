@@ -59,7 +59,6 @@
               <small class="text-muted">{{ __('Start your day with a smile') }}</small>
             </div>
           </div>
-
         </div>
 
         <div class="d-flex align-items-end row h-100">
@@ -71,6 +70,7 @@
               {{-- <h5 wire:poll.60s class="text-primary mt-3 mb-2">{{ now()->format('Y/m/d - H:i') }}</h5> --}}
               <h5 id="date" class="text-primary mt-3 mb-1"></h5>
               <h5 id="time" class="text-primary mb-2"></h5>
+              @if(!Auth::user()->hasRole('Employee|Viewer'))
               <div class="btn-group dropend">
                 <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown"
                   aria-haspopup="true" aria-expanded="false"><i class="ti ti-menu-2 ti-xs me-1"></i>{{ __('Add New')
@@ -94,6 +94,7 @@
                   @endcan
                 </ul>
               </div>
+              @endif
             </div>
           </div>
           <div class="col-5 text-center text-sm-left h-100 d-flex align-items-end">
@@ -159,10 +160,11 @@
           </div>
         </div>
         @endcan
-        @can('create leaves')
+        @canany(['create leaves', 'view leaves'])
+        @if($showStatictics)
           <div class="card-body pt-0">
             <div class="row gy-3">
-              @if(!Auth::user()->hasRole('Employee'))
+              @if(!Auth::user()->hasRole('Employee|Viewer'))
               <div class="col-md-3 col-6">
                 <div class="d-flex align-items-center">
                   <div class="badge rounded-pill bg-label-primary me-3 p-2"><i class="ti ti-users ti-sm"></i></div>
@@ -193,7 +195,7 @@
               </div>
               <div class="col-md-3 col-6">
                 <div class="d-flex align-items-center">
-                  <div class="badge rounded-pill bg-label-danger me-3 p-2"><i class="ti ti-alarm ti-sm"></i></div>
+                  <div class="badge rounded-pill bg-label-warning me-3 p-2"><i class="ti ti-alarm ti-sm"></i></div>
                   <div class="card-info">
                     <h5 class="mb-0">{{ $employee->hourly_counter }}</h5>
                     <small>{{ __('Hourly Counter') }}</small>
@@ -211,7 +213,8 @@
               </div>
             </div>
           </div>
-        @endcan
+        @endif
+        @endcanany
       </div>
     </div>
 
@@ -331,23 +334,29 @@
   <div class="row">
     <div class="col">
       <div class="card">
-        <h5 class="card-header">{{ __('Today Leaves')}}</h5>
+        <h5 class="card-header">{{ __('Recently Leaves')}}</h5>
         <div class="table-responsive text-nowrap">
           <table class="table table-hover">
             <thead>
               <tr>
                 <th class="col-1">{{ __('ID') }}</th>
+                @if(!Auth::user()->hasRole('Employee|Viewer'))
                 <th>{{ __('Employee') }}</th>
+                @endif
                 <th class="col-1">{{ __('Type') }}</th>
                 <th style="text-align: center">{{ __('Details') }}</th>
+                @if(!Auth::user()->hasRole('Employee|Viewer'))
                 <th style="text-align: center">{{ __('Actions') }}</th>
+                @endif
               </tr>
             </thead>
             <tbody class="table-border-bottom-0">
               @forelse($leaveRecords as $leave)
               <tr>
                 <td><strong>{{ $leave->id }}</strong></td>
+                @if(!Auth::user()->hasRole('Employee|Viewer'))
                 <td class="td">{{ $this->getEmployeeName($leave->employee_id) }}</td>
+                @endif
                 <td>{{ $this->getLeaveType($leave->leave_id) }}</td>
                 <td style="text-align: center">
                   <span class="badge bg-label-primary mb-2 me-1" style="font-size: 14px">{{ $leave->from_date . ' --> '
@@ -358,6 +367,7 @@
                     ' . Carbon::parse($leave->end_at)->format('H:i') }}</span>
                   @endif
                 </td>
+                @if(!Auth::user()->hasRole('Employee|Viewer'))
                 <td style="text-align: center">
                   <button type="button"
                     class="btn btn-sm btn-tr rounded-pill btn-icon btn-outline-secondary waves-effect">
@@ -374,18 +384,21 @@
                   </button>
                   @endif
                 </td>
+                @endif
               </tr>
               @empty
               <tr>
                 <td colspan="6">
                   <div class="mt-2 mb-2" style="text-align: center">
-                    <h3 class="mb-1 mx-2">{{ __('Oopsie-doodle!') }}</h3>
+                    <h3 class="mb-1 mx-2">{{ __('Excellent!') .  '🎉' }}</h3>
                     <p class="mb-4 mx-2">
-                      {{ __('No data found, please sprinkle some data in my virtual bowl, and let the fun begin!') }}
+                      {{ __('No leaves found, keep up the good work.') }}
                     </p>
+                    @if(!Auth::user()->hasRole('Employee|Viewer'))
                     <button class="btn btn-label-primary mb-4" data-bs-toggle="modal" data-bs-target="#leaveModal">
                       {{ __('Add New Leave') }}
                     </button>
+                    @endif
                     <div>
                       <img src="{{ asset('assets/img/illustrations/page-misc-under-maintenance.png') }}" width="200"
                         class="img-fluid">
@@ -401,7 +414,9 @@
     </div>
   </div>
 
-  @if(!Auth::user()->hasRole('Employee'))
+  {{-- Discount dev Here --}}
+
+  @if(!Auth::user()->hasRole('Employee|Viewer'))
     <div class="row mt-4">
       <div class="col">
         <div class="card">
