@@ -204,10 +204,11 @@ class Fingerprints extends Component
             $import_date = new ImportFingerprints(Auth::user()->id, $fileRecord->id);
             Excel::import($import_date, $path);
 
-            // Notification::send(Auth::user(), new DefaultNotification(
-            //     'Successfully imported the fingerprint file'
-            // ));
-            // $this->dispatch('refreshNotifications')->to(Navbar::class);
+            Notification::send(
+                Auth::user(),
+                new DefaultNotification(Auth::user()->id, 'Successfully imported the fingerprint file')
+            );
+            $this->dispatch('refreshNotifications')->to(Navbar::class);
 
             session()->flash('info', __('Stay tuned! The file is doing a little dance as we speak.'));
         } catch (Exception $e) {
