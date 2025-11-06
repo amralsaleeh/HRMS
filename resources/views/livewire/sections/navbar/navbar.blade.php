@@ -238,7 +238,7 @@
                             !!No Name!!
                           @endif
                         </span>
-                        <small class="text-muted">{{ Auth::user()->getRoleNames()->first() }}</small>
+                        <small class="text-muted">{{ __(Auth::user()->getRoleNames()->first()) }}</small>
                       </div>
                     </div>
                   </a>
