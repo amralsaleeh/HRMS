@@ -57,12 +57,12 @@ class Personal extends Component
 
     public function render()
     {
-        $this->messagesStatus = Message::selectRaw(
-            'SUM(CASE WHEN is_sent = 1 THEN 1 ELSE 0 END) AS sent, SUM(CASE WHEN is_sent = 0 THEN 1 ELSE 0 END) AS unsent'
-        )->first();
+        $sent = Message::where('is_sent', 1)->count();
+        $unsent = Message::where('is_sent', 0)->count();
+
         $this->messagesStatus = [
-            'sent' => Number::format($this->messagesStatus['sent'] != null ? $this->messagesStatus['sent'] : 0),
-            'unsent' => Number::format($this->messagesStatus['unsent'] != null ? $this->messagesStatus['unsent'] : 0),
+            'sent' => Number::format($sent ?? 0),
+            'unsent' => Number::format($unsent ?? 0),
         ];
 
         $this->employees = Employee::where('id', 'like', '%'.$this->searchTerm.'%')

@@ -6,8 +6,10 @@ use App\Jobs\calculateDiscountsAsDays;
 use App\Livewire\Sections\Navbar\Navbar;
 use App\Models\Discount;
 use App\Models\Employee;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Livewire\Component;
 
 class Discounts extends Component
@@ -47,6 +49,18 @@ class Discounts extends Component
                 'batch.required' => 'Please select the period you want to apply the discount on',
             ]
         );
+
+        // 👉 Backup Database
+        Artisan::call('backup:run', [
+            '--only-db' => true,
+        ]);
+        Log::info('Database backup successfully.');
+
+        // 👉 Turn on maintenance mode
+        Artisan::call('down', [
+            '--secret' => 'NamaaAdminOnly',
+        ]);
+        Log::info('Maintenance mode activated.');
 
         calculateDiscountsAsDays::dispatch(Auth::user(), $this->batch);
 

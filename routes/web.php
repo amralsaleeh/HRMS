@@ -41,7 +41,7 @@ Route::middleware([
     'allow_admin_during_maintenance',
 ])->group(function () {
     // 👉 Dashboard
-    Route::group(['middleware' => ['role:Admin|AM|CC|CR|HR']], function () {
+    Route::group(['middleware' => ['role:Admin|AM|CC|CR|HR|Employee|Viewer']], function () {
         Route::redirect('/', '/dashboard');
         Route::get('/dashboard', Dashboard::class)->name('dashboard');
     });
