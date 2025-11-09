@@ -113,7 +113,7 @@
           <div class="d-flex justify-content-between mb-3">
             <h5 class="card-title mb-0">{{ __('Statistics') }}</h5>
             @can('read sms')
-            <small class="text-muted">{{ __() . $batchDates[1] }}</small>
+            <small class="text-muted">{{ __('Data as of: ') . $batchDates[1] }}</small>
             @endcan
           </div>
         </div>
