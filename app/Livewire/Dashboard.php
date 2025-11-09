@@ -79,6 +79,7 @@ class Dashboard extends Component
                 ->where('end_date', null)
                 ->first()->center_id
         );
+
         // If the current user is an Employee, limit activeEmployees to only their timeline
         if (Auth::user()->hasAnyRole(['Employee', 'Viewer'])) {
             // Return only the current employee's active timeline(s)
@@ -99,23 +100,6 @@ class Dashboard extends Component
             $this->accountBalance = $this->CheckAccountBalance();
         } catch (Throwable $th) {
             //
-        }
-
-        if (Auth::user()->hasAnyRole(['Employee', 'Viewer'])) {
-            $this->leaveRecords = EmployeeLeave::where('employee_id', Auth::user()->employee_id)
-                ->whereBetween('created_at', [
-                    Carbon::now()
-                        ->subDays(7)
-                        ->startOfDay(),
-                    Carbon::now()->endOfDay(),
-                ])
-                ->orderBy('created_at')
-                ->get();
-        } else {
-            $this->leaveRecords = EmployeeLeave::where('created_by', Auth::user()->name)
-                ->whereDate('created_at', Carbon::today()->toDate())
-                ->orderBy('created_at')
-                ->get();
         }
 
         $this->employeeDiscounts = $this->getEmployeeDiscounts();
@@ -154,6 +138,23 @@ class Dashboard extends Component
             'sent' => Number::format($sent ?? 0),
             'unsent' => Number::format($unsent ?? 0),
         ];
+
+        if (Auth::user()->hasAnyRole(['Employee', 'Viewer'])) {
+            $this->leaveRecords = EmployeeLeave::where('employee_id', Auth::user()->employee_id)
+                ->whereBetween('created_at', [
+                    Carbon::now()
+                        ->subDays(7)
+                        ->startOfDay(),
+                    Carbon::now()->endOfDay(),
+                ])
+                ->orderBy('created_at')
+                ->get();
+        } else {
+            $this->leaveRecords = EmployeeLeave::where('created_by', Auth::user()->name)
+                ->whereDate('created_at', Carbon::today()->toDate())
+                ->orderBy('created_at')
+                ->get();
+        }
 
         return view('livewire.dashboard');
     }
