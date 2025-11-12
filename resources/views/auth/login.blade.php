@@ -49,7 +49,7 @@ $configData = Helper::appClasses();
         <form id="formAuthentication" class="mb-3" action="{{ route('login') }}" method="POST">
           @csrf
           <div class="mb-3">
-            <label for="login" class="form-label">{{ __('Email') }}</label>
+            <label for="login" class="form-label">{{ __('Email or Employee ID') }}</label>
             <input type="text" class="form-control @error('login') is-invalid @enderror" id="login" name="login" placeholder="example@namaa.sy" autofocus value="{{ old('login') }}">
             @error('login')
             <span class="invalid-feedback" role="alert">
