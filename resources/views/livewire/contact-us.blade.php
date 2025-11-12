@@ -34,7 +34,7 @@
       <div class="badge-base LI-profile-badge" data-locale="en_US" data-size="large" data-theme="light" data-type="HORIZONTAL" data-vanity="amralsaleeh" data-version="v1">
       </div>
     </div>
-    <div class="col-4">
+    {{-- <div class="col-4">
       <div style="text-align: center">
         <h5 class="card-title">Aref Naser Agha</h5>
         <h6 class="card-subtitle text-muted">Network Administration</h6>
@@ -42,7 +42,7 @@
       </div>
       <div class="badge-base LI-profile-badge" data-locale="en_US" data-size="large" data-theme="light" data-type="HORIZONTAL" data-vanity="aref-naser-agha" data-version="v1">
       </div>
-    </div>
+    </div> --}}
     <div class="col-4">
       <div style="text-align: center">
         <h5 class="card-title">Sewar Khalil</h5>
