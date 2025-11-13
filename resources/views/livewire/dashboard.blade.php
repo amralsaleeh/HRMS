@@ -49,6 +49,16 @@
     </ol>
   </nav> --}}
 
+  {{-- @if(Auth::user()->hasRole('Employee|Viewer')) --}}
+  <div class="alert alert-danger alert-dismissible" style="text-align: justify;" role="alert">
+    <h5 class="alert-heading mb-2">{{ __('Reminder!') }}</h5>
+    <p class="mb-0">
+      {{ __('Monitoring and verifying the recorded leave and task is the full responsibility of the employee. If the entries are not verified for accuracy, the employee is solely responsible for any deduction that may be made from the leave balance or salary later.') }}
+    </p>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+  {{-- @endif --}}
+
   <div class="row match-height">
     <div class="col-xl-4 mb-4 col-lg-5 col-12">
       <div class="card h-100">
