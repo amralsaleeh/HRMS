@@ -2,6 +2,9 @@
 
 namespace App\Providers;
 
+use App\Listeners\LogFailedJob;
+use App\Listeners\UpdateLastLogin;
+use Illuminate\Auth\Events\Login;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -17,7 +20,8 @@ class EventServiceProvider extends ServiceProvider
      */
     protected $listen = [
         Registered::class => [SendEmailVerificationNotification::class],
-        JobFailed::class => [\App\Listeners\LogFailedJob::class],
+        JobFailed::class => [LogFailedJob::class],
+        Login::class => [UpdateLastLogin::class],
     ];
 
     /**

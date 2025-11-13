@@ -37,6 +37,8 @@ return new class extends Migration
             $table->rememberToken();
             // $table->foreignId('current_team_id')->nullable();
             $table->string('profile_photo_path', 2048)->nullable();
+            $table->timestamp('last_login')->nullable();
+            $table->timestamp('last_activity')->nullable();
             $table->string('created_by')->nullable();
             $table->string('updated_by')->nullable();
             $table->string('deleted_by')->nullable();
