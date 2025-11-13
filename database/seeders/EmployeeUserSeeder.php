@@ -20,6 +20,7 @@ class EmployeeUserSeeder extends Seeder
             $user = User::create([
                 'name' => $employee->first_name.' '.$employee->last_name,
                 'employee_id' => $employee->id,
+                'username' => $employee->id,
                 'email' => $employee->national_number.'@namaa.sy',
                 'password' => Hash::make($employee->national_number),
                 'profile_photo_path' => 'profile-photos/'.$employee->id.'.jpg',

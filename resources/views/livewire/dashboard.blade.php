@@ -49,6 +49,16 @@
     </ol>
   </nav> --}}
 
+  {{-- @if(Auth::user()->hasRole('Employee|Viewer')) --}}
+  <div class="alert alert-danger alert-dismissible" style="text-align: justify;" role="alert">
+    <h5 class="alert-heading mb-2">{{ __('Reminder!') }}</h5>
+    <p class="mb-0">
+      {{ __('Monitoring and verifying the recorded leave and task is the full responsibility of the employee. If the entries are not verified for accuracy, the employee is solely responsible for any deduction that may be made from the leave balance or salary later.') }}
+    </p>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+  {{-- @endif --}}
+
   <div class="row match-height">
     <div class="col-xl-4 mb-4 col-lg-5 col-12">
       <div class="card h-100">
@@ -112,9 +122,7 @@
         <div class="card-header">
           <div class="d-flex justify-content-between mb-3">
             <h5 class="card-title mb-0">{{ __('Statistics') }}</h5>
-            @can('read sms')
             <small class="text-muted">{{ __('Data as of: ') . $batchDates[1] }}</small>
-            @endcan
           </div>
         </div>
         @can('read sms')

@@ -35,7 +35,7 @@
 
   <x-slot name="actions">
     <x-button>
-      {{ __('Save') }}
+      {{ __('Submit') }}
     </x-button>
   </x-slot>
 </x-form-section>
