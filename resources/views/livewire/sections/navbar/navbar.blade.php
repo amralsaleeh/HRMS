@@ -77,6 +77,7 @@
           <div class="navbar-nav d-flex flex-row align-items-center">
 
             <!-- Maintenance -->
+            @if(Auth::check() && (Auth::user()->hasRole('Admin') || Auth::user()->hasRole('HR')))
             <div>
               @if ($isMaintenance == 1)
                 <a wire:click.prevent='turnMaintenanceModeOff()' href=''>
@@ -98,6 +99,7 @@
                 </a>
               @endif
             </div>
+            @endif
             <!--/ Maintenance -->
 
             <!-- Style Switcher -->
