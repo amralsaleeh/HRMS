@@ -616,36 +616,16 @@ class calculateDiscountsAsDays implements ShouldQueue
                 ->subHours($timeCovered->hour)
                 ->subMinutes($timeCovered->minute);
 
-            if ($fingerprint->check_in < $delayThreshold) {
-                // $this->checkIfDelay($center, $employee, $fingerprint, $startOfWork, $delayThreshold);
-                $duration = Carbon::parse($center->start_work_hour)->diff(Carbon::parse($fingerprint->check_in));
-                $durationInSeconds = Carbon::parse($center->start_work_hour)->diffInSeconds(
-                    Carbon::parse($fingerprint->check_in)
-                );
+            // log::info(
+            //     'Adjusted check_in: '.
+            //       $fingerprint->check_in.
+            //       ' for fingerprint date: '.
+            //       $fingerprint->date.
+            //       ' and employee ID: '.
+            //       $employee->id
+            // );
 
-                $employee->update([
-                    'delay_counter' => Carbon::parse($employee->delay_counter)
-                        ->addHours($duration->h)
-                        ->addMinutes($duration->i),
-                ]);
-
-                $hourlyCounter = Carbon::parse($employee->hourly_counter);
-                $hourlyCounterLimit = Carbon::parse('07:00:00'); // TODO: Make 07:00:00 inserted variable on settings table
-
-                if ($hourlyCounter->gt($hourlyCounterLimit)) {
-                    if ($employee->max_leave_allowed > 0) {
-                        $this->decrementMaxLeaveAllowed($employee, $fingerprint->date, 'Administrative leave - Rounded');
-                    } else {
-                        $this->createDiscountFromFingerprint($employee, $fingerprint, 'Administrative leave - Rounded', 1);
-                    }
-                    $employee->update([
-                        'hourly_counter' => Carbon::parse($employee->hourly_counter)->subHours(7), // TODO: Make 7 inserted variable on settings table
-                    ]);
-                }
-
-                return true;
-                // return false;
-            } else {
+            if ($fingerprint->check_in > $startOfWork) {
                 $duration = Carbon::parse($center->start_work_hour)->diff(Carbon::parse($fingerprint->check_in));
                 $durationInSeconds = Carbon::parse($center->start_work_hour)->diffInSeconds(
                     Carbon::parse($fingerprint->check_in)
@@ -691,9 +671,9 @@ class calculateDiscountsAsDays implements ShouldQueue
 
                     return true;
                 }
+            } else {
+                return false;
             }
-        } else {
-            return false;
         }
     }
 
@@ -729,7 +709,7 @@ class calculateDiscountsAsDays implements ShouldQueue
             if (
                 $fingerprint->date >= $leave->pivot->from_date &&
                 $fingerprint->date <= $leave->pivot->to_date &&
-                $leave->pivot->start_at < $fingerprint->check_in &&
+                $leave->pivot->start_at <= $fingerprint->check_in &&
                 $leave->pivot->is_checked == 0 &&
                 substr($leave->id, 1, 1) == 2
             ) {
