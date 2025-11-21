@@ -23,7 +23,14 @@ class AllowAdminDuringMaintenance
             }
 
             $user = Auth::user();
+            $route = $request->route();
+            $routeName = $route ? $route->getName() : null;
+
             if ($user->hasRole('Admin') || $user->name === 'HR Payroll') {
+                return $next($request);
+            }
+
+            if ($routeName === 'messages-bulk' && $user->hasAnyRole(['Admin', 'CC'])) {
                 return $next($request);
             }
 
