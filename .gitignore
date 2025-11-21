@@ -17,3 +17,8 @@ yarn.lock
 package-lock.json
 /.idea
 SettingsSeeder.php
+
+bootstrap/cache/packages.php
+bootstrap/cache/services.php
+composer.lock
+composer.json
