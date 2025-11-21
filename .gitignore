@@ -17,10 +17,3 @@ yarn.lock
 package-lock.json
 /.idea
 SettingsSeeder.php
-
-# Start - Thats for laravel/boost requirements for dev purposes
-bootstrap/cache/packages.php
-bootstrap/cache/services.php
-composer.lock
-composer.json
-# End - Thats for laravel/boost requirements for dev purposes
