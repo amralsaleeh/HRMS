@@ -17,6 +17,7 @@ use App\Livewire\HumanResource\Structure\Departments;
 use App\Livewire\HumanResource\Structure\EmployeeInfo;
 use App\Livewire\HumanResource\Structure\Employees;
 use App\Livewire\HumanResource\Structure\Positions;
+use App\Livewire\MaintenanceMode;
 use App\Livewire\Misc\ComingSoon;
 use App\Livewire\Settings\Users;
 use Illuminate\Support\Facades\Route;
@@ -104,8 +105,10 @@ Route::middleware([
     Route::group(['middleware' => ['role:Admin|AM|HR']], function () {
         Route::get('/assets/reports', ComingSoon::class)->name('reports');
     });
-});
 
-Route::get('/contact-us', ContactUs::class)->name('contact-us');
+    Route::get('/contact-us', ContactUs::class)->name('contact-us');
+
+    Route::get('/maintenance-mode', MaintenanceMode::class)->name('maintenance-mode');
+});
 
 Route::webhooks('/deploy');

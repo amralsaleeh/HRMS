@@ -6,7 +6,6 @@ use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class AllowAdminDuringMaintenance
 {
@@ -18,6 +17,10 @@ class AllowAdminDuringMaintenance
     public function handle(Request $request, Closure $next): Response
     {
         if (app()->isDownForMaintenance()) {
+            if (in_array($request->path(), ['login', 'maintenance-mode', 'contact-us'])) {
+                return $next($request);
+            }
+
             if (! Auth::check()) {
                 return redirect('/login');
             }
@@ -34,9 +37,9 @@ class AllowAdminDuringMaintenance
                 return $next($request);
             }
 
-            throw new HttpException(503);
-        } else {
-            return $next($request);
+            return redirect('/maintenance-mode');
         }
+
+        return $next($request);
     }
 }
