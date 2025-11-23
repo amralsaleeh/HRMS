@@ -37,6 +37,7 @@
               display: flex;
               align-items: center;
               justify-content: flex-start;
+              direction: ltr;
             ">
               <img src="{{ asset('assets/img/contact-us/LinkedIn-logo.png') }}" alt="LinkedIn" style="height: 20px;">
             </div>
@@ -109,6 +110,7 @@
               display: flex;
               align-items: center;
               justify-content: flex-start;
+              direction: ltr;
             ">
               <img src="{{ asset('assets/img/contact-us/LinkedIn-logo.png') }}" alt="LinkedIn" style="height: 20px;">
             </div>
@@ -177,6 +179,7 @@
               display: flex;
               align-items: center;
               justify-content: flex-start;
+              direction: ltr;
             ">
               <img src="{{ asset('assets/img/contact-us/LinkedIn-logo.png') }}" alt="LinkedIn" style="height: 20px;">
             </div>
