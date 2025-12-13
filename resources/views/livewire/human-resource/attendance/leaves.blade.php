@@ -207,7 +207,7 @@
     </div>
 
     {{-- Modals --}}
-    @include('_partials/_modals/modal-Leave')
+    @include('_partials/_modals/modal-leave') {{-- The file is named modal-leave, not modal-Leave. --}}
     @include('_partials/_modals/modal-import')
   </div>
 
