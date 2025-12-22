@@ -98,4 +98,14 @@ class Navbar extends Component
             return redirect()->to('/');
         }
     }
+
+    public function turnMaintenanceModeOn()
+    {
+        if (App::isDownForMaintenance() != 1) {
+            Artisan::call('down');
+            Log::info('Maintenance mode turned on.');
+
+            return redirect()->to('/');
+        }
+    }
 }

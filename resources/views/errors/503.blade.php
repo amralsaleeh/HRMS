@@ -20,13 +20,18 @@
       {{ __('Attention! The page is scheduled for a refined refresh in:') }}
     </p>
     <h3 id="timer">00:15:00:0</h3>
-    <button class="btn btn-label-secondary mt-3" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-      {{ __('Logout') }}
+    <div class="d-flex align-items-center gap-2">
+
+    <a class="btn btn-primary" href="{{ url('/') }}">{{ __('Go back') }}</a>
+    <button class="btn btn-label-danger"
+        onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+        {{ __('Logout') }}
     </button>
-    <form method="POST" id="logout-form" action="{{ route('logout') }}">
-      @csrf
+    <form method="POST" id="logout-form" action="{{ route('logout') }}" style="display:inline;">
+        @csrf
     </form>
-    {{-- <a href="{{url('/')}}" class="btn btn-primary mb-4">Back to home</a> --}}
+</div>
+
     <div class="mt-4">
       <img src="{{ asset('assets/img/illustrations/page-misc-under-maintenance.png') }}" alt="page-misc-under-maintenance" width="400" class="img-fluid">
     </div>

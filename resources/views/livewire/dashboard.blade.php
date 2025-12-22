@@ -62,12 +62,13 @@
   <div class="row match-height">
     <div class="col-xl-4 mb-4 col-lg-5 col-12">
       <div class="card h-100">
-        <div class="card-header pb-0">
-          <div class="d-flex justify-content-between">
+        <div class="card-header">
+          <div class="d-flex justify-content-between mb-3">
             <div class="card-title mb-0">
               <h4 class="card-title mb-1">{{ __('Hi,') }} {{ Employee::find(Auth::user()->employee_id)->first_name }}! 👋</h4>
               <small class="text-muted">{{ __('Start your day with a smile') }}</small>
             </div>
+            <small class="text-muted">{{ __('ID: ') . Auth::user()->employee_id }}</small>
           </div>
         </div>
 

@@ -76,9 +76,35 @@
         <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
           <div class="navbar-nav d-flex flex-row align-items-center">
 
+            <!-- Maintenance -->
+            @if(Auth::check() && (Auth::user()->hasRole('Admin') || Auth::user()->hasRole('HR')))
+            <div>
+              @if ($isMaintenance == 1)
+                <a wire:click.prevent='turnMaintenanceModeOff()' href=''>
+                  <div class="alert alert-warning d-flex align-items-center mb-0 mt-0" role="alert" style="width: 100%;">
+                    <i class="ti ti-lock"></i>
+                    <div class="d-none d-md-block ms-2">
+                      {{ __('System is running in lock mode!') }}
+                    </div>
+                  </div>
+                </a>
+              @else
+                <a wire:click.prevent='turnMaintenanceModeOn()' href=''>
+                  <div class="alert alert-success d-flex align-items-center mb-0 mt-0" role="alert" style="width: 100%;">
+                    <i class="ti ti-shield-check"></i>
+                    <div class="d-none d-md-block ms-2">
+                      {{ __('System is running optimally!') }}
+                    </div>
+                  </div>
+                </a>
+              @endif
+            </div>
+            @endif
+            <!--/ Maintenance -->
+
             <!-- Style Switcher -->
             <a wire:ignore class="nav-link style-switcher-toggle hide-arrow" href="javascript:void(0);">
-              <i class='ti ti-sm'></i>
+              <i class='ti ti-sm mx-2'></i>
             </a>
             <!--/ Style Switcher -->
 
@@ -89,18 +115,6 @@
               </a>
             </div>
             <!-- Offline Indicator -->
-
-            @if ($isMaintenance == 1)
-            <a wire:click.prevent='turnMaintenanceModeOff()' href=''>
-              <div class="alert alert-warning d-flex align-items-center mb-0 mt-0" role="alert" style="width: 100%;">
-                <i class="ti ti-alert-triangle me-2"></i>
-                <div>
-                  {{ __('System is currently in lock mode!') }}
-                </div>
-              </div>
-            </a>
-            @endif
-
           </div>
 
           <ul class="navbar-nav flex-row align-items-center ms-auto">
