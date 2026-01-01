@@ -55,7 +55,7 @@ This concise solution promotes effective workforce management and informed decis
 
 ## Screenshots 
 
-![Login](https://github.com/amralsaleeh/HRMS/assets/9991208/ea5a3024-3ecd-43c4-8350-1cbb79396bb1)
+![Login](https://github.com/user-attachments/assets/063d57fc-3f79-4e15-8b20-7663b1ef896e)
 <h3 align="center">Login</h3>
 <br/>
 
