@@ -59,7 +59,7 @@ This concise solution promotes effective workforce management and informed decis
 <h3 align="center">Login</h3>
 <br/>
 
-![Dashboard](https://github.com/user-attachments/assets/7a211df2-5e42-4349-bb54-2504092c1acf)
+![Dashboard](https://github.com/user-attachments/assets/8b8a7132-05a3-4fb3-aa6e-4407ca1cc73d)
 <h3 align="center">Dashboard</h3>
 <br/>
 
@@ -79,11 +79,11 @@ This concise solution promotes effective workforce management and informed decis
 <h3 align="center">Discounts</h3>
 <br/>
 
-![User](https://github.com/amralsaleeh/HRMS/assets/9991208/8d522284-a835-4be3-91fb-2076f77e4fb6)
+![User](https://github.com/user-attachments/assets/95e2d08e-1da3-48dc-b606-963185c9db30)
 <h3 align="center">User</h3>
 <br/>
 
-![Under Development](https://github.com/user-attachments/assets/02699ca1-dc59-48ef-9140-9323e579ec87)
+![Under Development](https://github.com/user-attachments/assets/b1e95d5f-60db-4392-a4c2-d22102698494)
 <h3 align="center">Under Development</h3>
 <br/>
 
@@ -154,11 +154,13 @@ This concise solution promotes effective workforce management and informed decis
 ## Contribution
 We welcome contributions from developers and users. If you have ideas for improving the system or discover issues, feel free to create an Issue or submit a Pull Request.
 
+![GitHub contributors](https://img.shields.io/github/contributors/amralsaleeh/HRMS)
+
 ## Contact
 
-Amr Alsaleh - [@amralsaleeh](https://linkedin.com/in/amralsaleeh) - amralsaleeh@outlook.com
-
-Project Link: [https://github.com/amralsaleeh/HRMS](https://github.com/amralsaleeh/HRMS)
+- **LinkedIn:** [Amr Alsaleh](https://linkedin.com/in/amralsaleeh)  
+- **Email:** [amralsaleeh@outlook.com](mailto:amralsaleeh@outlook.com)  
+- **Project Repository:** [HRMS on GitHub](https://github.com/amralsaleeh/HRMS)
 
 ## License
 This project uses the MIT License. Please see [LICENSE](LICENSE.md) File for more information.
