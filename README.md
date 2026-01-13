@@ -30,8 +30,9 @@ It optimizes organizational efficiency through clear hierarchy establishment, ce
 This concise solution promotes effective workforce management and informed decision-making.
 
 ### Built With
-* [Laravel](https://laravel.com)
-* [Livewire](https://livewire.laravel.com)
+
+- [Laravel](https://laravel.com)
+- [Livewire](https://livewire.laravel.com)
 
 ## Features
 
@@ -45,47 +46,65 @@ This concise solution promotes effective workforce management and informed decis
 
 - **Salary and Deduction Management:** Streamline salary and deduction processes, ensuring accuracy and compliance.
 
-- **Alerts and Messaging System:** Implement notifications for important dates and announcements.
+- **Alerts and Messaging System:** Send notifications for important dates and announcements, with integrated SMS and WhatsApp API support to deliver messages directly to employees.
 
 - **Comprehensive HR Reports:** Generate detailed reports for insights into employee performance and attendance.
 
-- **Asset and Device Management:** Efficiently manage and track organizational assets and assigned devices for each employee.
+- **Asset and Device Management:** Includes an assets management module that is currently under development and will enable efficient tracking of organizational assets and devices assigned to employees.
 
-- **Support localization:** Enable multilingual support and adapt the system to various regional and cultural settings, ensuring usability and compliance with local practices. Supports both left-to-right (LTR) and right-to-left (RTL) text directions.
+- **Support localization:** Supports both English and Arabic languages, with full localization capabilities, including left-to-right (LTR) and right-to-left (RTL) text directions, to ensure usability and compliance with regional and cultural requirements.
 
-## Screenshots 
+## Screenshots
 
-![Login](https://github.com/amralsaleeh/HRMS/assets/9991208/ea5a3024-3ecd-43c4-8350-1cbb79396bb1)
+![Login](https://github.com/user-attachments/assets/063d57fc-3f79-4e15-8b20-7663b1ef896e)
+
 <h3 align="center">Login</h3>
 <br/>
 
-![Dashboard](https://github.com/amralsaleeh/HRMS/assets/9991208/a23907bf-0229-479b-aa53-71d1fd6ae6fa)
+![Dashboard](https://github.com/user-attachments/assets/8b8a7132-05a3-4fb3-aa6e-4407ca1cc73d)
+
 <h3 align="center">Dashboard</h3>
 <br/>
 
-![Employee Info](https://github.com/amralsaleeh/HRMS/assets/9991208/e52d38de-f68d-4aa5-a126-16af75ce1faa)
+![Employee Info](https://github.com/user-attachments/assets/0cb0ea64-90a6-4934-9a4e-7c9dce694d5f)
+
 <h3 align="center">Employee Info</h3>
 <br/>
 
-![SMS](https://github.com/amralsaleeh/HRMS/assets/9991208/b1a66e9d-7b2c-4897-9313-630a5a88acab)
+![SMS](https://github.com/user-attachments/assets/7b565ef4-4318-459d-8ec8-145a252d27d7)
+
 <h3 align="center">SMS</h3>
 <br/>
 
-![Fingerprints](https://github.com/amralsaleeh/HRMS/assets/9991208/5a25f002-065d-445d-ae17-ed1e5035bf48)
+![Fingerprints](https://github.com/user-attachments/assets/63e08408-28cd-4d9a-a1f2-6b2cb74cda9a)
+
 <h3 align="center">Fingerprints</h3>
 <br/>
 
-![Discounts](https://github.com/amralsaleeh/HRMS/assets/9991208/edb3fb25-4ec3-4bd7-b232-348ee66466b7)
+![Discounts](https://github.com/user-attachments/assets/0c5678ad-b78c-45b4-8794-221e29c1aefc)
+
 <h3 align="center">Discounts</h3>
 <br/>
 
-![User](https://github.com/amralsaleeh/HRMS/assets/9991208/8d522284-a835-4be3-91fb-2076f77e4fb6)
+![User](https://github.com/user-attachments/assets/95e2d08e-1da3-48dc-b606-963185c9db30)
+
 <h3 align="center">User</h3>
+<br/>
+
+![Under Development](https://github.com/user-attachments/assets/b1e95d5f-60db-4392-a4c2-d22102698494)
+
+<h3 align="center">Under Development</h3>
+<br/>
+
+![Log Viewer](https://github.com/user-attachments/assets/4afae1e1-f808-4fb9-af78-8709bff3e218)
+
+<h3 align="center">Log Viewer</h3>
 <br/>
 
 ## Getting Started
 
 ### Requirements
+
 - PHP 8.1 or later.
 - Composer.
 - MySQL.
@@ -97,66 +116,86 @@ This concise solution promotes effective workforce management and informed decis
    ```bash
    git clone https://github.com/amralsaleeh/HRMS.git
 
+   ```
+
 2. Navigate to the project folder:
-   
-    ```bash
-    cd HRMS
+
+   ```bash
+   cd HRMS
+
+   ```
 
 3. Install dependencies using Composer:
-   
-    ```bash
-    composer install
+
+   ```bash
+   composer install
+   ```
+
 4. Set up the database and necessary configurations:
 
-    - Copy the `.env.example` to `.env` file in the root of your project.
-      
-    - Open the `.env` file in the root of your project.
+   - Copy the `.env.example` to `.env` file in the root of your project.
+   - Open the `.env` file in the root of your project.
 
-    - Set the database connection details, including `DB_CONNECTION`, `DB_HOST`, `DB_PORT`, `DB_DATABASE`, `DB_USERNAME`, `DB_PASSWORD`.
-      
-    - Set the `APP_TIMEZONE` to 'Asia/Istanbul' or whatever timezone you like.
+   - Set the database connection details, including `DB_CONNECTION`, `DB_HOST`, `DB_PORT`, `DB_DATABASE`, `DB_USERNAME`, `DB_PASSWORD`.
+   - Set the `APP_TIMEZONE` to 'Asia/Istanbul' or whatever timezone you like.
 
 5. Run the key generate command:
-   
-    ```bash
-    php artisan key:generate
+
+   ```bash
+   php artisan key:generate
+
+   ```
 
 6. Run the storage link command:
-   
-    ```bash
-    php artisan storage:link
+
+   ```bash
+   php artisan storage:link
+   ```
+
 7. Run the migration command with the seed flag to add some fake data:
-   
-    ```bash
-    php artisan migrate --seed
+
+   ```bash
+   php artisan migrate --seed
+   ```
+
 8. Run the development server:
-   
-    ```bash
-    php artisan serve
+
+   ```bash
+   php artisan serve
+   ```
+
 9. Open your browser and go to http://localhost:8000 to see the application.
 
-    
 ### Usage
+
 10. Login:
-    
+
     ```bash
     email: admin@demo.com
     password: admin
+    ```
 
 ## Contribution
+
 We welcome contributions from developers and users. If you have ideas for improving the system or discover issues, feel free to create an Issue or submit a Pull Request.
+
+![GitHub contributors](https://img.shields.io/github/contributors/amralsaleeh/HRMS)
 
 ## Contact
 
-Amr Alsaleh - [@amralsaleeh](https://linkedin.com/in/amralsaleeh) - amralsaleeh@outlook.com
+- **LinkedIn:** [Amr Alsaleh](https://linkedin.com/in/amralsaleeh)
+- **Email:** [amralsaleeh@outlook.com](mailto:amralsaleeh@outlook.com)
+- **Project Repository:** [HRMS on GitHub](https://github.com/amralsaleeh/HRMS)
 
-Project Link: [https://github.com/amralsaleeh/HRMS](https://github.com/amralsaleeh/HRMS)
+[![LinkedIn][linkedin-shield]][linkedin-url]
 
 ## License
+
 This project uses the MIT License. Please see [LICENSE](LICENSE.md) File for more information.
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
+
 [contributors-shield]: https://img.shields.io/github/contributors/amralsaleeh/HRMS.svg?style=flat-square
 [contributors-url]: https://github.com/amralsaleeh/HRMS/graphs/contributors
 [forks-shield]: https://img.shields.io/github/forks/amralsaleeh/HRMS.svg?style=flat-square
