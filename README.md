@@ -54,50 +54,39 @@ This concise solution promotes effective workforce management and informed decis
 
 - **Support localization:** Supports both English and Arabic languages, with full localization capabilities, including left-to-right (LTR) and right-to-left (RTL) text directions, to ensure usability and compliance with regional and cultural requirements.
 
-## Screenshots
-
 ![Login](https://github.com/user-attachments/assets/063d57fc-3f79-4e15-8b20-7663b1ef896e)
-
 <h3 align="center">Login</h3>
 <br/>
 
 ![Dashboard](https://github.com/user-attachments/assets/8b8a7132-05a3-4fb3-aa6e-4407ca1cc73d)
-
 <h3 align="center">Dashboard</h3>
 <br/>
 
 ![Employee Info](https://github.com/user-attachments/assets/0cb0ea64-90a6-4934-9a4e-7c9dce694d5f)
-
 <h3 align="center">Employee Info</h3>
 <br/>
 
 ![SMS](https://github.com/user-attachments/assets/7b565ef4-4318-459d-8ec8-145a252d27d7)
-
 <h3 align="center">SMS</h3>
 <br/>
 
 ![Fingerprints](https://github.com/user-attachments/assets/63e08408-28cd-4d9a-a1f2-6b2cb74cda9a)
-
 <h3 align="center">Fingerprints</h3>
 <br/>
 
 ![Discounts](https://github.com/user-attachments/assets/0c5678ad-b78c-45b4-8794-221e29c1aefc)
-
 <h3 align="center">Discounts</h3>
 <br/>
 
 ![User](https://github.com/user-attachments/assets/95e2d08e-1da3-48dc-b606-963185c9db30)
-
 <h3 align="center">User</h3>
 <br/>
 
 ![Under Development](https://github.com/user-attachments/assets/b1e95d5f-60db-4392-a4c2-d22102698494)
-
 <h3 align="center">Under Development</h3>
 <br/>
 
 ![Log Viewer](https://github.com/user-attachments/assets/4afae1e1-f808-4fb9-af78-8709bff3e218)
-
 <h3 align="center">Log Viewer</h3>
 <br/>
 
