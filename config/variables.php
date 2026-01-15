@@ -2,9 +2,9 @@
 
 // Variables
 return [
-    'templateDescription' => 'Start your development with a Dashboard for Bootstrap 5',
-    'templateKeyword' => 'dashboard, bootstrap 5 dashboard, bootstrap 5 design, bootstrap 5',
-    'repository' => 'https://github.com/pixinvent/vuexy-html-admin-template',
-    'facebookUrl' => 'https://www.facebook.com/pixinvents/',
-    'instagramUrl' => 'https://www.instagram.com/pixinvents/',
+    'templateDescription' => 'Human Resource Management System built with Laravel and Livewire. It provides flexible and efficient tools for managing employees, leaves, and attendance effortlessly, with integrated SMS and WhatsApp API support to send notifications and detailed updates directly to employees.',
+    'templateKeyword' => 'Human Resource Management System, HR software, Employee management, Attendance tracking, Leave management, SMS notifications, WhatsApp notifications, HR automation, Employee updates, Workforce management',
+    'repository' => 'https://github.com/amralsaleeh/HRMS',
+    'facebookUrl' => 'https://www.facebook.com/Community.Based.Protection',
+    'instagramUrl' => 'https://www.instagram.com/community.based.protection',
 ];
