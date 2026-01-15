@@ -9,8 +9,8 @@
   <title>
     @yield('title') | HRMS
   </title>
-  <meta name="description" content="{{ config('variables.templateDescription') ? config('variables.templateDescription') : '' }}" />
-  <meta name="keywords" content="{{ config('variables.templateKeyword') ? config('variables.templateKeyword') : '' }}">
+  <meta name="description" content="{{ config('variables.templateDescription') ? config('variables.templateDescription') : 'Human Resource Management System built with Laravel and Livewire. It provides flexible and efficient tools for managing employees, leaves, and attendance effortlessly, with integrated SMS and WhatsApp API support to send notifications and detailed updates directly to employees.' }}" />
+  <meta name="keywords" content="{{ config('variables.templateKeyword') ? config('variables.templateKeyword') : 'Human Resource Management System, HR software, Employee management, Attendance tracking, Leave management, SMS notifications, WhatsApp notifications, HR automation, Employee updates, Workforce management' }}">
   <!-- laravel CRUD token -->
   <meta name="csrf-token" content="{{ csrf_token() }}">
   <!-- Canonical SEO -->
