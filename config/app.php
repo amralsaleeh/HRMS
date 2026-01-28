@@ -59,6 +59,14 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Default profile photo path (storage path, no leading slash)
+    |--------------------------------------------------------------------------
+    | Used for fallback avatar URL. Relative URL is /storage/{value}.
+    */
+    'default_profile_photo_path' => 'profile-photos/.default-photo.jpg',
+
+    /*
+    |--------------------------------------------------------------------------
     | Application Timezone
     |--------------------------------------------------------------------------
     |
