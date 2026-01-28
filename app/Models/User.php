@@ -4,11 +4,13 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Traits\CreatedUpdatedDeletedBy;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Storage;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
@@ -59,5 +61,24 @@ class User extends Authenticatable
         }
 
         return '';
+    }
+
+    /**
+     * Get the URL to the user's profile photo. Uses relative URL for default
+     * photo so it works with any host (e.g. Herd HRMS.test).
+     */
+    public function profilePhotoUrl(): Attribute
+    {
+        $defaultPath = config('app.default_profile_photo_path', 'profile-photos/.default-photo.jpg');
+        $defaultRelativeUrl = '/storage/'.$defaultPath;
+
+        return Attribute::get(function () use ($defaultPath, $defaultRelativeUrl) {
+            $path = $this->profile_photo_path;
+            if (! $path || $path === $defaultPath) {
+                return $defaultRelativeUrl;
+            }
+
+            return Storage::disk($this->profilePhotoDisk())->url($path);
+        });
     }
 }
