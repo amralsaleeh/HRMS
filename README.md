@@ -103,75 +103,100 @@ This concise solution promotes effective workforce management and informed decis
 
 ### Requirements
 
-- PHP 8.1 or later.
-- Composer.
-- MySQL.
+- PHP 8.1 or later
+- Composer
+- MySQL
+- Node.js and npm (for frontend assets - optional if assets are already compiled)
 
 ### Installation
 
-1. Download the source code using the following command:
+1. **Clone the repository:**
 
    ```bash
    git clone https://github.com/amralsaleeh/HRMS.git
-
-   ```
-
-2. Navigate to the project folder:
-
-   ```bash
    cd HRMS
-
    ```
 
-3. Install dependencies using Composer:
+2. **Install PHP dependencies:**
 
    ```bash
    composer install
    ```
 
-4. Set up the database and necessary configurations:
+3. **Create the database:**
 
-   - Copy the `.env.example` to `.env` file in the root of your project.
-   - Open the `.env` file in the root of your project.
+   Create a MySQL database for the application. For example:
+   
+   ```sql
+   CREATE DATABASE hrms_database;
+   ```
 
-   - Set the database connection details, including `DB_CONNECTION`, `DB_HOST`, `DB_PORT`, `DB_DATABASE`, `DB_USERNAME`, `DB_PASSWORD`.
-   - Set the `APP_TIMEZONE` to 'Asia/Istanbul' or whatever timezone you like.
+4. **Configure environment variables:**
 
-5. Run the key generate command:
+   Copy the `.env.example` file to `.env`:
+   
+   ```bash
+   cp .env.example .env
+   ```
+   
+   Open the `.env` file and configure the following:
+   - `DB_CONNECTION=mysql`
+   - `DB_HOST=127.0.0.1`
+   - `DB_PORT=3306`
+   - `DB_DATABASE=hrms_database` (or your database name)
+   - `DB_USERNAME=your_database_username`
+   - `DB_PASSWORD=your_database_password`
+   - `APP_TIMEZONE=Asia/Istanbul` (or your preferred timezone)
+
+5. **Generate application key:**
 
    ```bash
    php artisan key:generate
-
    ```
 
-6. Run the storage link command:
+6. **Create storage link:**
 
    ```bash
    php artisan storage:link
    ```
 
-7. Run the migration command with the seed flag to add some fake data:
+7. **Run database migrations and seeders:**
 
+   This will create all necessary tables and populate them with initial data including a default admin user:
+   
    ```bash
    php artisan migrate --seed
    ```
 
-8. Run the development server:
+8. **Install frontend dependencies (optional):**
+
+   If you need to compile or modify frontend assets:
+   
+   ```bash
+   npm install
+   npm run dev
+   ```
+   
+   Note: If the assets are already compiled in `public/assets/`, you can skip this step.
+
+9. **Start the development server:**
 
    ```bash
    php artisan serve
    ```
 
-9. Open your browser and go to http://localhost:8000 to see the application.
+10. **Access the application:**
 
-### Usage
+    Open your browser and navigate to `http://localhost:8000`
 
-10. Login:
+### Default Login Credentials
 
-    ```bash
-    email: admin@demo.com
-    password: admin
-    ```
+After running the migrations with seeders, you can log in using the following default admin credentials:
+
+- **Email:** `admin@demo.com`
+- **Password:** `admin`
+
+**Important:** Change the default password after your first login for security purposes.
 
 ## Contribution
 
