@@ -73,26 +73,29 @@ class Dashboard extends Component
 
         $this->employee = $user;
 
-        $center = Center::find(
-            $user
-                ->timelines()
-                ->where('end_date', null)
-                ->first()->center_id
-        );
+        $center = null;
+        if ($user) {
+            $activeTimeline = $user->timelines()->whereNull('end_date')->first();
+            if ($activeTimeline) {
+                $center = Center::find($activeTimeline->center_id);
+            }
+        }
 
         // If the current user is an Employee, limit activeEmployees to only their timeline
         if (Auth::user()->hasAnyRole(['Employee', 'Viewer'])) {
             // Return only the current employee's active timeline(s)
-            $this->activeEmployees = Timeline::where('employee_id', $user->id)
+            $this->activeEmployees = $user
+                ? Timeline::where('employee_id', $user->id)
                 ->whereNull('end_date')
                 ->with('employee')
-                ->get();
+                ->get()
+                : collect();
         } else {
-            $this->activeEmployees = $center->activeEmployees();
+            $this->activeEmployees = $center ? $center->activeEmployees() : collect();
         }
 
         $this->selectedEmployeeId = Auth::user()->employee_id;
-        $this->employeePhoto = $user->profile_photo_path;
+        $this->employeePhoto = $user?->profile_photo_path ?? 'profile-photos/.default-photo.jpg';
 
         $this->leaveTypes = Leave::all();
 

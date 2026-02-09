@@ -65,7 +65,7 @@
         <div class="card-header">
           <div class="d-flex justify-content-between mb-3">
             <div class="card-title mb-0">
-              <h4 class="card-title mb-1">{{ __('Hi,') }} {{ Employee::find(Auth::user()->employee_id)->first_name }}! 👋</h4>
+              <h4 class="card-title mb-1">{{ __('Hi,') }} {{ $employee?->first_name ?? Auth::user()->name ?? __('there') }}! 👋</h4>
               <small class="text-muted">{{ __('Start your day with a smile') }}</small>
             </div>
             <small class="text-muted">{{ __('ID: ') . Auth::user()->employee_id }}</small>
@@ -193,6 +193,7 @@
                   </div>
                 </div>
               </div> --}}
+              @if($employee)
               <div class="col-md-3 col-6">
                 <div class="d-flex align-items-center">
                   <div class="badge rounded-pill bg-label-warning me-3 p-2"><i class="ti ti-zzz ti-sm"></i></div>
@@ -220,6 +221,7 @@
                   </div>
                 </div>
               </div>
+              @endif
             </div>
           </div>
         @endif
