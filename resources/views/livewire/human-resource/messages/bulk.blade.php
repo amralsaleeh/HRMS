@@ -115,7 +115,7 @@
       @endif
       @if ($validated)
           <div>
-            <label class="block font-semibold mb-1">✅ الأرقام بعد التحقق ({{ count($numbers) }})</label>
+            <label class="block font-semibold mb-1">✅ {{ __('Numbers after verification') }} ({{ count($numbers) }})</label>
             <div class="flex flex-wrap gap-2 max-h-40 overflow-auto">
                 @foreach($numbers as $num)
                     <span class="px-2 py-1 bg-gray-200 rounded text-sm font-mono">{{ $num }}</span>

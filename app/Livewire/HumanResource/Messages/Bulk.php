@@ -34,7 +34,7 @@ class Bulk extends Component
     public function validateNumbers()
     {
         if (trim($this->messageText) === '') {
-            session()->flash('error', 'حقل الرسالة لا يمكن أن يكون فارغًا.');
+            session()->flash('error', __('Message field cannot be empty.'));
             $this->dispatch('scroll-to-top');
             $this->validated = false;
 
@@ -58,7 +58,7 @@ class Bulk extends Component
             if (! preg_match('/^9\d{8}$/', $number)) {
                 session()->flash(
                     'error',
-                    "الرقم التالي غير صحيح: $number. يشترط أن يبدأ بالرقم '9' وأن يكون طوله 9 أرقام بالضبط."
+                    __("Invalid number: :number. Must start with '9' and be exactly 9 digits.", ['number' => $number])
                 );
                 $this->dispatch('scroll-to-top');
                 $this->validated = false;
@@ -67,7 +67,7 @@ class Bulk extends Component
             }
 
             if (in_array($number, $seenNumbers)) {
-                session()->flash('error', "تم تكرار الرقم التالي: $number");
+                session()->flash('error', __('Duplicate number: :number', ['number' => $number]));
                 $this->dispatch('scroll-to-top');
                 $this->validated = false;
 
@@ -75,11 +75,11 @@ class Bulk extends Component
             }
 
             $seenNumbers[] = $number;
-            $cleaned[] = '963'.$number.';';
+            $cleaned[] = '963' . $number . ';';
             $filteredInput[] = $number;
 
             if (count($cleaned) > 50) {
-                session()->flash('error', 'الرجاء الالتزام بإدخال 50 رقم فقط لا أكثر.');
+                session()->flash('error', __('Please enter at most 50 numbers.'));
                 $this->dispatch('scroll-to-top');
                 $this->validated = false;
 
@@ -96,13 +96,13 @@ class Bulk extends Component
     public function send()
     {
         if (! $this->validated) {
-            $this->addError('general', 'الرجاء التحقق من الأرقام أولاً.');
+            $this->addError('general', __('Please validate the numbers first.'));
 
             return;
         }
 
         if (empty($this->messageText)) {
-            $this->addError('general', 'نص الرسالة فارغ.');
+            $this->addError('general', __('Message text is empty.'));
 
             return;
         }
@@ -114,7 +114,7 @@ class Bulk extends Component
             'updated_by' => Auth::user()->name,
         ]);
 
-        session()->flash('success', 'هذا رائع! سيتم إرسال الرسائل قريباً.');
+        session()->flash('success', __('Great! Messages will be sent shortly.'));
         $this->dispatch('scroll-to-top');
 
         $this->reset(['numbersInput', 'messageText', 'numbers', 'validated', 'validationError']);
