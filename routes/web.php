@@ -19,6 +19,8 @@ use App\Livewire\HumanResource\Structure\Employees;
 use App\Livewire\HumanResource\Structure\Positions;
 use App\Livewire\MaintenanceMode;
 use App\Livewire\Misc\ComingSoon;
+use App\Livewire\Settings\Permissions;
+use App\Livewire\Settings\Roles;
 use App\Livewire\Settings\Users;
 use Illuminate\Support\Facades\Route;
 
@@ -91,8 +93,8 @@ Route::middleware([
     Route::group(['middleware' => ['role:Admin']], function () {
         Route::prefix('settings')->group(function () {
             Route::get('/users', Users::class)->name('settings-users');
-            Route::get('/roles', ComingSoon::class)->name('settings-roles');
-            Route::get('/permissions', ComingSoon::class)->name('settings-permissions');
+            Route::get('/roles', Roles::class)->name('settings-roles');
+            Route::get('/permissions', Permissions::class)->name('settings-permissions');
         });
     });
 
