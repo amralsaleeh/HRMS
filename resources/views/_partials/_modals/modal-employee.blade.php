@@ -22,6 +22,31 @@
           <h3 class="mb-2">{{ $isEdit ? __('Update Employee') : __('New Employee') }}</h3>
           <p class="text-muted">{{ __('Please fill out the following information') }}</p>
         </div>
+        <div class="row mb-4">
+          <div class="col-12 d-flex justify-content-center">
+            <div class="d-flex align-items-center">
+              <div class="me-3">
+                @if ($photo)
+                  <img src="{{ $photo->temporaryUrl() }}" class="rounded-circle" width="80" height="80" alt="Preview">
+                @elseif($isEdit && $this->employee && $this->employee->profile_photo_path)
+                  <img src="{{ Storage::disk('public')->exists($this->employee->profile_photo_path) ? Storage::disk('public')->url($this->employee->profile_photo_path) : '/storage/'.config('app.default_profile_photo_path', 'profile-photos/.default-photo.jpg') }}" class="rounded-circle" width="80" height="80" alt="Avatar">
+                @else
+                  <img src="/storage/{{ config('app.default_profile_photo_path', 'profile-photos/.default-photo.jpg') }}" class="rounded-circle" width="80" height="80" alt="Avatar">
+                @endif
+              </div>
+              <div>
+                <label class="form-label mb-1">{{ __('Avatar') }}</label>
+                <input type="file" wire:model="photo" class="form-control @error('photo') is-invalid @enderror" accept="image/*">
+                @error('photo')
+                  <div class="invalid-feedback">
+                    {{ $message }}
+                  </div>
+                @enderror
+                <small class="text-muted d-block mt-1">{{ __('Allowed types: jpg, jpeg, png. Max size: 1MB') }}</small>
+              </div>
+            </div>
+          </div>
+        </div>
         <form wire:submit="submitEmployee" class="row g-3">
           <div class="col-md-3 col-12 mb-4">
             <label class="form-label">{{ __('ID') }}</label>

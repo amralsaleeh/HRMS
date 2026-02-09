@@ -101,4 +101,35 @@ class EmployeeTest extends TestCase
         $employee->setRawAttributes(['delay_counter' => null]);
         $this->assertSame('', $employee->delay_counter);
     }
+
+    public function test_get_employee_photo_returns_user_photo_when_user_linked(): void
+    {
+        $employee = Employee::factory()->create();
+        $user = \App\Models\User::factory()->create([
+            'employee_id' => $employee->id,
+            'profile_photo_path' => 'profile-photos/custom.jpg',
+        ]);
+
+        $photo = $employee->getEmployeePhoto();
+
+        $this->assertSame('storage/profile-photos/custom.jpg', $photo);
+    }
+
+    public function test_get_employee_photo_returns_default_when_no_user_linked(): void
+    {
+        $employee = Employee::factory()->create();
+
+        $photo = $employee->getEmployeePhoto();
+
+        $defaultPath = config('app.default_profile_photo_path', 'profile-photos/.default-photo.jpg');
+        $this->assertSame('storage/' . $defaultPath, $photo);
+    }
+
+    public function test_profile_photo_path_is_fillable(): void
+    {
+        $path = 'profile-photos/test.jpg';
+        $employee = Employee::factory()->create(['profile_photo_path' => $path]);
+
+        $this->assertSame($path, $employee->profile_photo_path);
+    }
 }

@@ -20,6 +20,7 @@
         <thead>
           <tr>
             <th>{{ __('ID') }}</th>
+            <th>{{ __('Avatar') }}</th>
             <th>{{ __('Name') }}</th>
             <th>{{ __('Email') }}</th>
             <th>{{ __('Username') }}</th>
@@ -31,6 +32,9 @@
           @forelse($users as $user)
             <tr>
               <td>{{ $user->id }}</td>
+              <td>
+                <img src="{{ $user->profile_photo_url }}" alt="" class="rounded-circle" width="32" height="32">
+              </td>
               <td><strong>{{ $user->name }}</strong></td>
               <td>{{ $user->email }}</td>
               <td>{{ $user->username }}</td>
@@ -52,7 +56,7 @@
             </tr>
           @empty
             <tr>
-              <td colspan="6">
+              <td colspan="7">
                 <div class="mt-2 mb-2" style="text-align: center">
                   <h3 class="mb-1 mx-2">{{ __('Oopsie-doodle!') }}</h3>
                   <p class="mb-4 mx-2">

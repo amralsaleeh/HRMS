@@ -5,11 +5,12 @@ namespace App\Livewire\HumanResource\Structure;
 use App\Models\Contract;
 use App\Models\Employee;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 use Livewire\WithPagination;
 
 class Employees extends Component
 {
-    use WithPagination;
+    use WithFileUploads, WithPagination;
 
     // 👉 Variables
     public $searchTerm = null;
@@ -19,6 +20,8 @@ class Employees extends Component
     public $employee;
 
     public $employeeInfo = [];
+
+    public $photo;
 
     public $isEdit = false;
 
@@ -33,9 +36,9 @@ class Employees extends Component
     // 👉 Render
     public function render()
     {
-        $employees = Employee::where('id', 'like', '%'.$this->searchTerm.'%')
-            ->orWhere('first_name', 'like', '%'.$this->searchTerm.'%')
-            ->orWhere('last_name', 'like', '%'.$this->searchTerm.'%')
+        $employees = Employee::where('id', 'like', '%' . $this->searchTerm . '%')
+            ->orWhere('first_name', 'like', '%' . $this->searchTerm . '%')
+            ->orWhere('last_name', 'like', '%' . $this->searchTerm . '%')
             ->paginate(20);
 
         return view('livewire.human-resource.structure.employees', [
@@ -59,6 +62,7 @@ class Employees extends Component
             'employeeInfo.degree' => 'required',
             'employeeInfo.gender' => 'required',
             'employeeInfo.address' => 'required',
+            'photo' => 'nullable|image|max:1024',
         ]);
 
         $this->isEdit ? $this->editEmployee() : $this->addEmployee();
@@ -85,8 +89,16 @@ class Employees extends Component
             'degree' => $this->employeeInfo['degree'],
             'gender' => $this->employeeInfo['gender'],
             'address' => $this->employeeInfo['address'],
+            'profile_photo_path' => config('app.default_profile_photo_path', 'profile-photos/.default-photo.jpg'),
             'notes' => isset($this->employeeInfo['notes']) ? $this->employeeInfo['notes'] : null,
         ]);
+
+        if ($this->photo) {
+            $path = $this->photo->store('profile-photos', 'public');
+            $createdEmployee->update(['profile_photo_path' => $path]);
+        }
+
+        $this->reset('photo');
 
         $this->dispatch('closeModal', elementId: '#employeeModal');
         $this->dispatch('toastr', type: 'success' /* , title: 'Done!' */, message: __('Going Well!'));
@@ -102,6 +114,8 @@ class Employees extends Component
         $this->isEdit = true;
 
         $this->employee = $employee;
+
+        $this->reset('photo');
 
         $this->employeeInfo['id'] = $employee->id;
         $this->employeeInfo['contractId'] = $employee->contract_id;
@@ -120,7 +134,7 @@ class Employees extends Component
 
     public function editEmployee()
     {
-        $this->employee->update([
+        $data = [
             'id' => $this->employeeInfo['id'],
             'contract_id' => $this->employeeInfo['contractId'],
             'first_name' => $this->employeeInfo['firstName'],
@@ -134,7 +148,16 @@ class Employees extends Component
             'gender' => $this->employeeInfo['gender'],
             'address' => $this->employeeInfo['address'],
             'notes' => isset($this->employeeInfo['notes']) ? $this->employeeInfo['notes'] : null,
-        ]);
+        ];
+
+        if ($this->photo) {
+            $path = $this->photo->store('profile-photos', 'public');
+            $data['profile_photo_path'] = $path;
+        }
+
+        $this->employee->update($data);
+
+        $this->reset('photo');
 
         $this->dispatch('closeModal', elementId: '#employeeModal');
         $this->dispatch('toastr', type: 'success' /* , title: 'Done!' */, message: __('Going Well!'));
