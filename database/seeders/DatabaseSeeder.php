@@ -33,10 +33,14 @@ class DatabaseSeeder extends Seeder
         }
 
         // Create role
-        $adminRole = Role::create(['name' => 'Admin']);
+        $adminRole = Role::firstOrCreate(['name' => 'Admin']);
 
         // Assign role
         $admin = User::find(1);
-        $admin->assignRole($adminRole);
+        if ($admin) {
+            $admin->assignRole($adminRole);
+        }
+
+        $this->call(PermissionsSeeder::class);
     }
 }

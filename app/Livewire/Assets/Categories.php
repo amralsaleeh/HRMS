@@ -34,7 +34,9 @@ class Categories extends Component
 
     public function mount()
     {
-        $this->showCategoryInfo(1);
+        $category = Category::with('subCategory')->find(1)
+            ?? Category::with('subCategory')->first();
+        $this->categoryInfo = $category;
     }
 
     public function render()

@@ -7,6 +7,7 @@
     <div class="card">
       <h5 class="card-header">Treeview</h5>
       <div class="card-body">
+        @if($categoryInfo)
         <div id="jstree-basic" class="jstree jstree-1 jstree-default-dark" role="tree" aria-multiselectable="true" tabindex="0" aria-activedescendant="j1_1" aria-busy="false"><ul class="jstree-container-ul jstree-children" role="group"><li role="none" data-jstree="{&quot;icon&quot; : &quot;ti ti-folder&quot;}" id="j1_1" class="jstree-node  jstree-closed"><i class="jstree-icon jstree-ocl" role="presentation"></i>
           <a class="jstree-anchor" href="#" tabindex="-1" role="treeitem" aria-selected="false" aria-level="1" aria-expanded="false" id="j1_1_anchor"><i class="jstree-icon jstree-themeicon ti ti-folder jstree-themeicon-custom" role="presentation"></i>
           {{ $categoryInfo->name . " (" . count($categoryInfo->subCategory) .")"}}
@@ -22,6 +23,9 @@
 
           @endforelse
         </div>
+        @else
+        <p class="text-muted mb-0">{{ __('Select a category to view details.') }}</p>
+        @endif
       </div>
     </div>
   </div>

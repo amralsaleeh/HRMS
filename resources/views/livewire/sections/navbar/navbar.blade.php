@@ -191,7 +191,8 @@
                             <div class="avatar">
                               @php
                                   $employee = Employee::find($notification->data['employee_id']);
-                                  $imageSrc = Storage::disk("public")->exists($employee->profile_photo_path) ? Storage::disk("public")->url($employee->profile_photo_path) : Storage::disk("public")->url('profile-photos/.default-photo.jpg')
+                                  $defaultPhotoUrl = '/storage/'.config('app.default_profile_photo_path', 'profile-photos/.default-photo.jpg');
+                                  $imageSrc = Storage::disk("public")->exists($employee->profile_photo_path) ? Storage::disk("public")->url($employee->profile_photo_path) : $defaultPhotoUrl;
                               @endphp
                               <img src="{{ $imageSrc }}" class="h-auto rounded-circle">
                               {{-- <span class="avatar-initial rounded-circle bg-label-success"><i class="ti ti-chart-pie"></i></span> --}}
