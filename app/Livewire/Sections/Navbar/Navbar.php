@@ -33,10 +33,19 @@ class Navbar extends Component
 
         DB::table('failed_jobs')->truncate();
         auth()->user()
-          ? ($this->unreadNotifications = auth()->user()->unreadNotifications)
-          : ($this->unreadNotifications = []);
+            ? ($this->unreadNotifications = auth()->user()->unreadNotifications)
+            : ($this->unreadNotifications = []);
 
-        return view('livewire.sections.navbar.navbar');
+        $currentRouteName = request()->route() ? request()->route()->getName() : null;
+        $routes = config('help.routes', []);
+        $helpViewName = ($currentRouteName && isset($routes[$currentRouteName]))
+            ? $routes[$currentRouteName]
+            : 'default';
+
+        return view('livewire.sections.navbar.navbar', [
+            'currentRouteName' => $currentRouteName,
+            'helpViewName' => $helpViewName,
+        ]);
     }
 
     #[On('refreshNotifications')]
@@ -64,7 +73,7 @@ class Navbar extends Component
                 $this->activeProgressBar = false;
             }
         } else {
-            session()->flash('error', 'Error Occurred, '.count($failedJobs).' Job Failed, Check Log File!');
+            session()->flash('error', 'Error Occurred, ' . count($failedJobs) . ' Job Failed, Check Log File!');
             $this->activeProgressBar = false;
         }
     }

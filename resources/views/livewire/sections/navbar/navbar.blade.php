@@ -162,6 +162,14 @@
             </li>
             <!-- Language -->
 
+            <!-- Help -->
+            <li class="nav-item me-2 me-xl-1">
+              <a class="nav-link hide-arrow" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#helpModal" title="{{ __('help.title') }}">
+                <i class="ti ti-help ti-md"></i>
+              </a>
+            </li>
+            <!-- Help -->
+
             <!-- Notification -->
             <li class="nav-item dropdown-notifications navbar-dropdown dropdown me-3 me-xl-2">
               <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
@@ -308,4 +316,7 @@
       @endif
     </nav>
   <!-- / Navbar -->
+
+  {{-- Help modal (full-screen, page-specific content) --}}
+  @include('_partials._modals.modal-help')
 </div>
