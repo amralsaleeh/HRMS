@@ -3,16 +3,23 @@
 namespace Tests\Feature;
 
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Config;
 use Tests\TestCase;
 
 class PasswordConfirmationTest extends TestCase
 {
-    use RefreshDatabase;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        // Fortify config uses 'login' but User model has no 'login' attribute (only email/username).
+        // Use 'email' so ConfirmPassword action can resolve $user->email for guard validation.
+        Config::set('fortify.username', 'email');
+    }
 
     public function test_confirm_password_screen_can_be_rendered(): void
     {
-        $user = User::factory()->withPersonalTeam()->create();
+        $user = User::factory()->create();
 
         $response = $this->actingAs($user)->get('/user/confirm-password');
 

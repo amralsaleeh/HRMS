@@ -43,11 +43,12 @@ class calculateDiscountsAsTime implements ShouldQueue
 
     public function handle(): void
     {
-        $this->jobId = $this->job->getJobId();
+        $this->jobId = $this->job ? (string) $this->job->getJobId() : '';
 
         $this->calculateDiscounts();
 
-        Notification::send($this->user, new DefaultNotification($this->user->id,
+        Notification::send($this->user, new DefaultNotification(
+            $this->user->id,
             'Successfully calculate the employees discounts'
         ));
     }
@@ -55,16 +56,21 @@ class calculateDiscountsAsTime implements ShouldQueue
     public function calculateDiscounts()
     {
         $progress = 0;
-        $progressStep = floor(100 / $this->allCenters->count());
+        $count = $this->allCenters->count();
+        $progressStep = $count > 0 ? floor(100 / $count) : 100;
 
         $dates = explode(' to ', $this->batch);
         $fromDate = Carbon::create($dates[0]);
         $toDate = Carbon::create($dates[1]);
 
         foreach ($this->allCenters as $center) {
-            DB::table('jobs')->where('id', $this->jobId)->update([
-                'progress' => $progress += $progressStep,
-            ]);
+            if ($this->jobId !== '') {
+                DB::table('jobs')->where('id', $this->jobId)->update([
+                    'progress' => $progress += $progressStep,
+                ]);
+            } else {
+                $progress += $progressStep;
+            }
 
             $startOfWork = carbon::parse($center->start_work_hour)->addMinutes(5)->format('H:i'); // TODO: Make 5 inserted variable on settings table
             $delayThreshold = carbon::parse($center->start_work_hour)->addMinutes(30)->format('H:i'); // TODO: Make 30 inserted variable on settings table
@@ -269,7 +275,7 @@ class calculateDiscountsAsTime implements ShouldQueue
         $employee->discounts()->firstOrCreate([
             'rate' => 0,
             'date' => $date,
-            'reason' => $reason.' - Taken off the balance',
+            'reason' => $reason . ' - Taken off the balance',
             'is_auto' => 1,
             'batch' => $this->batch,
         ]);
@@ -341,7 +347,6 @@ class calculateDiscountsAsTime implements ShouldQueue
 
             return false;
         }
-
     }
 
     public function checkIfEarly($center, $employee, $employeeLeaves, $fingerprint, $endOfWork)

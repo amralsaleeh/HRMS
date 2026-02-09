@@ -32,24 +32,24 @@ class Center extends Model
     // 👉 Attributes
     protected function name(): Attribute
     {
-        return Attribute::make(set: fn (string $value) => ucfirst($value));
+        return Attribute::make(set: fn(string $value) => ucfirst($value));
     }
 
     protected function startWorkHour(): Attribute
     {
-        return Attribute::make(get: fn (string $value) => Carbon::parse($value)->format('H:i'));
+        return Attribute::make(get: fn(string $value) => Carbon::parse($value)->format('H:i'));
     }
 
     protected function endWorkHour(): Attribute
     {
-        return Attribute::make(get: fn (string $value) => Carbon::parse($value)->format('H:i'));
+        return Attribute::make(get: fn(string $value) => Carbon::parse($value)->format('H:i'));
     }
 
     protected function weekends(): Attribute
     {
         return Attribute::make(
-            get: fn (string $value) => explode(',', $value),
-            set: fn (array $value) => implode(',', $value)
+            get: fn(string $value) => explode(',', $value),
+            set: fn(array|string $value) => is_string($value) ? $value : implode(',', $value)
         );
     }
 
@@ -79,14 +79,17 @@ class Center extends Model
                 ->with('employee')
                 ->get();
 
-            $notAffiliatedEmployees = Center::find(100)
-                ->timelines()
+            $unassignedCenterId = config('hrms.unassigned_center_id', 100);
+            $unassignedCenter = Center::find($unassignedCenterId);
+            $notAffiliatedEmployees = $unassignedCenter
+                ? $unassignedCenter->timelines()
                 ->whereNull('end_date')
                 ->join('employees', 'timelines.employee_id', '=', 'employees.id')
                 ->where('employees.is_active', 1)
                 ->orderBy('employees.first_name', 'asc')
                 ->with('employee')
-                ->get();
+                ->get()
+                : collect();
 
             $mergedEmployees = $centerEmployees->merge($notAffiliatedEmployees);
             $mergedEmployees = $mergedEmployees->sortBy('employee.first_name');

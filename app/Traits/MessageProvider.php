@@ -12,12 +12,13 @@ trait MessageProvider
     {
         $settings = Setting::first();
 
-        $response = Http::get('https://bms.syriatel.sy/API/SendSMS.aspx?'.
-          'user_name='.$settings->sms_api_username.
-          '&password='.$settings->sms_api_password.
-          '&msg='.$messageBody.
-          '&sender='.$settings->sms_api_sender.
-          '&to='.$recipientNumbers
+        $response = Http::get(
+            'https://bms.syriatel.sy/API/SendSMS.aspx?' .
+                'user_name=' . $settings->sms_api_username .
+                '&password=' . $settings->sms_api_password .
+                '&msg=' . $messageBody .
+                '&sender=' . $settings->sms_api_sender .
+                '&to=' . $recipientNumbers
         );
 
         if ($response->getStatusCode() == 200 && preg_match('/^[0-9]+$/', (string) $response)) {
@@ -31,10 +32,11 @@ trait MessageProvider
     {
         $settings = Setting::first();
 
-        $response = Http::get('https://bms.syriatel.sy/API/CheckUserStatus.aspx?'.
-          'user_name='.$settings->sms_api_username.
-          '&password='.$settings->sms_api_password.
-          '&target_user_name='.$settings->sms_api_username
+        $response = Http::get(
+            'https://bms.syriatel.sy/API/CheckUserStatus.aspx?' .
+                'user_name=' . $settings->sms_api_username .
+                '&password=' . $settings->sms_api_password .
+                '&target_user_name=' . $settings->sms_api_username
         );
 
         $pairs = explode(',', (string) $response);
@@ -44,6 +46,8 @@ trait MessageProvider
             $data[$key] = $value;
         }
 
-        return ['status' => $response->getStatusCode(), 'balance' => Number::format($data['SMSBalance']), 'is_active' => $data['Active'] == true ? 'Active' : 'Inactive'];
+        $isActive = strtolower(trim($data['Active'] ?? '')) === 'true' || ($data['Active'] ?? '') === '1';
+
+        return ['status' => $response->getStatusCode(), 'balance' => Number::format($data['SMSBalance'] ?? 0), 'is_active' => $isActive ? 'Active' : 'Inactive'];
     }
 }

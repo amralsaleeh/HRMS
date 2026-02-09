@@ -13,6 +13,7 @@ use App\Notifications\DefaultNotification;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Notification;
 use Livewire\Component;
@@ -73,18 +74,22 @@ class Leaves extends Component
 
         $this->leaveTypes = Leave::all();
 
-        $user = Employee::find(Auth::user()->employee_id);
-        $center = Center::find(
-            $user
-                ->timelines()
-                ->where('end_date', null)
-                ->first()->center_id
-        );
-        $this->activeEmployees = $center->activeEmployees();
+        $user = $this->selectedEmployee;
+        if ($user) {
+            $currentTimeline = $user->timelines()->where('end_date', null)->first();
+            if ($currentTimeline) {
+                $center = Center::find($currentTimeline->center_id);
+                $this->activeEmployees = $center ? $center->activeEmployees() : [];
+            } else {
+                $this->activeEmployees = [];
+            }
+        } else {
+            $this->activeEmployees = [];
+        }
 
         $currentDate = Carbon::now();
         $previousMonth = $currentDate->copy()->subMonth();
-        $this->dateRange = $previousMonth->format('Y-n-1').' to '.$currentDate;
+        $this->dateRange = $previousMonth->format('Y-n-1') . ' to ' . $currentDate;
     }
 
     public function render()
@@ -102,6 +107,10 @@ class Leaves extends Component
 
         $this->selectedLeave = Leave::find($this->selectedLeaveId);
 
+        if (! $this->selectedEmployee) {
+            return new LengthAwarePaginator([], 0, 7);
+        }
+
         if ($this->dateRange) {
             $dates = explode(' to ', $this->dateRange);
 
@@ -111,11 +120,11 @@ class Leaves extends Component
 
         if (
             auth()
-                ->user()
-                ->hasAnyRole(['Admin', 'HR'])
+            ->user()
+            ->hasAnyRole(['Admin', 'HR'])
         ) {
             // Return filtered leaves
-            return Employee::find($this->selectedEmployeeId)
+            return $this->selectedEmployee
                 ->leaves()
                 ->when($this->selectedLeaveId, function ($query) {
                     return $query->where('leaves.id', $this->selectedLeaveId);
@@ -126,7 +135,7 @@ class Leaves extends Component
         }
 
         // Return filtered leaves
-        return Employee::find($this->selectedEmployeeId)
+        return $this->selectedEmployee
             ->leaves()
             ->when($this->selectedLeaveId, function ($query) {
                 return $query->where('leaves.id', $this->selectedLeaveId);
@@ -315,7 +324,7 @@ class Leaves extends Component
 
             session()->flash('success', __('Well done! The file has been imported successfully.'));
         } catch (Exception $e) {
-            session()->flash('error', __('Error occurred: ').$e->getMessage());
+            session()->flash('error', __('Error occurred: ') . $e->getMessage());
         }
 
         $this->dispatch('closeModal', elementId: '#importModal');
@@ -369,15 +378,15 @@ class Leaves extends Component
 
         return Excel::download(
             new ExportLeaves($leavesToExport),
-            'Leaves - '.
-              Auth::user()->name.
-              ' - '.
-              Carbon::now()
-                  ->subDays(7)
-                  ->format('Y-m-d').
-              ' --- '.
-              Carbon::now()->format('Y-m-d').
-              '.xlsx'
+            'Leaves - ' .
+                Auth::user()->name .
+                ' - ' .
+                Carbon::now()
+                ->subDays(7)
+                ->format('Y-m-d') .
+                ' --- ' .
+                Carbon::now()->format('Y-m-d') .
+                '.xlsx'
         );
     }
 }

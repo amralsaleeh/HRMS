@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\language\LanguageController;
+use App\Http\Controllers\TestCoverageController;
 use App\Livewire\Assets\Categories;
 use App\Livewire\Assets\Inventory;
 use App\Livewire\ContactUs;
@@ -96,6 +97,9 @@ Route::middleware([
             Route::get('/roles', Roles::class)->name('settings-roles');
             Route::get('/permissions', Permissions::class)->name('settings-permissions');
         });
+        Route::get('/test-coverage/{path?}', TestCoverageController::class)
+            ->where('path', '.*')
+            ->name('test-coverage');
     });
 
     // 👉 Assets

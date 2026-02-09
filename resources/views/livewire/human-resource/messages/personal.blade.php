@@ -155,7 +155,7 @@
           </li>
           @forelse ($employees as $employee)
             <div wire:key="{{ $employee->id }}" wire:click.prevent='selectEmployee({{ $employee }})'>
-              <li class="chat-contact-list-item {{ $employee->id == $selectedEmployee->id ? 'active' : '' }}">
+              <li class="chat-contact-list-item {{ $selectedEmployee && $employee->id == $selectedEmployee->id ? 'active' : '' }}">
                 <a class="d-flex align-items-center">
                   <div class="flex-shrink-0 avatar avatar-online">
                     <img src="{{ Storage::disk("public")->exists($employee->profile_photo_path) ? Storage::disk("public")->url($employee->profile_photo_path) : '/storage/'.config('app.default_profile_photo_path', 'profile-photos/.default-photo.jpg') }}" alt="Avatar" class="rounded-circle">
@@ -179,6 +179,7 @@
     <!-- Chat History -->
     <div class="col app-chat-history bg-body">
       <div class="chat-history-wrapper">
+        @if($selectedEmployee)
         <div class="chat-history-header border-bottom">
           <div class="d-flex justify-content-between align-items-center">
             <div class="d-flex overflow-hidden align-items-center">
@@ -205,9 +206,13 @@
             </div>
           </div>
         </div>
+        @endif
 
         <div class="chat-history-body bg-body">
           <ul class="list-unstyled chat-history">
+            @if(!$selectedEmployee)
+              <li class="text-center text-muted py-5">{{ __('Select an employee from the list to view and send messages.') }}</li>
+            @else
             @forelse ($messages as $message)
               <li class="chat-message chat-message-right">
                 <div class="d-flex overflow-hidden">
@@ -233,12 +238,13 @@
                 <img src="{{ asset('assets/img/illustrations/girl-doing-yoga-dark.png') }}" width="14%">
               </div>
             @endforelse
+            @endif
           </ul>
         </div>
 
         <!-- Chat message form -->
         <div class="chat-history-footer shadow-sm">
-          <form wire:submit='sendMessage' class="form-send-message d-flex justify-content-between align-items-center ">
+          <form wire:submit='sendMessage' class="form-send-message d-flex justify-content-between align-items-center " @if(!$selectedEmployee) style="pointer-events: none; opacity: 0.7" @endif>
             {{-- <input class="form-control message-input border-0 me-3 shadow-none" placeholder="Type your message here"> --}}
             <textarea wire:model='messageBody' class="form-control message-input border-0 me-3 shadow-none" style="resize: none" rows="3" spellcheck="true" placeholder="{{ __('Type your message here') }}" required></textarea>
             <div class="message-actions d-flex align-items-center">

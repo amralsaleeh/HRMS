@@ -234,7 +234,7 @@
 </div>
 
 {{-- Modal --}}
-@include('_partials\_modals\modal-timeline')
+@include('_partials._modals.modal-timeline')
 
 {{-- Scripts --}}
 @push('custom-scripts')

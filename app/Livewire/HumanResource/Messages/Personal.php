@@ -33,7 +33,7 @@ class Personal extends Component
 
     public $searchTerm;
 
-    public Employee $selectedEmployee;
+    public ?Employee $selectedEmployee = null;
 
     public $messages = [];
 
@@ -65,11 +65,13 @@ class Personal extends Component
             'unsent' => Number::format($unsent ?? 0),
         ];
 
-        $this->employees = Employee::where('id', 'like', '%'.$this->searchTerm.'%')
-            ->orWhere('first_name', 'like', '%'.$this->searchTerm.'%')
-            ->orWhere('last_name', 'like', '%'.$this->searchTerm.'%')
+        $this->employees = Employee::where('id', 'like', '%' . $this->searchTerm . '%')
+            ->orWhere('first_name', 'like', '%' . $this->searchTerm . '%')
+            ->orWhere('last_name', 'like', '%' . $this->searchTerm . '%')
             ->get();
-        $this->messages = Message::where('employee_id', $this->selectedEmployee->id)->get();
+        $this->messages = $this->selectedEmployee
+            ? Message::where('employee_id', $this->selectedEmployee->id)->get()
+            : collect();
 
         $this->dispatch('initialize');
 
@@ -84,6 +86,11 @@ class Personal extends Component
 
     public function sendMessage()
     {
+        if (! $this->selectedEmployee) {
+            $this->dispatch('toastr', type: 'error', message: __('Please select an employee.'));
+
+            return;
+        }
         $sms = Message::create([
             'employee_id' => $this->selectedEmployee->id,
             'text' => $this->messageBody,
@@ -133,25 +140,25 @@ class Personal extends Component
                 }
 
                 $messageBody =
-                  'عزيزي صاحب المعرف رقم ('.
-                  $employee->id.
-                  ')، يرجى الاطلاع على التفاصيل التالية وذلك لغاية ('.
-                  $dates[1].
-                  '):
+                    'عزيزي صاحب المعرف رقم (' .
+                    $employee->id .
+                    ')، يرجى الاطلاع على التفاصيل التالية وذلك لغاية (' .
+                    $dates[1] .
+                    '):
 
-- الحسم المالي: '.
-                  $cashDiscountCount.
-                  '
+- الحسم المالي: ' .
+                    $cashDiscountCount .
+                    '
 
-- رصيد الإجازات: '.
-                  $employee->max_leave_allowed.
-                  '
-- عداد الساعات: '.
-                  Carbon::parse($employee->hourly_counter)->format('H:i').
-                  '
-- عداد التأخير: '.
-                  Carbon::parse($employee->delay_counter)->format('H:i').
-                  '
+- رصيد الإجازات: ' .
+                    $employee->max_leave_allowed .
+                    '
+- عداد الساعات: ' .
+                    Carbon::parse($employee->hourly_counter)->format('H:i') .
+                    '
+- عداد التأخير: ' .
+                    Carbon::parse($employee->delay_counter)->format('H:i') .
+                    '
 
 وجودك مهم،
 مشروع الحماية المجتمعية.';

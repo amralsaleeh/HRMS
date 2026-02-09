@@ -63,7 +63,7 @@ class CalculateDiscountsAsDays implements ShouldQueue
 
     public function handle(): void
     {
-        $this->jobId = $this->job->getJobId();
+        $this->jobId = $this->job ? (string) $this->job->getJobId() : '';
 
         // 👉 Calculate discounts
         try {
@@ -98,11 +98,15 @@ class CalculateDiscountsAsDays implements ShouldQueue
                 ->select('id', 'start_work_hour', 'end_work_hour', 'weekends')
                 ->cursor() as $center
         ) {
-            DB::table('jobs')
-                ->where('id', $this->jobId)
-                ->update([
-                    'progress' => ($progress += $progressStep),
-                ]);
+            if ($this->jobId !== '') {
+                DB::table('jobs')
+                    ->where('id', $this->jobId)
+                    ->update([
+                        'progress' => ($progress += $progressStep),
+                    ]);
+            } else {
+                $progress += $progressStep;
+            }
 
             $startOfWork = carbon::parse($center->start_work_hour)
                 ->addMinutes(self::START_WORK_ADJUST_MINUTES)
@@ -116,8 +120,8 @@ class CalculateDiscountsAsDays implements ShouldQueue
 
             $workDays = $this->calculateWorkDays($center, $fromDate, $toDate);
             $workDaysInMinutes =
-              count($workDays) *
-              Carbon::parse($center->start_work_hour)->diffInMinutes(Carbon::parse($center->end_work_hour));
+                count($workDays) *
+                Carbon::parse($center->start_work_hour)->diffInMinutes(Carbon::parse($center->end_work_hour));
 
             // Stream employees for this center and eager-load heavy relations to avoid N+1
             foreach ($this->getCenterEmployees($center->id) as $employee) {
@@ -157,7 +161,7 @@ class CalculateDiscountsAsDays implements ShouldQueue
                             $holidayExcuse = $this->checkIfHoliday($date, $center);
 
                             if ($holidayExcuse) {
-                                $this->setFingerprintIsChecked($employee->id, $date, 'Holiday: '.$holidayExcuse);
+                                $this->setFingerprintIsChecked($employee->id, $date, 'Holiday: ' . $holidayExcuse);
 
                                 continue;
                             }
@@ -290,7 +294,7 @@ class CalculateDiscountsAsDays implements ShouldQueue
                         continue;
                     }
                     if ($employeeEndDate != null && $fingerprint->date > $employeeEndDate) {
-                        $fingerprint->update(['excuse' => 'Employee resigned on '.$employeeEndDate, 'is_checked' => 1]);
+                        $fingerprint->update(['excuse' => 'Employee resigned on ' . $employeeEndDate, 'is_checked' => 1]);
 
                         continue;
                     }
@@ -462,7 +466,7 @@ class CalculateDiscountsAsDays implements ShouldQueue
                 ]);
 
                 EmployeeLeave::find($leave->pivot->id)->update([
-                    'note' => 'Splitted into: '.$firstLeave->id.' & '.$secondLeave->id,
+                    'note' => 'Splitted into: ' . $firstLeave->id . ' & ' . $secondLeave->id,
                     'is_checked' => 1,
                 ]);
             }
@@ -475,7 +479,7 @@ class CalculateDiscountsAsDays implements ShouldQueue
         $employee->discounts()->firstOrCreate([
             'rate' => 0,
             'date' => $date,
-            'reason' => $reason.' - Taken off the balance',
+            'reason' => $reason . ' - Taken off the balance',
             'is_auto' => 1,
             'batch' => $this->batch,
         ]);

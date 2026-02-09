@@ -49,6 +49,9 @@
     ]
   },
   "scripts": {
+    "coverage": [
+      "@php -d zend_extension=/Applications/Herd.app/Contents/Resources/xdebug/xdebug-84-arm64.so -d xdebug.mode=coverage vendor/bin/phpunit --coverage-html build/coverage/html"
+    ],
     "post-autoload-dump": [
       "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
       "@php artisan package:discover --ansi"

@@ -98,13 +98,20 @@
                   <a class="nav-item d-xl-none nav-link px-0 mx-2" href="javascript:void(0)" data-bs-toggle="sidebar" data-overlay="" data-target="#app-calendar-sidebar">
                     <i class="ti ti-menu-2 ti-sm"></i>
                   </a>
+                  @if($selectedEmployee)
                   <div class="flex-shrink-0 avatar">
-                    <img src="{{ Storage::disk("public")->url($selectedEmployee->profile_photo_path) }}" class="rounded-circle" alt="Avatar">
+                    <img src="{{ Storage::disk("public")->exists($selectedEmployee->profile_photo_path) ? Storage::disk("public")->url($selectedEmployee->profile_photo_path) : '/storage/'.config('app.default_profile_photo_path', 'profile-photos/.default-photo.jpg') }}" class="rounded-circle" alt="Avatar">
                   </div>
                   <div class="chat-contact-info flex-grow-1 ms-2">
                     <h6 class="m-0">{{ $selectedEmployee->full_name }}</h6>
                     <small class="user-status text-muted">{{ $selectedEmployee->current_position }}</small>
                   </div>
+                  @else
+                  <div class="chat-contact-info flex-grow-1 ms-2">
+                    <h6 class="m-0 text-muted">{{ __('No employee linked to your account.') }}</h6>
+                    <small class="user-status text-muted">{{ __('Contact an administrator.') }}</small>
+                  </div>
+                  @endif
                 </div>
                 <div class="col-5 btn-group d-flex justify-content-end">
                   <button wire:click.prevent='showCreateLeaveModal' type="button" class="btn btn-primary"

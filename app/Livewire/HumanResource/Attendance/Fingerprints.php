@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\Renderless;
 use Livewire\Component;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Livewire\WithFileUploads;
 use Livewire\WithPagination;
 use Maatwebsite\Excel\Facades\Excel;
@@ -65,7 +66,7 @@ class Fingerprints extends Component
 
         $currentDate = Carbon::now();
         $previousMonth = $currentDate->copy()->subMonth();
-        $this->dateRange = $previousMonth->format('Y-n-1').' to '.$currentDate;
+        $this->dateRange = $previousMonth->format('Y-n-1') . ' to ' . $currentDate;
     }
 
     public function render()
@@ -81,6 +82,10 @@ class Fingerprints extends Component
     {
         // Employee
         $this->selectedEmployee = Employee::find($this->selectedEmployeeId);
+
+        if (! $this->selectedEmployee) {
+            return new LengthAwarePaginator([], 0, 7);
+        }
 
         // Date range
         if ($this->dateRange) {
@@ -134,7 +139,7 @@ class Fingerprints extends Component
         Fingerprint::create([
             'employee_id' => $this->selectedEmployeeId,
             'date' => $this->date,
-            'log' => $this->checkIn.' '.$this->checkOut,
+            'log' => $this->checkIn . ' ' . $this->checkOut,
             'check_in' => $this->checkIn,
             'check_out' => $this->checkOut,
         ]);
@@ -153,7 +158,7 @@ class Fingerprints extends Component
 
         $this->fingerprint->update([
             'date' => $this->date,
-            'log' => $this->checkIn.' '.$this->checkOut,
+            'log' => $this->checkIn . ' ' . $this->checkOut,
             'check_in' => $this->checkIn,
             'check_out' => $this->checkOut,
         ]);
@@ -212,7 +217,7 @@ class Fingerprints extends Component
 
             session()->flash('info', __('Stay tuned! The file is doing a little dance as we speak.'));
         } catch (Exception $e) {
-            session()->flash('error', __('Error occurred: ').$e->getMessage());
+            session()->flash('error', __('Error occurred: ') . $e->getMessage());
         }
 
         $this->dispatch('closeModal', elementId: '#importModal');
@@ -228,8 +233,8 @@ class Fingerprints extends Component
             $this->isOneFingerprint
         )->get();
 
-        $fileName = 'Fingerprints - '.Carbon::now();
+        $fileName = 'Fingerprints - ' . Carbon::now();
 
-        return Excel::download(new ExportFingerprints($fingerprints), $fileName.'.xlsx');
+        return Excel::download(new ExportFingerprints($fingerprints), $fileName . '.xlsx');
     }
 }
