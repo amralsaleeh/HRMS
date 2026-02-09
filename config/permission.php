@@ -183,4 +183,17 @@ return [
 
         'store' => 'default',
     ],
+
+    /*
+     * Permission names created by PermissionsSeeder. These cannot be edited or deleted on the settings/permissions page.
+     */
+    'seeded_permission_names' => [
+        'view logs',
+        'create employees',
+        'create fingerprints',
+        'create leaves',
+        'view leaves',
+        'read sms',
+        'import leaves',
+    ],
 ];

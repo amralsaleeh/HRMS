@@ -34,11 +34,16 @@
                   <div class="dropdown">
                     <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown"><i class="ti ti-dots-vertical"></i></button>
                     <div class="dropdown-menu">
-                      <a wire:click.prevent='showEditPermissionModal({{ $permission->id }})' data-bs-toggle="modal" data-bs-target="#permissionModal" class="dropdown-item" href=""><i class="ti ti-pencil me-1"></i>{{ __('Edit') }}</a>
-                      <a wire:click.prevent='confirmDeletePermission({{ $permission->id }})' class="dropdown-item" href=""><i class="ti ti-trash me-1"></i>{{ __('Delete') }}</a>
+                      @if($this->isSeededPermission($permission))
+                        <span class="dropdown-item text-muted" title="{{ __('Seeded permission') }}"><i class="ti ti-lock me-1"></i>{{ __('Edit') }}</span>
+                        <span class="dropdown-item text-muted" title="{{ __('Seeded permission') }}"><i class="ti ti-lock me-1"></i>{{ __('Delete') }}</span>
+                      @else
+                        <a wire:click.prevent='showEditPermissionModal({{ $permission->id }})' data-bs-toggle="modal" data-bs-target="#permissionModal" class="dropdown-item" href=""><i class="ti ti-pencil me-1"></i>{{ __('Edit') }}</a>
+                        <a wire:click.prevent='confirmDeletePermission({{ $permission->id }})' class="dropdown-item" href=""><i class="ti ti-trash me-1"></i>{{ __('Delete') }}</a>
+                      @endif
                     </div>
                   </div>
-                  @if ($confirmedId === $permission->id)
+                  @if (!$this->isSeededPermission($permission) && $confirmedId === $permission->id)
                     <button wire:click.prevent='deletePermission({{ $permission->id }})' type="button" class="btn btn-sm btn-danger waves-effect waves-light">{{ __('Sure?') }}</button>
                   @endif
                 </div>

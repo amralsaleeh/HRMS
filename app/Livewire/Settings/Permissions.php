@@ -15,6 +15,12 @@ class Permissions extends Component
     public $isEdit = false;
     public $confirmedId;
 
+    /** Whether the given permission is one of the seeded (protected) permissions. */
+    public function isSeededPermission(Permission $permission): bool
+    {
+        return in_array($permission->name, config('permission.seeded_permission_names', []), true);
+    }
+
     protected function rules(): array
     {
         $except = $this->permission?->id;
@@ -58,6 +64,12 @@ class Permissions extends Component
 
     public function editPermission()
     {
+        if ($this->permission && $this->isSeededPermission($this->permission)) {
+            $this->dispatch('toastr', type: 'error', message: __('This permission cannot be edited.'));
+
+            return;
+        }
+
         $this->validate();
 
         $this->permission->update([
@@ -71,12 +83,23 @@ class Permissions extends Component
 
     public function confirmDeletePermission($id)
     {
+        $permission = Permission::find($id);
+        if ($permission && $this->isSeededPermission($permission)) {
+            $this->dispatch('toastr', type: 'error', message: __('This permission cannot be deleted.'));
+
+            return;
+        }
         $this->confirmedId = $id;
     }
 
     public function deletePermission($id)
     {
         $permission = Permission::findOrFail($id);
+        if ($this->isSeededPermission($permission)) {
+            $this->dispatch('toastr', type: 'error', message: __('This permission cannot be deleted.'));
+
+            return;
+        }
         $permission->delete();
         $this->dispatch('toastr', type: 'success', message: __('Going Well!'));
     }
@@ -89,6 +112,11 @@ class Permissions extends Component
     public function showEditPermissionModal($id)
     {
         $permission = Permission::findOrFail($id);
+        if ($this->isSeededPermission($permission)) {
+            $this->dispatch('toastr', type: 'error', message: __('This permission cannot be edited.'));
+
+            return;
+        }
 
         $this->reset();
         $this->isEdit = true;

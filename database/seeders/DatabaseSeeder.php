@@ -5,7 +5,6 @@ namespace Database\Seeders;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use App\Models\User;
 use Illuminate\Database\Seeder;
-use Spatie\Permission\Models\Role;
 
 class DatabaseSeeder extends Seeder
 {
@@ -32,13 +31,13 @@ class DatabaseSeeder extends Seeder
             ]);
         }
 
-        // Create role
-        $adminRole = Role::firstOrCreate(['name' => 'Admin']);
+        // Create all roles (Admin, AM, CC, CR, HR, Employee, Viewer)
+        $this->call(RolesSeeder::class);
 
-        // Assign role
+        // Assign Admin role to default admin user
         $admin = User::find(1);
         if ($admin) {
-            $admin->assignRole($adminRole);
+            $admin->assignRole('Admin');
         }
 
         $this->call(PermissionsSeeder::class);

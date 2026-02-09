@@ -8,18 +8,56 @@ use Spatie\Permission\Models\Role;
 
 class PermissionsSeeder extends Seeder
 {
+    private const GUARD = 'web';
+
     /**
-     * Create the "view logs" permission and assign it to the Admin role.
+     * Create all permissions and assign them to roles.
+     * Permission names are read from config so the settings UI can protect them from edit/delete.
      */
     public function run(): void
     {
-        $permission = Permission::firstOrCreate(
-            ['name' => 'view logs', 'guard_name' => 'web']
-        );
+        $permissions = config('permission.seeded_permission_names', []);
 
-        $adminRole = Role::firstWhere('name', 'Admin');
-        if ($adminRole) {
-            $adminRole->givePermissionTo($permission);
+        foreach ($permissions as $name) {
+            Permission::firstOrCreate(
+                ['name' => $name, 'guard_name' => self::GUARD],
+                ['name' => $name, 'guard_name' => self::GUARD]
+            );
+        }
+
+        $allPermissions = collect($permissions);
+
+        $admin = Role::firstWhere('name', 'Admin');
+        if ($admin) {
+            $admin->syncPermissions($allPermissions->toArray());
+        }
+
+        $hr = Role::firstWhere('name', 'HR');
+        if ($hr) {
+            $hr->syncPermissions([
+                'view logs',
+                'create employees',
+                'create fingerprints',
+                'create leaves',
+                'view leaves',
+                'read sms',
+                'import leaves',
+            ]);
+        }
+
+        $cc = Role::firstWhere('name', 'CC');
+        if ($cc) {
+            $cc->syncPermissions([
+                'create leaves',
+                'view leaves',
+                'read sms',
+                'import leaves',
+            ]);
+        }
+
+        $cr = Role::firstWhere('name', 'CR');
+        if ($cr) {
+            $cr->syncPermissions(['view leaves']);
         }
     }
 }

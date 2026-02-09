@@ -121,7 +121,7 @@
                       <h6 class="dropdown-header text-uppercase">{{ __('Import & Export') }}</h6>
                     </li>
                     <li>
-                      @can('Import leaves')
+                      @can('import leaves')
                       <button class="dropdown-item" data-bs-toggle="modal" data-bs-target="#importModal">
                         <i class="ti ti-table-import me-1"></i> {{ __('Import From Excel') }}
                       </button>

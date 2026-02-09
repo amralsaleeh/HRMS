@@ -386,7 +386,7 @@ class Dashboard extends Component
         if (
             ! auth()
                 ->user()
-                ->hasAnyRole(['Admin', 'HR', 'CC', 'CR', 'CR-S'])
+                ->hasAnyRole(['Admin', 'HR', 'CC', 'CR'])
         ) {
             abort(403, 'Unauthorized action.');
         }
