@@ -350,12 +350,12 @@ class Dashboard extends Component
         $this->confirmedId = null;
     }
 
-    public function getEmployeeName($id)
+    protected function getEmployeeName($id)
     {
         return Employee::find($id)->FullName;
     }
 
-    public function getLeaveType($id)
+    protected function getLeaveType($id)
     {
         return Leave::find($id)->name;
     }
